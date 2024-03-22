@@ -1,3 +1,4 @@
+
 class WallWidthExtractor:
     
     def __init__(self, wall):

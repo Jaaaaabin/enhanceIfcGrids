@@ -191,29 +191,52 @@ class GridGenerator:
 
             #columns.
             if st_info_columns is not None:
-                s_column_locations = [c['location'] for c in st_info_columns]
+
+                columns_location_id_pairs = [(c['location'], c['id']) for c in st_info_columns]
+                s_column_locations, column_points_struc_ids = zip(*columns_location_id_pairs)
+                s_column_locations, column_points_struc_ids = list(s_column_locations), list(column_points_struc_ids)
                 column_locations_struc = copy.deepcopy(s_column_locations)
                 [column_loc.pop() for column_loc in column_locations_struc]
                 column_locations_struc = [item for sublist in column_locations_struc for item in sublist]
                 column_points_struc = [Point(column_loc) for column_loc in column_locations_struc]
-
+                
+                if column_points_struc is not None:
+                    self.main_storeys[st_key].update({
+                        'column_points_struc': column_points_struc,
+                        'column_points_struc_ids': column_points_struc_ids,
+                        })
+                
             #walls.
             if st_info_walls is not None:
-                s_wall_locations =  [w['location'] for w in st_info_walls if w['loadbearing']]
-                ns_wall_locations =  [w['location'] for w in st_info_walls if not w['loadbearing']]
-                wall_locations_struc = copy.deepcopy(s_wall_locations)
-                wall_locations_nonst = copy.deepcopy(ns_wall_locations)
-                [p.pop() for wall_loc in wall_locations_struc for p in wall_loc]
-                [p.pop() for wall_loc in wall_locations_nonst for p in wall_loc]
-                wall_lines_struc = [LineString(wall_location) for wall_location in wall_locations_struc]
-                wall_lines_nonst = [LineString(wall_location) for wall_location in wall_locations_nonst]
 
-            if column_points_struc is not None:
-                self.main_storeys[st_key].update({'column_points_struc': column_points_struc})
-            if wall_lines_struc is not None:
-                self.main_storeys[st_key].update({'wall_lines_struc': wall_lines_struc})
-            if wall_lines_nonst is not None:
-                self.main_storeys[st_key].update({'wall_lines_nonst': wall_lines_nonst})
+                wall_s_location_id_pairs = [(w['location'], w['id']) for w in st_info_walls if w['loadbearing']]
+                wall_ns_location_id_pairs = [(w['location'], w['id']) for w in st_info_walls if not w['loadbearing']]
+
+                if wall_s_location_id_pairs:
+                    s_wall_locations, wall_lines_struc_ids = zip(*wall_s_location_id_pairs)
+                    s_wall_locations, wall_lines_struc_ids = list(s_wall_locations), list(wall_lines_struc_ids)
+                    wall_locations_struc = copy.deepcopy(s_wall_locations)
+                    [p.pop() for wall_loc in wall_locations_struc for p in wall_loc]
+                    wall_lines_struc = [LineString(wall_location) for wall_location in wall_locations_struc]
+                    
+                    if wall_lines_struc is not None:
+                        self.main_storeys[st_key].update({
+                            'wall_lines_struc': wall_lines_struc,
+                            'wall_lines_struc_ids': wall_lines_struc_ids,
+                            })
+                        
+                if wall_ns_location_id_pairs:
+                    ns_wall_locations, wall_lines_nonst_ids = zip(*wall_ns_location_id_pairs)
+                    ns_wall_locations, wall_lines_nonst_ids = list(ns_wall_locations), list(wall_lines_nonst_ids)
+                    wall_locations_nonst = copy.deepcopy(ns_wall_locations)
+                    [p.pop() for wall_loc in wall_locations_nonst for p in wall_loc]
+                    wall_lines_nonst = [LineString(wall_location) for wall_location in wall_locations_nonst]
+        
+                    if wall_lines_nonst is not None:
+                        self.main_storeys[st_key].update({
+                            'wall_lines_nonst': wall_lines_nonst,
+                            'wall_lines_nonst_ids': wall_lines_nonst_ids,
+                            })
     
     def get_line_slope(self, point1, point2):
         
@@ -237,37 +260,39 @@ class GridGenerator:
             return any(abs(new_slope - s) <= threshold for s in known_slopes)
 
     # column-related
-    def points2grids(self, component_pts):
+    def points2grids(self, component_pts, element_ids):
         """
         Return: Points from collinear pairs of points.
         """
 
+        # todo.
+        
         grid_elements = []
         ids_component_pts_per_grid = []
 
         # Iterate through each pair of points once
-        for i, point1 in tqdm(enumerate(component_pts[:-1]), total=len(component_pts)-1, desc="points2grids: Processing points"):
-            for j, point2 in enumerate(component_pts[i + 1:], start=i + 1):
+        for i, (point1, id1) in tqdm(enumerate(zip(component_pts[:-1],element_ids[:-1])), total=len(component_pts)-1, desc="points2grids: Processing points"):
+            for j, (point2,id2) in enumerate(zip(component_pts[i + 1:],element_ids[i + 1:]), start=i + 1):
                 
                 aligned_points = [point1, point2]
-                id_components = {i, j}  # Use a set to avoid duplicate indices
+                id_components = {id1, id2}  # Use a set to avoid duplicate indices
                 slope = self.get_line_slope(point1, point2)
                 
                 # for columns, ignore those pairs not located on the main directions.
                 if not self.is_close_to_slopes(self.main_directions,slope):
                     continue
                 else:
-                    for k, point in enumerate(component_pts):
-                        if k not in id_components:  # Skip points already considered in the line
+                    for k, (point,id3) in enumerate(zip(component_pts,element_ids)):
+                        if id3 not in id_components:  # Skip points already considered in the line
                             if slope == float('inf'):  # Vertical line check
                                 if abs(point.x - point1.x) <= self.t_c_dist:
                                     aligned_points.append(point)
-                                    id_components.add(k)
+                                    id_components.add(id3)
                             else:
                                 # Use point-slope form of line equation to check alignment
                                 if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.t_c_dist:
                                     aligned_points.append(point)
-                                    id_components.add(k)
+                                    id_components.add(id3)
 
                     # Check for minimum number of points and uniqueness before adding to the grid
                     if len(aligned_points) >= self.t_c_num:
@@ -276,7 +301,7 @@ class GridGenerator:
                             grid_elements.append(aligned_points)
                             ids_component_pts_per_grid.append(id_tuple)
 
-        return grid_elements
+        return grid_elements, ids_component_pts_per_grid
 
     # wall-related
     def is_point_near_line(self, point, line_point1, line_point2, slope, threshold):
@@ -304,7 +329,7 @@ class GridGenerator:
         return unique_points
     
     # wall-related
-    def lines2grids(self, component_lines):
+    def lines2grids(self, component_lines, element_ids):
         """
         Return: Points from collinear lines.
         """
@@ -316,17 +341,17 @@ class GridGenerator:
         line_slopes = [self.get_line_slope(Point(ln.bounds[:2]), Point(ln.bounds[2:])) for ln in component_lines]
         line_lengths = [ln.length for ln in component_lines]
 
-        for i, (ln, slope, length) in tqdm(enumerate(zip(component_lines[:-1], line_slopes[:-1], line_lengths[:-1])), total=len(component_lines)-1, desc="lines2grids: Processing lines"):
+        for i, (ln, slope, length, id1) in tqdm(enumerate(zip(component_lines[:-1], line_slopes[:-1], line_lengths[:-1], element_ids[:-1])), total=len(component_lines)-1, desc="lines2grids: Processing lines"):
             
             point1, point2 = Point(ln.bounds[:2]), Point(ln.bounds[2:])
             aligned_points = [[point1, point2]]
             accumulated_length = length
-            id_components = {i}  # Use a set for unique IDs
+            id_components = {id1}  # Use a set for unique IDs
 
             # Sub-case of non-vertical lines.
             if slope != float('inf'):
 
-                for j, (new_ln, new_slope, new_length) in enumerate(zip(component_lines[i + 1:], line_slopes[i + 1:], line_lengths[i + 1:]), start=i + 1):
+                for j, (new_ln, new_slope, new_length, id2) in enumerate(zip(component_lines[i + 1:], line_slopes[i + 1:], line_lengths[i + 1:], element_ids[i + 1:]), start=i + 1):
                     point3, point4 = Point(new_ln.bounds[:2]), Point(new_ln.bounds[2:])
                     
                     # Check slope similarity and alignment within tolerance
@@ -334,12 +359,12 @@ class GridGenerator:
                         self.is_point_near_line(point4, point1, point2, slope, self.t_w_dist):
                         aligned_points.append([point3,point4])
                         accumulated_length += new_length
-                        id_components.add(j)
+                        id_components.add(id2)
 
             # Sub-case of vertical lines.
             elif slope == float('inf'):
 
-                for j, (new_ln, new_slope, new_length) in enumerate(zip(component_lines[i + 1:], line_slopes[i + 1:], line_lengths[i + 1:]), start=i + 1):
+                for j, (new_ln, new_slope, new_length, id2) in enumerate(zip(component_lines[i + 1:], line_slopes[i + 1:], line_lengths[i + 1:], element_ids[i + 1:]), start=i + 1):
                     point3, point4 = Point(new_ln.bounds[:2]), Point(new_ln.bounds[2:])
                     
                     if new_slope == float('inf'):
@@ -347,7 +372,7 @@ class GridGenerator:
                         abs(point4.x-point1.x) <= self.t_w_dist and abs(point4.x-point2.x) <= self.t_w_dist:
                             aligned_points.append([point3,point4])
                             accumulated_length += new_length
-                            id_components.add(j)
+                        id_components.add(id2)
             else:
                 raise ValueError("No such subcases for the slope of a line.")
             
@@ -368,12 +393,14 @@ class GridGenerator:
         grid_elements = [[e for element in elements for e in element] for elements in grid_elements]
         grid_elements = [self.filter_duplicate_points(elements) for elements in grid_elements]
 
-        return grid_elements
+        return grid_elements, ids_component_pts_per_grid
     
     def get_gridslines_from_points(self, grid_elements):
         """
         The logic is to get the grid line from all the points (either column points or points of wall lines.)
         """
+        border_x = 0
+        border_y = 0
         border_x = self.border_x
         border_y = self.border_y
 
@@ -450,22 +477,22 @@ class GridGenerator:
         for st_key, st_value in self.main_storeys.items():
 
             if st_value.get('column_points_struc', None) is not None:
-                component_pts = st_value['column_points_struc']
-                grid_elements_columns_struc = self.points2grids(component_pts)
+                component_pts, element_ids = st_value['column_points_struc'], st_value['column_points_struc_ids']
+                grid_elements_columns_struc, grid_elements_columns_struc_ids = self.points2grids(component_pts, element_ids)
                 self.main_storeys[st_key].update({'grid_elements_columns_struc': grid_elements_columns_struc})
             else:
                 self.main_storeys[st_key].update({'grid_elements_columns_struc': []})
             
             if st_value.get('wall_lines_struc', None) is not None:
-                component_lines = st_value['wall_lines_struc']
-                grid_elements_walls_struc = self.lines2grids(component_lines)
+                component_lines, element_ids = st_value['wall_lines_struc'], st_value['wall_lines_struc_ids']
+                grid_elements_walls_struc, grid_elements_walls_struc_ids = self.lines2grids(component_lines, element_ids)
                 self.main_storeys[st_key].update({'grid_elements_walls_struc': grid_elements_walls_struc})
             else:
                 self.main_storeys[st_key].update({'grid_elements_walls_struc': []})
             
             if st_value.get('wall_lines_nonst', None) is not None:
-                component_lines = st_value['wall_lines_nonst']
-                grid_elements_walls_nonst = self.lines2grids(component_lines)
+                component_lines, element_ids = st_value['wall_lines_nonst'], st_value['wall_lines_nonst_ids']
+                grid_elements_walls_nonst, grid_elements_walls_nonst_ids = self.lines2grids(component_lines, element_ids)
                 self.main_storeys[st_key].update({'grid_elements_walls_nonst': grid_elements_walls_nonst})
             else:
                 self.main_storeys[st_key].update({'grid_elements_walls_nonst': []})
@@ -618,54 +645,6 @@ class GridGenerator:
 
             bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
             bokeh.plotting.save(fig)
-        
-        # #--------------------------
-        # # grids. IfcColumn
-        # only_structural_grid = True
-        # grid_type = 'IfcColumn'
-        # (column_grid_elements, column_grid_components) = self.generate_grids(
-        #     grid_type=grid_type,
-        #     only_structural_grid=only_structural_grid,
-        #     t_c_dist=t_c_dist,
-        #     t_c_num=t_c_num,)
-        
-        # column_grid_linestrings = self.get_grids_from_points(column_grid_elements, border_x=border_x, border_y=border_y)
-        # g_plot = self.visualization_settings['grids_column']
-        # for ls in column_grid_linestrings:
-        #     x, y = ls.coords.xy
-        #     fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-
-        # # grids. IfcWall
-        # only_structural_grid = True
-        # grid_type = 'IfcWall'
-        # (wall_s_grid_elements, wall_s_grid_components) = self.generate_grids(
-        #     grid_type=grid_type,
-        #     only_structural_grid=only_structural_grid,
-        #     t_w_dist=t_w_dist,
-        #     t_w_num=t_w_num,)
-        
-        # wall_s_grid_linestrings = self.get_grids_from_points(wall_s_grid_elements, border_x=border_x, border_y=border_y)
-        # g_plot = self.visualization_settings['grids_st_wall']
-        # for ls in wall_s_grid_linestrings:
-        #     x, y = ls.coords.xy
-        #     fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-        
-        # # grids. IfcWall-nonstructural.
-        # only_structural_grid = False
-        # grid_type = 'IfcWall'
-        # (wall_ns_grid_elements, wall_ns_grid_components) = self.generate_grids(
-        #     grid_type=grid_type,
-        #     only_structural_grid=only_structural_grid,
-        #     t_w_dist=t_w_dist,
-        #     t_w_num=t_w_num,)
-        
-        # wall_ns_grid_linestrings = self.get_grids_from_points(wall_ns_grid_elements, border_x=border_x, border_y=border_y)
-        # g_plot = self.visualization_settings['grids_ns_wall']
-        # for ls in wall_ns_grid_linestrings:
-        #     x, y = ls.coords.xy
-        #     fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-        
-        #--------------------------
     
         #--------------------------
 

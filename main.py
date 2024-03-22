@@ -1,10 +1,10 @@
-from IfcExtractor import IfcExtractor
+from ifcExtractor import IfcExtractor
 from infoAnalysis import JsonFileComparator
-from GridGenerator import GridGenerator
+from gridGenerator import GridGenerator
 import os
 import itertools
 
-PROJECT_PATH = r'C:\dev\phd\datavonifc\enrichifc'
+PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
