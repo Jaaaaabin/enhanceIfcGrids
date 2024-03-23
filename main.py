@@ -8,6 +8,7 @@ PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
+
 def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path,output_path)
@@ -50,18 +51,15 @@ def combinations_from_shared_ifc_basis(all_ifcs):
 def create_grids(work_path, ifc_model, info_columns='info_columns.json', info_walls='info_walls.json'):
 
     generator = GridGenerator(
-        
         os.path.join(work_path, ifc_model),
         os.path.join(work_path, ifc_model, info_columns),
         os.path.join(work_path, ifc_model, info_walls),
         )
 
-    generator.identify_main_storeys()
-    generator.identity_main_directions(2)
-
+    generator.get_main_storeys_and_directions(num_directions=2)
+    generator.enrich_main_storeys()
     generator.create_grids()
-
-    print("Creating Grids completed.")
+    generator.display_grids()
 
 # main start path.
 if __name__ == "__main__":

@@ -1,19 +1,20 @@
 import ifcopenshell
-import ifcopenshell.geom
-import ifcopenshell.util.shape
-
 import os
 import math
 import json
 import numpy as np
-from sklearn.cluster import DBSCAN
-from scipy.spatial.distance import pdist, squareform
-import OCC.Core.TopExp,OCC.Core.TopAbs,OCC.Core.TopoDS,OCC.Core.BRepBndLib,OCC.Core.BRep
-
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 
+from sklearn.cluster import DBSCAN
+from scipy.spatial.distance import pdist, squareform
+
 from wallExtractor import WallWidthExtractor
+from quickTools import time_decorator, remove_duplicate_dicts
+
+# import ifcopenshell.geom
+# import ifcopenshell.util.shape
+# import OCC.Core.TopExp,OCC.Core.TopAbs,OCC.Core.TopoDS,OCC.Core.BRepBndLib,OCC.Core.BRep
 
 #===================================================================================================
 #IfcGeneral ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
@@ -45,7 +46,7 @@ class IfcExtractor:
             
             print (self.ifc_file_name)
             
-        except ifcopenshell.errors.FileNotFoundError:
+        except ifcopenshell.errors.FileNotFoundError: # type: ignore
             print(f"Error: File '{model_path}' not found.")
 
         except Exception as e:
@@ -61,33 +62,20 @@ class IfcExtractor:
 
             # self.project = self.model.by_type("IfcProject")
             # self.site = self.model.by_type("IfcSite")
+            # self.doors = self.model.by_type("IfcDoor")
+            # self.windows = self.model.by_type("IfcWindow")
+            # self.existing_grids = self.model.by_type("IfcGrid")
 
             self.storeys = self.model.by_type("IfcBuildingStorey")
-
             self.slabs = self.model.by_type("IfcSlab")
             self.spaces = self.model.by_type("IfcSpace")
             self.columns = self.model.by_type("IfcColumn")
             self.walls = self.model.by_type("IfcWall") + self.model.by_type('IfcWallStandardCase')
             self.curtainwalls = self.model.by_type("IfcCurtainWall")
             
-            # self.doors = self.model.by_type("IfcDoor")
-            # self.windows = self.model.by_type("IfcWindow")
-            # self.existing_grids = self.model.by_type("IfcGrid")
-    
-    def remove_duplicate_dicts(self,list_of_dicts):
-
-        unique_dicts = []
-        seen = set()
-        for d in list_of_dicts:
-            dict_str = json.dumps(d, sort_keys=True)
-            if dict_str not in seen:
-                seen.add(dict_str)
-                unique_dicts.append(d)
-        return unique_dicts
-
     def write_dict_columns(self):
 
-        dict_info_columns = self.remove_duplicate_dicts(self.info_columns)
+        dict_info_columns = remove_duplicate_dicts(self.info_columns)
         try:
             with open(os.path.join(self.out_fig_path, 'info_columns.json'), 'w') as json_file:
                 json.dump(dict_info_columns, json_file, indent=4)
@@ -96,7 +84,7 @@ class IfcExtractor:
 
     def write_dict_walls(self):
         
-        dict_info_walls = self.remove_duplicate_dicts(self.info_walls)
+        dict_info_walls = remove_duplicate_dicts(self.info_walls)
         try:
             with open(os.path.join(self.out_fig_path, 'info_walls.json'), 'w') as json_file:
                 json.dump(dict_info_walls, json_file, indent=4)
@@ -166,7 +154,7 @@ class IfcExtractor:
         ax = fig.add_subplot(111, projection='3d')
         ax.set_xlabel('X Axis')
         ax.set_ylabel('Y Axis')
-        ax.set_zlabel('Z Axis')
+        ax.set_zlabel('Z Axis')  # type: ignore
 
         for v in values:
             start_point, end_point = v
@@ -256,7 +244,7 @@ class IfcExtractor:
                     column_location_p1 = column_location_p1[:2] + (column_location_p1[2] + rel_storey_elevation,)
                     
                     column_location_p2 = tuple((direction_val * column_length) + p1_val for p1_val, direction_val in \
-                                    zip(column_location_p1, column_orientation))
+                                    zip(column_location_p1, column_orientation))  # type: ignore
                     column_location = [list(column_location_p1),list(column_location_p2)]
                 else:
                     raise ValueError("column doesn't have ObjectPlacement.")
@@ -277,7 +265,7 @@ class IfcExtractor:
         
         return info_a_column
 
-    # function notes.
+    @time_decorator
     def extract_all_columns(self):
 
         self.info_columns = []
@@ -342,10 +330,9 @@ class IfcExtractor:
                             wall_location_p1[1]+ wall_length*math.sin(math.radians(orientation_deg)),
                             wall_location_p1[2])
                         
-                        
                     # wall_length = self.calc_wall_length_by_pset(wall)
-                    wall_location_p1 = [*wall_location_p1[:-1], wall_elevation]
-                    wall_location_p2 = [*wall_location_p2[:-1], wall_elevation]
+                    wall_location_p1 = [*wall_location_p1[:-1], wall_elevation]  # type: ignore
+                    wall_location_p2 = [*wall_location_p2[:-1], wall_elevation]  # type: ignore
                     wall_location = [list(wall_location_p1),list(wall_location_p2)]
         
         except AttributeError as e:
@@ -401,28 +388,18 @@ class IfcExtractor:
             "orientation": self.calc_wall_orientation(ifc_wall),
             "location": wall_location,
             "length": round(wall_length,4),
-            "width":round(self.WallWidthExtractor.width,4),
+            "width":round(self.WallWidthExtractor.width,4), # type: ignore
         })
 
         return info_a_wall
 
-    # function notes.
+    @time_decorator
     def extract_all_walls(self):
 
         self.info_walls = []
         for w in self.walls:
             info_a_wall = self.extract_a_wall(w)
             self.info_walls.append(info_a_wall)
-
-    # function notes.
-    def get_main_storeys_from_walls(self, num_wall=0):
-
-        wall_elevations = []
-        [wall_elevations.append(w["location"][0][-1]) for w in self.info_walls]
-
-        self.main_storeys = []
-        if wall_elevations:
-            [self.main_storeys.append(st) for st in self.storeys if wall_elevations.count(st.Elevation)>num_wall]
 
 #wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -437,7 +414,48 @@ class IfcExtractor:
 
 #===================================================================================================
 #alloldwall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
- 
+# to check again and make reuse of them.
+            
+    # def connect_wall_location_points(self, wall_locations_2d, dist_per_bin=2):
+
+    #     merged_points = []
+    #     points = np.array([item for sublist in wall_locations_2d for item in sublist])
+
+    #     # Calculate pairwise distances
+    #     distances = pdist(points, metric='euclidean') # num_pts * (num_pts-1) / 2
+    #     distance_matrix = squareform(distances) # num_pts * num_pts
+    #     num_bins = int(distances.shape[0]/dist_per_bin)
+    #     hist, bin_edges = np.histogram(distances, bins=num_bins)
+                
+    #     gaps = []
+    #     for i in range(len(hist)):
+    #         if hist[i] == 0 :
+    #             gap_range = [bin_edges[i], bin_edges[i+1]]
+    #             gaps.append(gap_range)
+
+    #     # # Find peaks (peak bins).
+    #     # peaks, _ = find_peaks(hist)
+    #     # peak_values = 0.5 * (bin_edges[peaks] + bin_edges[peaks + 1])
+
+    #     # Histogram plot.
+    #     fig = plt.figure(figsize=(12, 7))  # unit of inch
+    #     ax = plt.axes((0.075, 0.075, 0.90, 0.85))  # in range (0,1)
+    #     ax.hist(distances, bins=num_bins, color='#bcbd22', edgecolor='black', label=str(num_bins), alpha=0.8)
+    #     plt.savefig('hist_'+str(num_bins)+'.png', dpi=200)
+
+    #     # Find 'gaps' among peaks.
+    #     threshold = gaps[0][0]
+        
+    #     # Use DBSCAN for clustering, eps is set to the threshold
+    #     # threshold = np.percentile(distances, threshold_percentile)
+    #     dbscan = DBSCAN(eps=threshold, min_samples=1, metric='euclidean')
+    #     clusters = dbscan.fit_predict(points)
+        
+    #     # are those merged ones or 
+    #     merged_points = np.array([points[clusters == c].mean(axis=0) for c in set(clusters)])
+
+    #     return merged_points.tolist()
+    
     # def calc_wall_length_by_pset(self, wall):
     #     """Gets the length of a wall from its property sets."""
         
@@ -460,185 +478,113 @@ class IfcExtractor:
     #     else:
     #         return wall_length
 
-    def find_farthest_linear_points(self, points):
+    # def find_farthest_linear_points(self, points):
         
-        def distance_2d(point_a, point_b):
-            """Calculate the Euclidean distance between two points in 2D."""
-            return math.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
-        max_distance = 0
-        farthest_linear_points = None
+    #     def distance_2d(point_a, point_b):
+    #         """Calculate the Euclidean distance between two points in 2D."""
+    #         return math.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
+    #     max_distance = 0
+    #     farthest_linear_points = None
 
-        for i in range(len(points)):
-            for j in range(i + 1, len(points)):
-                dist = distance_2d(points[i], points[j])
-                if dist > max_distance:
-                    max_distance = dist
-                    farthest_linear_points = (points[i], points[j])
+    #     for i in range(len(points)):
+    #         for j in range(i + 1, len(points)):
+    #             dist = distance_2d(points[i], points[j])
+    #             if dist > max_distance:
+    #                 max_distance = dist
+    #                 farthest_linear_points = (points[i], points[j])
 
-        return farthest_linear_points
+    #     return farthest_linear_points
     
-    def calc_wall_location(self, wall):
-        """to replace the calc_wall_dimensions."""
+    # def calc_wall_location(self, wall):
+    #     """to replace the calc_wall_dimensions."""
 
-        # wall, elevation------------------------
+    #     # wall, elevation------------------------
 
-        if wall.ContainedInStructure[0].RelatingStructure.is_a('IfcBuildingStorey'):
-            wall_elevation = wall.ContainedInStructure[0].RelatingStructure.Elevation
-        else:
-            wall_elevation = None
-
-        local_points = None,
-        global_location_0, global_location_1 = None, None
-
-        #'IfcWall' or 'IfcWallStandardCase' conditions.
-        if wall.is_a('IfcWall') or wall.is_a('IfcWallStandardCase'):
-
-            # local
-            for r in wall.Representation.Representations:
-                if r.RepresentationIdentifier =='Axis':
-                    wall_axis = r
-                    if wall_axis.Items[0].is_a('IfcPolyline'):
-                        wall_pnts = wall_axis.Items[0].Points
-                        local_points = wall_pnts.CoordList if hasattr(wall_pnts, "CoordList") else (wall_pnts[0].Coordinates,wall_pnts[1].Coordinates)
-                    
-                    #============ for curve walls=======================
-                    elif wall_axis.Items[0].is_a('IfcTrimmedCurve'):
-                        
-                        return [0,0,wall_elevation],[0,0,wall_elevation]
-                    #============ for curve walls=======================
-
-            # global
-            global_location_0 = wall.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(wall, "ObjectPlacement") else None
-            orientation_deg = self.calc_wall_orientation(wall,deg_range=360)
-            wall_length = self.calc_wall_length_by_pset(wall)
-            if orientation_deg != None and wall_length != None:
-                global_location_1 = (
-                    global_location_0[0]+ wall_length*math.cos(math.radians(orientation_deg)),
-                    global_location_0[1]+ wall_length*math.sin(math.radians(orientation_deg)),
-                    global_location_0[2])
-            else:
-                global_location_1 = None
-                    
-            global_location_0 = [*global_location_0[:-1], wall_elevation]
-            global_location_1 = [*global_location_1[:-1], wall_elevation]
-
-        # 'IfcCurtainWall' conditions.
-        elif wall.is_a('IfcCurtainWall'):
-            
-            related_components = wall.IsDecomposedBy[0].RelatedObjects
-            if len(related_components)==1 and related_components[0].is_a('IfcPlate'):
-                
-                # local
-                component = related_components[0]
-                for r in component.Representation.Representations:
-                    if r.RepresentationIdentifier =='FootPrint':
-                        # local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points.CoordList
-                        local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points
-                        if isinstance(local_points,tuple):
-                            local_points = [list(c) for pt in local_points for c in pt]
-                        print ("Footprint:",local_points)
-        
-                # global
-                global_location_0 = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
-                orientation_deg = self.calc_wall_orientation(wall,deg_range=360)
-                wall_length = self.calc_wall_length_by_pset(wall)
-                if orientation_deg != None and wall_length != None:
-                    global_location_1 = (
-                        global_location_0[0]+ wall_length*math.cos(math.radians(orientation_deg)),
-                        global_location_0[1]+ wall_length*math.sin(math.radians(orientation_deg)),
-                        global_location_0[2])
-                else:
-                    global_location_1 = None
-                        
-                global_location_0 = [*global_location_0[:-1], wall_elevation]
-                global_location_1 = [*global_location_1[:-1], wall_elevation]
-                        
-            elif len(related_components) > 1:
-                
-                # direct global
-                all_placement_points = []
-                for component in related_components:
-                    placement_point = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
-                    all_placement_points.append(list(placement_point))
-                
-                local_points = self.find_farthest_linear_points(all_placement_points)
-                global_location_0, global_location_1 = local_points
-                global_location_0 = [*global_location_0[:-1], wall_elevation]
-                global_location_1 = [*global_location_1[:-1], wall_elevation]
-
-        return global_location_0,global_location_1
-                    
-
-    # #tempo
-    # def calc_wall_dimensions(self, wall, length_dec=[]):
-            
-    #     # length---------------------------
-    #     local_points, length = None, None 
-    #     global_location_0, global_location_1 = None, None 
-
-    #     # conditions.
-    #     if wall.is_a('IfcWall') or wall.is_a('IfcWallStandardCase'):
-    #         component = wall
-    #     elif wall.is_a('IfcCurtainWall'):
-    #         component = wall.IsDecomposedBy[0].RelatedObjects[0]
-
-    #     if component.is_a('IfcPlate'):
-    #         # IfcCurtainWall -> get the FootPrint of the related object IfcPlate.
-    #         for r in component.Representation.Representations:
-    #             if r.RepresentationIdentifier =='FootPrint':
-    #                 # local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points.CoordList
-    #                 local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points
-    #                 if isinstance(local_points,tuple):
-    #                     local_points = [list(c) for pt in local_points for c in pt]
-    #                 print ("Footprint:",local_points)
-           
+    #     if wall.ContainedInStructure[0].RelatingStructure.is_a('IfcBuildingStorey'):
+    #         wall_elevation = wall.ContainedInStructure[0].RelatingStructure.Elevation
     #     else:
-    #         #IfcWall +IfcWallStandardCase - > get the axis representation of the IfcWall.
-    #         for r in component.Representation.Representations:
+    #         wall_elevation = None
+
+    #     local_points = None,
+    #     global_location_0, global_location_1 = None, None
+
+    #     #'IfcWall' or 'IfcWallStandardCase' conditions.
+    #     if wall.is_a('IfcWall') or wall.is_a('IfcWallStandardCase'):
+
+    #         # local
+    #         for r in wall.Representation.Representations:
     #             if r.RepresentationIdentifier =='Axis':
-    #                 component_axis = r
-    #                 if component_axis.Items[0].is_a('IfcPolyline'):
-    #                     wall_pnts = component_axis.Items[0].Points
+    #                 wall_axis = r
+    #                 if wall_axis.Items[0].is_a('IfcPolyline'):
+    #                     wall_pnts = wall_axis.Items[0].Points
     #                     local_points = wall_pnts.CoordList if hasattr(wall_pnts, "CoordList") else (wall_pnts[0].Coordinates,wall_pnts[1].Coordinates)
                     
     #                 #============ for curve walls=======================
-    #                 elif component_axis.Items[0].is_a('IfcTrimmedCurve'):
-    #                     return 0, [[0,0,0],[0,0,0]]
+    #                 elif wall_axis.Items[0].is_a('IfcTrimmedCurve'):
+                        
+    #                     return [0,0,wall_elevation],[0,0,wall_elevation]
     #                 #============ for curve walls=======================
-        
-    #     # length calculation
-    #     if local_points != None:
-    #         if len(local_points) > 2:
-    #             local_points = local_points[:-1]
-    #             x_coords = [point[0] for point in local_points]
-    #             y_coords = [point[1] for point in local_points]
-    #             length = max((max(x_coords) - min(x_coords)) , (max(y_coords) - min(y_coords)))
+
+    #         # global
+    #         global_location_0 = wall.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(wall, "ObjectPlacement") else None
+    #         orientation_deg = self.calc_wall_orientation(wall,deg_range=360)
+    #         wall_length = self.calc_wall_length_by_pset(wall)
+    #         if orientation_deg != None and wall_length != None:
+    #             global_location_1 = (
+    #                 global_location_0[0]+ wall_length*math.cos(math.radians(orientation_deg)),
+    #                 global_location_0[1]+ wall_length*math.sin(math.radians(orientation_deg)),
+    #                 global_location_0[2])
     #         else:
-    #             length = np.max(tuple(abs(x-y) for x,y in zip(local_points[1],local_points[0])))
-    #         length = round(length, int(length_dec)) if length_dec else length
-    #         return length, [global_location_0,global_location_1]
-        
-    #     # gloabl locations---------------------------
-    #     orientation_deg = self.calc_wall_orientation(wall,deg_range=360) # 360 for location calculation
-    #     elevation = self.get_object_elevation(wall)
-    #     global_location_0 = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
-        
-    #     if orientation_deg != None and length != None:
-    #         global_location_1 = (
-    #             global_location_0[0]+ length*math.cos(math.radians(orientation_deg)),
-    #             global_location_0[1]+ length*math.sin(math.radians(orientation_deg)),
-    #             global_location_0[2])
-    #     else:
-    #         global_location_1 = None
+    #             global_location_1 = None
+                    
+    #         global_location_0 = [*global_location_0[:-1], wall_elevation]
+    #         global_location_1 = [*global_location_1[:-1], wall_elevation]
+
+    #     # 'IfcCurtainWall' conditions.
+    #     elif wall.is_a('IfcCurtainWall'):
+            
+    #         related_components = wall.IsDecomposedBy[0].RelatedObjects
+    #         if len(related_components)==1 and related_components[0].is_a('IfcPlate'):
                 
-    #     global_location_0 = [*global_location_0[:-1], elevation]
-    #     global_location_1 = [*global_location_1[:-1], elevation]
+    #             # local
+    #             component = related_components[0]
+    #             for r in component.Representation.Representations:
+    #                 if r.RepresentationIdentifier =='FootPrint':
+    #                     # local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points.CoordList
+    #                     local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points
+    #                     if isinstance(local_points,tuple):
+    #                         local_points = [list(c) for pt in local_points for c in pt]
+    #                     print ("Footprint:",local_points)
         
-    #     return length, [global_location_0,global_location_1]
+    #             # global
+    #             global_location_0 = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
+    #             orientation_deg = self.calc_wall_orientation(wall,deg_range=360)
+    #             wall_length = self.calc_wall_length_by_pset(wall)
+    #             if orientation_deg != None and wall_length != None:
+    #                 global_location_1 = (
+    #                     global_location_0[0]+ wall_length*math.cos(math.radians(orientation_deg)),
+    #                     global_location_0[1]+ wall_length*math.sin(math.radians(orientation_deg)),
+    #                     global_location_0[2])
+    #             else:
+    #                 global_location_1 = None
+                        
+    #             global_location_0 = [*global_location_0[:-1], wall_elevation]
+    #             global_location_1 = [*global_location_1[:-1], wall_elevation]
+                        
+    #         elif len(related_components) > 1:
+                
+    #             # direct global
+    #             all_placement_points = []
+    #             for component in related_components:
+    #                 placement_point = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
+    #                 all_placement_points.append(list(placement_point))
+                
+    #             local_points = self.find_farthest_linear_points(all_placement_points)
+    #             global_location_0, global_location_1 = local_points
+    #             global_location_0 = [*global_location_0[:-1], wall_elevation]
+    #             global_location_1 = [*global_location_1[:-1], wall_elevation]
 
-#alloldwall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
-#===================================================================================================     
-
+    #     return global_location_0,global_location_1
 
     # def get_wall_info(self):
             
@@ -675,6 +621,9 @@ class IfcExtractor:
     #             "location": wall_location,
     #         })
 
+#alloldwall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#===================================================================================================     
+
 #===================================================================================================
 #space
 
@@ -694,49 +643,6 @@ class IfcExtractor:
     #         })
     #     return space_info
 
-
-# ===============================================================
-# to improve.
-
-    def connect_wall_location_points(self, wall_locations_2d, dist_per_bin=2):
-
-        merged_points = []
-        points = np.array([item for sublist in wall_locations_2d for item in sublist])
-
-        # Calculate pairwise distances
-        distances = pdist(points, metric='euclidean') # num_pts * (num_pts-1) / 2
-        distance_matrix = squareform(distances) # num_pts * num_pts
-        num_bins = int(distances.shape[0]/dist_per_bin)
-        hist, bin_edges = np.histogram(distances, bins=num_bins)
-                
-        gaps = []
-        for i in range(len(hist)):
-            if hist[i] == 0 :
-                gap_range = [bin_edges[i], bin_edges[i+1]]
-                gaps.append(gap_range)
-
-        # # Find peaks (peak bins).
-        # peaks, _ = find_peaks(hist)
-        # peak_values = 0.5 * (bin_edges[peaks] + bin_edges[peaks + 1])
-
-        # Histogram plot.
-        fig = plt.figure(figsize=(12, 7))  # unit of inch
-        ax = plt.axes((0.075, 0.075, 0.90, 0.85))  # in range (0,1)
-        ax.hist(distances, bins=num_bins, color='#bcbd22', edgecolor='black', label=str(num_bins), alpha=0.8)
-        plt.savefig('hist_'+str(num_bins)+'.png', dpi=200)
-
-        # Find 'gaps' among peaks.
-        threshold = gaps[0][0]
-        
-        # Use DBSCAN for clustering, eps is set to the threshold
-        # threshold = np.percentile(distances, threshold_percentile)
-        dbscan = DBSCAN(eps=threshold, min_samples=1, metric='euclidean')
-        clusters = dbscan.fit_predict(points)
-        
-        # are those merged ones or 
-        merged_points = np.array([points[clusters == c].mean(axis=0) for c in set(clusters)])
-
-        return merged_points.tolist()
 
 #===================================================================================================
     # plotting
@@ -824,10 +730,6 @@ class IfcExtractor:
     
 #===================================================================================================
 #geometry analysis
-
-    
-
-
 
     # def calc_shape_volume(self, shape):
     #     props = OCC.Core.GProp.GProp_GProps()
