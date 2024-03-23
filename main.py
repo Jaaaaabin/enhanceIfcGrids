@@ -14,20 +14,14 @@ def process_ifc_file(input_path, output_path):
     extractor = IfcExtractor(input_path,output_path)
     extractor.extract_all_columns()
     extractor.write_dict_columns()
-
     extractor.extract_all_walls()
     extractor.write_dict_walls()
-
-    extractor.wall_display()
-
-    print("Processing completed.")
+    # extractor.wall_display()
 
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
     infoComparator = JsonFileComparator(data_path, ifc_a, ifc_2, json_name)
     infoComparator.run_comparison()
-
-    print("Comparing completed.")
 
 def combinations_from_shared_ifc_basis(all_ifcs):
     
@@ -56,26 +50,26 @@ def create_grids(work_path, ifc_model, info_columns='info_columns.json', info_wa
         os.path.join(work_path, ifc_model, info_walls),
         )
 
-    generator.get_main_storeys_and_directions(num_directions=2)
-    generator.enrich_main_storeys()
-    generator.create_grids()
+    generator.get_main_storeys_and_directions(num_directions=2) # static
+    generator.enrich_main_storeys() # semi-static
+    generator.create_grids()    # dynamic
     generator.display_grids()
 
 # main start path.
 if __name__ == "__main__":
 
-    # # ----------
-    # try:
-    #     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+    # ----------
+    try:
+        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
-    #     for model_path in model_paths:
+        for model_path in model_paths:
             
-    #         process_ifc_file(
-    #             os.path.join(DATA_FOLDER_PATH, model_path),
-    #             os.path.join(DATA_RES_PATH, model_path))
+            process_ifc_file(
+                os.path.join(DATA_FOLDER_PATH, model_path),
+                os.path.join(DATA_RES_PATH, model_path))
  
-    # except Exception as e:
-    #     print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
+    except Exception as e:
+        print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
 
     # # ----------
     # try:

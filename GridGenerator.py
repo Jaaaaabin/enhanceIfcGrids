@@ -55,6 +55,9 @@ class GridGenerator:
         self.read_infos(json_columns, json_walls)
         self.init_visualization_settings()
 
+        print ("=============GridGenerator=============")
+        print (self.out_fig_path)
+
     def read_infos(self, json_columns, json_walls):
         
         def read_json_file(file_path):
@@ -258,7 +261,7 @@ class GridGenerator:
         border_x = self.border_x
         border_y = self.border_y
 
-        if len(border_x) != 2 or len(border_y) != 2: # type: ignore
+        if len(border_x) != 2 or len(border_y) != 2: 
             raise ValueError("border_x and border_y must each have two elements.")
 
         grids = []
@@ -270,8 +273,8 @@ class GridGenerator:
                 
                 elements_x = [elem.x for elem in elements]
                 mean_x = np.mean(elements_x)
-                p_start = [mean_x, border_y[0]] # type: ignore
-                p_end = [mean_x, border_y[1]] # type: ignore
+                p_start = [mean_x, border_y[0]] 
+                p_end = [mean_x, border_y[1]] 
 
             else:
                 mean_slope = np.mean(slopes)
@@ -280,20 +283,20 @@ class GridGenerator:
                 p_start, p_end = [0, 0], [0, 0]
 
                 # Calculating intersections
-                border_x_p_start = [border_x[0], border_x[0] * mean_slope + mean_res] # type: ignore
-                border_x_p_end = [border_x[1], border_x[1] * mean_slope + mean_res] # type: ignore
+                border_x_p_start = [border_x[0], border_x[0] * mean_slope + mean_res] 
+                border_x_p_end = [border_x[1], border_x[1] * mean_slope + mean_res] 
                 if mean_slope != 0:  # Avoid division by zero
-                    border_y_p_start = [(border_y[0] - mean_res) / mean_slope, border_y[0]] # type: ignore
-                    border_y_p_end = [(border_y[1] - mean_res) / mean_slope, border_y[1]] # type: ignore
+                    border_y_p_start = [(border_y[0] - mean_res) / mean_slope, border_y[0]] 
+                    border_y_p_end = [(border_y[1] - mean_res) / mean_slope, border_y[1]] 
                 else:  # For horizontal lines, choose points directly at y borders
-                    border_y_p_start = [border_x[0], border_y[0]] # type: ignore
-                    border_y_p_end = [border_x[1], border_y[0]] # type: ignore
+                    border_y_p_start = [border_x[0], border_y[0]] 
+                    border_y_p_end = [border_x[1], border_y[0]] 
                 
                 # Determining valid start and end points
                 p_start, p_end = border_x_p_start, border_x_p_end  # Default to x-borders
-                if not (border_y[0] <= border_x_p_start[1] <= border_y[1]): # type: ignore
+                if not (border_y[0] <= border_x_p_start[1] <= border_y[1]): 
                     p_start = min(border_y_p_start, border_y_p_end, key=lambda p: p[0])
-                if not (border_y[0] <= border_x_p_end[1] <= border_y[1]): # type: ignore
+                if not (border_y[0] <= border_x_p_end[1] <= border_y[1]): 
                     p_end = max(border_y_p_start, border_y_p_end, key=lambda p: p[0])
             
             grids.append([p_start, p_end])
@@ -431,26 +434,29 @@ class GridGenerator:
 
         storeys_with_raised_area = [sorted([st1,st2]) for (st1,st2) in itertools.combinations(self.main_storeys.keys(), 2) if abs(st1-st2)<=self.t_z_storey_raise]
         
-        if check_repeats_in_list(storeys_with_raised_area):
-            raise ValueError("interdependent raised areas. when merging different storeys.")
+        if storeys_with_raised_area:
+            if check_repeats_in_list(storeys_with_raised_area):
+                raise ValueError("Inter-dependent raised areas. when merging different storeys.")
+            else:
+                for (st_main,st_raise) in storeys_with_raised_area:
+                    dict_main = self.main_storeys[st_main]
+                    dict_new = self.main_storeys[st_raise]
+                    self.main_storeys[st_main] = enrich_dict_with_another(dict_main, dict_new, remove_duplicate=True)
+                    self.main_storeys.pop(st_raise, None)
         else:
-            for (st_main,st_raise) in storeys_with_raised_area:
-                dict_main = self.main_storeys[st_main]
-                dict_new = self.main_storeys[st_raise]
-                self.main_storeys[st_main] = enrich_dict_with_another(dict_main, dict_new, remove_duplicate=True)
-                self.main_storeys.pop(st_raise, None)
-            
+            print("Non raised area according to the given 'self.t_z_storey_raise'.")
+        
     def enrich_main_storeys_info_locations(self):
 
         for st_key, st_value in self.main_storeys.items():
 
-            st_info_columns = st_value.get('columns', None)
-            st_info_walls = st_value.get('walls', None)
+            st_info_columns = st_value.get('columns', None) # todo. check what is the return when it doesn't exit
+            st_info_walls = st_value.get('walls', None) # todo. check what is the return when it doesn't exit
 
             column_points_struc, wall_lines_struc, wall_lines_nonst = None, None, None
 
             #columns.
-            if st_info_columns is not None:
+            if st_info_columns is not None and st_info_columns:
 
                 columns_location_id_pairs = [(c['location'], c['id']) for c in st_info_columns]
                 s_column_locations, column_points_struc_ids = zip(*columns_location_id_pairs)
@@ -467,7 +473,7 @@ class GridGenerator:
                         })
                 
             #walls.
-            if st_info_walls is not None:
+            if st_info_walls is not None and st_info_walls:
 
                 wall_s_location_id_pairs = [(w['location'], w['id']) for w in st_info_walls if w['loadbearing']]
                 wall_ns_location_id_pairs = [(w['location'], w['id']) for w in st_info_walls if not w['loadbearing']]
@@ -584,7 +590,7 @@ class GridGenerator:
 
         # Save the figure.
         bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-        bokeh.plotting.save(fig)  # type: ignore
+        bokeh.plotting.save(fig)  
 
     @time_decorator
     def get_main_storeys_and_directions(self, num_directions=2):
@@ -609,6 +615,22 @@ class GridGenerator:
     def create_grids(self):
         """
         "dynamic" generation processes.
+        
+        fundamental parameters:
+
+        parameters in points2grids:
+            self.t_c_num = 6
+            self.t_c_dist = 0.0001
+        
+        parameters in lines2grids:
+            self.t_w_num = 2
+            self.t_w_dist = 0.0001
+            self.t_w_accumuled_length = 20
+
+        parameters in gridalignment:
+
+        cost function:
+
         """
 
         self.get_gridline_points_and_alignments()

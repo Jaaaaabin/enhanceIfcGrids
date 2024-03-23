@@ -36,6 +36,7 @@ profile_default/
 ipython_config.py
 
 # Environments
+.vscode/
 .env
 .venv
 env/

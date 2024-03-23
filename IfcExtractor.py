@@ -44,6 +44,7 @@ class IfcExtractor:
             self.grids = {}
             self.extract_all_ifc_elements()
             
+            print ("=============IfcExtractor=============")
             print (self.ifc_file_name)
             
         except ifcopenshell.errors.FileNotFoundError: # type: ignore
