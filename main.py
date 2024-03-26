@@ -50,6 +50,7 @@ def create_grids(work_path, ifc_model, info_columns='info_columns.json', info_wa
         os.path.join(work_path, ifc_model, info_walls),
         )
 
+    generator.prepare_wall_lengths()
     generator.get_main_storeys_and_directions(num_directions=2) # static
     generator.enrich_main_storeys() # semi-static
     generator.create_grids()    # dynamic
@@ -58,18 +59,18 @@ def create_grids(work_path, ifc_model, info_columns='info_columns.json', info_wa
 # main start path.
 if __name__ == "__main__":
 
-    # ----------
-    try:
-        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+    # # ----------
+    # try:
+    #     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
-        for model_path in model_paths:
+    #     for model_path in model_paths:
             
-            process_ifc_file(
-                os.path.join(DATA_FOLDER_PATH, model_path),
-                os.path.join(DATA_RES_PATH, model_path))
+    #         process_ifc_file(
+    #             os.path.join(DATA_FOLDER_PATH, model_path),
+    #             os.path.join(DATA_RES_PATH, model_path))
  
-    except Exception as e:
-        print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
+    # except Exception as e:
+    #     print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
 
     # # ----------
     # try:
@@ -84,7 +85,7 @@ if __name__ == "__main__":
     # except Exception as e:
     #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
         
-    # # ----------
+    # ----------
     try:
         model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         

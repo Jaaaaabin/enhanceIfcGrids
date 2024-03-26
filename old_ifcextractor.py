@@ -1506,64 +1506,61 @@ class IfcExtractor:
 #geometry analysis
 
     
+    def calc_shape_volume(self, shape):
+        props = OCC.Core.GProp.GProp_GProps()
+        OCC.Core.BRepGProp.brepgprop.SurfaceProperties(shape.geometry, props)
+        return props.Mass()
 
+    def calc_shape_area(self, shape):
+        props = OCC.Core.GProp.GProp_GProps()
+        OCC.Core.BRepGProp.brepgprop.VolumeProperties(shape.geometry, props)
+        return props.Mass()
 
-
-    # def calc_shape_volume(self, shape):
-    #     props = OCC.Core.GProp.GProp_GProps()
-    #     OCC.Core.BRepGProp.brepgprop.SurfaceProperties(shape.geometry, props)
-    #     return props.Mass()
-
-    # def calc_shape_area(self, shape):
-    #     props = OCC.Core.GProp.GProp_GProps()
-    #     OCC.Core.BRepGProp.brepgprop.VolumeProperties(shape.geometry, props)
-    #     return props.Mass()
-
-    # def calc_wall_volume(self, wall):
-    #     shape = self.get_wall_shape(wall)
-    #     volume = self.calc_shape_volume(shape)
-    #     return volume
+    def calc_wall_volume(self, wall):
+        shape = self.get_wall_shape(wall)
+        volume = self.calc_shape_volume(shape)
+        return volume
     
-    # def calc_wall_area(self, wall):
-    #     shape = self.get_wall_shape(wall)
-    #     area = self.calc_shape_area(shape)
-    #     return area
+    def calc_wall_area(self, wall):
+        shape = self.get_wall_shape(wall)
+        area = self.calc_shape_area(shape)
+        return area
 
 
-    # def get_wall_volume(self, wall):
+    def get_wall_volume(self, wall):
 
-    #     psets = ifcopenshell.util.element.get_psets(wall)
-    #     if 'Dimensions' in psets.keys():
-    #         if 'Volume' in psets['Dimensions'].keys():
-    #             volume = psets['Dimensions']['Volume']
-    #             return volume
-    #         else:
-    #             return None
-    #     else:
-    #         return None
+        psets = ifcopenshell.util.element.get_psets(wall)
+        if 'Dimensions' in psets.keys():
+            if 'Volume' in psets['Dimensions'].keys():
+                volume = psets['Dimensions']['Volume']
+                return volume
+            else:
+                return None
+        else:
+            return None
         
-    # def get_wall_length(self, wall):
+    def get_wall_length(self, wall):
 
-    #     psets = ifcopenshell.util.element.get_psets(wall)
+        psets = ifcopenshell.util.element.get_psets(wall)
 
-    #     if 'Dimensions' in psets.keys():
-    #         if 'Length' in psets['Dimensions'].keys():
-    #             volume = psets['Dimensions']['Length']
-    #             return volume
-    #         else:
-    #             return None
-    #     else:
-    #         return None
+        if 'Dimensions' in psets.keys():
+            if 'Length' in psets['Dimensions'].keys():
+                volume = psets['Dimensions']['Length']
+                return volume
+            else:
+                return None
+        else:
+            return None
         
-        # print(ifcopenshell.util.element.get_psets(wall, psets_only=True))
-        # print(ifcopenshell.util.element.get_psets(wall, qtos_only=True))
+        print(ifcopenshell.util.element.get_psets(wall, psets_only=True))
+        print(ifcopenshell.util.element.get_psets(wall, qtos_only=True))
 
-        # settings = ifcopenshell.geom.settings()
-        # shape = ifcopenshell.geom.create_shape(settings, wall)
+        settings = ifcopenshell.geom.settings()
+        shape = ifcopenshell.geom.create_shape(settings, wall)
 
-        # print(shape.guid)
-        # print(shape.id)
-        # print(shape.geometry.id)
+        print(shape.guid)
+        print(shape.id)
+        print(shape.geometry.id)
 
         # # A 4x4 matrix representing the location and rotation of the element, in the form:
         # # [ [ x_x, y_x, z_x, x   ]

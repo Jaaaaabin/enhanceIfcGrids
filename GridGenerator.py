@@ -14,7 +14,7 @@ import bokeh.plotting
 
 from wallExtractor import WallWidthExtractor
 from quickTools import is_sloped_point_on_lineby2points, get_line_slope_by_points, is_close_to_known_slopes, remove_duplicate_points
-from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another
+from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_intersection
 
 #===================================================================================================
 #Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
@@ -43,7 +43,8 @@ class GridGenerator:
         # walls related
         self.t_w_num = 2
         self.t_w_dist = 0.0001
-        self.t_w_accumuled_length = 20
+        self.t_w_st_accumuled_length = 20
+        self.t_w_nt_accumuled_length = 20
 
         # merging related
         # self.t_self_dist = 0.2
@@ -237,7 +238,7 @@ class GridGenerator:
 
             # to get embedded in the secondary-loop.  
             # Add unique grid_elements to the potential grid_elements list
-            if len(aligned_points) >= self.t_w_num and accumulated_length >= self.t_w_accumuled_length:
+            if len(aligned_points) >= self.t_w_num and accumulated_length >= self.t_w_st_accumuled_length:
                 id_tuple = tuple(id_components)  # Convert to tuple for hashability
                 if id_tuple not in ids_component_pts_per_grid:
                     if ids_component_pts_per_grid and any([
@@ -312,21 +313,31 @@ class GridGenerator:
             if st_value.get('column_points_struc', None) is not None:
                 component_pts, element_ids = st_value['column_points_struc'], st_value['column_points_struc_ids']
                 grid_elements_columns_struc, grid_elements_columns_struc_ids = self.points2grids(component_pts, element_ids)
-                self.main_storeys[st_key].update({'grid_elements_columns_struc': grid_elements_columns_struc})
+                self.main_storeys[st_key].update({
+                    'grid_elements_columns_struc': grid_elements_columns_struc,
+                    'grid_elements_columns_struc_ids': grid_elements_columns_struc_ids,
+                    })
+                
             else:
                 self.main_storeys[st_key].update({'grid_elements_columns_struc': []})
             
             if st_value.get('wall_lines_struc', None) is not None:
                 component_lines, element_ids = st_value['wall_lines_struc'], st_value['wall_lines_struc_ids']
                 grid_elements_walls_struc, grid_elements_walls_struc_ids = self.lines2grids(component_lines, element_ids)
-                self.main_storeys[st_key].update({'grid_elements_walls_struc': grid_elements_walls_struc})
+                self.main_storeys[st_key].update({
+                    'grid_elements_walls_struc': grid_elements_walls_struc,
+                    'grid_elements_walls_struc_ids': grid_elements_walls_struc_ids,
+                    })
             else:
                 self.main_storeys[st_key].update({'grid_elements_walls_struc': []})
             
             if st_value.get('wall_lines_nonst', None) is not None:
                 component_lines, element_ids = st_value['wall_lines_nonst'], st_value['wall_lines_nonst_ids']
                 grid_elements_walls_nonst, grid_elements_walls_nonst_ids = self.lines2grids(component_lines, element_ids)
-                self.main_storeys[st_key].update({'grid_elements_walls_nonst': grid_elements_walls_nonst})
+                self.main_storeys[st_key].update({
+                    'grid_elements_walls_nonst': grid_elements_walls_nonst,
+                    'grid_elements_walls_nonst_ids':grid_elements_walls_nonst_ids,
+                    })
             else:
                 self.main_storeys[st_key].update({'grid_elements_walls_nonst': []})
 
@@ -390,18 +401,18 @@ class GridGenerator:
 
     def get_main_directions(self, num_directions):
             
-            def degree2slope(degree):
-                t_direction_degree = 0.0001
-                slope = float('inf') if abs(degree-90.0)<t_direction_degree else math.radians(degree) # static threshold.
-                return slope
-            
-            wall_orientations = [w['orientation'] for w in self.info_walls if 'orientation' in w]
-            wall_orientations = [(v-180) if v>=180 else v for v in wall_orientations]
-            main_directions = Counter(wall_orientations)
-            main_directions = main_directions.most_common(num_directions)
+        def degree2slope(degree):
+            t_direction_degree = 0.0001
+            slope = float('inf') if abs(degree-90.0)<t_direction_degree else math.radians(degree) # static threshold.
+            return slope
+        
+        wall_orientations = [w['orientation'] for w in self.info_walls if 'orientation' in w]
+        wall_orientations = [(v-180) if v>=180 else v for v in wall_orientations]
+        main_directions = Counter(wall_orientations)
+        main_directions = main_directions.most_common(num_directions)
 
-            self.main_directions = [main_direct[0] for main_direct in main_directions]
-            self.main_directions = [degree2slope(main_direct) for main_direct in self.main_directions]
+        self.main_directions = [main_direct[0] for main_direct in main_directions]
+        self.main_directions = [degree2slope(main_direct) for main_direct in self.main_directions]
      
     def identify_columns_cross_storeys(self):
         
@@ -590,7 +601,16 @@ class GridGenerator:
 
         # Save the figure.
         bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-        bokeh.plotting.save(fig)  
+        bokeh.plotting.save(fig)
+
+    def prepare_wall_lengths(self):
+
+        total_length = 0
+        for item in self.info_walls:
+            if "length" in item:
+                total_length += item["length"]
+        self.total_wall_lengths = total_length
+        self.info_wall_length_by_id = {d['id']: d['length'] for d in self.info_walls if 'id' in d and 'length' in d}
 
     @time_decorator
     def get_main_storeys_and_directions(self, num_directions=2):
@@ -610,6 +630,48 @@ class GridGenerator:
 
         self.enrich_main_storeys_info_raised_area()
         self.enrich_main_storeys_info_locations()
+    
+    @time_decorator
+    def calculate_cross_lost(self):
+        
+        crossed_wall_lengths = 0.0
+
+        # find all unbound walls and their LINESTRING : st and nt
+        for st_key, st_value in self.main_storeys.items():
+
+            walls_bound_st = st_value['grid_elements_walls_struc_ids'] if st_value['grid_elements_walls_struc_ids'] else []
+            if walls_bound_st:
+                walls_bound_st = [item for sublist in walls_bound_st for item in sublist]
+            walls_bound_ns = st_value['grid_elements_walls_nonst_ids'] if st_value['grid_elements_walls_nonst_ids'] else []
+            if walls_bound_ns:
+                walls_bound_ns = [item for sublist in walls_bound_ns for item in sublist]
+            
+            wall_not_bound_st, wall_not_bound_ns = {}, {}
+            if st_value['wall_lines_struc_ids'] and st_value['wall_lines_struc']:
+                for (wall_id, wall_line) in zip(st_value['wall_lines_struc_ids'], st_value['wall_lines_struc']):
+                    if wall_id not in walls_bound_st:
+                        wall_not_bound_st.update({
+                            wall_id: wall_line
+                            })
+            if st_value['wall_lines_nonst_ids'] and st_value['wall_lines_nonst']:
+                for (wall_id, wall_line) in zip(st_value['wall_lines_nonst_ids'], st_value['wall_lines_nonst']):
+                    if wall_id not in walls_bound_st:
+                        wall_not_bound_ns.update({
+                            wall_id: wall_line
+                            })
+            all_grid_lines = st_value['grids_column'] + st_value['grids_st_wall'] + st_value['grids_ns_wall']
+
+            # todo.
+            # differentiate between structural and non-structural walls that are crossed by generated grid lines.
+            crossed_walls = []
+            for g_line in all_grid_lines:
+                for w_st_id, w_st_line in wall_not_bound_ns.items():
+                    if calculate_line_intersection(g_line,w_st_line,ignore_edge_intersecton=True):
+                        crossed_walls.append(w_st_id)
+                        crossed_wall_lengths += self.info_wall_length_by_id[w_st_id]
+
+            # use percent vlaues as the final loss function.
+            print ("stop")
 
     @time_decorator
     def create_grids(self):
@@ -625,7 +687,7 @@ class GridGenerator:
         parameters in lines2grids:
             self.t_w_num = 2
             self.t_w_dist = 0.0001
-            self.t_w_accumuled_length = 20
+            self.t_w_st_accumuled_length = 20
 
         parameters in gridalignment:
 
@@ -635,7 +697,8 @@ class GridGenerator:
 
         self.get_gridline_points_and_alignments()
         [self.generate_gridlines_per_storey(st) for st in self.main_storeys.keys()]
-        
+        self.calculate_cross_lost()
+
     @time_decorator
     def display_grids(self):
         """

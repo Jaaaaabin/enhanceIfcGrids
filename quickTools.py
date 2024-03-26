@@ -14,17 +14,18 @@ def time_decorator(func):
 
     return wrapper
 
-def flatten_a_list(lst):
-    """
-    Recursively flattens a list.
-    """
-    for item in lst:
-        if isinstance(item, list):
-            yield from flatten_a_list(item)
-        else:
-            yield item
-
 def flatten_and_merge_lists(*lists):
+
+    def flatten_a_list(lst): # check if there's a problem..
+        """
+        Recursively flattens a list.
+        """
+        for item in lst:
+            if isinstance(item, list):
+                yield from flatten_a_list(item)
+            else:
+                yield item
+    
     # Filter out empty lists and flatten non-empty lists
     non_empty_lists = filter(None, lists)  # This removes empty lists
     flattened_items = list(flatten_a_list(non_empty_lists))
@@ -116,3 +117,70 @@ def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.0001):
         return True
     else:
         return any(abs(new_slope - s) <= threshold for s in known_slopes)
+
+def line_intersection(line1_bounds, line2_bounds):
+    """
+    Determines the intersection point of two line segments, if any.
+    Returns the point of intersection or None if there is no intersection.
+    """
+    x1, y1, x2, y2 = line1_bounds
+    x3, y3, x4, y4 = line2_bounds
+
+    # Calculate denominators
+    den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    num_x = (x1*y2 - y1*x2) * (x3 - x4) - (x1 - x2) * (x3*y4 - y3*x4)
+    num_y = (x1*y2 - y1*x2) * (y3 - y4) - (y1 - y2) * (x3*y4 - y3*x4)
+    
+    # If den == 0, lines are parallel (including possibly overlapping)
+    if den == 0:
+        return None
+
+    # Calculate the intersection point
+    px = num_x / den
+    py = num_y / den
+    
+    # Check if the intersection point is within both line segments
+    if ((px - min(x1, x2)) * (px - max(x1, x2)) <= 0 and
+        (py - min(y1, y2)) * (py - max(y1, y2)) <= 0 and
+        (px - min(x3, x4)) * (px - max(x3, x4)) <= 0 and
+        (py - min(y3, y4)) * (py - max(y3, y4)) <= 0):
+        return (px, py)
+    
+    return None
+
+def distance_between_points(p1, p2):
+    """
+    Calculate the Euclidean distance between two points.
+    """
+    return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
+
+def point_on_line_segment(point, line, threshold_segment_percent):
+
+    x1, y1, x2, y2 = line
+    
+    dist_to_start = distance_between_points(point, (x1, y1))
+    dist_to_end = distance_between_points(point, (x2, y2))
+
+    line_length = distance_between_points((x1, y1), (x2, y2))
+    edge_length = (threshold_segment_percent / 100.0) * line_length
+    
+    if dist_to_start <= edge_length or dist_to_end <= edge_length:
+        return True
+    else:
+        return False
+
+def calculate_line_intersection(main_line, second_line, ignore_edge_intersecton=False, threshold_percent=5):
+    
+    intersection_point = line_intersection(main_line.bounds, second_line.bounds)
+    
+    if intersection_point:
+        if ignore_edge_intersecton:
+            intersection_on_edge = point_on_line_segment(intersection_point, second_line.bounds, threshold_percent)
+            if not intersection_on_edge:
+                return True
+            else:
+                return False
+        else:
+            return True    
+    
+    
