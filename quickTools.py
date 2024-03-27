@@ -118,7 +118,7 @@ def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.0001):
     else:
         return any(abs(new_slope - s) <= threshold for s in known_slopes)
 
-def line_intersection(line1_bounds, line2_bounds):
+def are_lines_cross(line1_bounds, line2_bounds):
     """
     Determines the intersection point of two line segments, if any.
     Returns the point of intersection or None if there is no intersection.
@@ -169,18 +169,18 @@ def point_on_line_segment(point, line, threshold_segment_percent):
     else:
         return False
 
-def calculate_line_intersection(main_line, second_line, ignore_edge_intersecton=False, threshold_percent=5):
+def calculate_line_crosses(main_line, second_line, ignore_cross_edge=False, threshold_percent=5):
     
-    intersection_point = line_intersection(main_line.bounds, second_line.bounds)
+    intersection_point = are_lines_cross(main_line.bounds, second_line.bounds)
     
     if intersection_point:
-        if ignore_edge_intersecton:
-            intersection_on_edge = point_on_line_segment(intersection_point, second_line.bounds, threshold_percent)
-            if not intersection_on_edge:
+        if ignore_cross_edge:
+            cross_on_edge = point_on_line_segment(intersection_point, second_line.bounds, threshold_percent)
+            if not cross_on_edge:
                 return True
             else:
                 return False
         else:
-            return True    
+            return True
     
     

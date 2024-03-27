@@ -1,147 +1,146 @@
-import random, numpy as np
-import matplotlib.pyplot as plt
+import os
+import random
+import numpy as np
 
-from deap import base
-from deap import creator
-from deap import tools
+from deap import base, creator, tools, algorithms
+from gridGenerator import GridGenerator
 
-# https://aviral-agarwal.medium.com/implementation-of-genetic-algorithm-evolutionary-algorithm-in-python-using-deap-framework-c2d4bd247f70
+PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+DATA_RES_PATH = PROJECT_PATH + r'\res'
 
-no_of_generations = 1000 # decide, iterations
+# Threshold parameter variation ranges for GA
+# to be collected externally from fixed values determined from the main branch.
+GA_PARAMS = {
+    't_c_num': (1, 5),
+    't_c_dist': (0.00005, 0.00015),
+    't_w_num': (1, 5),
+    't_w_dist': (0.00005, 0.00015),
+    't_w_st_accumuled_length': (20.0, 30.0),
+    't_w_ns_accumuled_length': (10.0, 30.0)
+}
 
-# decide, population size or no of individuals or solutions being considered in each generation
-population_size = 300 
+def preparation_of_grid_generation(work_path, ifc_model, info_columns='info_columns.json', info_walls='info_walls.json'):
 
-# chromosome (also called individual) in DEAP
-# length of the individual or chrosome should be divisible by no. of variables 
-# is a series of 0s and 1s in Genetic Algorithm
+    generator = GridGenerator(
+        os.path.join(work_path, ifc_model),
+        os.path.join(work_path, ifc_model, info_columns),
+        os.path.join(work_path, ifc_model, info_walls),
+        )
+    generator.prepare_wall_lengths()
+    generator.get_main_storeys_and_directions(num_directions=2) # static.
+    generator.enrich_main_storeys() # static.
 
-# here, one individual may be 
-# [1,0,1,1,1,0,......,0,1,1,0,0,0,0] of length 100
-# each element is called a gene or allele or simply a bit
-# Individual in bit form is called a Genotype and is decoded to attain the Phenotype i.e. the 
-size_of_individual = 100 
+    return generator
 
-# above, higher the better but uses higher resources
+class AcceleratorGA:
+    def __init__(self, init_grid_generator, problem_size, population_size, generations, crossover_prob, mutation_prob):
 
-# we are using bit flip as mutation,
-# probability that a gene or allele will mutate or flip, 
-# generally kept low, high means more random jumps or deviation from parents, which is generally not desired
-probability_of_mutation = 0.05 
+        self.set_random_seed(RANDOM_SEED)
 
-# no. of participants in Tournament selection
-# to implement strategy to select parents which will mate to produce offspring
-tournSel_k = 10 
+        self.init_grid_generator = init_grid_generator
+        self.problem_size = problem_size
+        self.population_size = population_size
+        self.generations = generations
+        self.crossover_prob = crossover_prob
+        self.mutation_prob = mutation_prob
 
-# no, of variables which will vary,here we have x and y
-# this is so because both variables are of same length and are represented by one individual
-# here first 50 bits/genes represent x and the rest 50 represnt y.
-no_of_variables = 2
-
-bounds = [(-6,6),(-6,6)] # one tuple or pair of lower bound and upper bound for each variable
-# same for both variables in our problem 
-
-# CXPB  is the probability with which two individuals
-#       are crossed or mated
-# MUTPB is the probability for mutating an individual
-CXPB, MUTPB = 0.5, 0.2
-
-
-creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-
-# an Individual is a list with one more attribute called fitness
-creator.create("Individual", list, fitness=creator.FitnessMin)
-
-
-# instance of Toolbox class
-toolbox = base.Toolbox()
-
-# Attribute generator, generation function 
-# toolbox.attr_bool(), when called, will draw a random integer between 0 and 1
-# it is equivalent to random.randint(0,1)
-toolbox.register("attr_bool", random.randint, 0, 1)
-
-# here give the no. of bits in an individual i.e. size_of_individual, here 100
-# depends upon decoding strategy, which uses precision
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, size_of_individual) 
-toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-
-def decode_all_x(individual,no_of_variables,bounds):
-    '''
-    returns list of decoded x in same order as we have in binary format in chromosome
-    bounds should have upper and lower limit for each variable in same order as we have in binary format in chromosome 
-    '''
+        # Setting up the DEAP toolbox
+        self.toolbox = base.Toolbox()
+        self.setup()
     
-    len_chromosome = len(individual)
-    len_chromosome_one_var = int(len_chromosome/no_of_variables)
-    bound_index = 0
-    x = []
+    def set_random_seed(self, seed):
+        """Set the random seed for numpy and random modules."""
+        random.seed(seed)
+        np.random.seed(seed)
     
-    # one loop each for x(first 50 bits of individual) and y(next 50 of individual)
-    for i in range(0,len_chromosome,len_chromosome_one_var):
-        # converts binary to decimial using 2**place_value
-        chromosome_string = ''.join((str(xi) for xi in  individual[i:i+len_chromosome_one_var]))
-        binary_to_decimal = int(chromosome_string,2)
+    def attr_generator(self, param_range):
+        """Generalized attribute generator for both int and float ranges."""
+        return lambda: random.uniform(*param_range)
+
+    def setup(self):
+
+        def generate_individual(toolbox):
+            individual = [toolbox.__getattribute__(param)() for param in GA_PARAMS]
+            return individual
+    
+        # Register attribute generators based on predefined ranges
+        for param, param_range in GA_PARAMS.items():
+            self.toolbox.register(param, self.attr_generator(param_range))
         
-        # this formula for decoding gives us two benefits
-        # we are able to implement lower and upper bounds for each variable
-        # gives us flexibility to choose chromosome of any length, 
-        #      more the no. of bits for a variable, more precise the decoded value can be
-        lb = bounds[bound_index][0]
-        ub = bounds[bound_index][1]
-        precision = (ub-lb)/((2**len_chromosome_one_var)-1)
-        decoded = (binary_to_decimal*precision)+lb
-        x.append(decoded)
-        bound_index +=1
-    
-    # returns a list of solutions in phenotype o, here [x,y]
-    return x
+        for param, (start, end) in GA_PARAMS.items():
+            if isinstance(start, int):
+                self.toolbox.register(param, random.randint, start, end)
+            else:
+                self.toolbox.register(param, random.uniform, start, end)
 
-def objective_fxn(individual):     
-    
-    # decoding chromosome to get decoded x in a list
-    x = decode_all_x(individual,no_of_variables,bounds)
-    
-    # the formulas to decode the chromosome of 0s and 1s to an actual number, the value of x or y
-    decoded_x = x[0]
-    decoded_y = x[1]
+        # Registering genetic operators
+        self.toolbox.register("individual", generate_individual, self.toolbox)
+        self.toolbox.register("individual", tools.initCycle, creator.Individual, 
+                 (self.toolbox.__getattribute__(param) for param in GA_PARAMS), n=1)
+        self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
+        self.toolbox.register("evaluate", self.evaluate)
+        self.toolbox.register("mate", tools.cxUniform, indpb=0.5)
+        self.toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=self.mutation_prob)
+        self.toolbox.register("select", tools.selTournament, tournsize=3)
 
-    # the himmelblau function
-    # min ((x**2)+y-11)**2+(x+(y**2)-7)**2
-    # objective function value for the decoded x and decoded y
-    obj_function_value = ((decoded_x**2)+decoded_y-11)**2+(decoded_x+(decoded_y**2)-7)**2
-    
-    # the evaluation function needs to return an iterable with each element corresponding to 
-    #     each element in weights provided while inheriting from base.fitness
-    return [obj_function_value]
+    def evaluate(self, individual):
+        """
+        Evaluate an individual's fitness by updating parameters and calculating loss.
+        """
+        parameter_values = dict(zip(GA_PARAMS.keys(), individual))
+        self.init_grid_generator.update_parameters(parameter_values)
+        self.init_grid_generator.create_grids()
+        self.init_grid_generator.calculate_cross_lost()
+        
+        return self.init_grid_generator.perct_crossing_ns_wall + self.init_grid_generator.perct_crossing_st_wall,
+        # return (1.0,)
 
-def check_feasiblity(individual):
-    '''
-    Feasibility function for the individual. 
-    Returns True if individual is feasible (or constraint not violated),
-    False otherwise
-    '''
-    var_list = decode_all_x(individual,no_of_variables,bounds)
-    if sum(var_list) < 0:
-        return True
-    else:
-        return False
+    def run(self):
+        """
+        Execute the genetic algorithm.
+        """
+        population = self.toolbox.population(n=self.population_size)
+
+        # Statistics for monitoring
+        stats = tools.Statistics(key=lambda ind: ind.fitness.values)
+        stats.register("avg", np.mean)
+        stats.register("std", np.std)
+        stats.register("min", np.min)
+        stats.register("max", np.max)
+
+        # Genetic algorithm execution
+        population, log = algorithms.eaSimple(population, self.toolbox, cxpb=self.crossover_prob, mutpb=self.mutation_prob, ngen=self.generations, stats=stats, verbose=True)
+
+        # Identifying the best solution
+        best_ind = tools.selBest(population, 1)[0]
+        print(f"Best individual is {best_ind}, Fitness: {best_ind.fitness.values}")
+        
+        return best_ind
+#     
+model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+model_path = model_paths[0]
+init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
 
-def penalty_fxn(individual):
-    '''
-    Penalty function to be implemented if individual is not feasible or violates constraint
-    It is assumed that if the output of this function is added to the objective function fitness values,
-    the individual has violated the constraint.
-    '''
-    var_list = decode_all_x(individual,no_of_variables,bounds)
-    return sum(var_list)**2
 
-# registering objetive function with constraint
-toolbox.register("evaluate", objective_fxn) # privide the objective function here
-toolbox.decorate("evaluate", tools.DeltaPenalty(check_feasiblity, 1000, penalty_fxn)) # constraint on our objective function
+# Meta-data prameters for GA
+S_PROBLEM = len(GA_PARAMS.keys())
+S_POPULATION = 4
+N_GENERATION = 2
 
-# registering basic processes using bulit in functions in DEAP
-toolbox.register("mate", tools.cxTwoPoint) # strategy for crossover, this classic two point crossover
-toolbox.register("mutate", tools.mutFlipBit, indpb=probability_of_mutation) # mutation strategy with probability of mutation
-toolbox.register("select", tools.selTournament, tournsize=tournSel_k) # selection startegy
+# Random Seeds
+RANDOM_SEED = 2024
+random.seed(RANDOM_SEED)
+np.random.seed(RANDOM_SEED)
+
+
+ga_optimizer = AcceleratorGA(
+    init_grid_generator=init_grid_generator,
+    problem_size=S_PROBLEM,
+    population_size=S_POPULATION,
+    generations=N_GENERATION,
+    crossover_prob=0.7,
+    mutation_prob=0.2)
+
+best_solution = ga_optimizer.run()

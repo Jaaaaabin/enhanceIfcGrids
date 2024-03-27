@@ -42,7 +42,7 @@ def combinations_from_shared_ifc_basis(all_ifcs):
 
     return basis_combinations
 
-def create_grids(work_path, ifc_model, info_columns='info_columns.json', info_walls='info_walls.json'):
+def preparation_of_grid_generation(work_path, ifc_model, info_columns='info_columns.json', info_walls='info_walls.json'):
 
     generator = GridGenerator(
         os.path.join(work_path, ifc_model),
@@ -51,11 +51,25 @@ def create_grids(work_path, ifc_model, info_columns='info_columns.json', info_wa
         )
 
     generator.prepare_wall_lengths()
-    generator.get_main_storeys_and_directions(num_directions=2) # static
-    generator.enrich_main_storeys() # semi-static
-    generator.create_grids()    # dynamic
-    generator.display_grids()
+    generator.get_main_storeys_and_directions(num_directions=2) # static.
+    generator.enrich_main_storeys() # static.
 
+    return generator
+
+def building_grid_generation(basic_generator, new_parameters):
+    
+    # update the parameters.
+    new_generator = basic_generator.update_parameters(new_parameters)
+    
+    # generate the grids
+    new_generator.create_grids()    # dynamic.
+
+    # calculate the losses
+    new_generator.calculate_cross_lost()    # loss calculation.
+
+    # display the grids
+    new_generator.display_grids()
+    
 # main start path.
 if __name__ == "__main__":
 
@@ -90,8 +104,20 @@ if __name__ == "__main__":
         model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
         for model_path in model_paths:
+
+            # for each building model
+            init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+
+            best_new_parameters = {
+                't_c_num':6, 
+                't_c_dist':0.0001,
+                't_w_num':3,
+                't_w_dist':0.0001,
+                't_w_st_accumuled_length':30,
+                't_w_ns_accumuled_length':30,
+            }
             
-            create_grids(DATA_RES_PATH, model_path)
+            building_grid_generation(init_grid_generator, best_new_parameters)
 
     except Exception as e:
         print(f"Error accessing directory {DATA_RES_PATH}: {e}")
