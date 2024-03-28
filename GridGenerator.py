@@ -37,14 +37,14 @@ class GridGenerator:
         self.t_z_crossing_columns = 0.1
 
         # columns related
-        self.t_c_num = 6
-        self.t_c_dist = 0.0001
+        self.t_c_num = 3
+        self.t_c_dist = 0.001
 
         # walls related
         self.t_w_num = 2
-        self.t_w_dist = 0.0001
-        self.t_w_st_accumuled_length = 20
-        self.t_w_ns_accumuled_length = 20
+        self.t_w_dist = 0.001
+        self.t_w_st_accumuled_length = 5
+        self.t_w_ns_accumuled_length = 5
 
         # merging related
         # self.t_self_dist = 0.2
@@ -188,20 +188,20 @@ class GridGenerator:
                 slope = get_line_slope_by_points(point1, point2)
                 
                 # for columns, ignore those pairs not located on the main directions.
-                if not is_close_to_known_slopes(slope, self.main_directions):
-                    continue
-                else:
-                    for k, (point,id3) in enumerate(zip(component_pts,element_ids)):
-                        if id3 not in id_components:  # Skip points already considered in the line
-                            if slope == float('inf'):  # Vertical line check
-                                if abs(point.x - point1.x) <= self.t_c_dist:
-                                    aligned_points.append(point)
-                                    id_components.add(id3)
-                            else:
-                                # Use point-slope form of line equation to check alignment
-                                if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.t_c_dist:
-                                    aligned_points.append(point)
-                                    id_components.add(id3)
+                # if not is_close_to_known_slopes(slope, self.main_directions):
+                #     continue
+                # else:
+                for k, (point,id3) in enumerate(zip(component_pts,element_ids)):
+                    if id3 not in id_components:  # Skip points already considered in the line
+                        if slope == float('inf'):  # Vertical line check
+                            if abs(point.x - point1.x) <= self.t_c_dist:
+                                aligned_points.append(point)
+                                id_components.add(id3)
+                        else:
+                            # Use point-slope form of line equation to check alignment
+                            if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.t_c_dist:
+                                aligned_points.append(point)
+                                id_components.add(id3)
 
                     # Check for minimum number of points and uniqueness before adding to the grid
                     if len(aligned_points) >= self.t_c_num:

@@ -16,7 +16,7 @@ def process_ifc_file(input_path, output_path):
     extractor.write_dict_columns()
     extractor.extract_all_walls()
     extractor.write_dict_walls()
-    # extractor.wall_display()
+    extractor.wall_display()
 
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
@@ -73,18 +73,18 @@ def building_grid_generation(basic_generator, new_parameters):
 # main start path.
 if __name__ == "__main__":
 
-    # # ----------
-    # try:
-    #     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+    # ----------
+    try:
+        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
-    #     for model_path in model_paths:
+        for model_path in model_paths:
             
-    #         process_ifc_file(
-    #             os.path.join(DATA_FOLDER_PATH, model_path),
-    #             os.path.join(DATA_RES_PATH, model_path))
+            process_ifc_file(
+                os.path.join(DATA_FOLDER_PATH, model_path),
+                os.path.join(DATA_RES_PATH, model_path))
  
-    # except Exception as e:
-    #     print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
+    except Exception as e:
+        print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
 
     # # ----------
     # try:
@@ -109,12 +109,12 @@ if __name__ == "__main__":
             init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
             best_new_parameters = {
-                't_c_num':6, 
+                't_c_num':4, 
                 't_c_dist':0.0001,
-                't_w_num':3,
+                't_w_num':2,
                 't_w_dist':0.0001,
-                't_w_st_accumuled_length':30,
-                't_w_ns_accumuled_length':30,
+                't_w_st_accumuled_length':5,
+                't_w_ns_accumuled_length':5,
             }
             
             building_grid_generation(init_grid_generator, best_new_parameters)
