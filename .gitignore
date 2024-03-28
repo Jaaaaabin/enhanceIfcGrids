@@ -3,12 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+# tempo codes.
+old*.py
+tempo*.py
+
 # Data
-data/data_test/
+data/data_test/save
 dyn/
 
 # Result
-res/
+*.html
 
 # Distribution / packaging
 .Python

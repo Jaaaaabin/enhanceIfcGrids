@@ -1,6 +1,7 @@
 import os
 import random
 import copy
+import logging
 import numpy as np
 import pandas as pd
 from deap import base, creator, tools, algorithms
@@ -8,14 +9,14 @@ from gridGenerator import GridGenerator
 
 import matplotlib.pyplot as plt
 from pandas.plotting import parallel_coordinates
-import logging
+
 
 #===================================================================================================
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Constants and Paths
-PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
+PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'  # *****************to change to your own local path*****************
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 RANDOM_SEED = 2023
@@ -133,12 +134,13 @@ def ga_optimizer(population_size: int, generation_iteration: int, crossover_prob
         stats.register("min", np.min)
         stats.register("max", np.max)
         
-        pop, log = algorithms.eaSimple(pop, toolbox, cxpb=crossover_prob, mutpb=mutation_prob, ngen=generation_iteration, 
-                                             stats=stats, verbose=True)
+        pop, log = algorithms.eaSimple(
+            pop, toolbox, cxpb=crossover_prob, mutpb=mutation_prob, ngen=generation_iteration, stats=stats, verbose=True)
         
         best_ind = tools.selBest(pop, 1)[0]
         logging.info(f"Best individual is {best_ind}, Fitness: {best_ind.fitness.values}")
         return initial_pop, pop, log, best_ind
+    
     except Exception as e:
         logging.error(f"Error during GA optimization: {e}")
         raise
@@ -150,5 +152,6 @@ try:
         generation_iteration=N_GENERATION,
         crossover_prob=0.5,
         mutation_prob=0.5)
+    
 except Exception as error:
     logging.error(f"Optimization failed with error: {error}")

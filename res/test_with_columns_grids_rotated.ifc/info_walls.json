@@ -1,0 +1,1222 @@
+[
+    {
+        "id": "05yORVGerDvRumcMAUcM4t",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -32.1096690222229,
+                14.930595549019635,
+                0.0
+            ],
+            [
+                -28.846986021851535,
+                2.7540968226424045,
+                0.0
+            ]
+        ],
+        "length": 12.606,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4v",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -18.41153986028836,
+                10.172921209913094,
+                0.0
+            ],
+            [
+                -21.169359595664552,
+                20.465244580453188,
+                0.0
+            ]
+        ],
+        "length": 10.6554,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4u",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -20.64591299039161,
+                17.932159758752945,
+                0.0
+            ],
+            [
+                -31.947245157973732,
+                14.903976931053446,
+                0.0
+            ]
+        ],
+        "length": 11.7,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4x",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -8.065117302483477,
+                21.29603326906035,
+                0.0
+            ],
+            [
+                1.120354342612405,
+                23.757272978462765,
+                0.0
+            ]
+        ],
+        "length": 9.5095,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4w",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                0.9930004589748344,
+                23.65300864696593,
+                0.0
+            ],
+            [
+                4.1429372459908524,
+                11.897284517191862,
+                0.0
+            ]
+        ],
+        "length": 12.1704,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4z",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                3.830308388576664,
+                4.074371850067167,
+                0.0
+            ],
+            [
+                -7.379796843013284,
+                1.0706332061947363,
+                0.0
+            ]
+        ],
+        "length": 11.6056,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4y",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -21.353071326372874,
+                20.57131059763128,
+                0.0
+            ],
+            [
+                -8.643177822604695,
+                23.976916297851535,
+                0.0
+            ]
+        ],
+        "length": 13.1583,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM41",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -13.258204194667025,
+                3.1110760885984825,
+                0.0
+            ],
+            [
+                -12.39313770516745,
+                -0.11739600213918822,
+                0.0
+            ]
+        ],
+        "length": 3.3424,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM45",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -26.18027816813879,
+                16.379091117534127,
+                0.0
+            ],
+            [
+                -25.034170836962446,
+                12.10176032665682,
+                0.0
+            ]
+        ],
+        "length": 4.4282,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM44",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -14.06168840225105,
+                22.36973933679399,
+                0.0
+            ],
+            [
+                -11.338938647486252,
+                12.208298915716044,
+                0.0
+            ]
+        ],
+        "length": 10.5199,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM47",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -12.312687066590069,
+                15.58061159067595,
+                0.0
+            ],
+            [
+                -24.986264352537088,
+                12.184736791693027,
+                0.0
+            ]
+        ],
+        "length": 13.1207,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM46",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -9.282507414005135,
+                18.921434250008335,
+                0.0
+            ],
+            [
+                -12.814026234253062,
+                17.97516663406759,
+                0.0
+            ]
+        ],
+        "length": 3.6561,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM49",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -8.302062766109362,
+                15.262365010051763,
+                0.0
+            ],
+            [
+                2.3231213230703887,
+                18.109374506179492,
+                0.0
+            ]
+        ],
+        "length": 11.0,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM48",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                2.90074072697799,
+                15.95366954335844,
+                0.0
+            ],
+            [
+                -18.284185976650463,
+                10.27718554140867,
+                0.0
+            ]
+        ],
+        "length": 21.9323,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4B",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -7.641466897165099,
+                13.058753562805766,
+                0.0
+            ],
+            [
+                -4.665731094854472,
+                1.9531563586807454,
+                0.0
+            ]
+        ],
+        "length": 11.4974,
+        "width": 0.3
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM4A",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -1.7850295581562547,
+                10.482111355010526,
+                0.0
+            ],
+            [
+                0.15423877832789423,
+                3.2446633937420906,
+                0.0
+            ]
+        ],
+        "length": 7.4928,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM7Y",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -8.017210818058086,
+                21.379009734097128,
+                0.0
+            ],
+            [
+                -8.669796440570378,
+                23.81449243360197,
+                0.0
+            ]
+        ],
+        "length": 2.5214,
+        "width": 0.1355
+    },
+    {
+        "id": "05yORVGerDvRumcMAUcM7b",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -8.254156281683969,
+                15.345341475088539,
+                0.0
+            ],
+            [
+                -9.234600929579885,
+                19.004410715045076,
+                0.0
+            ]
+        ],
+        "length": 3.7881,
+        "width": 0.1355
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96Uw8",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 266.3199,
+        "location": [
+            [
+                4.138135431502799,
+                11.945735343476596,
+                0.0
+            ],
+            [
+                3.6352904247761897,
+                4.127668935569832,
+                0.0
+            ]
+        ],
+        "length": 7.8342,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96U4Q",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 321.1105,
+        "location": [
+            [
+                -28.928019352503973,
+                3.1678606144415213,
+                0.0
+            ],
+            [
+                -21.66235020287038,
+                -2.6925972223957033,
+                0.0
+            ]
+        ],
+        "length": 9.3346,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96UN0",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -21.888039636461535,
+                -2.8168387339032326,
+                0.0
+            ],
+            [
+                -12.209425974458945,
+                -0.22346201931680776,
+                0.0
+            ]
+        ],
+        "length": 10.02,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96UTs",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -8.506220776752333,
+                4.69494906199762,
+                0.0
+            ],
+            [
+                -7.4858628601912445,
+                0.8869214754865076,
+                0.0
+            ]
+        ],
+        "length": 3.9424,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96Pcl",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -13.441915925375758,
+                3.217142105776472,
+                0.0
+            ],
+            [
+                -8.612286793930416,
+                4.511237331289076,
+                0.0
+            ]
+        ],
+        "length": 5.0,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96PeS",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -1.868006023193033,
+                10.530017839435917,
+                0.0
+            ],
+            [
+                3.9372081928042495,
+                12.085520300502061,
+                0.0
+            ]
+        ],
+        "length": 6.01,
+        "width": 0.1355
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96PH4",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 321.8699,
+        "location": [
+            [
+                -26.44487051163714,
+                4.4231571144875375,
+                0.0
+            ],
+            [
+                -21.754376117200444,
+                0.7413589791507316,
+                0.0
+            ]
+        ],
+        "length": 5.9629,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96OaP",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -26.240051677662073,
+                4.384173115288653,
+                0.0
+            ],
+            [
+                -29.234777112322092,
+                15.560640592158634,
+                0.0
+            ]
+        ],
+        "length": 11.5707,
+        "width": 0.1355
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96Ol_",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -19.623841213625838,
+                1.5607002171205968,
+                0.0
+            ],
+            [
+                -21.91791505106242,
+                0.946004985002098,
+                0.0
+            ]
+        ],
+        "length": 2.375,
+        "width": 0.3
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96Ong",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -29.64621975794878,
+                6.3164332286525,
+                0.0
+            ],
+            [
+                -27.016728177333388,
+                7.021003374182831,
+                0.0
+            ]
+        ],
+        "length": 2.7222,
+        "width": 0.1355
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96O$E",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -28.226119549877428,
+                11.534513422753387,
+                0.0
+            ],
+            [
+                -30.85561113049283,
+                10.829943277223053,
+                0.0
+            ]
+        ],
+        "length": 2.7222,
+        "width": 0.1355
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96OzW",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -26.24603810408246,
+                4.144748863920928,
+                0.0
+            ],
+            [
+                -28.875529684697856,
+                3.4401787183905954,
+                0.0
+            ]
+        ],
+        "length": 2.7222,
+        "width": 0.1355
+    },
+    {
+        "id": "3m7UEo_RD4nOFYw3Z96O0N",
+        "loadbearing": true,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -19.517775196447847,
+                1.744411947829332,
+                0.0
+            ],
+            [
+                -18.575062993417518,
+                -1.7738378907950556,
+                0.0
+            ]
+        ],
+        "length": 3.6424,
+        "width": 0.3
+    },
+    {
+        "id": "30zqw7Qhb7bxZNKJSyOZ$i",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -17.9232451156915,
+                21.335038333900798,
+                0.0
+            ],
+            [
+                -17.16179286311523,
+                18.49325983974839,
+                0.0
+            ]
+        ],
+        "length": 2.942,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKB",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -32.1096690222229,
+                14.930595549019635,
+                4.0
+            ],
+            [
+                -28.846986021851535,
+                2.7540968226424045,
+                4.0
+            ]
+        ],
+        "length": 12.606,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfK8",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -18.41153986028836,
+                10.172921209913094,
+                4.0
+            ],
+            [
+                -21.169359595664552,
+                20.465244580453188,
+                4.0
+            ]
+        ],
+        "length": 10.6554,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfK9",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                0.9579304783634468,
+                23.783891596428102,
+                4.0
+            ],
+            [
+                4.142937245990858,
+                11.897284517191858,
+                4.0
+            ]
+        ],
+        "length": 12.3059,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKE",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                3.830308388576664,
+                4.074371850067167,
+                4.0
+            ],
+            [
+                -7.379796843013284,
+                1.0706332061947363,
+                4.0
+            ]
+        ],
+        "length": 11.6056,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKF",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -21.353071326372874,
+                20.57131059763128,
+                4.0
+            ],
+            [
+                -8.643177822604695,
+                23.976916297851535,
+                4.0
+            ]
+        ],
+        "length": 13.1583,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKC",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -13.258204194667025,
+                3.1110760885984825,
+                4.0
+            ],
+            [
+                -12.39313770516745,
+                -0.11739600213918822,
+                4.0
+            ]
+        ],
+        "length": 3.3424,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKD",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -7.6590018874707955,
+                13.124195037536863,
+                4.0
+            ],
+            [
+                -4.665731094854469,
+                1.9531563586807472,
+                4.0
+            ]
+        ],
+        "length": 11.5651,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfK$",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 266.3199,
+        "location": [
+            [
+                4.138135431502799,
+                11.945735343476596,
+                4.0
+            ],
+            [
+                3.6352904247761897,
+                4.127668935569832,
+                4.0
+            ]
+        ],
+        "length": 7.8342,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKy",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 321.1105,
+        "location": [
+            [
+                -28.928019352503973,
+                3.1678606144415213,
+                4.0
+            ],
+            [
+                -21.66235020287038,
+                -2.6925972223957033,
+                4.0
+            ]
+        ],
+        "length": 9.3346,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKz",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -21.888039636461535,
+                -2.8168387339032326,
+                4.0
+            ],
+            [
+                -12.209425974458945,
+                -0.22346201931680776,
+                4.0
+            ]
+        ],
+        "length": 10.02,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKo",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -8.506220776752333,
+                4.69494906199762,
+                4.0
+            ],
+            [
+                -7.4858628601912445,
+                0.8869214754865076,
+                4.0
+            ]
+        ],
+        "length": 3.9424,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKp",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -13.441915925375758,
+                3.217142105776472,
+                4.0
+            ],
+            [
+                -8.612286793930416,
+                4.511237331289076,
+                4.0
+            ]
+        ],
+        "length": 5.0,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKn",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 321.8699,
+        "location": [
+            [
+                -26.44487051163714,
+                4.4231571144875375,
+                4.0
+            ],
+            [
+                -21.75437611720045,
+                0.741358979150736,
+                4.0
+            ]
+        ],
+        "length": 5.9629,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKs",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -19.623841213625838,
+                1.5607002171205968,
+                4.0
+            ],
+            [
+                -21.91791505106242,
+                0.946004985002098,
+                4.0
+            ]
+        ],
+        "length": 2.375,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCfKf",
+        "loadbearing": true,
+        "elevation": 4.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -19.517775196447847,
+                1.744411947829332,
+                4.0
+            ],
+            [
+                -18.575062993417518,
+                -1.7738378907950556,
+                4.0
+            ]
+        ],
+        "length": 3.6424,
+        "width": 0.3
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgji",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -20.64591299039161,
+                17.932159758752945,
+                4.0
+            ],
+            [
+                -31.947245157973732,
+                14.903976931053446,
+                4.0
+            ]
+        ],
+        "length": 11.7,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgjj",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -7.9342343530213055,
+                21.331103249671735,
+                4.0
+            ],
+            [
+                0.8305765947256853,
+                23.679627264932,
+                4.0
+            ]
+        ],
+        "length": 9.074,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgiP",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -6.837818639872517,
+                16.977458203058543,
+                4.0
+            ],
+            [
+                -8.669796440570558,
+                23.81449243360192,
+                4.0
+            ]
+        ],
+        "length": 7.0782,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCg$p",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -6.920795104909294,
+                17.025364687483936,
+                4.0
+            ],
+            [
+                -19.21002791132858,
+                13.73247468140583,
+                4.0
+            ]
+        ],
+        "length": 12.7228,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCg$m",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -11.377816318683784,
+                12.12774171389229,
+                4.0
+            ],
+            [
+                -18.28418597665062,
+                10.277185541409267,
+                4.0
+            ]
+        ],
+        "length": 7.15,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgpC",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -26.240051677662073,
+                4.384173115288653,
+                4.0
+            ],
+            [
+                -29.234777112322092,
+                15.560640592158634,
+                4.0
+            ]
+        ],
+        "length": 11.5707,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgpD",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -29.64621975794878,
+                6.316433228652499,
+                4.0
+            ],
+            [
+                -27.016728177333388,
+                7.02100337418283,
+                4.0
+            ]
+        ],
+        "length": 2.7222,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgp2",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -28.226119549877428,
+                11.534513422753387,
+                4.0
+            ],
+            [
+                -30.85561113049283,
+                10.829943277223053,
+                4.0
+            ]
+        ],
+        "length": 2.7222,
+        "width": 0.1355
+    },
+    {
+        "id": "2yaEAQnL91IvnKfXbRCgp3",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 195.0,
+        "location": [
+            [
+                -26.24603810408246,
+                4.144748863920937,
+                4.0
+            ],
+            [
+                -28.875529684697856,
+                3.440178718390605,
+                4.0
+            ]
+        ],
+        "length": 2.7222,
+        "width": 0.1355
+    },
+    {
+        "id": "1Cb0XtZUr5aRyi652ejbD6",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 285.0,
+        "location": [
+            [
+                -16.54374280370354,
+                2.3911249666700884,
+                0.0
+            ],
+            [
+                -15.638574740437948,
+                -0.9870082348258307,
+                0.0
+            ]
+        ],
+        "length": 3.4973,
+        "width": 0.1355
+    },
+    {
+        "id": "1Cb0XtZUr5aRyi652ejbwW",
+        "loadbearing": false,
+        "elevation": 4.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                0.15660081938195358,
+                3.245296300735014,
+                4.0
+            ],
+            [
+                -2.8366699732343776,
+                14.416334979591122,
+                4.0
+            ]
+        ],
+        "length": 11.5651,
+        "width": 0.1355
+    },
+    {
+        "id": "1Cb0XtZUr5aRyi652ejbXj",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -1.1692085231755065,
+                19.002691716405998,
+                0.0
+            ],
+            [
+                1.8658502800126813,
+                19.815933271701244,
+                0.0
+            ]
+        ],
+        "length": 3.1421,
+        "width": 0.1355
+    },
+    {
+        "id": "1Cb0XtZUr5aRyi652ejbeQ",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 105.0,
+        "location": [
+            [
+                -1.142766741772215,
+                18.64224374584189,
+                0.0
+            ],
+            [
+                -2.252388692887998,
+                22.7834092445997,
+                0.0
+            ]
+        ],
+        "length": 4.2873,
+        "width": 0.1355
+    },
+    {
+        "id": "1Cb0XtZUr5aRyi652ejaGb",
+        "loadbearing": false,
+        "elevation": 0.0,
+        "orientation": 15.0,
+        "location": [
+            [
+                -17.491628948088767,
+                18.334740565922324,
+                0.0
+            ],
+            [
+                -13.34814263410033,
+                19.444984377604936,
+                0.0
+            ]
+        ],
+        "length": 4.2897,
+        "width": 0.1355
+    }
+]
