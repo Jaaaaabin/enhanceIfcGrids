@@ -12,11 +12,12 @@ DATA_RES_PATH = PROJECT_PATH + r'\res'
 def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path,output_path)
-    extractor.extract_all_columns()
-    extractor.write_dict_columns()
-    extractor.extract_all_walls()
+    # extractor.extract_all_columns()
+    # extractor.write_dict_columns()
+    extractor.extract_all_walls_via_triangulation()
     extractor.write_dict_walls()
-    extractor.wall_display()
+    # extractor.wall_display()
+    # print("stop.")
 
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
@@ -86,41 +87,41 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
 
-    # # ----------
-    # try:
-    #     model_paths = [filename for filename in os.listdir(DATA_RES_PATH) if not os.path.isfile(os.path.join(DATA_RES_PATH, filename))]
-    #     json_names = ['info_walls.json']
-
-    #     combinnations_ifc_variants = combinations_from_shared_ifc_basis(model_paths)
-    #     for basis, combos in combinnations_ifc_variants.items():
-    #         for combo in combos:
-    #             [compare_ifc_infos(DATA_RES_PATH, combo[0], combo[1], json_name) for json_name in json_names]
-
-    # except Exception as e:
-    #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
-        
     # ----------
     try:
-        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
-        
-        for model_path in model_paths:
+        model_paths = [filename for filename in os.listdir(DATA_RES_PATH) if not os.path.isfile(os.path.join(DATA_RES_PATH, filename))]
+        json_names = ['info_walls.json']
 
-            # for each building model
-            init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-
-            best_new_parameters = {
-                't_c_num':4, 
-                't_c_dist':0.0001,
-                't_w_num':2,
-                't_w_dist':0.0001,
-                't_w_st_accumuled_length':5,
-                't_w_ns_accumuled_length':5,
-            }
-            
-            building_grid_generation(init_grid_generator, best_new_parameters)
+        combinnations_ifc_variants = combinations_from_shared_ifc_basis(model_paths)
+        for basis, combos in combinnations_ifc_variants.items():
+            for combo in combos:
+                [compare_ifc_infos(DATA_RES_PATH, combo[0], combo[1], json_name) for json_name in json_names]
 
     except Exception as e:
         print(f"Error accessing directory {DATA_RES_PATH}: {e}")
+        
+    # # ----------
+    # try:
+    #     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+        
+    #     for model_path in model_paths:
+
+    #         # for each building model
+    #         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+
+    #         best_new_parameters = {
+    #             't_c_num':4, 
+    #             't_c_dist':0.0001,
+    #             't_w_num':2,
+    #             't_w_dist':0.0001,
+    #             't_w_st_accumuled_length':5,
+    #             't_w_ns_accumuled_length':5,
+    #         }
+            
+    #         building_grid_generation(init_grid_generator, best_new_parameters)
+
+    # except Exception as e:
+    #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
 
 # tbd: also consider the wall width ? (at which stage) when generating the grid lines.
         

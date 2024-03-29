@@ -1,4 +1,7 @@
+import multiprocessing
 import ifcopenshell
+import ifcopenshell.geom
+import ifcopenshell.util.shape
 import os
 import math
 import json
@@ -9,22 +12,27 @@ from matplotlib.ticker import PercentFormatter
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-from wallExtractor import WallWidthExtractor
 from quickTools import time_decorator, remove_duplicate_dicts
 
 #===================================================================================================
 #IfcGeneral ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 class IfcExtractor:
 
-    def __init__(self, model_path, figure_path):
+    def __init__(self, model_path, figure_path, read='triangle'):
 
         try:
+
+            self.type_geo = read
+            self.settings = self.configure_settings()
+
             self.model = ifcopenshell.open(model_path)
+
             self.ifc_file_name = os.path.basename(model_path)
             self.out_fig_path = figure_path
             os.makedirs(figure_path, exist_ok=True)
 
             self.version = self.model.schema
+            # Initialization of lists for various IFC elements
             self.project = []
             self.site = []
             self.storeys = []
@@ -36,18 +44,38 @@ class IfcExtractor:
             self.doors = []
             self.windows = []
 
-            self.existing_grids = []
-            self.grids = {}
             self.extract_all_ifc_elements()
             
-            print ("=============IfcExtractor=============")
-            print (self.ifc_file_name)
+            print(f"=============IfcExtractor=============\n{self.ifc_file_name}")
             
         except ifcopenshell.errors.FileNotFoundError: # type: ignore
             print(f"Error: File '{model_path}' not found.")
 
         except Exception as e:
             print(f"An error occurred: {e}")
+    
+    def configure_settings(self):
+        
+        if self.type_geo == 'triangle':
+            settings = ifcopenshell.geom.settings()
+            settings.USE_PYTHON_OPENCASCADE = True
+            # only option to activate both triangulation and the generation of normals
+            settings.DISABLE_TRIANGULATION = 1
+            settings.set(settings.DISABLE_TRIANGULATION, False)
+            settings.WELD_VERTICES = False
+            settings.NO_NORMALS = False
+            settings.GENERATE_UVS = True
+            settings.S = False
+            settings.USE_WORLD_COORDS = True
+        
+        elif self.type_geo == 'brep':
+            settings = ifcopenshell.geom.settings()
+            settings.set(settings.USE_PYTHON_OPENCASCADE, True)
+            settings.set(settings.DISABLE_TRIANGULATION, True)
+            settings.set(settings.USE_BREP_DATA, True)
+            settings.USE_WORLD_COORDS = True
+            
+        return settings
     
     def extract_all_ifc_elements(self):
 
@@ -57,133 +85,146 @@ class IfcExtractor:
 
         if self.model:
 
-            # self.project = self.model.by_type("IfcProject")
-            # self.site = self.model.by_type("IfcSite")
-            # self.doors = self.model.by_type("IfcDoor")
-            # self.windows = self.model.by_type("IfcWindow")
-            # self.existing_grids = self.model.by_type("IfcGrid")
-
             self.storeys = self.model.by_type("IfcBuildingStorey")
             self.slabs = self.model.by_type("IfcSlab")
             self.spaces = self.model.by_type("IfcSpace")
             self.columns = self.model.by_type("IfcColumn")
             self.walls = self.model.by_type("IfcWall") + self.model.by_type('IfcWallStandardCase')
             self.curtainwalls = self.model.by_type("IfcCurtainWall")
-            
-    def write_dict_columns(self):
-
-        dict_info_columns = remove_duplicate_dicts(self.info_columns)
-        try:
-            with open(os.path.join(self.out_fig_path, 'info_columns.json'), 'w') as json_file:
-                json.dump(dict_info_columns, json_file, indent=4)
-        except IOError as e:
-            raise IOError(f"Failed to write to {self.out_fig_path + 'columns.json'}: {e}")
-
-    def write_dict_walls(self):
-        
-        dict_info_walls = remove_duplicate_dicts(self.info_walls)
-        try:
-            with open(os.path.join(self.out_fig_path, 'info_walls.json'), 'w') as json_file:
-                json.dump(dict_info_walls, json_file, indent=4)
-        except IOError as e:
-            raise IOError(f"Failed to write to {self.out_fig_path + 'columns.json'}: {e}")
-    
-    def get_object_elevation(self, object):
-
-        """
-        Retrieves the elevation of a given object based on its spatial containment within a building storey.
-
-        Parameters:
-            object (IfcObject): The object to find the elevation for.
-
-        Returns:
-            float or None: The elevation of the object if found, otherwise None.
-        """
-        if object and hasattr(object, 'ContainedInStructure'):
-            for definition in object.ContainedInStructure:
-                if definition.is_a('IfcRelContainedInSpatialStructure'):
-                    element = definition.RelatingStructure
-                    if element.is_a('IfcBuildingStorey'):
-                        return element.Elevation
-        return None
 
 #IfcGeneral ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
-#display ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+#wall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
-    def wall_width_histogram(self):
+    # function notes.
+    def calc_wall_loadbearing(self, wall):
+        psets = ifcopenshell.util.element.get_psets(wall)
+        return psets.get('Pset_WallCommon', {}).get('LoadBearing')
+    
+    # function notes.
+    def calc_wall_orientation(self, wall, deg_range=360):
+
+        if wall.ObjectPlacement.RelativePlacement.RefDirection is None:
+            return 0.0
         
-        values = [w['width'] for w in self.info_walls if 'width' in w]
-        #  RV_A / RV_S, width of non-structural walls are lost. - > to check.
-
-        fig = plt.figure(figsize=(10, 5))
-        ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
-        ax.hist(values, weights=np.ones(len(values)) / len(values), bins=20, color='#bcbd22', edgecolor='black')
-        ax.set_xlabel('Width of IfcWalls', color='black', fontsize=12)
-        ax.set_ylabel("Percentage Frequency Distribution", color="black", fontsize=12)
-        ax.yaxis.set_major_formatter(PercentFormatter(1))
-        ax.set_xlim(xmin=0.0, xmax=max(values))
-
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_width_histogram.png'), dpi=200)
-        plt.close(fig)
+        orientation_vec = wall.ObjectPlacement.RelativePlacement.RefDirection.DirectionRatios
+        orientation_rad = math.atan2(orientation_vec[1], orientation_vec[0])
+        orientation_deg = math.degrees(orientation_rad) % deg_range
         
-    def wall_length_histogram(self):
+        return round(orientation_deg, 4)
 
-        values = [w['length'] for w in self.info_walls if 'length' in w]
+    # function notes.
+    def vertices2wall(self, vertices, deci=6):
+        verts_array = np.array(vertices)
+        x_range, y_range, z_range = np.ptp(verts_array, axis=0)
+        length, width = max(x_range, y_range), min(x_range, y_range)
+        height = z_range
 
-        fig = plt.figure(figsize=(10, 5))
-        ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
-        ax.hist(values, weights=np.ones(len(values)) / len(values), bins=20, color='#bcbd22', edgecolor='black')
-        ax.set_xlabel('Length of IfcWalls', color='black', fontsize=12)
-        ax.set_ylabel("Percentage Frequency Distribution", color="black", fontsize=12)
-        ax.yaxis.set_major_formatter(PercentFormatter(1))
-        ax.set_xlim(xmin=0.0, xmax=max(values))
+        return {
+            'length': round(length, deci), 
+            'height': round(height, deci), 
+            'width': round(width, deci)
+        }
+    
+    # function notes.
+    def get_wall_dimensions(self):
 
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_length_histogram.png'), dpi=200)
-        plt.close(fig)
-
-    def wall_location_map(self):
-        values = [w['location'] for w in self.info_walls if 'location' in w]
-
-        fig = plt.figure(figsize=(8, 8))
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlabel('X Axis')
-        ax.set_ylabel('Y Axis')
-        ax.set_zlabel('Z Axis')  # type: ignore
-
-        for v in values:
-            start_point, end_point = v
-            xs, ys, zs = zip(start_point, end_point)
-            ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3)
-
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_location_map.png'), dpi=200)
-        plt.close(fig)
-
-    def wall_orientation_histogram(self):
-        values = [w['orientation'] for w in self.info_walls if 'orientation' in w]
-
-        fig = plt.figure(figsize=(10, 5))
-        ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
-        ax.hist(values, weights=np.ones(len(values)) / len(values), bins=20, color='#bcbd22', edgecolor='black')
-        ax.set_xlabel('Orientation of IfcWalls [0°,180°)', color='black', fontsize=12)
-        ax.set_ylabel("Percentage Frequency Distribution", color="black", fontsize=12)
-        ax.yaxis.set_major_formatter(PercentFormatter(1))
-        ax.set_xticks(np.arange(0, 180, 30))
-        ax.set_xlim(xmin=0, xmax=180)
-
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_orientation_histogram.png'), dpi=200)
-        plt.close(fig)
-
-    def wall_display(self):
-
-        self.wall_width_histogram()
-        self.wall_length_histogram()
-        self.wall_location_map()
-        self.wall_orientation_histogram()
+        iterator = ifcopenshell.geom.iterator(
+            self.settings, self.model, multiprocessing.cpu_count(), include=self.walls)
         
-#display ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+        if self.type_geo == 'triangle':
+
+            if iterator.initialize():
+
+                i = 0
+
+                while True:
+
+                    shape = iterator.get()
+                    grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+                    wall_dimensions = self.vertices2wall(grouped_verts)
+
+                    matrix = shape.transformation.matrix.data
+                    matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
+
+                    wall_location_p1 = matrix[:,3][0:3]
+                    wall_location_p1 = wall_location_p1.tolist()
+
+                    dict_of_a_wall = {
+                        "id": shape.guid,
+                        "elevation": wall_location_p1[-1],
+                        "location":[wall_location_p1],
+                        }
+                    dict_of_a_wall.update(wall_dimensions)
+                    self.info_walls.append(dict_of_a_wall)
+                    
+                    i+=1
+
+                    if not iterator.next():
+                        break
+    
+    # function notes.
+    def enrich_wall_information(self):
+        id_to_wall = {w.GlobalId: w for w in self.walls}
+        self.info_walls = [
+            self._update_wall_info(id_to_wall[d['id']], d) \
+                for d in self.info_walls if \
+                    d['id'] in id_to_wall and self.calc_wall_orientation(id_to_wall[d['id']]) is not None and d['length'] is not None
+        ]
+    
+    def _update_wall_info(self, wall, info_w):
+
+        orientation_deg = self.calc_wall_orientation(wall)
+        wall_location_p1 = info_w['location'][0]
+        wall_location_p2 = (
+            wall_location_p1[0] + info_w['length'] * math.cos(math.radians(orientation_deg)),
+            wall_location_p1[1] + info_w['length'] * math.sin(math.radians(orientation_deg)),
+            wall_location_p1[2]
+        )
+
+        info_w.update({
+            'location': [wall_location_p1, wall_location_p2],
+            'orientation': self.calc_wall_orientation(wall,deg_range=180)  # Here we use degree among 0-180 degree.
+        })
+
+        return info_w
+    
+    @time_decorator
+    def extract_all_walls_via_triangulation(self):
+        
+        self.info_walls = []
+        self.get_wall_dimensions()
+        self.enrich_wall_information()
+
+    # # function notes.(working.)
+    # def enrich_wall_information(self):
+        
+    #     id_to_wall = {w.GlobalId: w for w in self.walls}
+    #     pair_wall_info = [(id_to_wall[d['id']], d) for d in self.info_walls if d['id'] in id_to_wall]
+        
+    #     new_info_walls = []
+    #     for w, info_w in pair_wall_info:
+            
+    #         if w.GlobalId != info_w['id']:
+    #             raise ValueError("Matching Error")
+    #         else:
+    #             orientation_deg = self.calc_wall_orientation(w)
+    #             if orientation_deg != None and info_w['length'] != None:
+    #                 wall_location_p1 = info_w['location'][0]
+    #                 wall_location_p2 = (
+    #                     wall_location_p1[0]+ info_w['length']*math.cos(math.radians(orientation_deg)),
+    #                     wall_location_p1[1]+ info_w['length']*math.sin(math.radians(orientation_deg)),
+    #                     wall_location_p1[2])
+    #                 info_w.update({
+    #                     'location': [wall_location_p1,wall_location_p2],
+    #                     'orientation': self.calc_wall_orientation(w,deg_range=180)
+    #                 })
+    #                 new_info_walls.append(info_w)
+    #     self.info_walls = new_info_walls
+        
+#wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
@@ -274,352 +315,105 @@ class IfcExtractor:
 #===================================================================================================
 
 #===================================================================================================
-#wall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+#display ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
     # function notes.
-    def calc_wall_geometry(self, wall):
+    def wall_width_histogram(self):
         
-        wall_location, wall_length = None, None
+        values = [w['width'] for w in self.info_walls if 'width' in w]
+        #  RV_A / RV_S, width of non-structural walls are lost. - > to check.
+
+        fig = plt.figure(figsize=(10, 5))
+        ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
+        ax.hist(values, weights=np.ones(len(values)) / len(values), bins=20, color='#bcbd22', edgecolor='black')
+        ax.set_xlabel('Width of IfcWalls', color='black', fontsize=12)
+        ax.set_ylabel("Percentage Frequency Distribution", color="black", fontsize=12)
+        ax.yaxis.set_major_formatter(PercentFormatter(1))
+        ax.set_xlim(xmin=0.0, xmax=max(values))
+
+        plt.savefig(os.path.join(self.out_fig_path, 'wall_width_histogram.png'), dpi=200)
+        plt.close(fig)
         
+    # function notes.
+    def wall_length_histogram(self):
+
+        values = [w['length'] for w in self.info_walls if 'length' in w]
+
+        fig = plt.figure(figsize=(10, 5))
+        ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
+        ax.hist(values, weights=np.ones(len(values)) / len(values), bins=20, color='#bcbd22', edgecolor='black')
+        ax.set_xlabel('Length of IfcWalls', color='black', fontsize=12)
+        ax.set_ylabel("Percentage Frequency Distribution", color="black", fontsize=12)
+        ax.yaxis.set_major_formatter(PercentFormatter(1))
+        ax.set_xlim(xmin=0.0, xmax=max(values))
+
+        plt.savefig(os.path.join(self.out_fig_path, 'wall_length_histogram.png'), dpi=200)
+        plt.close(fig)
+
+    # function notes.
+    def wall_location_map(self):
+        values = [w['location'] for w in self.info_walls if 'location' in w]
+
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_xlabel('X Axis')
+        ax.set_ylabel('Y Axis')
+        ax.set_zlabel('Z Axis')  # type: ignore
+
+        for v in values:
+            start_point, end_point = v
+            xs, ys, zs = zip(start_point, end_point)
+            ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3)
+
+        plt.savefig(os.path.join(self.out_fig_path, 'wall_location_map.png'), dpi=200)
+        plt.close(fig)
+
+    # function notes.
+    def wall_orientation_histogram(self):
+        values = [w['orientation'] for w in self.info_walls if 'orientation' in w]
+
+        fig = plt.figure(figsize=(10, 5))
+        ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
+        ax.hist(values, weights=np.ones(len(values)) / len(values), bins=20, color='#bcbd22', edgecolor='black')
+        ax.set_xlabel('Orientation of IfcWalls [0°,180°)', color='black', fontsize=12)
+        ax.set_ylabel("Percentage Frequency Distribution", color="black", fontsize=12)
+        ax.yaxis.set_major_formatter(PercentFormatter(1))
+        ax.set_xticks(np.arange(0, 180, 30))
+        ax.set_xlim(xmin=0, xmax=180)
+
+        plt.savefig(os.path.join(self.out_fig_path, 'wall_orientation_histogram.png'), dpi=200)
+        plt.close(fig)
+
+    # function notes.
+    def wall_display(self):
+
+        self.wall_width_histogram()
+        self.wall_length_histogram()
+        self.wall_location_map()
+        self.wall_orientation_histogram()
+    
+    # function notes.
+    def write_dict_columns(self):
+
+        dict_info_columns = remove_duplicate_dicts(self.info_columns)
         try:
-            # if wall.GlobalId=='0BZD7xrIL3h80Kncn0Xa2a':
-            #     print("test")
+            with open(os.path.join(self.out_fig_path, 'info_columns.json'), 'w') as json_file:
+                json.dump(dict_info_columns, json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'columns.json'}: {e}")
 
-            if not wall.Representation or not wall.Representation.Representations:
-                print("Wall has no Representation or no Representation.Representations.")
-            
-            else:
-                wall_elevation = wall.ContainedInStructure[0].RelatingStructure.Elevation
-                wall_location_p1, wall_location_p2 = None, None
-
-                orientation_deg = self.calc_wall_orientation(wall, deg_range=360)
-                wall_location_p1 = wall.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(wall, "ObjectPlacement") else None
-                
-                if wall_location_p1 != None:
-                    
-                    # have the 'Axis' representation.
-                    rHasAxis = False
-                    for r in wall.Representation.Representations:
-                        if r.RepresentationIdentifier =='Axis':
-                            rHasAxis = True
-                            wall_axis = r
-                            if wall_axis.Items[0].is_a('IfcPolyline'):
-                                wall_pnts = wall_axis.Items[0].Points
-                                coord_wall_pnts = wall_pnts.CoordList if hasattr(wall_pnts, "CoordList") else (wall_pnts[0].Coordinates,wall_pnts[1].Coordinates)
-                                wall_length = math.sqrt((coord_wall_pnts[1][0] - coord_wall_pnts[0][0])**2 + (coord_wall_pnts[1][1] - coord_wall_pnts[0][1])**2)
-                            
-                            elif wall_axis.Items[0].is_a('IfcTrimmedCurve'): #todo.
-                                #============ for curve walls=======================
-                                wall_length = 0 # use wall_length for curved ones yet.
-                                #============ for curve walls=======================
-                    
-                    # don't have the 'Axis' representation.
-                    if not rHasAxis:
-                        for r in wall.Representation.Representations:
-                            if r.RepresentationIdentifier =='Body':
-                                wall_body = r
-                                if wall_body.Items[0].is_a('IfcExtrudedAreaSolid') and hasattr(wall_body.Items[0], 'Depth'):
-                                    wall_length = wall_body.Items[0].Depth
-
-                    if orientation_deg != None and wall_length != None:
-                        wall_location_p2 = (
-                            wall_location_p1[0]+ wall_length*math.cos(math.radians(orientation_deg)),
-                            wall_location_p1[1]+ wall_length*math.sin(math.radians(orientation_deg)),
-                            wall_location_p1[2])
-                        
-                    # wall_length = self.calc_wall_length_by_pset(wall)
-                    wall_location_p1 = [*wall_location_p1[:-1], wall_elevation]  # type: ignore
-                    wall_location_p2 = [*wall_location_p2[:-1], wall_elevation]  # type: ignore
-                    wall_location = [list(wall_location_p1),list(wall_location_p2)]
-        
-        except AttributeError as e:
-            print(f"calc_wall_geometry: An attribute error occurred: {e}")
-        except ValueError as e:
-            print(e)
-        except Exception as e:
-            print(f"calc_wall_geometry: An unexpected error occurred: {e}")
-
-        return wall_location, wall_length
-    
     # function notes.
-    def calc_wall_loadbearing(self, wall):
+    def write_dict_walls(self):
         
-        psets = ifcopenshell.util.element.get_psets(wall)
-        if 'Pset_WallCommon' in psets.keys():
-            if 'LoadBearing' in psets['Pset_WallCommon'].keys():
-                load_bearing = psets['Pset_WallCommon']['LoadBearing']
-                return load_bearing
-            else:
-                return None
-        else:
-            return None
-    
-    # function notes.
-    def calc_wall_orientation(self, wall, deg_range=360):
-            
-        orientation_deg = None
+        dict_info_walls = remove_duplicate_dicts(self.info_walls)
+        try:
+            with open(os.path.join(self.out_fig_path, 'info_walls.json'), 'w') as json_file:
+                json.dump(dict_info_walls, json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'walls.json'}: {e}")
 
-        if wall.ObjectPlacement.RelativePlacement.RefDirection != None:
-            orientation_vec = wall.ObjectPlacement.RelativePlacement.RefDirection.DirectionRatios
-            orientation_rad = math.atan2(orientation_vec[1],orientation_vec[0])
-            orientation_deg = math.degrees(orientation_rad) % deg_range
-        else:
-            orientation_deg = 0.0
-
-        return round(orientation_deg, 4)
-    
-    # function notes.
-    def extract_a_wall(self, ifc_wall):
-        
-        # ifc4.X vs ifc2x3. missing ifcwallstandardcase entities.
-        info_a_wall = dict()
-
-        wall_location, wall_length = self.calc_wall_geometry(ifc_wall)
-        self.WallWidthExtractor = WallWidthExtractor(ifc_wall)
-        self.WallWidthExtractor.calc_wall_width_from_representation()
-    
-        info_a_wall.update({
-            "id": ifc_wall.GlobalId,
-            "loadbearing": self.calc_wall_loadbearing(ifc_wall),
-            "elevation": self.get_object_elevation(ifc_wall),
-            "orientation": self.calc_wall_orientation(ifc_wall),
-            "location": wall_location,
-            "length": round(wall_length,4),
-            "width":round(self.WallWidthExtractor.width,4), # type: ignore
-        })
-
-        return info_a_wall
-
-    @time_decorator
-    def extract_all_walls(self):
-
-        self.info_walls = []
-        for w in self.walls:
-            info_a_wall = self.extract_a_wall(w)
-            self.info_walls.append(info_a_wall)
-
-#wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#display ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
-
-
-#===================================================================================================
-#curtainwall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-# ??????????????????????????????????????????????????????????????????????????????????????????????????
-#curtainwall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
-#===================================================================================================
-
-
-#===================================================================================================
-#alloldwall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-# to check again and make reuse of them.
-            
-    # def connect_wall_location_points(self, wall_locations_2d, dist_per_bin=2):
-
-    #     merged_points = []
-    #     points = np.array([item for sublist in wall_locations_2d for item in sublist])
-
-    #     # Calculate pairwise distances
-    #     distances = pdist(points, metric='euclidean') # num_pts * (num_pts-1) / 2
-    #     distance_matrix = squareform(distances) # num_pts * num_pts
-    #     num_bins = int(distances.shape[0]/dist_per_bin)
-    #     hist, bin_edges = np.histogram(distances, bins=num_bins)
-                
-    #     gaps = []
-    #     for i in range(len(hist)):
-    #         if hist[i] == 0 :
-    #             gap_range = [bin_edges[i], bin_edges[i+1]]
-    #             gaps.append(gap_range)
-
-    #     # # Find peaks (peak bins).
-    #     # peaks, _ = find_peaks(hist)
-    #     # peak_values = 0.5 * (bin_edges[peaks] + bin_edges[peaks + 1])
-
-    #     # Histogram plot.
-    #     fig = plt.figure(figsize=(12, 7))  # unit of inch
-    #     ax = plt.axes((0.075, 0.075, 0.90, 0.85))  # in range (0,1)
-    #     ax.hist(distances, bins=num_bins, color='#bcbd22', edgecolor='black', label=str(num_bins), alpha=0.8)
-    #     plt.savefig('hist_'+str(num_bins)+'.png', dpi=200)
-
-    #     # Find 'gaps' among peaks.
-    #     threshold = gaps[0][0]
-        
-    #     # Use DBSCAN for clustering, eps is set to the threshold
-    #     # threshold = np.percentile(distances, threshold_percentile)
-    #     dbscan = DBSCAN(eps=threshold, min_samples=1, metric='euclidean')
-    #     clusters = dbscan.fit_predict(points)
-        
-    #     # are those merged ones or 
-    #     merged_points = np.array([points[clusters == c].mean(axis=0) for c in set(clusters)])
-
-    #     return merged_points.tolist()
-    
-    # def calc_wall_length_by_pset(self, wall):
-    #     """Gets the length of a wall from its property sets."""
-        
-    #     wall_length = None
-        
-    #     # what about the IfcStandardcaseWall?
-    #     if not wall.is_a('IfcWall') and not wall.is_a('IfcCurtainWall') and not wall.is_a('IfcWallStandardCase'):
-    #         return 0.0
-
-    #     wall_pset = ifcopenshell.util.element.get_psets(wall)
-    #     if wall.is_a('IfcWall') or wall.is_a('IfcWallStandardCase'):
-    #         for pset_key in wall_pset:
-    #             if 'Length' in wall_pset[pset_key]:
-    #                 return round(wall_pset[pset_key]['Length'], 4)
-        
-    #     elif wall.is_a('IfcCurtainWall'):
-    #         for pset_key in wall_pset:
-    #             if 'Length' in wall_pset[pset_key]:
-    #                 return round(wall_pset[pset_key]['Length'], 4)
-    #     else:
-    #         return wall_length
-
-    # def find_farthest_linear_points(self, points):
-        
-    #     def distance_2d(point_a, point_b):
-    #         """Calculate the Euclidean distance between two points in 2D."""
-    #         return math.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
-    #     max_distance = 0
-    #     farthest_linear_points = None
-
-    #     for i in range(len(points)):
-    #         for j in range(i + 1, len(points)):
-    #             dist = distance_2d(points[i], points[j])
-    #             if dist > max_distance:
-    #                 max_distance = dist
-    #                 farthest_linear_points = (points[i], points[j])
-
-    #     return farthest_linear_points
-    
-    # def calc_wall_location(self, wall):
-    #     """to replace the calc_wall_dimensions."""
-
-    #     # wall, elevation------------------------
-
-    #     if wall.ContainedInStructure[0].RelatingStructure.is_a('IfcBuildingStorey'):
-    #         wall_elevation = wall.ContainedInStructure[0].RelatingStructure.Elevation
-    #     else:
-    #         wall_elevation = None
-
-    #     local_points = None,
-    #     global_location_0, global_location_1 = None, None
-
-    #     #'IfcWall' or 'IfcWallStandardCase' conditions.
-    #     if wall.is_a('IfcWall') or wall.is_a('IfcWallStandardCase'):
-
-    #         # local
-    #         for r in wall.Representation.Representations:
-    #             if r.RepresentationIdentifier =='Axis':
-    #                 wall_axis = r
-    #                 if wall_axis.Items[0].is_a('IfcPolyline'):
-    #                     wall_pnts = wall_axis.Items[0].Points
-    #                     local_points = wall_pnts.CoordList if hasattr(wall_pnts, "CoordList") else (wall_pnts[0].Coordinates,wall_pnts[1].Coordinates)
-                    
-    #                 #============ for curve walls=======================
-    #                 elif wall_axis.Items[0].is_a('IfcTrimmedCurve'):
-                        
-    #                     return [0,0,wall_elevation],[0,0,wall_elevation]
-    #                 #============ for curve walls=======================
-
-    #         # global
-    #         global_location_0 = wall.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(wall, "ObjectPlacement") else None
-    #         orientation_deg = self.calc_wall_orientation(wall,deg_range=360)
-    #         wall_length = self.calc_wall_length_by_pset(wall)
-    #         if orientation_deg != None and wall_length != None:
-    #             global_location_1 = (
-    #                 global_location_0[0]+ wall_length*math.cos(math.radians(orientation_deg)),
-    #                 global_location_0[1]+ wall_length*math.sin(math.radians(orientation_deg)),
-    #                 global_location_0[2])
-    #         else:
-    #             global_location_1 = None
-                    
-    #         global_location_0 = [*global_location_0[:-1], wall_elevation]
-    #         global_location_1 = [*global_location_1[:-1], wall_elevation]
-
-    #     # 'IfcCurtainWall' conditions.
-    #     elif wall.is_a('IfcCurtainWall'):
-            
-    #         related_components = wall.IsDecomposedBy[0].RelatedObjects
-    #         if len(related_components)==1 and related_components[0].is_a('IfcPlate'):
-                
-    #             # local
-    #             component = related_components[0]
-    #             for r in component.Representation.Representations:
-    #                 if r.RepresentationIdentifier =='FootPrint':
-    #                     # local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points.CoordList
-    #                     local_points = r.Items[0].MappingSource.MappedRepresentation.Items[0].Points
-    #                     if isinstance(local_points,tuple):
-    #                         local_points = [list(c) for pt in local_points for c in pt]
-    #                     print ("Footprint:",local_points)
-        
-    #             # global
-    #             global_location_0 = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
-    #             orientation_deg = self.calc_wall_orientation(wall,deg_range=360)
-    #             wall_length = self.calc_wall_length_by_pset(wall)
-    #             if orientation_deg != None and wall_length != None:
-    #                 global_location_1 = (
-    #                     global_location_0[0]+ wall_length*math.cos(math.radians(orientation_deg)),
-    #                     global_location_0[1]+ wall_length*math.sin(math.radians(orientation_deg)),
-    #                     global_location_0[2])
-    #             else:
-    #                 global_location_1 = None
-                        
-    #             global_location_0 = [*global_location_0[:-1], wall_elevation]
-    #             global_location_1 = [*global_location_1[:-1], wall_elevation]
-                        
-    #         elif len(related_components) > 1:
-                
-    #             # direct global
-    #             all_placement_points = []
-    #             for component in related_components:
-    #                 placement_point = component.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(component, "ObjectPlacement") else None
-    #                 all_placement_points.append(list(placement_point))
-                
-    #             local_points = self.find_farthest_linear_points(all_placement_points)
-    #             global_location_0, global_location_1 = local_points
-    #             global_location_0 = [*global_location_0[:-1], wall_elevation]
-    #             global_location_1 = [*global_location_1[:-1], wall_elevation]
-
-    #     return global_location_0,global_location_1
-
-    # def get_wall_info(self):
-            
-    #     self.wall_info = []
-
-    #     for wall in self.walls:
-            
-    #         print (wall.GlobalId)
-    #         wall_loadbearing = self.get_wall_loadbearing(wall)
-    #         wall_width = self.calc_wall_width(wall)
-    #         wall_length = self.calc_wall_length_by_pset(wall)            
-    #         wall_orientation = self.calc_wall_orientation(wall, deg_range=180, orien_dec=1) # 180 for orientation printing
-    #         wall_location = self.calc_wall_location(wall)
-
-            
-    #         # wall_width = None
-    #         # if wall_width_by_geometry is None and wall_width_by_material is None:
-    #         #     wall_width = 0.0
-    #         # elif wall_width_by_geometry is None:
-    #         #     wall_width = max(0.0, wall_width_by_material)
-    #         # elif wall_width_by_material is None:
-    #         #     wall_width = max(0.0, wall_width_by_geometry)
-    #         # else:
-    #         #     wall_width = max(wall_width_by_geometry, wall_width_by_material)
-
-    #         # wall_length, wall_location = self.calc_wall_dimensions(wall, length_dec=2)
-
-    #         self.wall_info.append({
-    #             "id": wall.GlobalId,
-    #             "loadbearing":wall_loadbearing,
-    #             "width": wall_width,
-    #             "orientation": wall_orientation,
-    #             "length": wall_length,
-    #             "location": wall_location,
-    #         })
-
-#alloldwall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
-#===================================================================================================     
 
 #===================================================================================================
 #space

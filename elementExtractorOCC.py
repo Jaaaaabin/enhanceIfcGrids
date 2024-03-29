@@ -6,19 +6,17 @@ import OCC.Core.TopoDS, OCC.Core.BRep
 import OCC.Extend.DataExchange
 import OCC.Display.SimpleGui
 
-import ifcopenshell
-import ifcopenshell.geom
-import ifcopenshell.util.shape
-import multiprocessing
-
+import numpy as np
 import os
 import json
 import copy
-import numpy as np
+import multiprocessing
+import ifcopenshell
+import ifcopenshell.geom
+import ifcopenshell.util.shape
 
 # important references: Tri&Brep https://blenderbim.org/docs-python/ifcopenshell-python/geometry_processing.html
 # important references: Brep https://sourceforge.net/p/ifcopenshell/discussion/1782717/thread/f1d8c8cc/
-
 class GeometryProcessor:
 
     def __init__(self, model_path=[], read='triangle'):
@@ -56,30 +54,14 @@ class GeometryProcessor:
 
     def vertices2wall(self, vertices):
 
-        # Convert the list of vertices into a NumPy array for easier manipulation
         verts_array = np.array(vertices)
-        x_range = np.ptp(verts_array[:, 0])
-        y_range = np.ptp(verts_array[:, 1])
-        z_range = np.ptp(verts_array[:, 2])
-        
-        # Assuming the primary orientation of the wall is along the axis with the largest range
-        # and that the height is along the z-axis
-        if x_range > y_range:
-            length = x_range
-            thickness = y_range
-        else:
-            length = y_range
-            thickness = x_range
+        x_range, y_range, z_range = np.ptp(verts_array, axis=0)
+        length, width = max(x_range, y_range), min(x_range, y_range)
         height = z_range
-        
-        return {
-            'length': length,
-            'height': height,
-            'thickness': thickness
-        }
+        return {'length': length, 'height': height, 'width': width}
 
     def read_geometry(self):
-
+        
         # todo. combine the wall geometry together with the location, direction
         # what information can we get from the columns via OCC?
 
@@ -139,6 +121,7 @@ class GeometryProcessor:
 
         except IOError as e:
             raise IOError(f"Failed to write to {self.model_path}: {e}")
+
 
 TEST_FOLDER = r'C:\dev\phd\enrichIFC\preparedata\rvt2ifc\test4occ\simple'
 model_paths = [filename for filename in os.listdir(TEST_FOLDER) if os.path.isfile(os.path.join(TEST_FOLDER, filename)) and filename.endswith(".ifc")]
