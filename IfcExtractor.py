@@ -12,10 +12,6 @@ from scipy.spatial.distance import pdist, squareform
 from wallExtractor import WallWidthExtractor
 from quickTools import time_decorator, remove_duplicate_dicts
 
-# import ifcopenshell.geom
-# import ifcopenshell.util.shape
-# import OCC.Core.TopExp,OCC.Core.TopAbs,OCC.Core.TopoDS,OCC.Core.BRepBndLib,OCC.Core.BRep
-
 #===================================================================================================
 #IfcGeneral ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 class IfcExtractor:

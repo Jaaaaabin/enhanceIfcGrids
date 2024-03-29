@@ -21,16 +21,16 @@ DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 RANDOM_SEED = 2023
 S_POPULATION = 10
-N_GENERATION = 10
+N_GENERATION = 3
 
 # Parameters and their ranges
 PARAMS = {
-    't_c_num': (2, 6),
+    't_c_num': (5, 10),
     't_c_dist': (0.00001, 0.0001),
-    't_w_num': (1, 5),
+    't_w_num': (2, 5),
     't_w_dist': (0.00001, 0.0001),
-    't_w_st_accumuled_length': (2.0, 10.0),
-    't_w_ns_accumuled_length': (2.0, 10.0)
+    't_w_st_accumuled_length': (20.0, 40.0),
+    't_w_ns_accumuled_length': (20.0, 40.0)
 }
 
 # Fixing the random seed for reproducibility
