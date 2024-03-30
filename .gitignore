@@ -3,7 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-
 # tempo codes.
 old*.py
 tempo*.py
@@ -14,7 +13,7 @@ dyn/
 
 # Result
 *.html
-
+*.png
 # Distribution / packaging
 .Python
 lib/

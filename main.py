@@ -5,20 +5,20 @@ import os
 import itertools
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+# DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+DATA_FOLDER_PATH=r'C:\dev\phd\enrichIFC\preparedata\data_icccbe'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 
 def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path,output_path)
-    # extractor.extract_all_columns()
-    # extractor.write_dict_columns()
+    extractor.extract_all_columns_via_triangulation()
+    extractor.write_dict_columns()
     extractor.extract_all_walls_via_triangulation()
     extractor.write_dict_walls()
-    # extractor.wall_display()
-    # print("stop.")
-
+    extractor.wall_display()
+    
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
     infoComparator = JsonFileComparator(data_path, ifc_a, ifc_2, json_name)
@@ -87,18 +87,18 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
 
-    # ----------
-    try:
-        model_paths = [filename for filename in os.listdir(DATA_RES_PATH) if not os.path.isfile(os.path.join(DATA_RES_PATH, filename))]
-        json_names = ['info_walls.json']
+    # # ----------
+    # try:
+    #     model_paths = [filename for filename in os.listdir(DATA_RES_PATH) if not os.path.isfile(os.path.join(DATA_RES_PATH, filename))]
+    #     json_names = ['info_walls.json']
 
-        combinnations_ifc_variants = combinations_from_shared_ifc_basis(model_paths)
-        for basis, combos in combinnations_ifc_variants.items():
-            for combo in combos:
-                [compare_ifc_infos(DATA_RES_PATH, combo[0], combo[1], json_name) for json_name in json_names]
+    #     combinnations_ifc_variants = combinations_from_shared_ifc_basis(model_paths)
+    #     for basis, combos in combinnations_ifc_variants.items():
+    #         for combo in combos:
+    #             [compare_ifc_infos(DATA_RES_PATH, combo[0], combo[1], json_name) for json_name in json_names]
 
-    except Exception as e:
-        print(f"Error accessing directory {DATA_RES_PATH}: {e}")
+    # except Exception as e:
+    #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
         
     # # ----------
     # try:
@@ -110,7 +110,7 @@ if __name__ == "__main__":
     #         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
     #         best_new_parameters = {
-    #             't_c_num':4, 
+    #             't_c_num':5, 
     #             't_c_dist':0.0001,
     #             't_w_num':2,
     #             't_w_dist':0.0001,

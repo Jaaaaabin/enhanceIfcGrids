@@ -23,7 +23,7 @@ class IfcExtractor:
         try:
 
             self.type_geo = read
-            self.settings = self.configure_settings()
+            self.settings = self._configure_settings()
 
             self.model = ifcopenshell.open(model_path)
 
@@ -44,7 +44,7 @@ class IfcExtractor:
             self.doors = []
             self.windows = []
 
-            self.extract_all_ifc_elements()
+            self._extract_all_ifc_elements()
             
             print(f"=============IfcExtractor=============\n{self.ifc_file_name}")
             
@@ -54,7 +54,7 @@ class IfcExtractor:
         except Exception as e:
             print(f"An error occurred: {e}")
     
-    def configure_settings(self):
+    def _configure_settings(self):
         
         if self.type_geo == 'triangle':
             settings = ifcopenshell.geom.settings()
@@ -77,7 +77,7 @@ class IfcExtractor:
             
         return settings
     
-    def extract_all_ifc_elements(self):
+    def _extract_all_ifc_elements(self):
 
         """
         Extracts various IFC entities from the model and initializes visualization settings.
@@ -104,7 +104,7 @@ class IfcExtractor:
         return psets.get('Pset_WallCommon', {}).get('LoadBearing')
     
     # function notes.
-    def calc_wall_orientation(self, wall, deg_range=360):
+    def _calc_wall_orientation(self, wall, deg_range=360):
 
         if wall.ObjectPlacement.RelativePlacement.RefDirection is None:
             return 0.0
@@ -116,7 +116,7 @@ class IfcExtractor:
         return round(orientation_deg, 4)
 
     # function notes.
-    def vertices2wall(self, vertices, deci=6):
+    def _vertices2dimensions(self, vertices, deci=6):
         verts_array = np.array(vertices)
         x_range, y_range, z_range = np.ptp(verts_array, axis=0)
         length, width = max(x_range, y_range), min(x_range, y_range)
@@ -129,22 +129,21 @@ class IfcExtractor:
         }
     
     # function notes.
-    def get_wall_dimensions(self):
-
+    def get_wall_dimensions(self,):
+        
+        including_objects=self.walls
         iterator = ifcopenshell.geom.iterator(
-            self.settings, self.model, multiprocessing.cpu_count(), include=self.walls)
+            self.settings, self.model, multiprocessing.cpu_count(), include=including_objects)
         
         if self.type_geo == 'triangle':
 
             if iterator.initialize():
 
-                i = 0
-
                 while True:
 
                     shape = iterator.get()
                     grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
-                    wall_dimensions = self.vertices2wall(grouped_verts)
+                    wall_dimensions = self._vertices2dimensions(grouped_verts)
 
                     matrix = shape.transformation.matrix.data
                     matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
@@ -159,8 +158,6 @@ class IfcExtractor:
                         }
                     dict_of_a_wall.update(wall_dimensions)
                     self.info_walls.append(dict_of_a_wall)
-                    
-                    i+=1
 
                     if not iterator.next():
                         break
@@ -169,14 +166,16 @@ class IfcExtractor:
     def enrich_wall_information(self):
         id_to_wall = {w.GlobalId: w for w in self.walls}
         self.info_walls = [
-            self._update_wall_info(id_to_wall[d['id']], d) \
-                for d in self.info_walls if \
-                    d['id'] in id_to_wall and self.calc_wall_orientation(id_to_wall[d['id']]) is not None and d['length'] is not None
+            self._update_wall_info(id_to_wall[info['id']], info) \
+                for info in self.info_walls if \
+                    info['id'] in id_to_wall and \
+                        self._calc_wall_orientation(id_to_wall[info['id']]) is not None and \
+                            info['length'] is not None
         ]
     
     def _update_wall_info(self, wall, info_w):
 
-        orientation_deg = self.calc_wall_orientation(wall)
+        orientation_deg = self._calc_wall_orientation(wall)
         wall_location_p1 = info_w['location'][0]
         wall_location_p2 = (
             wall_location_p1[0] + info_w['length'] * math.cos(math.radians(orientation_deg)),
@@ -186,7 +185,8 @@ class IfcExtractor:
 
         info_w.update({
             'location': [wall_location_p1, wall_location_p2],
-            'orientation': self.calc_wall_orientation(wall,deg_range=180)  # Here we use degree among 0-180 degree.
+            'orientation': self._calc_wall_orientation(wall,deg_range=180), # Here we use degree among 0-180 degree.
+            'loadbearing': self.calc_wall_loadbearing(wall),
         })
 
         return info_w
@@ -229,87 +229,89 @@ class IfcExtractor:
 
 #===================================================================================================
 #column ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-
+    
     # function notes.
-    def cacl_column_geometry(self,column):
+    def get_column_dimensions(self):
         
-        column_location, column_length = None, None
+        iterator = ifcopenshell.geom.iterator(
+            self.settings, self.model, multiprocessing.cpu_count(), include=self.columns)
+        
+        if self.type_geo == 'triangle':
 
-        if not column.Representation or not column.Representation.Representations:
-            print("Column has no Representation or no Representation.Representations.")
+            if iterator.initialize():
+
+                while True:
+
+                    shape = iterator.get()
+                    grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+                    column_dimensions = self._vertices2dimensions(grouped_verts)
+                    matrix = shape.transformation.matrix.data
+                    matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
+
+                    column_location_p1 = matrix[:,3][0:3]
+                    column_location_p1 = column_location_p1.tolist()
+
+                    dict_of_a_column = {
+                        "id": shape.guid,
+                        "location":[column_location_p1],
+                        }
+                    dict_of_a_column.update(column_dimensions)
+                    self.info_columns.append(dict_of_a_column)
+
+                    if not iterator.next():
+                        break
+    
+    # function notes.
+    def enrich_column_information(self):
+        id_to_column = {c.GlobalId: c for c in self.columns}
+        self.info_columns = [
+            self._update_column_info(id_to_column[info['id']], info) \
+                for info in self.info_columns if \
+                    info['id'] in id_to_column and \
+                            info['height'] is not None
+        ]
+    
+    # function notes.
+    def _get_location_column(self, column):
+        c_location_pt_from_body = None
+        c_location_pt_directplacement = None
         
+        for r in column.Representation.Representations:
+            if r.RepresentationIdentifier == 'Body':
+                mapped_r = r.Items[0].MappingSource.MappedRepresentation
+                c_location_pt_from_body = mapped_r.Items[0].Position.Location.Coordinates
+                break  # Assuming we only need the first matching 'Body'
+        
+        if abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001:
+            # risk: what will happen if it's really 0,0,x.
+            c_location_pt_directplacement = column.ObjectPlacement.RelativePlacement.Location.Coordinates
+            rel_storey_elevation = column.ObjectPlacement.PlacementRelTo.PlacesObject[0].Elevation
+            rel_placement = column.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates
+            c_location_pt_directplacement = tuple(sum(x) for x in zip(c_location_pt_directplacement, rel_placement))
+            c_location_pt_directplacement = c_location_pt_directplacement[:2] + (c_location_pt_directplacement[2] + rel_storey_elevation,)
+            return c_location_pt_directplacement
         else:
-            # have the 'Body' representation.
-            for r in column.Representation.Representations:
-                if r.RepresentationIdentifier == 'Body':
-                    mapped_r = r.Items[0].MappingSource.MappedRepresentation
-                    if mapped_r.RepresentationType=='SweptSolid' and all(hasattr(mapped_r.Items[0], attr) for attr in ["Depth", "Position"]):
-                       
-                        #length
-                        column_length = mapped_r.Items[0].Depth
-                        
-                        #orientation
-                        if mapped_r.Items[0].ExtrudedDirection and hasattr(mapped_r.Items[0].ExtrudedDirection,'DirectionRatios'):
-                            column_orientation = mapped_r.Items[0].ExtrudedDirection.DirectionRatios
-                        
-                        #location
-                        column_location_p1 = mapped_r.Items[0].Position.Location.Coordinates
-                        if abs(column_location_p1[0])<0.001 and abs(column_location_p1[1])<0.001: ## to improve.
-                            column_location = None
-                        else:
-                            column_location_p2 = tuple((direction_val * column_length) + p1_val for p1_val, direction_val in \
-                                                    zip(column_location_p1, column_orientation))
-                            column_location = [list(column_location_p1),list(column_location_p2)]
-                    
-                    elif mapped_r.RepresentationType=='Brep' or mapped_r.RepresentationType=='Tessellation' or mapped_r.RepresentationType=='AdvancedBrep':
-                        # RepresentationType can also be 'Brep', 'Tessellation' and 'AdvancedBrep'. for TUM_Gebaude_models.
-                        column_length = 100.0 # to be corrected.
-                        column_orientation = (0.0, 0.0, 1.0) # to be corrected.
-                    else:
-                        print ("test")
-                
-            # how to get the column_orientation
-                            
-            # doesnt have the 'Body' representation.
-            if column_location == None:
-                if hasattr(column, "ObjectPlacement"):
-
-                    column_location_p1 = column.ObjectPlacement.RelativePlacement.Location.Coordinates 
-                    # if column_location_p1[-1] != column.ObjectPlacement.PlacementRelTo.PlacesObject[0].Elevation:
-                    rel_storey_elevation = column.ObjectPlacement.PlacementRelTo.PlacesObject[0].Elevation
-                    rel_placement = column.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates
-                    column_location_p1 = tuple(sum(x) for x in zip(column_location_p1, rel_placement))
-                    column_location_p1 = column_location_p1[:2] + (column_location_p1[2] + rel_storey_elevation,)
-                    
-                    column_location_p2 = tuple((direction_val * column_length) + p1_val for p1_val, direction_val in \
-                                    zip(column_location_p1, column_orientation))  # type: ignore
-                    column_location = [list(column_location_p1),list(column_location_p2)]
-                else:
-                    raise ValueError("column doesn't have ObjectPlacement.")
-                    
-        return column_location, column_length
+            return c_location_pt_from_body
 
     # function notes.
-    def extract_a_column(self, ifc_column):
-        
-        info_a_column = dict()
-        column_location, column_length = self.cacl_column_geometry(ifc_column)
-        info_a_column.update({
-            "id": ifc_column.GlobalId,
-            "elevation":self.get_object_elevation(ifc_column),
-            "location": column_location,
-            "length": column_length,
+    def _update_column_info(self, column, info_c):
+
+        column_location_p1 = self._get_location_column(column)
+        column_location_p2 = column_location_p1[:2] + (column_location_p1[2] + info_c['height'],)
+
+        info_c.update({
+            "elevation": column_location_p1[-1],
+            'location': [column_location_p1, column_location_p2],
         })
-        
-        return info_a_column
 
+        return info_c
+    
     @time_decorator
-    def extract_all_columns(self):
-
+    def extract_all_columns_via_triangulation(self):
+        
         self.info_columns = []
-        for c in self.columns:
-            info_a_column = self.extract_a_column(c)
-            self.info_columns.append(info_a_column)
+        self.get_column_dimensions()
+        self.enrich_column_information()
 
 #column ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================

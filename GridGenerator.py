@@ -12,7 +12,6 @@ from shapely.geometry import Point, LineString, MultiPoint
 
 import bokeh.plotting
 
-from wallExtractor import WallWidthExtractor
 from quickTools import is_sloped_point_on_lineby2points, get_line_slope_by_points, is_close_to_known_slopes, remove_duplicate_points
 from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses
 
