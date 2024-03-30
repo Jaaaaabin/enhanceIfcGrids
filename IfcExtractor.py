@@ -12,7 +12,7 @@ from matplotlib.ticker import PercentFormatter
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-from quickTools import time_decorator, remove_duplicate_dicts
+from quickTools import time_decorator, remove_duplicate_dicts, get_rectangle_corners, find_most_common_value, distance_between_points
 
 #===================================================================================================
 #IfcGeneral ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
@@ -90,7 +90,44 @@ class IfcExtractor:
             self.spaces = self.model.by_type("IfcSpace")
             self.columns = self.model.by_type("IfcColumn")
             self.walls = self.model.by_type("IfcWall") + self.model.by_type('IfcWallStandardCase')
-            self.curtainwalls = self.model.by_type("IfcCurtainWall")
+            self.curtainwalls = self.model.by_type("IfcCurtainWall")            
+            self.plates = self.model.by_type("IfcPlate")
+            self.members = self.model.by_type("IfcMember")
+
+    # function notes.
+    def _calc_element_orientation(self, element, deg_range=360):
+
+        if element.ObjectPlacement.RelativePlacement.RefDirection is None:
+            return 0.0
+        
+        orientation_vec = element.ObjectPlacement.RelativePlacement.RefDirection.DirectionRatios
+        orientation_rad = math.atan2(orientation_vec[1], orientation_vec[0])
+        orientation_deg = math.degrees(orientation_rad) % deg_range
+        
+        return round(orientation_deg, 4)
+    
+    # function notes.
+    def _vertices2dimensions(self, vertices, deci=6):
+        verts_array = np.array(vertices)
+        x_range, y_range, z_range = np.ptp(verts_array, axis=0)
+        length, width = max(x_range, y_range), min(x_range, y_range)
+        height = z_range
+
+        return {
+            'length': round(length, deci),
+            'width': round(width, deci),
+            'height': round(height, deci),
+        }
+    
+    # function notes.
+    def _shape2_location_verts(self, shape):
+
+        matrix = shape.transformation.matrix.data
+        matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
+        location = matrix[:,3][0:3]
+        grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+        return location, grouped_verts
+    
 
 #IfcGeneral ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -104,51 +141,20 @@ class IfcExtractor:
         return psets.get('Pset_WallCommon', {}).get('LoadBearing')
     
     # function notes.
-    def _calc_wall_orientation(self, wall, deg_range=360):
+    def get_wall_dimensions(self):
 
-        if wall.ObjectPlacement.RelativePlacement.RefDirection is None:
-            return 0.0
-        
-        orientation_vec = wall.ObjectPlacement.RelativePlacement.RefDirection.DirectionRatios
-        orientation_rad = math.atan2(orientation_vec[1], orientation_vec[0])
-        orientation_deg = math.degrees(orientation_rad) % deg_range
-        
-        return round(orientation_deg, 4)
-
-    # function notes.
-    def _vertices2dimensions(self, vertices, deci=6):
-        verts_array = np.array(vertices)
-        x_range, y_range, z_range = np.ptp(verts_array, axis=0)
-        length, width = max(x_range, y_range), min(x_range, y_range)
-        height = z_range
-
-        return {
-            'length': round(length, deci), 
-            'height': round(height, deci), 
-            'width': round(width, deci)
-        }
-    
-    # function notes.
-    def get_wall_dimensions(self,):
-        
-        including_objects=self.walls
         iterator = ifcopenshell.geom.iterator(
-            self.settings, self.model, multiprocessing.cpu_count(), include=including_objects)
+            self.settings, self.model, multiprocessing.cpu_count(), include=self.walls)
         
         if self.type_geo == 'triangle':
 
             if iterator.initialize():
 
                 while True:
-
+                
                     shape = iterator.get()
-                    grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+                    wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
                     wall_dimensions = self._vertices2dimensions(grouped_verts)
-
-                    matrix = shape.transformation.matrix.data
-                    matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
-
-                    wall_location_p1 = matrix[:,3][0:3]
                     wall_location_p1 = wall_location_p1.tolist()
 
                     dict_of_a_wall = {
@@ -169,13 +175,14 @@ class IfcExtractor:
             self._update_wall_info(id_to_wall[info['id']], info) \
                 for info in self.info_walls if \
                     info['id'] in id_to_wall and \
-                        self._calc_wall_orientation(id_to_wall[info['id']]) is not None and \
+                        self._calc_element_orientation(id_to_wall[info['id']]) is not None and \
                             info['length'] is not None
         ]
     
+    # function notes.
     def _update_wall_info(self, wall, info_w):
 
-        orientation_deg = self._calc_wall_orientation(wall)
+        orientation_deg = self._calc_element_orientation(wall)
         wall_location_p1 = info_w['location'][0]
         wall_location_p2 = (
             wall_location_p1[0] + info_w['length'] * math.cos(math.radians(orientation_deg)),
@@ -185,46 +192,117 @@ class IfcExtractor:
 
         info_w.update({
             'location': [wall_location_p1, wall_location_p2],
-            'orientation': self._calc_wall_orientation(wall,deg_range=180), # Here we use degree among 0-180 degree.
+            'orientation': self._calc_element_orientation(wall,deg_range=180), # Here we use degree among 0-180 degree.
             'loadbearing': self.calc_wall_loadbearing(wall),
         })
 
         return info_w
-    
+
     @time_decorator
     def extract_all_walls_via_triangulation(self):
         
         self.info_walls = []
+        self.info_curtainwalls = []
+
+        # walls
         self.get_wall_dimensions()
         self.enrich_wall_information()
 
-    # # function notes.(working.)
-    # def enrich_wall_information(self):
-        
-    #     id_to_wall = {w.GlobalId: w for w in self.walls}
-    #     pair_wall_info = [(id_to_wall[d['id']], d) for d in self.info_walls if d['id'] in id_to_wall]
-        
-    #     new_info_walls = []
-    #     for w, info_w in pair_wall_info:
-            
-    #         if w.GlobalId != info_w['id']:
-    #             raise ValueError("Matching Error")
-    #         else:
-    #             orientation_deg = self.calc_wall_orientation(w)
-    #             if orientation_deg != None and info_w['length'] != None:
-    #                 wall_location_p1 = info_w['location'][0]
-    #                 wall_location_p2 = (
-    #                     wall_location_p1[0]+ info_w['length']*math.cos(math.radians(orientation_deg)),
-    #                     wall_location_p1[1]+ info_w['length']*math.sin(math.radians(orientation_deg)),
-    #                     wall_location_p1[2])
-    #                 info_w.update({
-    #                     'location': [wall_location_p1,wall_location_p2],
-    #                     'orientation': self.calc_wall_orientation(w,deg_range=180)
-    #                 })
-    #                 new_info_walls.append(info_w)
-    #     self.info_walls = new_info_walls
-        
+        # curtainwalls.
+        self.process_curtainwall_subelements()
+        self.get_curtainwall_information()
+
+        self.info_all_walls = self.info_walls + self.info_curtainwalls
+   
 #wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#===================================================================================================
+
+#===================================================================================================
+#curtainwall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    
+    def process_curtainwall_subelements(self):
+
+        self.id2orientation_plates = dict()
+        for plate in self.plates:
+            self.id2orientation_plates.update({
+                plate.GlobalId: self._calc_element_orientation(plate)
+            })
+
+        self.id2orientation_members = dict()
+        for member in self.members:
+            self.id2orientation_members.update({
+                member.GlobalId: self._calc_element_orientation(member)
+            })
+
+    def get_curtainwall_information(self):
+        
+        try:
+            for cw in self.curtainwalls:
+                if hasattr(cw,'IsDecomposedBy') and len(cw.IsDecomposedBy)==1 and cw.IsDecomposedBy[0].is_a('IfcRelAggregates'):
+
+                    cw_related_objects = cw.IsDecomposedBy[0].RelatedObjects
+                    cw_related_plates = [ob for ob in cw_related_objects if ob.is_a('IfcPlate')]
+                    
+                    if not cw_related_plates:
+                        raise ValueError(f"no related plates found in the IfcCurtainWall {cw.GlobalId}.")
+
+                    plate_iterator = ifcopenshell.geom.iterator(
+                        self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_plates)
+                    
+                    plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = [], [], []
+
+                    if self.type_geo == 'triangle':
+                        if plate_iterator.initialize():
+                            while True:
+
+                                shape = plate_iterator.get()
+                                location, grouped_verts = self._shape2_location_verts(shape)
+                                dimensions = self._vertices2dimensions(grouped_verts)
+                                
+                                orientation_deg = self.id2orientation_plates[shape.guid]
+
+                                location_p1 = location.tolist()
+                                location_p2 = [
+                                    location_p1[0] + dimensions['length'] * math.cos(math.radians(orientation_deg)),
+                                    location_p1[1] + dimensions['length'] * math.sin(math.radians(orientation_deg)),
+                                    location_p1[2]]
+                                
+                                location_p3 = location_p1[:2] + [location_p1[2] + dimensions['height']]
+                                location_p4 = location_p2[:2] + [location_p2[2] + dimensions['height']]
+                                
+                                plate_location_per_cw.extend([location_p1, location_p2, location_p3, location_p4]) # no need for further flatten.
+                                plate_orientation_per_cw.append(orientation_deg)
+                                plate_width_per_cw.append(dimensions['width'])
+                                
+                                if not plate_iterator.next():
+                                    break
+
+                    cw_corner_points = get_rectangle_corners(plate_location_per_cw)
+                    cw_elevation = min(pt[2] for pt in cw_corner_points)
+                    cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
+                    cw_length = distance_between_points(cw_location[0], cw_location[1])
+                    cw_width = find_most_common_value(plate_width_per_cw)[0]
+                    cw_orientation = find_most_common_value(plate_orientation_per_cw)[0]
+                    
+                    self.info_curtainwalls.append({
+                        'id': cw.GlobalId,
+                        'elevation': cw_elevation,
+                        'location': cw_location,
+                        'length': cw_length,
+                        'width': round(cw_width, 4),
+                        'orientation': cw_orientation % 180.0,
+                        'loadbearing': False,
+                        })
+                
+                else:
+                    # Logging the missing or malformed attribute rather than raising an exception to allow processing to continue
+                    print(f'Attribute check failed for IfcCurtainWall with guid {cw.GlobalId}.')
+        
+        except Exception as e:
+            # General exception handling to catch unexpected errors
+            print(f"An error occurred: {str(e)}")
+
+#curtainwall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
@@ -243,12 +321,8 @@ class IfcExtractor:
                 while True:
 
                     shape = iterator.get()
-                    grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+                    column_location_p1, grouped_verts = self._shape2_location_verts(shape)
                     column_dimensions = self._vertices2dimensions(grouped_verts)
-                    matrix = shape.transformation.matrix.data
-                    matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
-
-                    column_location_p1 = matrix[:,3][0:3]
                     column_location_p1 = column_location_p1.tolist()
 
                     dict_of_a_column = {
@@ -317,12 +391,12 @@ class IfcExtractor:
 #===================================================================================================
 
 #===================================================================================================
-#display ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+#displayandexport ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
     # function notes.
     def wall_width_histogram(self):
         
-        values = [w['width'] for w in self.info_walls if 'width' in w]
+        values = [w['width'] for w in self.info_all_walls if 'width' in w]
         #  RV_A / RV_S, width of non-structural walls are lost. - > to check.
 
         fig = plt.figure(figsize=(10, 5))
@@ -339,7 +413,7 @@ class IfcExtractor:
     # function notes.
     def wall_length_histogram(self):
 
-        values = [w['length'] for w in self.info_walls if 'length' in w]
+        values = [w['length'] for w in self.info_all_walls if 'length' in w]
 
         fig = plt.figure(figsize=(10, 5))
         ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
@@ -354,7 +428,8 @@ class IfcExtractor:
 
     # function notes.
     def wall_location_map(self):
-        values = [w['location'] for w in self.info_walls if 'location' in w]
+
+        values = [w['location'] for w in self.info_all_walls if 'location' in w]
 
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(111, projection='3d')
@@ -372,7 +447,7 @@ class IfcExtractor:
 
     # function notes.
     def wall_orientation_histogram(self):
-        values = [w['orientation'] for w in self.info_walls if 'orientation' in w]
+        values = [w['orientation'] for w in self.info_all_walls if 'orientation' in w]
 
         fig = plt.figure(figsize=(10, 5))
         ax = plt.axes((0.0875, 0.1, 0.875, 0.875))
@@ -386,7 +461,7 @@ class IfcExtractor:
         plt.savefig(os.path.join(self.out_fig_path, 'wall_orientation_histogram.png'), dpi=200)
         plt.close(fig)
 
-    # function notes.
+    @time_decorator
     def wall_display(self):
 
         self.wall_width_histogram()
@@ -407,14 +482,14 @@ class IfcExtractor:
     # function notes.
     def write_dict_walls(self):
         
-        dict_info_walls = remove_duplicate_dicts(self.info_walls)
+        dict_info_walls = remove_duplicate_dicts(self.info_all_walls)
         try:
             with open(os.path.join(self.out_fig_path, 'info_walls.json'), 'w') as json_file:
                 json.dump(dict_info_walls, json_file, indent=4)
         except IOError as e:
             raise IOError(f"Failed to write to {self.out_fig_path + 'walls.json'}: {e}")
-
-#display ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+        
+#displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
@@ -435,7 +510,6 @@ class IfcExtractor:
     #             "location": space_location, # not working.
     #         })
     #     return space_info
-
 
 #===================================================================================================
     # plotting

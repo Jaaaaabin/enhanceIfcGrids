@@ -1,6 +1,8 @@
 import functools
 import time
 import json
+import numpy as np
+from collections import Counter
 
 def time_decorator(func):
 
@@ -89,6 +91,13 @@ def remove_duplicate_points(points):
             unique_points.append(pt)
 
     return unique_points
+
+def find_most_common_value(values):
+
+    value_counts = Counter(values)
+    most_common_value, most_common_count = value_counts.most_common(1)[0]
+
+    return most_common_value, most_common_count
 
 def get_line_slope_by_points(point1, point2):
     
@@ -182,5 +191,27 @@ def calculate_line_crosses(main_line, second_line, ignore_cross_edge=False, thre
                 return False
         else:
             return True
+        
+def get_rectangle_corners(points):
+
+    # read them into np.array
+    points = np.array(points)
     
+    # remove duplicated points first.
+    points = np.unique(points, axis=0)
+
+    min_x, min_y, min_z = points.min(axis=0)
+    max_x, max_y, max_z = points.max(axis=0)
+    mid_point = np.array([(min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2])
     
+    min_z_points = points[points[:, 2] == min_z]
+    max_z_points = points[points[:, 2] == max_z]
+    relevant_points = np.vstack((min_z_points, max_z_points))
+    
+    distances = np.sqrt(((points - mid_point) ** 2).sum(axis=1))
+    
+    farthest_points_indices = np.argsort(-distances)[:4]  # Get indices of the 4 largest distances
+    farthest_points = points[farthest_points_indices]
+    farthest_distances = distances[farthest_points_indices]
+    
+    return farthest_points

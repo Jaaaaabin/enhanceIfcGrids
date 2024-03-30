@@ -5,20 +5,19 @@ import os
 import itertools
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-# DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
-DATA_FOLDER_PATH=r'C:\dev\phd\enrichIFC\preparedata\data_icccbe'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 
 def process_ifc_file(input_path, output_path):
 
-    extractor = IfcExtractor(input_path,output_path)
+    extractor = IfcExtractor(input_path, output_path)
     extractor.extract_all_columns_via_triangulation()
     extractor.write_dict_columns()
     extractor.extract_all_walls_via_triangulation()
     extractor.write_dict_walls()
     extractor.wall_display()
-    
+
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
     infoComparator = JsonFileComparator(data_path, ifc_a, ifc_2, json_name)
