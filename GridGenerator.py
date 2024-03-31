@@ -483,7 +483,7 @@ class GridGenerator:
         """
         dynamic storey merging process.
         """
-
+        # todo.
         storeys_with_raised_area = [sorted([st1,st2]) for (st1,st2) in itertools.combinations(self.main_storeys.keys(), 2) if abs(st1-st2)<=self.t_z_storey_raise]
         
         if storeys_with_raised_area:

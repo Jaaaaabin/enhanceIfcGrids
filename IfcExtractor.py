@@ -12,7 +12,9 @@ from matplotlib.ticker import PercentFormatter
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-from quickTools import time_decorator, remove_duplicate_dicts, get_rectangle_corners, find_most_common_value, distance_between_points
+from quickTools import time_decorator
+from quickTools import remove_duplicate_dicts, find_most_common_value
+from quickTools import get_rectangle_corners, distance_between_points
 
 #===================================================================================================
 #IfcGeneral ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
@@ -32,15 +34,23 @@ class IfcExtractor:
             os.makedirs(figure_path, exist_ok=True)
 
             self.version = self.model.schema
+
             # Initialization of lists for various IFC elements
             self.project = []
             self.site = []
             self.storeys = []
-            self.slabs = []
             self.spaces = []
+
             self.columns = []
             self.walls = []
             self.curtainwalls = []
+            self.plates = []
+            self.members = []
+
+            self.slabs = []
+            self.roofs = []
+            self.floors = []
+            
             self.doors = []
             self.windows = []
 
@@ -87,12 +97,19 @@ class IfcExtractor:
 
             self.storeys = self.model.by_type("IfcBuildingStorey")
             self.slabs = self.model.by_type("IfcSlab")
-            self.spaces = self.model.by_type("IfcSpace")
+            self.roofs = self.model.by_type("IfcRoof")
+            
             self.columns = self.model.by_type("IfcColumn")
+            # self.beams = self.model.by_type("IfcBeam")
+            
             self.walls = self.model.by_type("IfcWall") + self.model.by_type('IfcWallStandardCase')
+            
             self.curtainwalls = self.model.by_type("IfcCurtainWall")            
             self.plates = self.model.by_type("IfcPlate")
             self.members = self.model.by_type("IfcMember")
+        
+            self.spaces = self.model.by_type("IfcSpace")
+
 
     # function notes.
     def _calc_element_orientation(self, element, deg_range=360):
@@ -132,6 +149,107 @@ class IfcExtractor:
 #IfcGeneral ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
+#===================================================================================================
+#slab ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    
+    def _floorshape_reasoning(self, shape):
+        
+        # todos.
+        # Figure out what is the output for each line...
+        grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+        verts_per_face = ifcopenshell.util.shape.get_faces(shape.geometry)
+        
+        # those edge that occurs only once, is the outlines.
+        grouped_edges = ifcopenshell.util.shape.get_edges(shape.geometry)
+
+        locations_per_face = []
+        for sublist in verts_per_face:
+            new_sublist = [grouped_verts[i].tolist() for i in sublist]
+            locations_per_face.append(new_sublist)
+
+        locations_per_face = np.array(locations_per_face, dtype=object)
+        all_z_values = np.array([vertex[2] for face in locations_per_face for vertex in face])
+        z_min, z_max = np.min(all_z_values), np.max(all_z_values)
+        faces_side, faces_upper, faces_lower = [], [], []
+
+        for face in locations_per_face:
+            z_values = [vertex[2] for vertex in face]  # Extract z-values of all vertices in the face
+            if len(set(z_values)) == 1:  # Check if all z-values are the same
+                if z_values[0] == z_max:
+                    faces_upper.append(face)
+                if z_values[0] == z_min:
+                    faces_lower.append(face)
+            else:
+                faces_side.append(face)
+        
+        # output values.
+        floor_width = z_max - z_min
+
+        print ("tss")
+
+    def get_floor_dimensions(self):
+
+        iterator = ifcopenshell.geom.iterator(
+                    self.settings, self.model, multiprocessing.cpu_count(), include=self.floors)
+
+        if self.type_geo == 'triangle':
+
+            if iterator.initialize():
+
+                while True:
+                
+                    shape = iterator.get()
+                    self._floorshape_reasoning(shape)
+                    # draw_3d_points(grouped_verts)
+                    # dimensions = self._vertices2dimensions(grouped_verts)
+                    # location_p1 = location.tolist()
+
+                    if not iterator.next():
+                        break
+
+    def extract_all_floors_via_triangulation(self):
+        
+        def draw_3d_points(points):
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection='3d')
+            
+            x_coords = [point[0] for point in points]
+            y_coords = [point[1] for point in points]
+            z_coords = [point[2] for point in points]
+    
+            ax.scatter(x_coords, y_coords, z_coords)
+            ax.set_xlabel('X Coordinate')
+            ax.set_ylabel('Y Coordinate')
+            ax.set_zlabel('Z Coordinate')
+            plt.show()
+
+        if self.version == 'IFC2X3':
+            self.floors = self.slabs
+        else:
+            self.floors = self.slabs + self.roofs
+
+        self.get_floor_dimensions()
+
+        # consider the IFC versions. IfcSlab and IfcRoof.
+        # merge / correlate two floors if they're vertically close and locational separated.
+        # To determine main storeys. considering that the IfcCurtainWall has vertical shifts.
+
+
+        # for storey in self.storeys:
+        #     print (storey.Elevation)
+        
+        print('step')
+
+#slab ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#===================================================================================================
+
+#===================================================================================================
+#beam ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+
+        
+#beam ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#===================================================================================================
+      
 #===================================================================================================
 #wall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 

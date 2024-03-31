@@ -215,3 +215,4 @@ def get_rectangle_corners(points):
     farthest_distances = distances[farthest_points_indices]
     
     return farthest_points
+

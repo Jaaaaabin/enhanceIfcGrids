@@ -12,11 +12,14 @@ DATA_RES_PATH = PROJECT_PATH + r'\res'
 def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path, output_path)
-    extractor.extract_all_columns_via_triangulation()
-    extractor.write_dict_columns()
-    extractor.extract_all_walls_via_triangulation()
-    extractor.write_dict_walls()
-    extractor.wall_display()
+    
+    extractor.extract_all_floors_via_triangulation()
+    # extractor.write_dict_slabs()
+    # extractor.extract_all_columns_via_triangulation()
+    # extractor.write_dict_columns()
+    # extractor.extract_all_walls_via_triangulation()
+    # extractor.write_dict_walls()
+    # extractor.wall_display()
 
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
@@ -113,8 +116,8 @@ if __name__ == "__main__":
     #             't_c_dist':0.0001,
     #             't_w_num':2,
     #             't_w_dist':0.0001,
-    #             't_w_st_accumuled_length':5,
-    #             't_w_ns_accumuled_length':5,
+    #             't_w_st_accumuled_length':25,
+    #             't_w_ns_accumuled_length':25,
     #         }
             
     #         building_grid_generation(init_grid_generator, best_new_parameters)
