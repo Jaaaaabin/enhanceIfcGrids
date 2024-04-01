@@ -154,24 +154,34 @@ class IfcExtractor:
     
     def _floorshape_reasoning(self, shape):
         
+        # to check...
         # todos.
-        # Figure out what is the output for each line...
+        # # check this.
+        # shape_grouped_verts = ifcopenshell.util.shape.get_shape_vertices(shape, shape.geometry)
+        # also check https://blenderbim.org/docs-python/ifcopenshell-python/geometry_processing.html
+
+        # A nested numpy array e.g. [[v1x, v1y, v1z], [v2x, v2y, v2z], ...]
         grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
-        verts_per_face = ifcopenshell.util.shape.get_faces(shape.geometry)
+
+        # A nested numpy array e.g. [[f1v1, f1v2, f1v3], [f2v1, f2v2, f2v3], ...]
+        grouped_faces = ifcopenshell.util.shape.get_faces(shape.geometry)
         
-        # those edge that occurs only once, is the outlines.
-        grouped_edges = ifcopenshell.util.shape.get_edges(shape.geometry)
+        # # A nested numpy array e.g. [[e1v1, e1v2], [e2v1, e2v2], ...]
+        # grouped_edges = ifcopenshell.util.shape.get_edges(shape.geometry)
 
         locations_per_face = []
-        for sublist in verts_per_face:
+        for sublist in grouped_faces:
             new_sublist = [grouped_verts[i].tolist() for i in sublist]
             locations_per_face.append(new_sublist)
-
         locations_per_face = np.array(locations_per_face, dtype=object)
         all_z_values = np.array([vertex[2] for face in locations_per_face for vertex in face])
         z_min, z_max = np.min(all_z_values), np.max(all_z_values)
+        
+        floor_width = z_max - z_min
+        if floor_width > 0.5:
+            return None, None
+        
         faces_side, faces_upper, faces_lower = [], [], []
-
         for face in locations_per_face:
             z_values = [vertex[2] for vertex in face]  # Extract z-values of all vertices in the face
             if len(set(z_values)) == 1:  # Check if all z-values are the same
@@ -182,11 +192,36 @@ class IfcExtractor:
             else:
                 faces_side.append(face)
         
-        # output values.
-        floor_width = z_max - z_min
 
-        print ("tss")
+        # slab outline in the xy plane. can be used when merging the slab with raised areas.
+        floor_location_xy = []
 
+        for f_side in faces_side:
+            xy_locations_per_face_s =[]
+            sliced_f = f_side[:, :2]
+            
+            keep_mask = np.ones(sliced_f.shape[0], dtype=bool)
+            for i in range(sliced_f.shape[0]):
+                 for j in range(i + 1, sliced_f.shape[0]):
+                    if np.all(sliced_f[i] == sliced_f[j]):
+                        keep_mask[j] = False  # Mark row j for removal
+            xy_locations_per_face_s = sliced_f[keep_mask]
+            floor_location_xy.append(xy_locations_per_face_s.tolist())
+
+        return floor_width, floor_location_xy
+    
+        # ----------------------------------------------------------------
+        # tempo plotting.
+        # plt.figure(figsize=(10, 6))
+        # for line in xy_locations_faces_side:
+        #     (x1, y1), (x2, y2) = line
+        #     # Plot each line
+        #     plt.plot([x1, x2], [y1, y2], marker='o')
+        # plt.title('2D Lines')
+        # plt.xlabel('X-axis')
+        # plt.ylabel('Y-axis')
+        # plt.savefig(os.path.join(self.out_fig_path,'slab_outline_'+str(shape.id)+'.png'))
+    
     def get_floor_dimensions(self):
 
         iterator = ifcopenshell.geom.iterator(
@@ -199,29 +234,42 @@ class IfcExtractor:
                 while True:
                 
                     shape = iterator.get()
-                    self._floorshape_reasoning(shape)
+                    floor_width, floor_location_xy = self._floorshape_reasoning(shape) # erros happen around the last iterations.. maybe a problem with floor.
+                    
+                    dict_of_a_floor = {
+                        "id": shape.guid,
+                        "location": floor_location_xy,
+                        "width": floor_width,
+                        }
+                    
+                    self.info_floors.append(dict_of_a_floor)
+
                     # draw_3d_points(grouped_verts)
-                    # dimensions = self._vertices2dimensions(grouped_verts)
-                    # location_p1 = location.tolist()
 
                     if not iterator.next():
                         break
-
-    def extract_all_floors_via_triangulation(self):
-        
-        def draw_3d_points(points):
-            fig = plt.figure()
-            ax = fig.add_subplot(111, projection='3d')
-            
-            x_coords = [point[0] for point in points]
-            y_coords = [point[1] for point in points]
-            z_coords = [point[2] for point in points]
     
-            ax.scatter(x_coords, y_coords, z_coords)
-            ax.set_xlabel('X Coordinate')
-            ax.set_ylabel('Y Coordinate')
-            ax.set_zlabel('Z Coordinate')
-            plt.show()
+    def _update_floor_info(self, floor, info_f):
+        
+        shape = ifcopenshell.geom.create_shape(self.settings, floor)
+        floor_elevation = ifcopenshell.util.shape.get_element_bottom_elevation(floor, shape.geometry)
+        info_f.update({
+            'elevation': floor_elevation
+        })
+        return info_f
+
+    def enrich_floor_information(self):
+
+        id_to_floor = {f.GlobalId: f for f in self.floors}
+        self.info_floors = [
+            self._update_floor_info(id_to_floor[info['id']], info) \
+                for info in self.info_floors if \
+                    info['id'] in id_to_floor and info['width'] is not None \
+                    and info['location'] is not None]
+    
+    def extract_all_floors_via_triangulation(self):
+
+        self.info_floors = []
 
         if self.version == 'IFC2X3':
             self.floors = self.slabs
@@ -229,6 +277,7 @@ class IfcExtractor:
             self.floors = self.slabs + self.roofs
 
         self.get_floor_dimensions()
+        self.enrich_floor_information()
 
         # consider the IFC versions. IfcSlab and IfcRoof.
         # merge / correlate two floors if they're vertically close and locational separated.
