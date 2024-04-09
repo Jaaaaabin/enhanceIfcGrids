@@ -13,13 +13,13 @@ def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path, output_path)
     
-    extractor.extract_all_floors_via_triangulation()
+    # extractor.extract_all_floors_via_triangulation()
     # extractor.write_dict_slabs()
-    # extractor.extract_all_columns_via_triangulation()
-    # extractor.write_dict_columns()
-    # extractor.extract_all_walls_via_triangulation()
-    # extractor.write_dict_walls()
-    # extractor.wall_display()
+    extractor.extract_all_columns_via_triangulation()
+    extractor.write_dict_columns()
+    extractor.extract_all_walls_via_triangulation()
+    extractor.write_dict_walls()
+    extractor.wall_display()
 
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
