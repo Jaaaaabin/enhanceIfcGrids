@@ -12,14 +12,12 @@ DATA_RES_PATH = PROJECT_PATH + r'\res'
 def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path, output_path)
-    
-    # extractor.extract_all_floors_via_triangulation()
-    # extractor.write_dict_slabs()
-    extractor.extract_all_columns_via_triangulation()
-    extractor.write_dict_columns()
-    extractor.extract_all_walls_via_triangulation()
-    extractor.write_dict_walls()
-    extractor.wall_display()
+
+    # extractor.export_triangle_geometry(id='2rzvwssmPB$Ogkk_N5eE98', z_box=.1)
+    extractor.extract_all_floors()
+    extractor.extract_all_columns()
+    extractor.extract_all_walls()
+    extractor.wall_and_column_location_display()
 
 def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
@@ -45,17 +43,28 @@ def combinations_from_shared_ifc_basis(all_ifcs):
 
     return basis_combinations
 
-def preparation_of_grid_generation(work_path, ifc_model, info_columns='info_columns.json', info_walls='info_walls.json'):
+def preparation_of_grid_generation(
+    work_path,
+    ifc_model,
+    info_floors='info_floors.json',
+    info_st_columns='info_columns.json',
+    info_st_walls='info_st_walls.json',
+    info_ns_walls='info_ns_walls.json',
+    info_ct_walls='info_ct_walls.json'):
 
+    # initialization
     generator = GridGenerator(
         os.path.join(work_path, ifc_model),
-        os.path.join(work_path, ifc_model, info_columns),
-        os.path.join(work_path, ifc_model, info_walls),
+        os.path.join(work_path, ifc_model, info_floors),
+        os.path.join(work_path, ifc_model, info_st_columns),
+        os.path.join(work_path, ifc_model, info_st_walls),
+        os.path.join(work_path, ifc_model, info_ns_walls),
+        os.path.join(work_path, ifc_model, info_ct_walls),
         )
-
-    generator.prepare_wall_lengths()
-    generator.get_main_storeys_and_directions(num_directions=2) # static.
-    generator.enrich_main_storeys() # static.
+    
+    # preparation.
+    generator.get_main_directions_and_storeys(num_directions=2) # static.
+    generator.enrich_all_element_locations() # static.
 
     return generator
 
@@ -65,13 +74,14 @@ def building_grid_generation(basic_generator, new_parameters):
     new_generator = basic_generator.update_parameters(new_parameters)
     
     # generate the grids
-    new_generator.create_grids()    # dynamic.
+    new_generator.create_grids()
 
-    # calculate the losses
-    new_generator.calculate_cross_lost()    # loss calculation.
+    # # calculate the losses
+    new_generator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)    # loss calculation.
+    new_generator.calculate_grid_distance_deviation_loss()
 
     # display the grids
-    new_generator.display_grids()
+    new_generator.visualization_2d()
     
 # main start path.
 if __name__ == "__main__":
@@ -102,28 +112,30 @@ if __name__ == "__main__":
     # except Exception as e:
     #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
         
-    # # ----------
-    # try:
-    #     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+    # ----------
+    try:
+        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
-    #     for model_path in model_paths:
+        for model_path in model_paths:
 
-    #         # for each building model
-    #         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+            # for each building model
+            init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
-    #         best_new_parameters = {
-    #             't_c_num':5, 
-    #             't_c_dist':0.0001,
-    #             't_w_num':2,
-    #             't_w_dist':0.0001,
-    #             't_w_st_accumuled_length':25,
-    #             't_w_ns_accumuled_length':25,
-    #         }
+            best_thresholds = {
+                'st_c_num': 3,
+                'st_c_dist': 0.0001,
+                'st_w_num': 2,
+                'st_w_dist': 0.0001,
+                'st_w_accumuled_length': 5,
+                'ns_w_num': 1,
+                'ns_w_dist': 0.0001,
+                'ns_w_accumuled_length': 3,
+            }
             
-    #         building_grid_generation(init_grid_generator, best_new_parameters)
+            building_grid_generation(init_grid_generator, best_thresholds)
 
-    # except Exception as e:
-    #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
+    except Exception as e:
+        print(f"Error accessing directory {DATA_RES_PATH}: {e}")
 
 # tbd: also consider the wall width ? (at which stage) when generating the grid lines.
         

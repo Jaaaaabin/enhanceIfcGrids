@@ -8,7 +8,9 @@ old*.py
 tempo*.py
 
 # Data
-data/data_test/save
+data/data_test
+data/data_validation_1
+data/data_validation_2
 dyn/
 
 # Result

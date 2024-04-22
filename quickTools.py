@@ -62,6 +62,17 @@ def remove_duplicate_dicts(list_of_dicts):
             unique_dicts.append(d)
     return unique_dicts
 
+def deep_merge_dictionaries(dict1, dict2):
+    merged = dict1.copy()
+    for key, value in dict2.items():
+        if key in merged and isinstance(merged[key], dict) and isinstance(value, dict):
+            merged[key] = deep_merge_dictionaries(merged[key], value)
+        elif key in merged and isinstance(merged[key], int) and isinstance(value, int):
+            merged[key] += value
+        else:
+            merged[key] = value
+    return merged
+
 def enrich_dict_with_another(dict_main, dict_new, remove_duplicate=False):
 
     for key, value in dict_new.items():
@@ -104,10 +115,10 @@ def get_line_slope_by_points(point1, point2):
     # works for x and y, doesn't matter is z exits or not.
     dx = point2.x - point1.x
     dy = point2.y - point1.y
-    if abs(dx) > 0.0001:
+    if abs(dx) > 0.00001:
         slope = dy / dx
     else:
-        slope = float('inf')  # Verticalline
+        slope = float('inf')  # Vertical line
     return slope
 
 def is_sloped_point_on_lineby2points(point, line_point1, line_point2, slope, threshold):
@@ -117,6 +128,27 @@ def is_sloped_point_on_lineby2points(point, line_point1, line_point2, slope, thr
     """
     return abs((point.y - line_point1.y) - slope * (point.x - line_point1.x)) <= threshold and \
             abs((point.y - line_point2.y) - slope * (point.x - line_point2.x)) <= threshold
+
+def are_points_collinear(p1, p2, p3, p4, t):
+
+    def is_collinear(x1, y1, x2, y2, x3, y3, t):
+        determinant = abs((x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)) # "cross product" of 2D vectors
+        if determinant <= t:
+            return True
+        else:
+            return False
+    
+    # Extract coordinates
+    x1, y1 = p1.x, p1.y
+    x2, y2 = p2.x, p2.y
+    x3, y3 = p3.x, p3.y
+    x4, y4 = p4.x, p4.y
+    # Check if all points are collinear
+    all_collinear = (is_collinear(x1, y1, x2, y2, x3, y3, t) and
+                     is_collinear(x1, y1, x2, y2, x4, y4, t) and
+                     is_collinear(x1, y1, x3, y3, x4, y4, t))
+    
+    return all_collinear
 
 def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.0001):
     """
@@ -178,13 +210,13 @@ def point_on_line_segment(point, line, threshold_segment_percent):
     else:
         return False
 
-def calculate_line_crosses(main_line, second_line, ignore_cross_edge=False, threshold_percent=5):
+def calculate_line_crosses(main_line, second_line, ignore_cross_edge=False, cross_threshold_percent=5):
     
     intersection_point = are_lines_cross(main_line.bounds, second_line.bounds)
     
     if intersection_point:
         if ignore_cross_edge:
-            cross_on_edge = point_on_line_segment(intersection_point, second_line.bounds, threshold_percent)
+            cross_on_edge = point_on_line_segment(intersection_point, second_line.bounds, cross_threshold_percent)
             if not cross_on_edge:
                 return True
             else:
@@ -215,4 +247,8 @@ def get_rectangle_corners(points):
     farthest_distances = distances[farthest_points_indices]
     
     return farthest_points
+
+def a_is_subtuple_of_b(a, b):
+   
+    return set(a).issubset(set(b))
 
