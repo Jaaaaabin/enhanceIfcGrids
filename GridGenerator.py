@@ -985,15 +985,16 @@ class GridGenerator:
                         grid_location_key: []
                     })
 
-    def prepare_total_wall_lengths(self):
+    def prepare_wall_total_lengths_numbers(self):
 
         # IfcWall and IfcCurtainWall.
-
         total_length = 0
         for item in self.info_all_walls:
             if "length" in item:
                 total_length += item["length"]
+
         self.total_wall_lengths = total_length
+        self.total_wall_numbers = len(self.info_all_walls)
         self.info_wall_length_by_id = {d['id']: d['length'] for d in self.info_all_walls if 'id' in d and 'length' in d}
 
     @time_decorator
@@ -1002,7 +1003,7 @@ class GridGenerator:
         "static" initialization processes.
         """
         
-        self.prepare_total_wall_lengths() # serve for calculating the percent / total length of st ns ct walls.
+        self.prepare_wall_total_lengths_numbers() # serve for calculating the percent / total length of st ns ct walls.
         self.get_main_directions(num_directions) # keep it for now. not fully used yet for algorithm.
         self.get_main_storeys_init(include_ct_walls=True) # get the elements perfloor, to check if it gets all necessary information...
         self.enrich_main_storeys()
@@ -1060,9 +1061,14 @@ class GridGenerator:
         for wall_id in self.ids_wall_unbound_crossed:
             cross_w_lengths += self.info_wall_length_by_id[wall_id]
         
-        # get the percent value.
-        self.percent_cross_w_lengths =  (cross_w_lengths/self.total_wall_lengths) * 100.0
-        print ("grid wall cross loss calculation:", self.percent_cross_w_lengths)
+        # get the percent of total number of unbound walls.
+        self.percent_unbound_w_numbers = (1 - len(self.ids_wall_bound_grids) / self.total_wall_numbers) * 100
+        print ("percent_unbound_w_numbers:", self.percent_unbound_w_numbers)
+
+        # get the percent of total lengths of crossed unbound walls.
+        self.percent_cross_unbound_w_lengths =  (cross_w_lengths/self.total_wall_lengths) * 100.0
+        print ("percent_cross_unbound_w_lengths:", self.percent_cross_unbound_w_lengths)
+
 
     # todo. add this part into the OptimizerGA.
     # a loss about global performance of the grids.
@@ -1126,6 +1132,7 @@ class GridGenerator:
             self.avg_deviation_distance_st = sum(self.avg_deviation_distance_st)/len(self.avg_deviation_distance_st)
         if self.avg_deviation_distance_ns:
             self.avg_deviation_distance_ns = sum(self.avg_deviation_distance_ns)/len(self.avg_deviation_distance_ns)
+        
         
         # get the average deviation value.
         print ("deviation of st grid distances - loss calculation:", self.avg_deviation_distance_st)
