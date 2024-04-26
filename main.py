@@ -1,11 +1,19 @@
 import os
+import sys
+import ctypes
 
-ncore = "1"
-os.environ["OMP_NUM_THREADS"] = ncore
-os.environ["OPENBLAS_NUM_THREADS"] = ncore
-os.environ["MKL_NUM_THREADS"] = ncore
-os.environ["VECLIB_MAXIMUM_THREADS"] = ncore
-os.environ["NUMEXPR_NUM_THREADS"] = ncore
+# Enable Virtual Terminal Processing to display ANSI colors in Windows console
+if sys.platform == "win32":
+    kernel32 = ctypes.windll.kernel32
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+
+#
+# ncore = "1"
+# os.environ["OMP_NUM_THREADS"] = ncore
+# os.environ["OPENBLAS_NUM_THREADS"] = ncore
+# os.environ["MKL_NUM_THREADS"] = ncore
+# os.environ["VECLIB_MAXIMUM_THREADS"] = ncore
+# os.environ["NUMEXPR_NUM_THREADS"] = ncore
 
 import numpy as np
 import random
@@ -66,8 +74,8 @@ PARAM_BOUNDS = [value for value in PARAMS.values()]
 # Genetic Algorithm Configuration
 NUM_PARAMS = len(PARAM_BOUNDS)
 
-POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 20 # number of iterations.
+POPULATION_SIZE = 50 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 10 # number of iterations.
 
 CHROMOSOME_LENGTH = 40 # length of the chromosome (individual), which should be divisible by no. of variables (in bit form).
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
