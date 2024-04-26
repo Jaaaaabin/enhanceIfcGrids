@@ -1,159 +1,232 @@
-from ifcExtractor import IfcExtractor
-from infoAnalysis import JsonFileComparator
-from gridGenerator import GridGenerator
 import os
-import itertools
+
+ncore = "1"
+os.environ["OMP_NUM_THREADS"] = ncore
+os.environ["OPENBLAS_NUM_THREADS"] = ncore
+os.environ["MKL_NUM_THREADS"] = ncore
+os.environ["VECLIB_MAXIMUM_THREADS"] = ncore
+os.environ["NUMEXPR_NUM_THREADS"] = ncore
+
+import numpy as np
+import random
+import logging
+import psutil
+import multiprocessing
+
+from deap import algorithms
+from deap import base
+from deap import creator
+from deap import tools
+
+import matplotlib.pyplot as plt
+from deap import base, creator, tools, algorithms
+
+from quickTools import time_decorator
+from ifc_grid_generation import preparation_of_grid_generation
+
+# references.s
+# https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
+# https://deap.readthedocs.io/en/master/tutorials/basic/part4.html
+# https://intellij-support.jetbrains.com/hc/en-us/community/posts/115000384464-Problem-using-multiprocess-with-IPython
+
+#===================================================================================================
+# Logging, Constants and paths setup
+logging.basicConfig(filename='genetic_algorithm.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
-DATA_RES_PATH = PROJECT_PATH + r'\res'
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test_ga')
+DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
+def get_ifc_model_paths(folder_path: str) -> list:
+    model_paths = [filename for filename in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, filename))]
+    if not model_paths:
+        logging.error("No existing model paths found.")
+        raise FileNotFoundError("No model files in DATA_FOLDER_PATH")
+    return model_paths
 
-def process_ifc_file(input_path, output_path):
+MODEL_PATHS = get_ifc_model_paths(DATA_FOLDER_PATH)
+MODEL_PATH = MODEL_PATHS[0]  # Assuming we take only one model every time for the ga testing..
+gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH)
 
-    extractor = IfcExtractor(input_path, output_path)
+#===================================================================================================
+# Basic parameter / vairbales and the preset bounds
+PARAMS = {
+    'st_c_num': (2, 6),
+    # 'st_c_dist': (0.00001, 0.0001),
+    'st_w_num': (2, 4),
+    # 'st_w_dist': (0.00001, 0.0001),
+    'st_w_accumuled_length': (2.0, 20.0),
+    'ns_w_num': (2, 5),
+    # 'ns_w_dist': (0.00001, 0.0001),
+    'ns_w_accumuled_length': (2.0, 20.0),
+}
+PARAM_BOUNDS = [value for value in PARAMS.values()]
 
-    # extractor.export_triangle_geometry(id='2rzvwssmPB$Ogkk_N5eE98', z_box=.1)
-    extractor.extract_all_floors()
-    extractor.extract_all_columns()
-    extractor.extract_all_walls()
-    extractor.wall_and_column_location_display()
+#===================================================================================================
+# Genetic Algorithm Configuration
+NUM_PARAMS = len(PARAM_BOUNDS)
 
-def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
+POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 20 # number of iterations.
 
-    infoComparator = JsonFileComparator(data_path, ifc_a, ifc_2, json_name)
-    infoComparator.run_comparison()
+CHROMOSOME_LENGTH = 40 # length of the chromosome (individual), which should be divisible by no. of variables (in bit form).
+TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 
-def combinations_from_shared_ifc_basis(all_ifcs):
+# todo.. how different it can lead by different probabilities of crossover and mutation
+crossover_prob = 0.5 # the probability with which two individuals are crossed or mated, high means more random jumps or deviation from parents, which is generally not desired
+mutation_prob = 0.2 # the probability for mutating an individual
+
+if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
+    raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
+
+# ===================================================================================================
+# Multiprocesssing Functions
+def monitor_resources():
+    """Function to log CPU and Memory usage of the current process."""
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    logging.info(f"Process {process.pid}: Memory usage: {memory_info.rss / 1024 ** 2:.2f} MB")  # RSS: Resident Set Size
+    logging.info(f"Process {process.pid}: CPU usage: {process.cpu_percent(interval=1)}%")
+
+def worker_init():
+    """Initialize worker process to monitor its resources."""
+    logging.info(f"Worker {multiprocessing.current_process().pid} started.")
+    monitor_resources()  # Monitor the current worker
+
+# Fitness Visualization.
+def visualize_fitness(logbook):
+    """Visualize and save the evolution of fitness over generations."""
+    gen = logbook.select("gen")
+    min_fitness = logbook.select("min")
+    max_fitness = logbook.select("max")
+    avg_fitness = logbook.select("avg")
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
+    plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
+    plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
+    plt.xlabel("Generation")
+    plt.ylabel("Fitness")
+    plt.title("Fitness Over Generations")
+    plt.legend()
+    plt.grid(True)
     
-    ifc_groups = {}
-    basis_combinations = {}
+    # Save the plot to a file
+    plt.savefig(os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_fitness_over_generations.png"))
+    plt.close()  # Close the figure to free up memory
 
-    for s in all_ifcs:
-        basis = s.rsplit('_', 1)[0] if '_' in s else s
-        if basis in ifc_groups:
-            ifc_groups[basis].append(s)
-        else:
-            ifc_groups[basis] = [s]
+    logging.info("Fitness evolution plot saved as 'fitness_over_generations.png'.")
 
-    shared_ifc_groups = {basis: strings for basis, strings in ifc_groups.items() if len(strings) > 1}
-
-    for basis, strings in shared_ifc_groups.items():
-        basis_combinations[basis] = list(itertools.combinations(strings, 2))
-
-    return basis_combinations
-
-def preparation_of_grid_generation(
-    work_path,
-    ifc_model,
-    info_floors='info_floors.json',
-    info_st_columns='info_columns.json',
-    info_st_walls='info_st_walls.json',
-    info_ns_walls='info_ns_walls.json',
-    info_ct_walls='info_ct_walls.json'):
-
-    # initialization
-    generator = GridGenerator(
-        os.path.join(work_path, ifc_model),
-        os.path.join(work_path, ifc_model, info_floors),
-        os.path.join(work_path, ifc_model, info_st_columns),
-        os.path.join(work_path, ifc_model, info_st_walls),
-        os.path.join(work_path, ifc_model, info_ns_walls),
-        os.path.join(work_path, ifc_model, info_ct_walls),
-        )
+# ===================================================================================================
+# Basic Functions of GA
+def decode_all_x(individual: list) -> list:
+    """Decode binary list to parameter values based on defined bounds."""
+    len_chromosome = len(individual)
+    len_chromosome_one_var = int(len_chromosome/NUM_PARAMS)
+    bound_index = 0
+    x = []
     
-    # preparation.
-    generator.get_main_directions_and_storeys(num_directions=2) # static.
-    generator.enrich_all_element_locations() # static.
+    for i in range(0,len_chromosome,len_chromosome_one_var):
+        
+        # converts binary to decimial using 2**place_value
+        chromosome_string = ''.join((str(xi) for xi in  individual[i:i+len_chromosome_one_var]))
+        binary_to_decimal = int(chromosome_string,2)
+        
+        # the decoding method that 
+        # a. can implement lower and upper bounds for each variable
+        # b. can choose chromosome of any length (more the no. of bits, more precise the decoded value).
 
-    return generator
-
-def building_grid_generation(basic_generator, new_parameters):
+        lb, ub= PARAM_BOUNDS[bound_index]
+        precision = (ub-lb)/((2**len_chromosome_one_var)-1)
+        decoded = (binary_to_decimal*precision)+lb
+        x.append(decoded)
+        bound_index +=1
     
-    # update the parameters.
-    new_generator = basic_generator.update_parameters(new_parameters)
-    
-    # generate the grids
-    new_generator.create_grids()
+    return x
 
-    # # calculate the losses
-    new_generator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)    # loss calculation.
-    new_generator.calculate_grid_distance_deviation_loss()
-
-    # display the grids
-    new_generator.visualization_2d()
+# Objective Functions of genetic algorithm (GA)
+@time_decorator
+def objective_fxn(individual: list) -> tuple:     
+    """Evaluate the fitness of an individual based on grid performance metrics."""
+    decoded_individual = decode_all_x(individual)
+    decoded_parameters = dict(zip(PARAMS.keys(), decoded_individual))
     
-# main start path.
+    for key, value in list(decoded_parameters.items()):
+        if '_num' in key:
+            decoded_parameters[key] = int(value)
+    
+    gridGeneratorInit.update_parameters(decoded_parameters)
+    gridGeneratorInit.create_grids()
+    gridGeneratorInit.calculate_grid_wall_cross_loss(ignore_cross_edge=True)
+    gridGeneratorInit.calculate_grid_distance_deviation_loss()
+
+    # print ("self.percent_unbound_w_numbers:", gridGeneratorInit.percent_unbound_w_numbers)
+    # print ("self.percent_cross_unbound_w_lengths:", gridGeneratorInit.percent_cross_unbound_w_lengths)
+    # print ("self.avg_deviation_distance_st:", gridGeneratorInit.avg_deviation_distance_st)
+    
+    # the return value must be a list / tuple, even it's only one fitness value.
+    return (
+        gridGeneratorInit.percent_unbound_w_numbers,
+        gridGeneratorInit.percent_cross_unbound_w_lengths,
+        gridGeneratorInit.avg_deviation_distance_st)
+
+# ===================================================================================================
+# main.
+def main(random_seed, num_processes):
+
+    random.seed(random_seed)
+
+    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, -1.0, -1.0))
+    creator.create("Individual", list, fitness=creator.FitnessMulti)
+
+    toolbox = base.Toolbox()
+
+    # Attribute initializer
+    toolbox.register("attr_bool", random.randint, 0, 1) # attribute generator with toolbox.attr_bool() drawing a random integer between 0 and 1
+    
+    # Structure initializers
+    toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, CHROMOSOME_LENGTH)  # depending upon decoding strategy, which uses precision
+    toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+    toolbox.register("evaluate", objective_fxn) # privide the objective function here
+
+    # registering basic processes using DEAP bulit-in functions
+    toolbox.register("mate", tools.cxUniform, indpb=crossover_prob) # strategy for crossover, this classic two point crossover
+    toolbox.register("mutate", tools.mutFlipBit, indpb=mutation_prob) # mutation strategy with probability of mutation
+    toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE) # selection startegy
+
+    # Process Pool of 4 workers
+    pool = multiprocessing.Pool(processes=num_processes, initializer=worker_init)
+    toolbox.register("map", pool.map)
+
+    pop = toolbox.population(n=POPULATION_SIZE)
+    stats = tools.Statistics(lambda ind: ind.fitness.values)
+    hof = tools.HallOfFame(1)
+
+    stats.register("avg", np.mean)
+    stats.register("std", np.std)
+    stats.register("min", np.min)
+    stats.register("max", np.max)
+    
+    final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=crossover_prob, mutpb=mutation_prob, 
+        ngen=NUM_GENERATIONS, stats=stats, halloffame=hof, verbose=True)
+    pool.close()
+
+    # plot the grids.
+    visualize_fitness(logbook)
+    best_ind = tools.selBest(final_pop, 1)[0]
+    best_ind_decoded = decode_all_x(best_ind)
+    decoded_parameters = dict(zip(PARAMS.keys(), best_ind_decoded))
+    for key, value in list(decoded_parameters.items()):
+        if '_num' in key:
+            decoded_parameters[key] = int(value)
+    print(decoded_parameters)
+    gridGeneratorInit.update_parameters(decoded_parameters)
+    gridGeneratorInit.create_grids()
+    gridGeneratorInit.visualization_2d()
+
 if __name__ == "__main__":
 
-    # ----------
-    try:
-        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
-        
-        for model_path in model_paths:
-            
-            process_ifc_file(
-                os.path.join(DATA_FOLDER_PATH, model_path),
-                os.path.join(DATA_RES_PATH, model_path))
- 
-    except Exception as e:
-        print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")
-
-    # # ----------
-    # try:
-    #     model_paths = [filename for filename in os.listdir(DATA_RES_PATH) if not os.path.isfile(os.path.join(DATA_RES_PATH, filename))]
-    #     json_names = ['info_walls.json']
-
-    #     combinnations_ifc_variants = combinations_from_shared_ifc_basis(model_paths)
-    #     for basis, combos in combinnations_ifc_variants.items():
-    #         for combo in combos:
-    #             [compare_ifc_infos(DATA_RES_PATH, combo[0], combo[1], json_name) for json_name in json_names]
-
-    # except Exception as e:
-    #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
-        
-    # ----------
-    try:
-        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
-        
-        for model_path in model_paths:
-
-            # for each building model
-            init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-
-            best_thresholds = {
-                'st_c_num': 3,
-                'st_c_dist': 0.0001,
-                'st_w_num': 2,
-                'st_w_dist': 0.0001,
-                'st_w_accumuled_length': 5,
-                'ns_w_num': 1,
-                'ns_w_dist': 0.0001,
-                'ns_w_accumuled_length': 3,
-            }
-            
-            building_grid_generation(init_grid_generator, best_thresholds)
-
-    except Exception as e:
-        print(f"Error accessing directory {DATA_RES_PATH}: {e}")
-
-# tbd: also consider the wall width ? (at which stage) when generating the grid lines.
-        
-# to do
-# part 1
-# when generating the grids, also register the source components, for both columns and walls.
-# what can be the criteria toward the 'global optimal' of grid lines.? -> lead to the adoption of an optimization algorithm.
-# should we first do data extraction from the z(vertical) direction or we frist start from horizontal plans.
-
-# part 2
-# create parameters, based on the estimated grid lines and the related relationships (with building components), in the design authoring tool, i.e. Autodesk Revit.
-# and add something else.
-
-# part 3
-# final ending is the user interface...?
-
-# outline detection
-# https://www.cgal.org/
-# https://stackoverflow.com/questions/2741589/given-a-large-set-of-vertices-in-a-non-convex-polygon-how-can-i-find-the-edges
-# https://stackoverflow.com/questions/25585401/travelling-salesman-in-scipy
-# https://gis.stackexchange.com/questions/417467/how-to-extract-the-boundaries-of-shapely-multipoint
+    main(
+        random_seed=64,
+        num_processes=12,
+        )
