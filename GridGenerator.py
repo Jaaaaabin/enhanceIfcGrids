@@ -4,7 +4,6 @@ import copy
 import json
 import math
 import itertools
-from tqdm import tqdm
 from collections import Counter
 import numpy as np
 import shapely
