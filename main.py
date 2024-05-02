@@ -7,7 +7,6 @@ if sys.platform == "win32":
     kernel32 = ctypes.windll.kernel32
     kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
 
-#
 # ncore = "1"
 # os.environ["OMP_NUM_THREADS"] = ncore
 # os.environ["OPENBLAS_NUM_THREADS"] = ncore
@@ -38,9 +37,7 @@ from ifc_grid_generation import preparation_of_grid_generation
 # https://intellij-support.jetbrains.com/hc/en-us/community/posts/115000384464-Problem-using-multiprocess-with-IPython
 
 #===================================================================================================
-# Logging, Constants and paths setup
-logging.basicConfig(filename='genetic_algorithm.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
-
+# Paths setup:
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test_ga')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
@@ -57,6 +54,11 @@ MODEL_PATH = MODEL_PATHS[0]  # Assuming we take only one model every time for th
 gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH)
 
 #===================================================================================================
+# Log registration.
+# reconfigurate the logging file.
+logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
+
+#===================================================================================================
 # Basic parameter / vairbales and the preset bounds
 PARAMS = {
     'st_c_num': (2, 6),
@@ -71,14 +73,14 @@ PARAMS = {
 PARAM_BOUNDS = [value for value in PARAMS.values()]
 
 #===================================================================================================
-# Genetic Algorithm Configuration
+# Genetic Algorithm Configuration - Constants
 NUM_PARAMS = len(PARAM_BOUNDS)
 
 POPULATION_SIZE = 50 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 10 # number of iterations.
+NUM_GENERATIONS = 3 # number of iterations.
 
-CHROMOSOME_LENGTH = 40 # length of the chromosome (individual), which should be divisible by no. of variables (in bit form).
-TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
+CHROMOSOME_LENGTH = 40 # length of the chromosome (individual), which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
+TOURNAMENT_SIZE = 5 # number of participants in tournament selection.
 
 # todo.. how different it can lead by different probabilities of crossover and mutation
 crossover_prob = 0.5 # the probability with which two individuals are crossed or mated, high means more random jumps or deviation from parents, which is generally not desired
@@ -93,8 +95,8 @@ def monitor_resources():
     """Function to log CPU and Memory usage of the current process."""
     process = psutil.Process()
     memory_info = process.memory_info()
-    logging.info(f"Process {process.pid}: Memory usage: {memory_info.rss / 1024 ** 2:.2f} MB")  # RSS: Resident Set Size
-    logging.info(f"Process {process.pid}: CPU usage: {process.cpu_percent(interval=1)}%")
+    logging.info(f"Process {process.pid}: Memory usage: {memory_info.rss / 1024 ** 2:.2f} MB")
+    # logging.info(f"Process {process.pid}: CPU usage: {process.cpu_percent(interval=1)}%") # always 0%...
 
 def worker_init():
     """Initialize worker process to monitor its resources."""
@@ -127,7 +129,7 @@ def visualize_fitness(logbook):
 
 # ===================================================================================================
 # Basic Functions of GA
-def decode_all_x(individual: list) -> list:
+def decode_binary_x(individual: list) -> list:
     """Decode binary list to parameter values based on defined bounds."""
     len_chromosome = len(individual)
     len_chromosome_one_var = int(len_chromosome/NUM_PARAMS)
@@ -152,16 +154,22 @@ def decode_all_x(individual: list) -> list:
     
     return x
 
-# Objective Functions of genetic algorithm (GA)
-@time_decorator
-def objective_fxn(individual: list) -> tuple:     
-    """Evaluate the fitness of an individual based on grid performance metrics."""
-    decoded_individual = decode_all_x(individual)
-    decoded_parameters = dict(zip(PARAMS.keys(), decoded_individual))
+def adjust_x_values(decoded_x):
+
+    decoded_parameters = dict(zip(PARAMS.keys(), decoded_x))
     
     for key, value in list(decoded_parameters.items()):
         if '_num' in key:
             decoded_parameters[key] = int(value)
+
+    return decoded_parameters
+
+# Objective Functions of genetic algorithm (GA)
+@time_decorator
+def objective_fxn(individual: list) -> tuple:     
+    """Evaluate the fitness of an individual based on grid performance metrics."""
+    decoded_individual = decode_binary_x(individual)
+    decoded_parameters = adjust_x_values(decoded_individual)
     
     gridGeneratorInit.update_parameters(decoded_parameters)
     gridGeneratorInit.create_grids()
@@ -172,6 +180,7 @@ def objective_fxn(individual: list) -> tuple:
     # print ("self.percent_cross_unbound_w_lengths:", gridGeneratorInit.percent_cross_unbound_w_lengths)
     # print ("self.avg_deviation_distance_st:", gridGeneratorInit.avg_deviation_distance_st)
     
+    logging.info("The Ifc input parameters: %s", decoded_parameters)
     # the return value must be a list / tuple, even it's only one fitness value.
     return (
         gridGeneratorInit.percent_unbound_w_numbers,
@@ -180,7 +189,7 @@ def objective_fxn(individual: list) -> tuple:
 
 # ===================================================================================================
 # main.
-def main(random_seed, num_processes):
+def main(random_seed, num_processes=1):
 
     random.seed(random_seed)
 
@@ -202,9 +211,10 @@ def main(random_seed, num_processes):
     toolbox.register("mutate", tools.mutFlipBit, indpb=mutation_prob) # mutation strategy with probability of mutation
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE) # selection startegy
 
-    # Process Pool of 4 workers
-    pool = multiprocessing.Pool(processes=num_processes, initializer=worker_init)
-    toolbox.register("map", pool.map)
+    # Process Pool of multi workers
+    if num_processes > 1:
+        pool = multiprocessing.Pool(processes=num_processes, initializer=worker_init)
+        toolbox.register("map", pool.map)
 
     pop = toolbox.population(n=POPULATION_SIZE)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
@@ -217,24 +227,21 @@ def main(random_seed, num_processes):
     
     final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=crossover_prob, mutpb=mutation_prob, 
         ngen=NUM_GENERATIONS, stats=stats, halloffame=hof, verbose=True)
-    pool.close()
-
+    
+    if num_processes > 1:
+        pool.close()
+    
     # plot the grids.
     visualize_fitness(logbook)
     best_ind = tools.selBest(final_pop, 1)[0]
-    best_ind_decoded = decode_all_x(best_ind)
-    decoded_parameters = dict(zip(PARAMS.keys(), best_ind_decoded))
-    for key, value in list(decoded_parameters.items()):
-        if '_num' in key:
-            decoded_parameters[key] = int(value)
-    print(decoded_parameters)
+    best_ind_decoded = decode_binary_x(best_ind)
+    decoded_parameters = adjust_x_values(best_ind_decoded)
+    print("best ind decoded parameter values:", decoded_parameters)
+
     gridGeneratorInit.update_parameters(decoded_parameters)
     gridGeneratorInit.create_grids()
     gridGeneratorInit.visualization_2d()
 
 if __name__ == "__main__":
 
-    main(
-        random_seed=64,
-        num_processes=12,
-        )
+    main(random_seed=64, num_processes=12)
