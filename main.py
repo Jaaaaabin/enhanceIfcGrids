@@ -1,5 +1,6 @@
 import os
 import sys
+import copy
 import ctypes
 
 # Enable Virtual Terminal Processing to display ANSI colors in Windows console
@@ -19,11 +20,6 @@ import random
 import logging
 import psutil
 import multiprocessing
-
-from deap import algorithms
-from deap import base
-from deap import creator
-from deap import tools
 
 import matplotlib.pyplot as plt
 from deap import base, creator, tools, algorithms
@@ -51,7 +47,7 @@ def get_ifc_model_paths(folder_path: str) -> list:
 
 MODEL_PATHS = get_ifc_model_paths(DATA_FOLDER_PATH)
 MODEL_PATH = MODEL_PATHS[0]  # Assuming we take only one model every time for the ga testing..
-gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH)
+gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH) # initial gridGenerator to be "deep" copied...
 
 #===================================================================================================
 # Log registration.
@@ -76,18 +72,25 @@ PARAM_BOUNDS = [value for value in PARAMS.values()]
 # Genetic Algorithm Configuration - Constants
 NUM_PARAMS = len(PARAM_BOUNDS)
 
-POPULATION_SIZE = 50 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 3 # number of iterations.
+POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 15 # number of iterations.
 
 CHROMOSOME_LENGTH = 40 # length of the chromosome (individual), which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
-TOURNAMENT_SIZE = 5 # number of participants in tournament selection.
+TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 
 # todo.. how different it can lead by different probabilities of crossover and mutation
-crossover_prob = 0.5 # the probability with which two individuals are crossed or mated, high means more random jumps or deviation from parents, which is generally not desired
-mutation_prob = 0.2 # the probability for mutating an individual
+CROSS_PROB = 0.2 # the probability with which two individuals are crossed or mated, high means more random jumps or deviation from parents, which is generally not desired
+MUTAT_PROB = 0.5 # the probability for mutating an individual
 
 if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
     raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
+
+logging.info("POPULATION_SIZE: %s", POPULATION_SIZE)
+logging.info("NUM_GENERATIONS: %s", NUM_GENERATIONS)
+logging.info("CHROMOSOME_LENGTH: %s", CHROMOSOME_LENGTH)
+logging.info("TOURNAMENT_SIZE: %s", TOURNAMENT_SIZE)
+logging.info("CROSS_PROB: %s", CROSS_PROB)
+logging.info("MUTAT_PROB: %s", MUTAT_PROB)
 
 # ===================================================================================================
 # Multiprocesssing Functions
@@ -165,27 +168,35 @@ def adjust_x_values(decoded_x):
     return decoded_parameters
 
 # Objective Functions of genetic algorithm (GA)
-@time_decorator
-def objective_fxn(individual: list) -> tuple:     
+# @time_decorator
+def objective_fxn(individual: list) -> tuple:
+
     """Evaluate the fitness of an individual based on grid performance metrics."""
+    # decode the binary individuals to real parameter values.
     decoded_individual = decode_binary_x(individual)
     decoded_parameters = adjust_x_values(decoded_individual)
-    
-    gridGeneratorInit.update_parameters(decoded_parameters)
-    gridGeneratorInit.create_grids()
-    gridGeneratorInit.calculate_grid_wall_cross_loss(ignore_cross_edge=True)
-    gridGeneratorInit.calculate_grid_distance_deviation_loss()
 
-    # print ("self.percent_unbound_w_numbers:", gridGeneratorInit.percent_unbound_w_numbers)
-    # print ("self.percent_cross_unbound_w_lengths:", gridGeneratorInit.percent_cross_unbound_w_lengths)
-    # print ("self.avg_deviation_distance_st:", gridGeneratorInit.avg_deviation_distance_st)
+    # build the gridGenerator.
+    gridGenerator = copy.deepcopy(gridGeneratorInit)
+    gridGenerator.update_parameters(decoded_parameters)
     
+    # create grids and calculate the losses.
+    gridGenerator.create_grids() # gets slower.
+    gridGenerator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)
+    # gridGenerator.calculate_grid_distance_deviation_loss()
+    
+    # print ("self.percent_unbound_w_numbers:", gridGenerator.percent_unbound_w_numbers)
+    # print ("self.percent_cross_unbound_w_lengths:", gridGenerator.percent_cross_unbound_w_lengths)
+    # print ("self.avg_deviation_distance_st:", gridGenerator.avg_deviation_distance_st)
+
+    decoded_parameters =  {k: round(v, 4) for k, v in decoded_parameters.items()}
     logging.info("The Ifc input parameters: %s", decoded_parameters)
+
     # the return value must be a list / tuple, even it's only one fitness value.
     return (
-        gridGeneratorInit.percent_unbound_w_numbers,
-        gridGeneratorInit.percent_cross_unbound_w_lengths,
-        gridGeneratorInit.avg_deviation_distance_st)
+        # gridGenerator.percent_unbound_w_numbers,)
+        gridGenerator.percent_cross_unbound_w_lengths,)
+        # gridGenerator.avg_deviation_distance_st)
 
 # ===================================================================================================
 # main.
@@ -193,7 +204,7 @@ def main(random_seed, num_processes=1):
 
     random.seed(random_seed)
 
-    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, -1.0, -1.0))
+    creator.create("FitnessMulti", base.Fitness, weights=(-1.0,))
     creator.create("Individual", list, fitness=creator.FitnessMulti)
 
     toolbox = base.Toolbox()
@@ -207,8 +218,8 @@ def main(random_seed, num_processes=1):
     toolbox.register("evaluate", objective_fxn) # privide the objective function here
 
     # registering basic processes using DEAP bulit-in functions
-    toolbox.register("mate", tools.cxUniform, indpb=crossover_prob) # strategy for crossover, this classic two point crossover
-    toolbox.register("mutate", tools.mutFlipBit, indpb=mutation_prob) # mutation strategy with probability of mutation
+    toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB) # strategy for crossover, this classic two point crossover
+    toolbox.register("mutate", tools.mutFlipBit, indpb=MUTAT_PROB) # mutation strategy with probability of mutation
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE) # selection startegy
 
     # Process Pool of multi workers
@@ -225,7 +236,7 @@ def main(random_seed, num_processes=1):
     stats.register("min", np.min)
     stats.register("max", np.max)
     
-    final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=crossover_prob, mutpb=mutation_prob, 
+    final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
         ngen=NUM_GENERATIONS, stats=stats, halloffame=hof, verbose=True)
     
     if num_processes > 1:
@@ -244,4 +255,4 @@ def main(random_seed, num_processes=1):
 
 if __name__ == "__main__":
 
-    main(random_seed=64, num_processes=12)
+    main(random_seed=100, num_processes=8)

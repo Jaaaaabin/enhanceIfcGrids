@@ -77,7 +77,8 @@ class GridGenerator:
 
         # print ("=============GridGenerator=============")
         # print (self.out_fig_path)
-
+    
+    # @time_decorator
     def update_parameters(self, new_parameters):
         
         if not isinstance(new_parameters, dict):
@@ -1163,7 +1164,6 @@ class GridGenerator:
         #     self.avg_deviation_distance_ns = sum(self.avg_deviation_distance_ns)/len(self.avg_deviation_distance_ns)
         # print ("deviation of ns grid distances - loss calculation:", self.avg_deviation_distance_ns)
 
-    # @time_decorator
     def create_grids(self):
 
         self.get_element_information_for_grid() # - > self.grids_all
