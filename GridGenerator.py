@@ -48,12 +48,12 @@ class GridGenerator:
         # per building. structural walls related
         self.st_w_num = 2
         self.st_w_dist = 0.001
-        self.st_w_accumuled_length = 5
+        self.st_w_accumuled_length_percent = 0.0001
 
         # per building. non-structural walls related
         self.ns_w_num = 2
         self.ns_w_dist = 0.001
-        self.ns_w_accumuled_length = 5
+        self.ns_w_accumuled_length_percent = 0.0001
         #------
         # todo/
         #------
@@ -90,10 +90,10 @@ class GridGenerator:
             'st_c_dist',
             'st_w_num',
             'st_w_dist',
-            'st_w_accumuled_length',
+            'st_w_accumuled_length_percent',
             'ns_w_num',
             'ns_w_dist',
-            'ns_w_accumuled_length',
+            'ns_w_accumuled_length_percent',
             }
         
         for key, value in new_parameters.items():
@@ -303,11 +303,11 @@ class GridGenerator:
         if not line_type:
             raise ValueError("line_type hasn't been specified for 'lines2grids'.")
         if line_type == 'structural':
-            minimum_accumuled_wall_length = self.st_w_accumuled_length
+            minimum_accumuled_wall_length_percent = self.st_w_accumuled_length_percent
             minimum_alignment_number = self.st_w_num
             wall_offset_distance = self.st_w_dist  # area spanned by the triangle they would form
         elif line_type == 'non-structural':
-            minimum_accumuled_wall_length = self.ns_w_accumuled_length
+            minimum_accumuled_wall_length_percent = self.ns_w_accumuled_length_percent
             minimum_alignment_number = self.ns_w_num
             wall_offset_distance = self.ns_w_dist # area spanned by the triangle they would form
 
@@ -377,7 +377,7 @@ class GridGenerator:
 
                 # be careful with the hierarchy here.
                 if len(aligned_element_ids) >= minimum_alignment_number and \
-                    accumulated_length >= minimum_accumuled_wall_length:
+                    (accumulated_length/self.total_wall_lengths) >= minimum_accumuled_wall_length_percent:
                     
                     id_tuple = tuple(aligned_element_ids)  # Convert to tuple for hashability
                     if id_tuple not in element_ids_per_grid:
