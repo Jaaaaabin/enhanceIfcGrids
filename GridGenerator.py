@@ -41,19 +41,22 @@ class GridGenerator:
         self.z_storey_raise = 0.8
         self.z_crossing_columns = 0.1
 
-        # per building. columns related
+        #----------------------------------
         self.st_c_num = 3
-        self.st_c_dist = 0.001
-
-        # per building. structural walls related
         self.st_w_num = 2
-        self.st_w_dist = 0.001
-        self.st_w_accumuled_length_percent = 0.0001
-
-        # per building. non-structural walls related
         self.ns_w_num = 2
-        self.ns_w_dist = 0.001
+
+        self.st_w_accumuled_length_percent = 0.0001
         self.ns_w_accumuled_length_percent = 0.0001
+
+        self.st_st_merge = 0.3
+        self.ns_st_merge = 0.3
+
+        self.st_c_dist = 0.001
+        self.st_w_dist = 0.001
+        self.ns_w_dist = 0.001
+        #----------------------------------
+
         #------
         # todo/
         #------
@@ -87,15 +90,17 @@ class GridGenerator:
         # List of valid parameter names for reference
         valid_parameters = {
             'st_c_num',
-            'st_c_dist',
             'st_w_num',
-            'st_w_dist',
-            'st_w_accumuled_length_percent',
             'ns_w_num',
-            'ns_w_dist',
+            'st_w_accumuled_length_percent',
             'ns_w_accumuled_length_percent',
+            'st_st_merge',
+            'ns_st_merge',
+            'st_c_dist',
+            'st_w_dist',
+            'ns_w_dist',
             }
-        
+
         for key, value in new_parameters.items():
             if key in valid_parameters:
                 if isinstance(value, (int, float)):
@@ -189,14 +194,14 @@ class GridGenerator:
             },
 
             # processed grid lines.
-            'grids_st_merged': {
+            'location_grids_st_merged': {
                 'legend_label': 'Structural Grids',
                 'color': "orange",
                 'line_dash':'dotdash',
                 'line_width':3,
                 'alpha':0.85,
             },
-            'grids_ns_merged': {
+            'location_grids_ns_merged': {
                 'legend_label':'Non-structural Grids',
                 'color': "navy",
                 'line_dash':'dashed',
@@ -285,7 +290,7 @@ class GridGenerator:
                     else:
                         generated_grids.append(aligned_points)
                         element_ids_per_grid_reps.append(id_tuple_reps)
-                        element_ids_per_grid.append(id_tuple)
+                        element_ids_per_grid.append(list(id_tuple))
         
         # todo.
         # clean the points in generated_grids by considering:
@@ -935,7 +940,6 @@ class GridGenerator:
         self.border_x = calculate_and_update_border(self.border_x, all_references_x)
         self.border_y = calculate_and_update_border(self.border_y, all_references_y)
     
-
     def extract_grid_overall_borders(self):        
         
         # get the global borders.
@@ -950,7 +954,6 @@ class GridGenerator:
         pad_x_y = 5
         all_references_x, all_references_y = [pt.x for pt in all_grid_reference_points], [pt.y for pt in all_grid_reference_points]
         self.update_display_borders(all_references_x, all_references_y, pad_x_y) # necessary for the current calculation of grid lines.
-
 
     def calculate_grid_locations(self):        
          
@@ -995,6 +998,8 @@ class GridGenerator:
 
         self.total_wall_lengths = total_length
         self.total_wall_numbers = len(self.info_all_walls)
+        self.total_column_numbers = len(self.info_st_columns)
+        self.total_bound_elements = self.total_wall_numbers + self.total_column_numbers
         self.info_wall_length_by_id = {d['id']: d['length'] for d in self.info_all_walls if 'id' in d and 'length' in d}
 
     # @time_decorator
@@ -1026,8 +1031,21 @@ class GridGenerator:
         # self.enrich_main_storeys_info_raised_area()
         ##############################
     
-    # a loss about local performance of the grids.
     # @time_decorator
+    def create_grids(self):
+
+        self.get_element_information_for_grid() # - > self.grids_all
+
+        self.extract_grid_overall_borders() # -> self.border_x, self.border_y
+
+        self.calculate_grid_locations() # -> self.grids_all with grid locations.
+
+#Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#===================================================================================================
+
+#===================================================================================================
+#Loss with Initial Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    # a loss about local performance of the grids.
     def calculate_grid_wall_cross_loss(self, ignore_cross_edge=False, cross_threshold_percent=5):
 
         # the loss target.
@@ -1061,13 +1079,14 @@ class GridGenerator:
         for wall_id in self.ids_wall_unbound_crossed:
             cross_w_lengths += self.info_wall_length_by_id[wall_id]
         
-        # get the percent of total number of unbound walls.
-        self.percent_unbound_w_numbers = (1 - len(self.ids_wall_bound) / self.total_wall_numbers) # [0,1], smaller, better
+        # get the percent of total number of unbound walls
+        # 1st Objective to minimize: to generate grids linking as many as possible the walls.
+        self.percent_unbound_w_numbers = (1 - len(self.ids_wall_bound) / self.total_wall_numbers) # [0,1] to minimize
         
         # get the percent of total lengths of crossed unbound walls.
-        self.percent_cross_unbound_w_lengths =  (cross_w_lengths/self.total_wall_lengths) # [0,1], smaller, better
+        # Maybe we donnot need this trick...
+        self.percent_cross_unbound_w_lengths =  (cross_w_lengths/self.total_wall_lengths) # [0,1] to minimize
 
-    # todo. add this part into the OptimizerGA.
     # a loss about global performance of the grids.
     # @time_decorator
     def calculate_grid_distance_deviation_loss(self, min_size_group=3):
@@ -1147,7 +1166,7 @@ class GridGenerator:
         average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
         
         # =============================
-        # only test the st_grid relative distance differences for now.
+        # st_grid relative distance differences
         if self.avg_deviation_distance_st:
             # get average.
             self.avg_deviation_distance_st = sum(self.avg_deviation_distance_st)/len(self.avg_deviation_distance_st)
@@ -1157,27 +1176,390 @@ class GridGenerator:
             # if not reach any "feasible grid group", return a close-to-1 value by the sigmoid scaling function.
             self.avg_deviation_distance_st = sigmoid_scale(average_wall_length, average_wall_length)
         
-        
         # =============================
-        # ignore the ns part for now.
-        # if self.avg_deviation_distance_ns:
-        #     self.avg_deviation_distance_ns = sum(self.avg_deviation_distance_ns)/len(self.avg_deviation_distance_ns)
-        # print ("deviation of ns grid distances - loss calculation:", self.avg_deviation_distance_ns)
+        # ns_grid relative distance differences
+        if self.avg_deviation_distance_ns:
+            self.avg_deviation_distance_ns = sum(self.avg_deviation_distance_ns)/len(self.avg_deviation_distance_ns)
+        else:
+            # if not reach any "feasible grid group", return a close-to-1 value by the sigmoid scaling function.
+            self.avg_deviation_distance_ns = sigmoid_scale(average_wall_length, average_wall_length)
+           
+#Loss with Initial Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+#===================================================================================================
 
-    def create_grids(self):
-
-        self.get_element_information_for_grid() # - > self.grids_all
-
-        self.extract_grid_overall_borders() # -> self.border_x, self.border_y
-
-        self.calculate_grid_locations() # -> self.grids_all with grid locations.
+#===================================================================================================
+#Grid Alignment ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
 
     # @time_decorator
-    def visualization_2d(self):
-
-        # plot_name = f"\[Floor \, Plan \, of \, {storey.Name} \, (T_{{c,dist}}={t_c_dist}, \, T_{{c,num}}={t_c_num}, \, T_{{w,dist}}={t_w_dist}, \, T_{{w,num}}={t_w_num}) - Initial \]"
-        # fig_save_name = f"Initial_{storey.Name}_t_c_dist_{t_c_dist}_t_c_num_{t_c_num}_t_w_dist_{t_w_dist}_t_w_num_{t_w_num}"
+    def align_st4st_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
         
+        # the long running time coming from grids from non-main directions.
+
+        # find all the pairs
+        aligned_id_pairs = []
+
+        for i, gd_ln_1 in enumerate(grid_linestrings):
+
+            for j, gd_ln_2 in enumerate(grid_linestrings):
+        
+                # combination pairs (i,j)
+                if i < j:
+
+                    slope_1 = get_line_slope_by_points(list(gd_ln_1.boundary.geoms)[0], list(gd_ln_1.boundary.geoms)[1])
+                    slope_2 = get_line_slope_by_points(list(gd_ln_2.boundary.geoms)[0], list(gd_ln_2.boundary.geoms)[1])
+
+                    # only consider alignment among parallel lines.
+                    if abs(slope_1-slope_2) <= slope_tol or (slope_1==float('inf') and slope_2==float('inf')):
+                    
+                        # if "close enough"
+                        if not shapely.intersects(gd_ln_1,gd_ln_2) and shapely.distance(gd_ln_1,gd_ln_2) < tol:
+                            aligned_id_pairs.append([i,j])
+                        
+                        # if equals.
+                        elif shapely.intersects(gd_ln_1,gd_ln_2):
+                            aligned_id_pairs.append([i,j])
+
+                    else:
+                        continue
+                else:
+                    continue
+
+        # count and prioritize the alignment orders.
+        id_frequency = Counter([item for sublist in aligned_id_pairs for item in sublist])
+        sorted_id_by_occurency = [item for item, count in id_frequency.most_common()]
+        
+        # new 
+        alignment_maps = {}
+        alignment_built_ids = []
+
+        for id_host in sorted_id_by_occurency:
+    
+            # iterate from the high prioritized id_host.    
+            counted_ids = [item for sublist in list(alignment_maps.values()) for item in sublist] 
+            
+            if counted_ids:
+                # the grid with id_host is already aligned with other grid.
+                if id_host in counted_ids:
+                    continue
+
+            ids_guest = []
+            # the grid with id_host is not yet aligned with other grids, thus, identify all potential guest ids.
+            for jj, id_paris in enumerate(aligned_id_pairs):
+
+                if jj not in alignment_built_ids and id_host in id_paris:
+
+                    new_guest_id = [item for item in id_paris if item != id_host][0]
+                    
+                    if new_guest_id not in counted_ids:
+                        ids_guest.append(new_guest_id)
+                        alignment_built_ids.append(jj)
+            
+            if ids_guest:
+                alignment_maps.update({id_host: ids_guest})
+        
+        marks_aligned = list(set([item for sublist in list(alignment_maps.values()) for item in sublist]))
+
+        # add the guest grid_st(s) to the host grid_st.
+        for gd_host, gd_guests in alignment_maps.items():
+            for gd_guest in gd_guests:
+                grid_componnets[gd_host] += grid_componnets[gd_guest]
+        
+        # delete the "moved" grid_st(s).
+        location_grids_st = copy.deepcopy(grid_linestrings)
+        grids_st_ids = copy.deepcopy(grid_componnets)
+        for jj in sorted(marks_aligned, reverse=True):
+            del location_grids_st[jj]
+            del grids_st_ids[jj]
+
+        return location_grids_st, grids_st_ids
+    
+    # old, work but too slow.
+    # def old_align_st4st_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
+        
+    #     # find all the pairs
+    #     aligned_idx = []
+
+    #     for i, gd_ln_1 in enumerate(grid_linestrings):
+
+    #         for j, gd_ln_2 in enumerate(grid_linestrings):
+        
+    #             # combination pairs (i,j)
+    #             if i < j:
+                    
+    #                 slope_1 = get_line_slope_by_points(list(gd_ln_1.boundary.geoms)[0], list(gd_ln_1.boundary.geoms)[1])
+    #                 slope_2 = get_line_slope_by_points(list(gd_ln_2.boundary.geoms)[0], list(gd_ln_2.boundary.geoms)[1])
+
+    #                 # only consider alignment among parallel lines.
+    #                 if abs(slope_1-slope_2) <= slope_tol or (slope_1==float('inf') and slope_2==float('inf')):
+                    
+    #                     # if "close enough"
+    #                     if not shapely.intersects(gd_ln_1,gd_ln_2) and shapely.distance(gd_ln_1,gd_ln_2) < tol:
+    #                         aligned_idx.append([i,j])
+                        
+    #                     # if equals.
+    #                     elif shapely.intersects(gd_ln_1,gd_ln_2):
+    #                         aligned_idx.append([i,j])
+
+    #                 else:
+    #                     continue
+    #             else:
+    #                 continue
+                    
+    #     # count and prioritize the alignment orders.
+    #     id_frequency = Counter([item for sublist in aligned_idx for item in sublist])
+    #     sorted_id_by_occurency = [item for item, count in id_frequency.most_common()]
+
+    #     # clear the alignment relationships.
+    #     logic_aligned_idx = []
+    #     for id_host in sorted_id_by_occurency:
+            
+    #         existing_logic_aligned_idx = [item for sublist in logic_aligned_idx for item in sublist]
+            
+    #         if id_host not in existing_logic_aligned_idx:
+                
+    #             idx = [pair for pair in aligned_idx if id_host in pair]
+    #             idx = list(set([item for sublist in idx for item in sublist]))
+
+    #             idx.remove(id_host)
+    #             [idx.remove(i) for i in existing_logic_aligned_idx if i in idx]
+
+    #             new_logic_aligned_idx = [id_host,*idx]
+
+    #             if len(new_logic_aligned_idx)>=2:
+    #                 logic_aligned_idx.append(new_logic_aligned_idx)
+            
+    #         else:
+    #             continue
+        
+    #     # alignment.
+    #     grid_linestrings_aligned, grid_componnets_aligned = [], []
+
+    #     for gd_id, gd_line in enumerate(grid_linestrings):
+            
+    #         # > not procesed yet
+    #         if grid_linestrings[gd_id] not in grid_linestrings_aligned:
+                
+    #             # > > if it's related to alignments
+    #             if gd_id in [item for sublist in logic_aligned_idx for item in sublist]:
+
+    #                 for logic_pair in logic_aligned_idx:
+                        
+    #                     # if it's related to an alignment, and it's a host
+    #                     if gd_id == logic_pair[0]:
+    #                         grid_linestrings_aligned.append(grid_linestrings[gd_id])
+    #                         new_components = [grid_componnets[id] for id in logic_pair]
+    #                         grid_componnets_aligned.append([item for sublist in new_components for item in sublist])
+    #                         break 
+                        
+    #                     # if it's related to an alignment, but it's not a host
+    #                     elif gd_id in logic_pair:
+    #                         break 
+                        
+    #                     # didn't find in this logic pair
+    #                     else:
+    #                         continue
+                
+    #             # > >if it's not related to any alignment.
+    #             else:
+    #                 grid_linestrings_aligned.append(grid_linestrings[gd_id])
+    #                 grid_componnets_aligned.append(grid_componnets[gd_id])
+
+    #         # > already procesed.
+    #         else:
+    #             continue
+
+    #     return grid_linestrings_aligned, grid_componnets_aligned
+    
+    # @time_decorator
+    def align_ns2st_grids(self, ns_grids, ns_grids_ids, tol=0.0, slope_tol=0.01):
+        
+        alignment_maps = []
+        marks_aligned = []
+
+        for ii, gd_ln_st in enumerate(self.grids_merged['location_grids_st_merged']):
+
+            for jj, gd_ln_ns in enumerate(ns_grids):
+                
+                # if not aligned yet with structural grids.
+                if jj not in marks_aligned:
+
+                    slope_st = get_line_slope_by_points(list(gd_ln_st.boundary.geoms)[0], list(gd_ln_st.boundary.geoms)[1])
+                    slope_ns = get_line_slope_by_points(list(gd_ln_ns.boundary.geoms)[0], list(gd_ln_ns.boundary.geoms)[1])
+
+                    # only consider alignment among parallel lines.
+                    if abs(slope_st-slope_ns) <= slope_tol or (slope_st==float('inf') and slope_ns==float('inf')):
+
+                        # if "close enough."
+                        if not shapely.intersects(gd_ln_st, gd_ln_ns) and shapely.distance(gd_ln_st,gd_ln_ns) < tol:
+                        
+                            # store the alignment maps.
+                            alignment_maps.append([ii,jj])
+                            # marked as merged.
+                            marks_aligned.append(jj)
+
+                        # if equals.
+                        elif shapely.intersects(gd_ln_st,gd_ln_ns):
+
+                            # store the alignment maps.
+                            alignment_maps.append([ii,jj])
+                            # marked as merged.
+                            marks_aligned.append(jj)
+
+                    else:
+                        continue
+                
+                else:
+                    continue
+        
+        # align the grid_ns to grid_st.
+        for [ii,jj] in alignment_maps:
+            if ii < len(self.grids_merged['grids_st_merged_ids']) and jj < len(ns_grids_ids):
+                self.grids_merged['grids_st_merged_ids'][ii] += ns_grids_ids[jj]
+
+        # delete the initial grid_ns.
+        location_grids_ns_w_storey = copy.deepcopy(ns_grids)
+        grids_ns_w_ids_storey = copy.deepcopy(ns_grids_ids)
+        for jj in sorted(marks_aligned, reverse=True):
+            del location_grids_ns_w_storey[jj]
+            del grids_ns_w_ids_storey[jj]
+
+        return location_grids_ns_w_storey, grids_ns_w_ids_storey
+    
+    def merge_grids(self):
+        
+        self.grids_merged = defaultdict(list)
+
+        # ----------------------------------------------
+        # st grids: location_grids_st_merged, grids_st_merged_ids
+        all_st_grids = self.grids_all['location_grids_st_c'] + self.grids_all['location_grids_st_w']
+        all_st_grids_ids = self.grids_all['grids_st_c_ids'] + self.grids_all['grids_st_w_ids']
+
+        self.grids_merged['location_grids_st_merged'], self.grids_merged['grids_st_merged_ids'] = self.align_st4st_grids(
+            all_st_grids, all_st_grids_ids, tol = self.st_st_merge)
+        
+        # ----------------------------------------------
+        # ns to st per storey: location_grids_ns_merged, grids_ns_merged_ids
+        for storey_key, storey_value in self.grids_all.items():
+
+            if 'grids_ns_w_ids' in storey_value:
+
+                self.grids_merged[storey_key] = {}
+                self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_ns2st_grids(
+                    storey_value['location_grids_ns_w'], storey_value['grids_ns_w_ids'], tol = self.ns_st_merge)
+                
+#Grid Alignment ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#===================================================================================================
+
+#===================================================================================================
+#Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    
+    # a loss about local performance of the grids.
+    def merged_loss_unbound_elements2grids(self):
+
+        # the loss target.
+        # get all walls bound to grids.
+        self.ids_elements_bound = self.grids_merged['grids_st_merged_ids']
+
+        for storey_key, storey_value in self.grids_merged.items():
+            if 'grids_ns_merged_ids' in storey_value:
+                self.ids_elements_bound += storey_value['grids_ns_merged_ids']
+        self.ids_elements_bound = set([item for sublist in self.ids_elements_bound for item in sublist])
+        
+        self.percent_unbound_elements = (1 - len(self.ids_elements_bound) / self.total_bound_elements) # [0,1] to minimize
+    
+    # a loss about global performance of the grids.
+    def merged_loss_distance_deviation(self, min_size_group=3):
+        """
+        Calculate the grid distance deviation, requiring at 3 grids.
+        |           |               |                   |
+        |           |               |                   |
+        <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
+        - abs(dist_1**2 - dist_2**2)
+        - abs(dist_2**2 - dist_3**2)
+        """
+        
+        def perpendicular_distance(point1, point2):
+            A = point2.y - point1.y
+            B = -(point2.x - point1.x)
+            C = point1.x * point2.y - point2.x * point1.y
+            return C / math.sqrt(A**2 + B**2)
+    
+        def get_distance_deviations(grids):
+
+            grid_groups = defaultdict(list)
+            square_root_of_distance_differences = []
+            
+            # calculate the relative locations within a group of grids.
+            for ln in grids:
+                
+                point1, point2 = list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]
+                slope = get_line_slope_by_points(point1, point2)
+                slope = round(slope, 4)
+                grid_groups[slope].append([point1, point2, perpendicular_distance(point1, point2)])
+
+            # filter the minor groups that cannot be calculated for the deviation.
+            grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
+            
+            # check if there's grid_groups left alter filtering the minor groups.
+            if grid_groups:
+
+                # sort each group by the perpendicular_distance value
+                for slope in grid_groups:
+                    grid_groups[slope] = sorted(grid_groups[slope], key=lambda x: x[-1])
+
+                for slope, grid_group in grid_groups.items():
+                    for i in range(1, len(grid_group)-1):
+                        dist_1 = (grid_group[i][-1] - grid_group[i-1][-1])
+                        dist_2 = (grid_group[i+1][-1] - grid_group[i][-1])
+
+                        square_diff = abs(dist_1**2 - dist_2**2)**0.5
+                        square_root_of_distance_differences.append(square_diff)
+
+            return square_root_of_distance_differences
+        
+        def sigmoid_scale(d, d_max):
+            return 1 / (1 + np.exp(-10 * (d / d_max - 0.5)))
+
+        # the loss target.
+        self.avg_deviation_distance = []
+
+        # get all global st grids.
+        global_st_grids = self.grids_merged.get('location_grids_st_merged', [])
+
+        for storey_key, storey_value in self.grids_merged.items():
+            
+            if isinstance(storey_value, dict):
+
+                storey_ns_grids = storey_value.get('location_grids_ns_merged', [])
+                 
+                if storey_ns_grids:
+                    grids_per_storey = global_st_grids
+                    grids_per_storey += storey_ns_grids
+                    self.avg_deviation_distance += get_distance_deviations(grids_per_storey)
+
+        # =============================
+        # get the averaged rescaled deviation value.
+        average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
+
+        if self.avg_deviation_distance:
+            # get average.
+            self.avg_deviation_distance = sum(self.avg_deviation_distance)/len(self.avg_deviation_distance)
+            # rescale it into [0, 1]
+            self.avg_deviation_distance = sigmoid_scale(self.avg_deviation_distance, average_wall_length)
+        else:
+            # if not reach any "feasible grid group", return a close-to-1 value by the sigmoid scaling function.
+            self.avg_deviation_distance = sigmoid_scale(average_wall_length, average_wall_length)
+    
+#Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+#===================================================================================================
+
+
+#===================================================================================================
+# Visualization ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+
+    # @time_decorator
+    def visualization_2d_before_merge(self):
+
         for storey in self.main_storeys.keys():
 
             # plotting settings.
@@ -1248,259 +1630,86 @@ class GridGenerator:
                                     line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
                 else:
                     continue
-                    # raise ValueError("grid_plot_configurations dont' lead to correct values.")
 
             # Save the figure.
             bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
             bokeh.plotting.save(fig)
 
-#--------------------------
-    def align_same_type(self, grid_linestrings, grid_componnets, tol=0.0):
-        
-        # find all the pairs.s
-        aligned_idx = []
+    def visualization_2d_after_merge(self):
+            
+            for storey in self.main_storeys.keys():
 
-        for i, gd_1 in enumerate(grid_linestrings):
+                # plotting settings.
+                plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Merged"
+                fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Merged"
+                fig = bokeh.plotting.figure(
+                    title=plot_name,
+                    title_location='above',
+                    x_axis_label='x',
+                    y_axis_label='y',
+                    width=800,
+                    height=800,
+                    match_aspect=True)
+                fig.title.text_font_size = '11pt'
+                fig.xgrid.visible = False
+                fig.ygrid.visible = False
 
-            for j, gd_2 in enumerate(grid_linestrings):
-        
-                # combination pairs (i,j)
-                if i < j:
+                # plotting configurations of building elements.
+                element_plot_configurations = [
+                    ('st_column_points', 'square', None),
+                    ('st_wall_lines', 'line', 'coords'),
+                    ('ns_wall_lines', 'line', 'coords'),
+                ]
 
-                    # count the pairs of ids if align.
-                    if not shapely.intersects(gd_1,gd_2) and shapely.distance(gd_1,gd_2) < tol: # todo., this intersects might have some errors.
-                        aligned_idx.append([i,j])
+                for config in element_plot_configurations:
+                    data_key, plot_type, attr = config
+                    element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
+                    
+                    if element_data:
+                        g_plot = self.visualization_settings[data_key]
+                        for element in element_data:
+                            x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
+                            
+                            if plot_type == 'square':
+                                fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+                                        color=g_plot['color'], alpha=g_plot['alpha'])
+                            elif plot_type == 'line':
+                                fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+                                        line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
                     else:
                         continue
-                else:
-                    continue
-                    
-        # count and prioritize the alignment orders.
-        id_frequency = Counter([item for sublist in aligned_idx for item in sublist])
-        sorted_id_by_occurency = [item for item, count in id_frequency.most_common()]
-
-        # clear the alignment relationships.
-        logic_aligned_idx = []
-        for id_host in sorted_id_by_occurency:
-            
-            existing_logic_aligned_idx = [item for sublist in logic_aligned_idx for item in sublist]
-            
-            if id_host not in existing_logic_aligned_idx:
+                        # raise ValueError("element_plot_configurations dont' lead to correct values.")
                 
-                idx = [pair for pair in aligned_idx if id_host in pair]
-                idx = list(set([item for sublist in idx for item in sublist]))
+                # plotting configurations of grids of different types.
+                grid_plot_configurations = [
+                    ('location_grids_st_merged', 'line', 'coords'),
+                    ('location_grids_ns_merged', 'line', 'coords'),
+                ]
 
-                idx.remove(id_host)
-                [idx.remove(i) for i in existing_logic_aligned_idx if i in idx]
+                for config in grid_plot_configurations:
+                    data_key, plot_type, attr = config
+                    grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
 
-                new_logic_aligned_idx = [id_host,*idx]
+                    if not grid_data:
+                        grid_data = self.grids_merged.get(data_key, []) # per building.
 
-                if len(new_logic_aligned_idx)>=2:
-                    logic_aligned_idx.append(new_logic_aligned_idx)
-            
-            else:
-                continue
-        
-        # alignment.
-        grid_linestrings_aligned, grid_componnets_aligned = [], []
+                    if grid_data:
+                        g_plot = self.visualization_settings[data_key]
+                        for grid in grid_data:
+                            x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
+                            
+                            if plot_type == 'square':
+                                fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+                                        color=g_plot['color'], alpha=g_plot['alpha'])
+                            elif plot_type == 'line':
+                                fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+                                        line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+                    else:
+                        continue
 
-        for gd_id, gd_line in enumerate(grid_linestrings):
-            
-            # > not procesed yet
-            if grid_linestrings[gd_id] not in grid_linestrings_aligned:
-                
-                # > > if it's related to alignments
-                if gd_id in [item for sublist in logic_aligned_idx for item in sublist]:
+                # Save the figure.
+                bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
+                bokeh.plotting.save(fig)
 
-                    for logic_pair in logic_aligned_idx:
-                        
-                        # if it's related to an alignment, and it's a host
-                        if gd_id == logic_pair[0]:
-                            grid_linestrings_aligned.append(grid_linestrings[gd_id])
-                            new_components = [grid_componnets[id] for id in logic_pair]
-                            grid_componnets_aligned.append([item for sublist in new_components for item in sublist])
-                            break 
-                        
-                        # if it's related toan alignment, but it's not a host
-                        elif gd_id in logic_pair:
-                            break 
-                        
-                        # didn't find in this logic pair
-                        else:
-                            continue
-                
-                # > >if it's not related to any alignment.
-                else:
-                    grid_linestrings_aligned.append(grid_linestrings[gd_id])
-                    grid_componnets_aligned.append(grid_componnets[gd_id])
-
-            # > already procesed.
-            else:
-                continue
-
-        return grid_linestrings_aligned, grid_componnets_aligned
-
-#--------------------------
-    
-#todo.
-    
-    # def adjust_grids_per_storey(
-    #     self,
-    #     storey,
-    #     t_self_dist=0.001,
-    #     t_cross_dist=0.4,
-    #     plot_fig=True,
-    #     ):
-
-    #     # get grids per storey.
-    #     if storey.GlobalId in self.grids.keys():
-    #         grids_per_storey = self.grids[storey.GlobalId]
-
-    #     #---------------------------------------------------------------------------------------------------
-    #     # Structural merge: merge overlapping structural grids from IfcColumn and IfcWall.
-    #     gd_type = "structural" 
-    #     st_grids_linestrings =  grids_per_storey[gd_type]["IfcColumn"][0] + grids_per_storey[gd_type]["IfcWall"][0]
-    #     st_grids_componnets =  grids_per_storey[gd_type]["IfcColumn"][1] + grids_per_storey[gd_type]["IfcWall"][1]
-        
-    #     st_grids_linestrings_merged, st_grids_componnets_merged = self.align_same_type(
-    #         grid_linestrings=st_grids_linestrings, grid_componnets=st_grids_componnets, tol=t_self_dist)
-
-    #     self.grids[storey.GlobalId][gd_type].update({"self-merged": [st_grids_linestrings_merged, st_grids_componnets_merged]})
-        
-    #     #---------------------------------------------------------------------------------------------------
-    #     # Non-structural merge: merge overlapping non-structural grids from  IfcWall.
-    #     gd_type = "non-structural"
-    #     ns_grids_linestrings =  grids_per_storey[gd_type]["IfcWall"][0]
-    #     ns_grids_componnets =  grids_per_storey[gd_type]["IfcWall"][1]
-
-    #     ns_grids_linestrings_merged, ns_grids_componnets_merged = self.align_same_type(
-    #         grid_linestrings=ns_grids_linestrings, grid_componnets=ns_grids_componnets, tol=t_self_dist)
-
-    #     self.grids[storey.GlobalId][gd_type].update({"self-merged": [ns_grids_linestrings_merged, ns_grids_componnets_merged]})
-
-    #     #---------------------------------------------------------------------------------------------------
-    #     # Align the Non-structural to structural: remove non-structural grids close to neighboring (merged) structural grids.
-    #     gd_type = "non-structural"
-    #     ns_grids_linestrings_merged =  grids_per_storey[gd_type]["self-merged"][0]
-    #     ns_grids_componnets_merged =  grids_per_storey[gd_type]["self-merged"][1]
-
-    #     aligned_ns_to_st=[]
-
-    #     for ii, gd_st in enumerate(st_grids_linestrings_merged):
-
-    #         for jj, gd_ns in enumerate(ns_grids_linestrings_merged):
-                
-    #             # if not aligned yet with structural grids.
-    #             if jj not in aligned_ns_to_st:
-
-    #                 # if parallel and too close < t_cross_dist.
-    #                 if not shapely.intersects(gd_st,gd_ns) and shapely.distance(gd_st,gd_ns) < t_cross_dist:
-                        
-    #                     if ns_grids_componnets_merged[jj] not in st_grids_componnets_merged[ii]:
-    #                         print (shapely.distance(gd_st,gd_ns))
-    #                         st_grids_componnets_merged[ii]+=ns_grids_componnets_merged[jj]
-    #                         aligned_ns_to_st.append(jj)
-                
-    #             else:
-    #                 continue
-        
-    #     # final update of the merge.
-    #     ns_grids_linestrings_merged = [e for i, e in enumerate(ns_grids_linestrings_merged) if i not in aligned_ns_to_st]
-    #     ns_grids_componnets_merged = [e for i, e in enumerate(ns_grids_componnets_merged) if i not in aligned_ns_to_st]
-    #     self.grids[storey.GlobalId]["structural"].update({"cross-merged": [st_grids_linestrings_merged, st_grids_componnets_merged]})
-    #     self.grids[storey.GlobalId]["non-structural"].update({"cross-merged": [ns_grids_linestrings_merged, ns_grids_componnets_merged]})
-
-    #     # =========================== visualization
-    #     (wall_lines_struc,wall_lines_nonst,column_points) = self.get_info_elements_per_storey(storey=storey)
-        
-    #     plot_name = f"\[Floor \, Plan \, of \, {storey.Name} \, (T_{{self,dist}}={t_self_dist}, \, T_{{cross,dist}}={t_cross_dist}) - Gird \, Alignment \]"
-    #     fig_save_name = f"Merge_{storey.Name}_t_self_dist_{t_self_dist}_t_cross_dist_{t_cross_dist}"
-
-    #     fig = bokeh.plotting.figure(
-    #         title=plot_name,
-    #         title_location='above',
-    #         x_axis_label='x',
-    #         y_axis_label='y',
-    #         width=800,
-    #         height=800,
-    #         match_aspect=True)
-    #     fig.title.text_font_size = '11pt'
-
-    #     #--------------------------
-    #     # structural grids.
-    #     st_grids_linestrings_merged = self.grids[storey.GlobalId]["structural"]["cross-merged"][0]
-    #     g_plot = self.visualization_settings['grids_st_merged']
-    #     for ls in st_grids_linestrings_merged:
-    #         x, y = ls.coords.xy
-    #         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-            
-    #     # non-structural grids.
-    #     ns_grids_linestrings_merged = self.grids[storey.GlobalId]["non-structural"]["cross-merged"][0]
-    #     g_plot = self.visualization_settings['grids_ns_merged']
-    #     for ls in ns_grids_linestrings_merged:
-    #         x, y = ls.coords.xy
-    #         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-
-    #     #--------------------------
-    #     # columns
-    #     g_plot = self.visualization_settings['column_points_struc']
-    #     for point in column_points:
-    #         fig.square(point.x, point.y, legend_label=g_plot['legend_label'], size=g_plot['size'], color=g_plot['color'], alpha=g_plot['alpha'])
-        
-    #     # structural walls
-    #     g_plot = self.visualization_settings['wall_lines_struc']
-    #     for ls in wall_lines_struc:
-    #         x, y = ls.coords.xy
-    #         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-        
-    #     # non-structural walls
-    #     g_plot = self.visualization_settings['wall_lines_nonst']
-    #     for ls in wall_lines_nonst:
-    #         x, y = ls.coords.xy
-    #         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-
-    #     fig.xgrid.visible = False
-    #     fig.ygrid.visible = False
-
-    #     if plot_fig:
-    #         bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-    #         bokeh.plotting.save(fig)
-
-                
-#Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#Visualization ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================
-    
-# old
-    
-     # def get_info_elements_per_storey(self, storey, tol_elevation=0.001):
-
-    #     wall_info_per_storey = []
-    #     for wall in self.info_walls:
-    #         if abs(wall['location'][0][-1]-storey.Elevation) <= tol_elevation :
-    #             wall_info_per_storey.append(wall)
-
-    #     column_info_per_storey = []
-    #     for column in self.info_columns:
-    #         if abs(column['location'][-1]-storey.Elevation) <= tol_elevation :
-    #             column_info_per_storey.append(column)
-
-    #     # differentiate between structural and non-structural walls.
-    #     s_wall_locations =  [w['location'] for w in wall_info_per_storey if w['loadbearing']]
-    #     ns_wall_locations =  [w['location'] for w in wall_info_per_storey if not w['loadbearing']]
-        
-    #     wall_locations_struc = copy.deepcopy(s_wall_locations)
-    #     wall_locations_nonst = copy.deepcopy(ns_wall_locations)
-    #     [p.pop() for wall_loc in wall_locations_struc for p in wall_loc]
-    #     [p.pop() for wall_loc in wall_locations_nonst for p in wall_loc]
-        
-    #     s_column_locations = [c['location'] for c in column_info_per_storey]
-
-    #     column_locations_struc = copy.deepcopy(s_column_locations)
-    #     [column_loc.pop() for column_loc in column_locations_struc]
-        
-    #     wall_lines_struc = [LineString(wall_location) for wall_location in wall_locations_struc]
-    #     wall_lines_nonst = [LineString(wall_location) for wall_location in wall_locations_nonst]
-       
-    #     column_points = [Point(column_loc) for column_loc in column_locations_struc]
-
-    #     return (wall_lines_struc,wall_lines_nonst,column_points)

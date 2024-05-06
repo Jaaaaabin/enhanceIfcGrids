@@ -29,22 +29,8 @@ from deap import base, creator, tools, algorithms
 from quickTools import time_decorator
 from ifc_grid_generation import preparation_of_grid_generation
 
-# references.s
-# https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
-# https://deap.readthedocs.io/en/master/tutorials/basic/part4.html
-# https://intellij-support.jetbrains.com/hc/en-us/community/posts/115000384464-Problem-using-multiprocess-with-IPython
-# Check papers:
-# Automated optimization of steel reinforcement in RC building frames using building information modeling and hybrid genetic algorithm
-# check real-valued link. + the existing method of correcting non-integer to integer.
-# https://www.researchgate.net/post/How_can_I_encode_and_decode_a_real-valued_problem-variable_in_Genetic_Algorithms
-# # have to take care that the numbers do not go outside your range
-# https://gitlab.com/santiagoandre/deap-customize-population-example/-/blob/master/AGbasic.py?ref_type=heads
-
-# links for constraint handling:
-# https://stackoverflow.com/questions/20301206/enforce-constraints-in-genetic-algorithm-with-deap
-# https://github.com/deap/deap/issues/30
 #===================================================================================================
-# Paths setup:
+# Paths setup and Log registration.
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test_ga')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
@@ -60,52 +46,25 @@ MODEL_PATHS = get_ifc_model_paths(DATA_FOLDER_PATH)
 MODEL_PATH = MODEL_PATHS[0]  # Assuming we take only one model every time for the ga testing..
 gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH) # initial gridGenerator to be "deep" copied...
 INI_GENERATION_TXT = os.path.join(DATA_RES_PATH, MODEL_PATH,'ini_int_individuals.txt')
-                                  
-#===================================================================================================
-# Log registration.
-# reconfigurate the logging file.
-logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
+
+logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
 
 #===================================================================================================
-# Basic parameter / vairbales and the preset bounds
+# Basic parameter & Customized Population setup:
+
 PARAMS = {
+    'st_c_num': (3, 10), # [2,10)
+    'st_w_num': (1, 10), # [1,10)
+    'ns_w_num': (1, 10), # [1,10)
     'st_w_accumuled_length_percent': (0.0001, 0.0100),
     'ns_w_accumuled_length_percent': (0.0001, 0.0100),
-    'st_c_num': (2, 9),
-    'st_w_num': (2, 9),
-    'ns_w_num': (2, 9),
-    # 'st_c_dist': (0.00001, 0.0001),
-    # 'st_w_dist': (0.00001, 0.0001),
-    # 'ns_w_dist': (0.00001, 0.0001),
+    'st_st_merge': (0.01, 0.50),
+    'ns_st_merge': (0.01, 0.80),
+    # 'st_c_dist': (0.00001, 0.0001), # fixed as 0.001
+    # 'st_w_dist': (0.00001, 0.0001), # fixed as 0.001
+    # 'ns_w_dist': (0.00001, 0.0001), # fixed as 0.001
 }
-PARAM_BOUNDS = [value for value in PARAMS.values()]
 
-#===================================================================================================
-# Genetic Algorithm Configuration - Constants
-NUM_PARAMS = len(PARAM_BOUNDS)
-
-POPULATION_SIZE = 50 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 30 # number of iterations.
-
-CHROMOSOME_LENGTH = 20 # length of the chromosome (individual), which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
-TOURNAMENT_SIZE = 5 # number of participants in tournament selection.
-
-# todo.. how different it can lead by different probabilities of crossover and mutation
-CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
-MUTAT_PROB = 0.1 # the probability for mutating an individual
-
-if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
-    raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
-
-logging.info("POPULATION_SIZE: %s", POPULATION_SIZE)
-logging.info("NUM_GENERATIONS: %s", NUM_GENERATIONS)
-logging.info("CHROMOSOME_LENGTH: %s", CHROMOSOME_LENGTH)
-logging.info("TOURNAMENT_SIZE: %s", TOURNAMENT_SIZE)
-logging.info("CROSS_PROB: %s", CROSS_PROB)
-logging.info("MUTAT_PROB: %s", MUTAT_PROB)
-
-#===================================================================================================
-# Customize Population setup:
 def get_parameter_scales(param_ranges=PARAMS):
 
     # convert the dict ranges.
@@ -133,14 +92,52 @@ def get_parameter_scales(param_ranges=PARAMS):
 
 PARAMS_SCALE, PARAMS_INTEGER = get_parameter_scales()
 
+def get_parameter_variation_limits(param_ranges=PARAMS_INTEGER):
+    
+    str_lowers, str_uppers = [], []
+
+    for key, (lower, upper) in param_ranges.items():
+        # the upper value is excluded.
+        upper -= 1
+        size_max = len(str(abs(upper)))
+
+        str_lowers.append(str(lower).zfill(size_max))
+        str_uppers.append(str(upper).zfill(size_max))
+
+    str_lowers = list(map(int, list(''.join(v for v in str_lowers))))
+    str_uppers = list(map(int, list(''.join(v for v in str_uppers))))
+    
+    return str_lowers, str_uppers
+
+MinVals, MaxVals = get_parameter_variation_limits()
+
+#===================================================================================================
+# Genetic Algorithm Configuration - Constants
+POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 30 # number of iterations.
+TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
+CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
+MUTAT_PROB = 0.1 # the probability for mutating an individual
+
+#===================================================================================================
+# save for default initialization.
+# PARAM_BOUNDS = [value for value in PARAMS.values()]
+# NUM_PARAMS = len(PARAM_BOUNDS)
+# CHROMOSOME_LENGTH = 20 # length of the chromosome (individual),  which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
+# if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
+#     raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
+# logging.info("CHROMOSOME_LENGTH: %s", CHROMOSOME_LENGTH)
+
 def generate_one_individual(ranges=PARAMS_INTEGER):
 
     # convert the dict ranges.
     integer_individual = []
 
     for key, (lower, upper) in ranges.items():
-        size_max = len(str(abs(upper-1)))
-        integer_v = str(random.randint(lower, upper-1)).zfill(size_max)
+        # the upper value is excluded.
+        upper -= 1
+        size_max = len(str(abs(upper)))
+        integer_v = str(random.randint(lower, upper)).zfill(size_max)
         integer_individual.append(integer_v)
         
     integer_individual = list(''.join(v for v in integer_individual))
@@ -206,10 +203,12 @@ def visualize_fitness(logbook):
 # ===================================================================================================
 # Basic Decode Functions of GA
 def decode_integer_x(individual: list) -> list:
+
     decoded_xs = []
     count_parameter_placeholders = []
-    for key, (lower_limit, upper_limit) in PARAMS_INTEGER.items():
-        l = len(str(abs(upper_limit-1)))
+    for key, (lower, upper) in PARAMS_INTEGER.items():
+        upper -= 1
+        l = len(str(abs(upper)))
         count_parameter_placeholders.append(l)
 
     if sum(count_parameter_placeholders) == len(individual):
@@ -239,29 +238,29 @@ def adjust_x_values(decoded_x):
 
     return decoded_parameters
 
-def feasible_fxn(individual: list) -> bool:
-    """penalty decorator."""
-    # to improve toward a more generic version. since this really makes the evolution stick to a "maybe" local-optimal
+# def feasible_fxn(individual: list) -> bool:
+#     """penalty decorator."""
+#     # to improve toward a more generic version. since this really makes the evolution stick to a "maybe" local-optimal
 
-    for item in individual[-3:]:
-        if item < 1:
-            return False
-        else:
-            continue
-    return True
+#     for item in individual[-3:]:
+#         if item < 1:
+#             return False
+#         else:
+#             continue
+#     return True
 
 # Objective Functions of genetic algorithm (GA)
 # @time_decorator
 def objective_fxn(individual: list) -> tuple:
 
     """Evaluate the fitness of an individual based on grid performance metrics."""
-    # decode the binary individuals to real parameter values.
+    #  the binary individuals to real parameter values.
     
-    # pre-constraints checking.
-    if not feasible_fxn(individual):
-        return (0.999, 0.999,)
+    # pre-constraints checking, but this will cause too much noises.
+    # if not feasible_fxn(individual):
+    #     return (0.999, 0.999,)
 
-    # normal objective function.
+    # decode the integer values back to real parameter values for calculating the objective function.
     decoded_individual = decode_integer_x(list(individual))
     decoded_parameters = adjust_x_values(decoded_individual)
 
@@ -270,22 +269,20 @@ def objective_fxn(individual: list) -> tuple:
     gridGenerator.update_parameters(decoded_parameters)
     
     # create grids and calculate the losses.
-    gridGenerator.create_grids() # gets slower.
-    gridGenerator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)
-    gridGenerator.calculate_grid_distance_deviation_loss()
+    gridGenerator.create_grids()
+    gridGenerator.merge_grids()
     
-    # print ("self.percent_unbound_w_numbers:", gridGenerator.percent_unbound_w_numbers)
-    # print ("self.percent_cross_unbound_w_lengths:", gridGenerator.percent_cross_unbound_w_lengths)
-    # print ("self.avg_deviation_distance_st:", gridGenerator.avg_deviation_distance_st)
-
+    # loss calculation.
+    gridGenerator.merged_loss_unbound_elements2grids()
+    gridGenerator.merged_loss_distance_deviation()
+    
     decoded_parameters =  {k: round(v, 4) for k, v in decoded_parameters.items()}
     logging.info("The Ifc input parameters: %s", decoded_parameters)
 
     # the return value must be a list / tuple, even it's only one fitness value.
     return (
-        gridGenerator.percent_unbound_w_numbers,
-        gridGenerator.percent_cross_unbound_w_lengths,)
-        # gridGenerator.avg_deviation_distance_st)
+        gridGenerator.percent_unbound_elements,
+        gridGenerator.avg_deviation_distance,)
 
 # ===================================================================================================
 # main.
@@ -322,7 +319,9 @@ def main(random_seed, num_processes=1):
 
     # registering basic processes using DEAP bulit-in functions
     toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB) # strategy for crossover, this classic two point crossover
-    toolbox.register("mutate", tools.mutFlipBit, indpb=MUTAT_PROB) # mutation strategy with probability of mutation
+    # toolbox.register("mutate", tools.mutFlipBit, indpb=MUTAT_PROB) # mutation strategy with probability of mutation
+
+    toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE) # selection startegy
     
     # Process Pool of multi workers
@@ -354,15 +353,29 @@ def main(random_seed, num_processes=1):
     
     gridGeneratorInit.update_parameters(decoded_parameters)
     gridGeneratorInit.create_grids()
-    gridGeneratorInit.visualization_2d()
+    gridGeneratorInit.merge_grids()
+
+    gridGeneratorInit.visualization_2d_before_merge()
+    gridGeneratorInit.visualization_2d_after_merge()
     print("best ind decoded parameter values:", decoded_parameters)
 
 if __name__ == "__main__":
 
     main(random_seed=20, num_processes=8)
 
-
-
+# ========================references===========================
+# https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
+# https://deap.readthedocs.io/en/master/tutorials/basic/part4.html
+# https://intellij-support.jetbrains.com/hc/en-us/community/posts/115000384464-Problem-using-multiprocess-with-IPython
+# Check papers:
+# Automated optimization of steel reinforcement in RC building frames using building information modeling and hybrid genetic algorithm
+# check real-valued link. + the existing method of correcting non-integer to integer.
+# https://www.researchgate.net/post/How_can_I_encode_and_decode_a_real-valued_problem-variable_in_Genetic_Algorithms
+# # have to take care that the numbers do not go outside your range
+# https://gitlab.com/santiagoandre/deap-customize-population-example/-/blob/master/AGbasic.py?ref_type=heads
+# links for constraint handling:
+# https://stackoverflow.com/questions/20301206/enforce-constraints-in-genetic-algorithm-with-deap
+# https://github.com/deap/deap/issues/30
 
 
 # ========================save===========================

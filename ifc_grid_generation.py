@@ -37,13 +37,21 @@ def building_grid_generation(basic_generator, new_parameters):
     
     # generate the grids
     new_generator.create_grids()
+    
+    # loss functions before merge the grids.
+    # new_generator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)    # loss calculation.
+    # new_generator.calculate_grid_distance_deviation_loss()
+    
+    new_generator.visualization_2d_before_merge()
+    
+    # merge the grids
+    new_generator.merge_grids()
 
-    # # calculate the losses
-    new_generator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)    # loss calculation.
-    new_generator.calculate_grid_distance_deviation_loss()
-
-    # display the grids
-    new_generator.visualization_2d()
+    # loss functions after merge the grids.
+    new_generator.merged_loss_unbound_elements2grids()
+    new_generator.merged_loss_distance_deviation()
+    
+    new_generator.visualization_2d_after_merge()
 
 # # ----------
 # try:
@@ -56,13 +64,15 @@ def building_grid_generation(basic_generator, new_parameters):
 
 #         best_thresholds = {
 #             'st_c_num': 3,
-#             'st_c_dist': 0.0001,
-#             'st_w_num': 2,
-#             'st_w_dist': 0.0001,
-#             'st_w_accumuled_length': 5,
+#             'st_w_num': 1,
 #             'ns_w_num': 1,
+#             'st_w_accumuled_length_percent': 0.001,
+#             'ns_w_accumuled_length_percent': 0.001,
+#             'st_st_merge': 0.3,
+#             'ns_st_merge': 0.3,
+#             'st_c_dist': 0.0001,
+#             'st_w_dist': 0.0001,
 #             'ns_w_dist': 0.0001,
-#             'ns_w_accumuled_length': 3,
 #         }
         
 #         building_grid_generation(init_grid_generator, best_thresholds)
