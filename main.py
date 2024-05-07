@@ -1,38 +1,43 @@
-import os
 import sys
-import copy
 import ctypes
-import array
 
-# Enable Virtual Terminal Processing to display ANSI colors in Windows console
+# Enable Virtual Terminal Processing to display ANSI colors in Windows console before numpy
 if sys.platform == "win32":
     kernel32 = ctypes.windll.kernel32
     kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
 
-# ncore = "1"
-# os.environ["OMP_NUM_THREADS"] = ncore
-# os.environ["OPENBLAS_NUM_THREADS"] = ncore
-# os.environ["MKL_NUM_THREADS"] = ncore
-# os.environ["VECLIB_MAXIMUM_THREADS"] = ncore
-# os.environ["NUMEXPR_NUM_THREADS"] = ncore
-
 import numpy as np
+import matplotlib.pyplot as plt
+
+import os
+import copy
+import array
+import json
 import random
 import logging
-import psutil
 import multiprocessing
 
-import matplotlib.pyplot as plt
-from math import ceil, log10
 from deap import base, creator, tools, algorithms
+from math import ceil, log10
 
-from quickTools import time_decorator
+from gaTools import ga_eaSimple
 from ifc_grid_generation import preparation_of_grid_generation
 
 #===================================================================================================
+# Genetic Algorithm Configuration - Constants
+POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 5 # number of iterations.
+
+TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
+CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
+MUTAT_PROB = 0.1 # the probability for mutating an individual
+
+NUM_PROCESS = 4
+RANDOM_SEED = 20001
+#===================================================================================================
 # Paths setup and Log registration.
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test_ga')
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
 def get_ifc_model_paths(folder_path: str) -> list:
@@ -44,22 +49,26 @@ def get_ifc_model_paths(folder_path: str) -> list:
 
 MODEL_PATHS = get_ifc_model_paths(DATA_FOLDER_PATH)
 MODEL_PATH = MODEL_PATHS[0]  # Assuming we take only one model every time for the ga testing..
-gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH) # initial gridGenerator to be "deep" copied...
-INI_GENERATION_TXT = os.path.join(DATA_RES_PATH, MODEL_PATH,'ini_int_individuals.txt')
 
+gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH) # initial gridGenerator to be "deep" copied...
 logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
+
+INI_GENERATION_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH,'GA_generation_ini_inds_integer.txt')
+GENERATION_LOG_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_log.json")
+GENERATION_FIT_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_fitness.png")
+GENERATION_IND_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_inds.txt")
+GENERATION_IND_VIOLIN_FLE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_ind_violin.png")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
-
 PARAMS = {
-    'st_c_num': (3, 10), # [2,10)
+    'st_c_num': (3, 10), # [3,10) 
     'st_w_num': (1, 10), # [1,10)
-    'ns_w_num': (1, 10), # [1,10)
+    'ns_w_num': (2, 10), # [2,10)
     'st_w_accumuled_length_percent': (0.0001, 0.0100),
     'ns_w_accumuled_length_percent': (0.0001, 0.0100),
-    'st_st_merge': (0.01, 0.50),
-    'ns_st_merge': (0.01, 0.80),
+    'st_st_merge': (0.01, 0.30),
+    'ns_st_merge': (0.10, 1.50),
     # 'st_c_dist': (0.00001, 0.0001), # fixed as 0.001
     # 'st_w_dist': (0.00001, 0.0001), # fixed as 0.001
     # 'ns_w_dist': (0.00001, 0.0001), # fixed as 0.001
@@ -111,23 +120,6 @@ def get_parameter_variation_limits(param_ranges=PARAMS_INTEGER):
 
 MinVals, MaxVals = get_parameter_variation_limits()
 
-#===================================================================================================
-# Genetic Algorithm Configuration - Constants
-POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 30 # number of iterations.
-TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
-CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
-MUTAT_PROB = 0.1 # the probability for mutating an individual
-
-#===================================================================================================
-# save for default initialization.
-# PARAM_BOUNDS = [value for value in PARAMS.values()]
-# NUM_PARAMS = len(PARAM_BOUNDS)
-# CHROMOSOME_LENGTH = 20 # length of the chromosome (individual),  which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
-# if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
-#     raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
-# logging.info("CHROMOSOME_LENGTH: %s", CHROMOSOME_LENGTH)
-
 def generate_one_individual(ranges=PARAMS_INTEGER):
 
     # convert the dict ranges.
@@ -145,7 +137,7 @@ def generate_one_individual(ranges=PARAMS_INTEGER):
 
     return integer_individual
 
-def create_and_store_individuals(n=POPULATION_SIZE, filename=INI_GENERATION_TXT):
+def create_and_store_individuals(n=POPULATION_SIZE, filename=INI_GENERATION_FILE):
     
     int_lists = [generate_one_individual() for _ in range(n)]
 
@@ -153,7 +145,7 @@ def create_and_store_individuals(n=POPULATION_SIZE, filename=INI_GENERATION_TXT)
         for int_list in int_lists:
             file.write(str(int_list) + '\n')
 
-def read_and_load_individuals(creator, n=POPULATION_SIZE, filename=INI_GENERATION_TXT):
+def read_and_load_individuals(creator, n=POPULATION_SIZE, filename=INI_GENERATION_FILE):
     individuals = []
     try:
         # Since the individual data is expected to be a list of integers:
@@ -174,31 +166,6 @@ def read_and_load_individuals(creator, n=POPULATION_SIZE, filename=INI_GENERATIO
     else:
         logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
         return None
-
-# ===================================================================================================
-# Fitness Visualization.
-def visualize_fitness(logbook):
-    """Visualize and save the evolution of fitness over generations."""
-    gen = logbook.select("gen")
-    min_fitness = logbook.select("min")
-    max_fitness = logbook.select("max")
-    avg_fitness = logbook.select("avg")
-
-    plt.figure(figsize=(10, 5))
-    plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
-    plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
-    plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
-    plt.xlabel("Generation")
-    plt.ylabel("Fitness")
-    plt.title("Fitness Over Generations")
-    plt.legend()
-    plt.grid(True)
-    
-    # Save the plot to a file
-    plt.savefig(os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_fitness_over_generations.png"))
-    plt.close()  # Close the figure to free up memory
-
-    logging.info("Fitness evolution plot saved as 'fitness_over_generations.png'.")
 
 # ===================================================================================================
 # Basic Decode Functions of GA
@@ -238,27 +205,9 @@ def adjust_x_values(decoded_x):
 
     return decoded_parameters
 
-# def feasible_fxn(individual: list) -> bool:
-#     """penalty decorator."""
-#     # to improve toward a more generic version. since this really makes the evolution stick to a "maybe" local-optimal
-
-#     for item in individual[-3:]:
-#         if item < 1:
-#             return False
-#         else:
-#             continue
-#     return True
-
 # Objective Functions of genetic algorithm (GA)
 # @time_decorator
 def objective_fxn(individual: list) -> tuple:
-
-    """Evaluate the fitness of an individual based on grid performance metrics."""
-    #  the binary individuals to real parameter values.
-    
-    # pre-constraints checking, but this will cause too much noises.
-    # if not feasible_fxn(individual):
-    #     return (0.999, 0.999,)
 
     # decode the integer values back to real parameter values for calculating the objective function.
     decoded_individual = decode_integer_x(list(individual))
@@ -275,93 +224,173 @@ def objective_fxn(individual: list) -> tuple:
     # loss calculation.
     gridGenerator.merged_loss_unbound_elements2grids()
     gridGenerator.merged_loss_distance_deviation()
-    
-    decoded_parameters =  {k: round(v, 4) for k, v in decoded_parameters.items()}
-    logging.info("The Ifc input parameters: %s", decoded_parameters)
+    individual_fitness = gridGenerator.percent_unbound_elements/2 + gridGenerator.avg_deviation_distance/2
 
-    # the return value must be a list / tuple, even it's only one fitness value.
-    return (
-        gridGenerator.percent_unbound_elements,
-        gridGenerator.avg_deviation_distance,)
+    return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
+
+# ===================================================================================================
+# Fitness Storage and Visualization.
+def save_logbook(logbook, log_file):
+    logbook_json = {}
+    logbook_json = logbook
+    
+    with open(log_file, "w") as output_file:
+        json.dump(logbook_json, output_file, indent = 3)
+
+def visualize_fitness(logbook, fit_file):
+    gen = logbook.select("gen")
+    min_fitness = logbook.select("min")
+    max_fitness = logbook.select("max")
+    avg_fitness = logbook.select("avg")
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
+    plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
+    plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
+    
+    plt.xlabel("Generation")
+    plt.ylabel("Fitness")
+    plt.title("Fitness Over Generations")
+    plt.legend()
+    plt.grid(True)
+    
+    # Save the plot to a file
+    plt.savefig(fit_file)
+    plt.close()  # Close the figure to free up memory
+
+def read_floats_from_file(file_path):
+
+    float_list = []
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                # Convert each line to a float and add it to the list
+                try:
+                    float_value = float(line.strip())
+                    float_list.append(float_value)
+                except ValueError:
+                    print(f"Warning: Could not convert '{line.strip()}' to float.")
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+    return float_list
+
+def visualize_violin(violin_file, ind_file, generation_size):
+
+    # Create the violin plot
+    ind_data = read_floats_from_file(ind_file)
+    
+    violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
+
+    plt.figure(figsize=(20, 5))
+    fig, ax = plt.subplots()
+    ax.violinplot(violin_data)
+
+    # Adding titles and labels
+    ax.set_title('Violin Plot of Distributions')
+    ax.set_xlabel('Groups')
+    ax.set_ylabel('Values')
+
+    # Setting x-tick labels to show group numbers
+    ax.set_xticks(range(1, len(violin_data) + 1))
+    ax.set_xticklabels([f'Group {i+1}' for i in range(len(violin_data))])
+
+    # Show the plot
+    plt.grid(True)
+    plt.savefig(violin_file)
 
 # ===================================================================================================
 # main.
-def main(random_seed, num_processes=1):
+def main(random_seed=[], num_processes=1):
 
-    random.seed(random_seed)
+    if random_seed:
+        random.seed(random_seed)
 
-    creator.create("FitnessMulti", base.Fitness, weights=(-1.0,-1.0,))
-    
-    # Individual initializer
-    # <default>
-    # creator.create("Individual", list, fitness=creator.FitnessMulti)
-    
-    # <customize>
-    creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMulti) 
-    
+    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+    creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMin) 
     toolbox = base.Toolbox()
 
-    # Attribute initializer
-    # <default>
-    # toolbox.register("attr_bool", random.randint, 0, 1) # attribute generator with toolbox.attr_bool() drawing a random integer between 0 and 1
-    # toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, CHROMOSOME_LENGTH)  # depending upon decoding strategy, which uses precision
-    # toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-
-    # <customize>
     create_and_store_individuals()
     toolbox.register("population", read_and_load_individuals, creator.Individual)
 
     # Evaluator initializer
     toolbox.register("evaluate", objective_fxn) # privide the objective function here
 
-    # <To check if there's other more sustanible Penalty methods>
-    # toolbox.decorate("evaluate", tools.DeltaPenalty(feasible_fxn, 1.0))
-
+    # <To check if there's other more sustanible Penalty methods>, for example: toolbox.decorate("evaluate", tools.DeltaPenalty(feasible_fxn, 1.0))
+    
     # registering basic processes using DEAP bulit-in functions
     toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB) # strategy for crossover, this classic two point crossover
-    # toolbox.register("mutate", tools.mutFlipBit, indpb=MUTAT_PROB) # mutation strategy with probability of mutation
 
+    # toolbox.register("mutate", tools.mutFlipBit, indpb=MUTAT_PROB) # mutation strategy with probability of mutation
     toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
+
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE) # selection startegy
     
+    # Clear the old generation individual file.
+    if os.path.exists(GENERATION_IND_FILE):
+        os.remove(GENERATION_IND_FILE)
+        
     # Process Pool of multi workers
     if num_processes > 1:
         pool = multiprocessing.Pool(processes=num_processes)
         toolbox.register("map", pool.map)
+    
+    # history to track all the individuals produced in the evolution.
+    history = tools.History()
+    toolbox.decorate("mate", history.decorator)
+    toolbox.decorate("mutate", history.decorator)
+
+    # # toolbox.decorate("select", history.decorator)
 
     pop = toolbox.population()
+    history.update(pop)
+
     stats = tools.Statistics(lambda ind: ind.fitness.values)
-    hof = tools.HallOfFame(1)
+    # hof = tools.HallOfFame(1)
 
     stats.register("avg", np.mean)
     stats.register("std", np.std)
     stats.register("min", np.min)
     stats.register("max", np.max)
     
-    final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
-        ngen=NUM_GENERATIONS, stats=stats, halloffame=hof, verbose=True)
+    # final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
+    #     ngen=NUM_GENERATIONS, stats=stats, verbose=True)
+    
+    final_pop, logbook = ga_eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
+        ngen=NUM_GENERATIONS, fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True)
     
     if num_processes > 1:
         pool.close()
     
-    # plot the grids.
-    visualize_fitness(logbook)
-    best_ind = tools.selBest(final_pop, 1)[0]
+    # Analysis of the GA.
+    save_logbook(logbook=logbook, log_file=GENERATION_LOG_FILE) # logbook, generation-level
+    visualize_fitness(logbook=logbook, fit_file=GENERATION_FIT_FILE) # generation-fitness-level
+    visualize_violin(violin_file=GENERATION_IND_VIOLIN_FLE, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
 
+    # # genealogy, crossover and mutation levels.
+    # visualize_individual_maps(log_file=GENERATION_LOG_FILE, fit_file=GENERATION_FIT_FILE, ind_file=GENERATION_IND_MAP_FILE)
+    # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE)
+
+    # Pick the best individual
+    best_ind = tools.selBest(final_pop, 1)[0]
     best_ind_decoded = decode_integer_x(best_ind)
     decoded_parameters = adjust_x_values(best_ind_decoded)
     
+    # Call back the grid generator.
     gridGeneratorInit.update_parameters(decoded_parameters)
     gridGeneratorInit.create_grids()
     gridGeneratorInit.merge_grids()
 
-    gridGeneratorInit.visualization_2d_before_merge()
-    gridGeneratorInit.visualization_2d_after_merge()
+    # Visualization of the generated grids.
     print("best ind decoded parameter values:", decoded_parameters)
+    # gridGeneratorInit.visualization_2d_before_merge()
+    # gridGeneratorInit.visualization_2d_after_merge()
 
 if __name__ == "__main__":
 
-    main(random_seed=20, num_processes=8)
+    main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS)
 
 # ========================references===========================
 # https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
@@ -376,7 +405,21 @@ if __name__ == "__main__":
 # links for constraint handling:
 # https://stackoverflow.com/questions/20301206/enforce-constraints-in-genetic-algorithm-with-deap
 # https://github.com/deap/deap/issues/30
+# save all individuals of all generations.
+# https://groups.google.com/g/deap-users/c/9IHsKGR9Daw
+# networkx.graphviz_layout for printing history, the source code:
+# https://gist.github.com/fmder/5505431
+# importance of invalid fitness in DEAP.
+# https://stackoverflow.com/questions/44708050/whats-the-importance-of-invalid-fitness-in-deap 
 
+# ========================default_initialization===========================
+# save for default initialization.
+# PARAM_BOUNDS = [value for value in PARAMS.values()]
+# NUM_PARAMS = len(PARAM_BOUNDS)
+# CHROMOSOME_LENGTH = 20 # length of the chromosome (individual),  which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
+# if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
+#     raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
+# logging.info("CHROMOSOME_LENGTH: %s", CHROMOSOME_LENGTH)
 
 # ========================save===========================
 # def decode_binary_x(individual: list) -> list:
@@ -398,7 +441,7 @@ if __name__ == "__main__":
 #         x.append(decoded)
 #         bound_index +=1
 #     return x
-#
+
 # ========================save===========================
 # # Multiprocesssing Functions
 # def monitor_resources():
@@ -411,3 +454,43 @@ if __name__ == "__main__":
 #     """Initialize worker process to monitor its resources."""
 #     logging.info(f"Worker {multiprocessing.current_process().pid} started.")
 #     monitor_resources()  # Monitor the current worker
+
+# ========================save===========================
+# ncore = "1"
+# os.environ["OMP_NUM_THREADS"] = ncore
+# os.environ["OPENBLAS_NUM_THREADS"] = ncore
+# os.environ["MKL_NUM_THREADS"] = ncore
+# os.environ["VECLIB_MAXIMUM_THREADS"] = ncore
+# os.environ["NUMEXPR_NUM_THREADS"] = ncore
+# =======================================================
+
+# ========================save===========================
+# Individual initializer
+    # <default>
+    # creator.create("Individual", list, fitness=creator.FitnessMulti)
+    # Attribute initializer
+    # <default>
+    # toolbox.register("attr_bool", random.randint, 0, 1) # attribute generator with toolbox.attr_bool() drawing a random integer between 0 and 1
+    # toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, CHROMOSOME_LENGTH)  # depending upon decoding strategy, which uses precision
+    # toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+
+# ========================save===========================
+# def save_genealogy(toolbox, history, genealogy_file):
+#     print ("history.genealogy_history:", history.genealogy_history)
+#     print ("history.genealogy_tree:", history.genealogy_tree)
+    # # log = history.genealogy_tree
+    # # genealogy_history 
+
+    # with open(GENERATION_LOG_GENEALOGY_FILE, "w") as output_file:
+    #     json.dump(log, output_file)
+
+    # # # visualization.
+    # graph = nx.DiGraph(history.genealogy_tree)
+    # graph = graph.reverse()  # Make the graph top-down
+    # plt.figure(figsize=(10, 15)) 
+    # colors = [toolbox.evaluate(history.genealogy_history[i])[0] for i in graph]
+
+    # positions = graphviz_layout(graph, prog="dot")
+    # nx.draw(graph, positions, node_color=colors)
+    # plt.savefig(genealogy_file)
+    # plt.close() # Close the figure to free up memory

@@ -996,11 +996,14 @@ class GridGenerator:
             if "length" in item:
                 total_length += item["length"]
 
+        # some global wall information
         self.total_wall_lengths = total_length
+        self.info_wall_length_by_id = {d['id']: d['length'] for d in self.info_all_walls if 'id' in d and 'length' in d}
+
+        # count all the walls and columns.
         self.total_wall_numbers = len(self.info_all_walls)
         self.total_column_numbers = len(self.info_st_columns)
-        self.total_bound_elements = self.total_wall_numbers + self.total_column_numbers
-        self.info_wall_length_by_id = {d['id']: d['length'] for d in self.info_all_walls if 'id' in d and 'length' in d}
+        self.total_bound_elements = self.total_wall_numbers + self.total_column_numbers  
 
     # @time_decorator
     def get_main_directions_and_storeys(self, num_directions=2):
@@ -1086,110 +1089,12 @@ class GridGenerator:
         # get the percent of total lengths of crossed unbound walls.
         # Maybe we donnot need this trick...
         self.percent_cross_unbound_w_lengths =  (cross_w_lengths/self.total_wall_lengths) # [0,1] to minimize
-
-    # a loss about global performance of the grids.
-    # @time_decorator
-    def calculate_grid_distance_deviation_loss(self, min_size_group=3):
-        """
-        Calculate the grid distance deviation, requiring at 3 grids.
-        |           |               |                   |
-        |           |               |                   |
-        <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
-        - abs(dist_1**2 - dist_2**2)
-        - abs(dist_2**2 - dist_3**2)
-        """
-        
-        def perpendicular_distance(point1, point2):
-            A = point2.y - point1.y
-            B = -(point2.x - point1.x)
-            C = point1.x * point2.y - point2.x * point1.y
-            return C / math.sqrt(A**2 + B**2)
-    
-        def get_distance_deviations(grids):
-
-            grid_groups = defaultdict(list)
-            square_root_of_distance_differences = []
-            
-            # calculate the relative locations within a group of grids.
-            for ln in grids:
-                
-                point1, point2 = list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]
-                slope = get_line_slope_by_points(point1, point2)
-                slope = round(slope, 4)
-                grid_groups[slope].append([point1, point2, perpendicular_distance(point1, point2)])
-
-            # filter the minor groups that cannot be calculated for the deviation.
-            grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
-            
-            # check if there's grid_groups left alter filtering the minor groups.
-            if grid_groups:
-
-                # sort each group by the perpendicular_distance value
-                for slope in grid_groups:
-                    grid_groups[slope] = sorted(grid_groups[slope], key=lambda x: x[-1])
-
-                for slope, grid_group in grid_groups.items():
-                    for i in range(1, len(grid_group)-1):
-                        dist_1 = (grid_group[i][-1] - grid_group[i-1][-1])
-                        dist_2 = (grid_group[i+1][-1] - grid_group[i][-1])
-
-                        square_diff = abs(dist_1**2 - dist_2**2)**0.5
-                        # ====================================================
-                        # problem of overlapping grids_st_c and grids_st_w..
-                        # ====================================================
-                        square_root_of_distance_differences.append(square_diff)
-
-            return square_root_of_distance_differences
-        
-        def sigmoid_scale(d, d_max):
-            return 1 / (1 + np.exp(-10 * (d / d_max - 0.5)))
-
-        # the loss target.
-        self.avg_deviation_distance_st = []
-        self.avg_deviation_distance_ns = []
-
-        # get all global st grids.
-        global_st_grids = self.grids_all.get('location_grids_st_c', []) + self.grids_all.get('location_grids_st_w', [])
-
-        # the accumulated distance deviation.
-        self.avg_deviation_distance_st += get_distance_deviations(global_st_grids)
-
-        for storey_key, storey_value in self.grids_all.items():
-            
-            if isinstance(storey_value, dict):
-
-                storey_ns_grids = storey_value.get('location_grids_ns_w', [])
-                if storey_ns_grids:
-                    self.avg_deviation_distance_ns += get_distance_deviations(storey_ns_grids)
-        
-        # get the averaged rescaled deviation value.
-        average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
-        
-        # =============================
-        # st_grid relative distance differences
-        if self.avg_deviation_distance_st:
-            # get average.
-            self.avg_deviation_distance_st = sum(self.avg_deviation_distance_st)/len(self.avg_deviation_distance_st)
-            # rescale it into [0, 1]
-            self.avg_deviation_distance_st = sigmoid_scale(self.avg_deviation_distance_st, average_wall_length)
-        else:
-            # if not reach any "feasible grid group", return a close-to-1 value by the sigmoid scaling function.
-            self.avg_deviation_distance_st = sigmoid_scale(average_wall_length, average_wall_length)
-        
-        # =============================
-        # ns_grid relative distance differences
-        if self.avg_deviation_distance_ns:
-            self.avg_deviation_distance_ns = sum(self.avg_deviation_distance_ns)/len(self.avg_deviation_distance_ns)
-        else:
-            # if not reach any "feasible grid group", return a close-to-1 value by the sigmoid scaling function.
-            self.avg_deviation_distance_ns = sigmoid_scale(average_wall_length, average_wall_length)
            
 #Loss with Initial Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================
 
 #===================================================================================================
 #Grid Alignment ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
-
     # @time_decorator
     def align_st4st_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
         
@@ -1425,6 +1330,7 @@ class GridGenerator:
 
         return location_grids_ns_w_storey, grids_ns_w_ids_storey
     
+    # @time_decorator
     def merge_grids(self):
         
         self.grids_merged = defaultdict(list)
@@ -1436,7 +1342,8 @@ class GridGenerator:
 
         self.grids_merged['location_grids_st_merged'], self.grids_merged['grids_st_merged_ids'] = self.align_st4st_grids(
             all_st_grids, all_st_grids_ids, tol = self.st_st_merge)
-        
+        # print("all_st_grids has a len of: ", len(all_st_grids))
+
         # ----------------------------------------------
         # ns to st per storey: location_grids_ns_merged, grids_ns_merged_ids
         for storey_key, storey_value in self.grids_all.items():
@@ -1447,11 +1354,11 @@ class GridGenerator:
                 self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_ns2st_grids(
                     storey_value['location_grids_ns_w'], storey_value['grids_ns_w_ids'], tol = self.ns_st_merge)
                 
-#Grid Alignment ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+# Grid Alignment ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
-#Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+# Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
     # a loss about local performance of the grids.
     def merged_loss_unbound_elements2grids(self):
@@ -1512,15 +1419,21 @@ class GridGenerator:
                         dist_1 = (grid_group[i][-1] - grid_group[i-1][-1])
                         dist_2 = (grid_group[i+1][-1] - grid_group[i][-1])
 
-                        square_diff = abs(dist_1**2 - dist_2**2)**0.5
-                        square_root_of_distance_differences.append(square_diff)
+                        square_root_diff = abs(dist_1**2 - dist_2**2)**0.5
+                        square_root_of_distance_differences.append(square_root_diff)
+                        # direct_diff = abs(dist_1 - dist_2)
+                        # square_root_of_distance_differences.append(direct_diff)
 
             return square_root_of_distance_differences
         
         def sigmoid_scale(d, d_max):
             return 1 / (1 + np.exp(-10 * (d / d_max - 0.5)))
-
-        # the loss target.
+        
+        # get the averaged rescaled deviation value.
+        average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
+        # max_wall_length = max(list(self.info_wall_length_by_id.values())) # or we can also use the max_wall_length.
+        
+        # initialize the loss target.
         self.avg_deviation_distance = []
 
         # get all global st grids.
@@ -1529,17 +1442,17 @@ class GridGenerator:
         for storey_key, storey_value in self.grids_merged.items():
             
             if isinstance(storey_value, dict):
+                
+                # per storey, first take all st grids.
+                grids_per_storey = global_st_grids
 
+                # add the ns grids if any.
                 storey_ns_grids = storey_value.get('location_grids_ns_merged', [])
-                 
-                if storey_ns_grids:
-                    grids_per_storey = global_st_grids
+                if storey_ns_grids:    
                     grids_per_storey += storey_ns_grids
-                    self.avg_deviation_distance += get_distance_deviations(grids_per_storey)
 
-        # =============================
-        # get the averaged rescaled deviation value.
-        average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
+                # put together and calculcate the distance deviations.
+                self.avg_deviation_distance += get_distance_deviations(grids_per_storey)
 
         if self.avg_deviation_distance:
             # get average.
@@ -1547,10 +1460,15 @@ class GridGenerator:
             # rescale it into [0, 1]
             self.avg_deviation_distance = sigmoid_scale(self.avg_deviation_distance, average_wall_length)
         else:
-            # if not reach any "feasible grid group", return a close-to-1 value by the sigmoid scaling function.
+            # if there's no "grouped" grids formulated in the results.
+            print ("|--------------------------------------------------------------------------->>>Warning: One penalty pic occurs |")
+            # return the extreme value 1 for cases less than 2 grids.
             self.avg_deviation_distance = sigmoid_scale(average_wall_length, average_wall_length)
-    
-#Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+
+    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    # herehere.: add / reuse one more loss target to help the convergence. | simpler is better,  same for the distance divergence |
+
+# Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================
 
 

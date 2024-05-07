@@ -12,7 +12,6 @@ def process_ifc_file(input_path, output_path):
 
     extractor = IfcExtractor(input_path, output_path)
 
-    # extractor.export_triangle_geometry(id='2rzvwssmPB$Ogkk_N5eE98', z_box=.1)
     extractor.extract_all_floors()
     extractor.extract_all_columns()
     extractor.extract_all_walls()
