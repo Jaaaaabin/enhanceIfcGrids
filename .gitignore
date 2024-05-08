@@ -9,7 +9,7 @@ tempo*.py
 
 # Data
 data/*
-!data/data_notes/
+!data/data_labels/
 
 # Dynamo codes.
 dyn/

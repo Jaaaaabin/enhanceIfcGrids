@@ -117,13 +117,13 @@ file_input = os.path.join(DATA_INPUT_PATH,ifc_file_name)
 file_output = os.path.join(DATA_OUTPUT_PATH,ifc_file_name)
 
 # LoadBearing.
-file_labeling_loadbearing_file = ifc_file_name + '_lb.txt'
-file_labeling_loadbearing_file = os.path.join(DATA_LABEL_PATH,file_labeling_loadbearing_file)
+file_labeling_lb_file = ifc_file_name + '_lb.txt'
+file_labeling_lb_file = os.path.join(DATA_LABEL_PATH,file_labeling_lb_file)
 
 ifc_updater = IfcUpdater(file_in=file_input, file_out=file_output,)
-ifc_updater.modify_common_property_walls(property_name='LoadBearing', property_value=True)
-ifc_updater.collect_labeling_information(property_labeling='LoadBearing', file_labeling=file_labeling_loadbearing_file)
-ifc_updater.modify_common_property_walls(property_name='LoadBearing', property_value=False)
+ifc_updater.modify_common_property_walls(property_name='LoadBearing', property_value=True) # set all to LoadBearing = True
+ifc_updater.collect_labeling_information(property_labeling='LoadBearing', file_labeling=file_labeling_lb_file) # feed the lables to self.info_labeling
+ifc_updater.modify_common_property_walls(property_name='LoadBearing', property_value=False) # set specific ones to LoadBearing = False
 ifc_updater.save_updated_model()
 
 # # IsExternal.
