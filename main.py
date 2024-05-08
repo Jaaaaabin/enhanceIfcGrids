@@ -6,33 +6,32 @@ if sys.platform == "win32":
     kernel32 = ctypes.windll.kernel32
     kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
 
-import numpy as np
-import matplotlib.pyplot as plt
-
 import os
 import copy
 import array
-import json
 import random
 import logging
 import multiprocessing
-
+import numpy as np
+import matplotlib.pyplot as plt
 from deap import base, creator, tools, algorithms
-from math import ceil, log10
 
-from gaTools import ga_eaSimple
 from ifc_grid_generation import preparation_of_grid_generation
+
+from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
+from gaTools import createInds, saveLogbook, visualizeGenFitness, visualizeGenFitnessViolin
+from gaTools import ga_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
-POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 5 # number of iterations.
+POPULATION_SIZE = 30 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.1 # the probability for mutating an individual
 
-NUM_PROCESS = 4
+NUM_PROCESS = 8
 RANDOM_SEED = 20001
 #===================================================================================================
 # Paths setup and Log registration.
@@ -40,17 +39,9 @@ PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
-def get_ifc_model_paths(folder_path: str) -> list:
-    model_paths = [filename for filename in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, filename))]
-    if not model_paths:
-        logging.error("No existing model paths found.")
-        raise FileNotFoundError("No model files in DATA_FOLDER_PATH")
-    return model_paths
+MODEL_PATH = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
 
-MODEL_PATHS = get_ifc_model_paths(DATA_FOLDER_PATH)
-MODEL_PATH = MODEL_PATHS[0]  # Assuming we take only one model every time for the ga testing..
-
-gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH) # initial gridGenerator to be "deep" copied...
+gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH)
 logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
 
 INI_GENERATION_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH,'GA_generation_ini_inds_integer.txt')
@@ -74,78 +65,13 @@ PARAMS = {
     # 'ns_w_dist': (0.00001, 0.0001), # fixed as 0.001
 }
 
-def get_parameter_scales(param_ranges=PARAMS):
+# Get the additional Constant Values.
+PARAMS_SCALE, PARAMS_INTEGER = getParameterScales(param_ranges=PARAMS)
+MinVals, MaxVals = getParameterVarLimits(param_ranges=PARAMS_INTEGER)
 
-    # convert the dict ranges.
-    integer_param_ranges = {}
-    scale_param_ranges = {}
-
-    for key, (lower, upper) in param_ranges.items():
-
-        # Determine the smallest power of 10 that converts both limits to integers
-        lower_decimals = ceil(-log10(lower % 1)) if lower % 1 != 0 else 0
-        upper_decimals = ceil(-log10(upper % 1)) if upper % 1 != 0 else 0
-
-        # Choose the maximum number of decimal places to determine scale factor
-        max_decimals = max(lower_decimals,upper_decimals)
-        
-        # Apply the scale factor to convert both limits to integers
-        scale_factor = 10 ** max_decimals
-        new_lower, new_upper = int(lower * scale_factor), int(upper * scale_factor)
-
-        # store the new dictionarys and the scale values.
-        scale_param_ranges[key] = scale_factor
-        integer_param_ranges[key] = (new_lower, new_upper)
-
-    return scale_param_ranges, integer_param_ranges
-
-PARAMS_SCALE, PARAMS_INTEGER = get_parameter_scales()
-
-def get_parameter_variation_limits(param_ranges=PARAMS_INTEGER):
-    
-    str_lowers, str_uppers = [], []
-
-    for key, (lower, upper) in param_ranges.items():
-        # the upper value is excluded.
-        upper -= 1
-        size_max = len(str(abs(upper)))
-
-        str_lowers.append(str(lower).zfill(size_max))
-        str_uppers.append(str(upper).zfill(size_max))
-
-    str_lowers = list(map(int, list(''.join(v for v in str_lowers))))
-    str_uppers = list(map(int, list(''.join(v for v in str_uppers))))
-    
-    return str_lowers, str_uppers
-
-MinVals, MaxVals = get_parameter_variation_limits()
-
-def generate_one_individual(ranges=PARAMS_INTEGER):
-
-    # convert the dict ranges.
-    integer_individual = []
-
-    for key, (lower, upper) in ranges.items():
-        # the upper value is excluded.
-        upper -= 1
-        size_max = len(str(abs(upper)))
-        integer_v = str(random.randint(lower, upper)).zfill(size_max)
-        integer_individual.append(integer_v)
-        
-    integer_individual = list(''.join(v for v in integer_individual))
-    integer_individual = list(map(int, integer_individual))
-
-    return integer_individual
-
-def create_and_store_individuals(n=POPULATION_SIZE, filename=INI_GENERATION_FILE):
-    
-    int_lists = [generate_one_individual() for _ in range(n)]
-
-    with open(filename, 'w') as file:
-        for int_list in int_lists:
-            file.write(str(int_list) + '\n')
-
-def read_and_load_individuals(creator, n=POPULATION_SIZE, filename=INI_GENERATION_FILE):
+# ===================================================================================================
+# Basic Functions of GA
+def ga_loadInds(creator, n=POPULATION_SIZE, filename=INI_GENERATION_FILE):
     individuals = []
     try:
         # Since the individual data is expected to be a list of integers:
@@ -166,10 +92,8 @@ def read_and_load_individuals(creator, n=POPULATION_SIZE, filename=INI_GENERATIO
     else:
         logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
         return None
-
-# ===================================================================================================
-# Basic Decode Functions of GA
-def decode_integer_x(individual: list) -> list:
+    
+def ga_decodeInteger_x(individual: list) -> list:
 
     decoded_xs = []
     count_parameter_placeholders = []
@@ -189,7 +113,7 @@ def decode_integer_x(individual: list) -> list:
         raise ValueError("The integer deocder is wrong")
     return decoded_xs
 
-def adjust_x_values(decoded_x):
+def ga_adjustReal_x(decoded_x):
 
     decoded_parameters = dict(zip(PARAMS.keys(), decoded_x))
     
@@ -207,99 +131,23 @@ def adjust_x_values(decoded_x):
 
 # Objective Functions of genetic algorithm (GA)
 # @time_decorator
-def objective_fxn(individual: list) -> tuple:
+def ga_objective(individual: list) -> tuple:
 
     # decode the integer values back to real parameter values for calculating the objective function.
-    decoded_individual = decode_integer_x(list(individual))
-    decoded_parameters = adjust_x_values(decoded_individual)
+    decoded_individual = ga_decodeInteger_x(list(individual))
+    decoded_parameters = ga_adjustReal_x(decoded_individual)
 
-    # build the gridGenerator.
-    gridGenerator = copy.deepcopy(gridGeneratorInit)
+    # build the gridGenerator for the current individual, create grids and calculate the losses.
+    gridGenerator = copy.deepcopy(gridGeneratorInit) # save computing time.
     gridGenerator.update_parameters(decoded_parameters)
-    
-    # create grids and calculate the losses.
     gridGenerator.create_grids()
     gridGenerator.merge_grids()
-    
-    # loss calculation.
     gridGenerator.merged_loss_unbound_elements2grids()
     gridGenerator.merged_loss_distance_deviation()
+
     individual_fitness = gridGenerator.percent_unbound_elements/2 + gridGenerator.avg_deviation_distance/2
 
     return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
-
-# ===================================================================================================
-# Fitness Storage and Visualization.
-def save_logbook(logbook, log_file):
-    logbook_json = {}
-    logbook_json = logbook
-    
-    with open(log_file, "w") as output_file:
-        json.dump(logbook_json, output_file, indent = 3)
-
-def visualize_fitness(logbook, fit_file):
-    gen = logbook.select("gen")
-    min_fitness = logbook.select("min")
-    max_fitness = logbook.select("max")
-    avg_fitness = logbook.select("avg")
-
-    plt.figure(figsize=(10, 5))
-    plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
-    plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
-    plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
-    
-    plt.xlabel("Generation")
-    plt.ylabel("Fitness")
-    plt.title("Fitness Over Generations")
-    plt.legend()
-    plt.grid(True)
-    
-    # Save the plot to a file
-    plt.savefig(fit_file)
-    plt.close()  # Close the figure to free up memory
-
-def read_floats_from_file(file_path):
-
-    float_list = []
-    try:
-        with open(file_path, 'r') as file:
-            for line in file:
-                # Convert each line to a float and add it to the list
-                try:
-                    float_value = float(line.strip())
-                    float_list.append(float_value)
-                except ValueError:
-                    print(f"Warning: Could not convert '{line.strip()}' to float.")
-    except FileNotFoundError:
-        print(f"Error: The file {file_path} does not exist.")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-
-    return float_list
-
-def visualize_violin(violin_file, ind_file, generation_size):
-
-    # Create the violin plot
-    ind_data = read_floats_from_file(ind_file)
-    
-    violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
-
-    plt.figure(figsize=(20, 5))
-    fig, ax = plt.subplots()
-    ax.violinplot(violin_data)
-
-    # Adding titles and labels
-    ax.set_title('Violin Plot of Distributions')
-    ax.set_xlabel('Groups')
-    ax.set_ylabel('Values')
-
-    # Setting x-tick labels to show group numbers
-    ax.set_xticks(range(1, len(violin_data) + 1))
-    ax.set_xticklabels([f'Group {i+1}' for i in range(len(violin_data))])
-
-    # Show the plot
-    plt.grid(True)
-    plt.savefig(violin_file)
 
 # ===================================================================================================
 # main.
@@ -312,21 +160,17 @@ def main(random_seed=[], num_processes=1):
     creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMin) 
     toolbox = base.Toolbox()
 
-    create_and_store_individuals()
-    toolbox.register("population", read_and_load_individuals, creator.Individual)
+    createInds(n=POPULATION_SIZE, param_rangs=PARAMS_INTEGER, filename=INI_GENERATION_FILE)
+    toolbox.register("population", ga_loadInds, creator.Individual)
 
     # Evaluator initializer
-    toolbox.register("evaluate", objective_fxn) # privide the objective function here
-
+    toolbox.register("evaluate", ga_objective) # privide the objective function here
     # <To check if there's other more sustanible Penalty methods>, for example: toolbox.decorate("evaluate", tools.DeltaPenalty(feasible_fxn, 1.0))
     
     # registering basic processes using DEAP bulit-in functions
-    toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB) # strategy for crossover, this classic two point crossover
-
-    # toolbox.register("mutate", tools.mutFlipBit, indpb=MUTAT_PROB) # mutation strategy with probability of mutation
+    toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB)
     toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
-
-    toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE) # selection startegy
+    toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
     
     # Clear the old generation individual file.
     if os.path.exists(GENERATION_IND_FILE):
@@ -365,18 +209,15 @@ def main(random_seed=[], num_processes=1):
         pool.close()
     
     # Analysis of the GA.
-    save_logbook(logbook=logbook, log_file=GENERATION_LOG_FILE) # logbook, generation-level
-    visualize_fitness(logbook=logbook, fit_file=GENERATION_FIT_FILE) # generation-fitness-level
-    visualize_violin(violin_file=GENERATION_IND_VIOLIN_FLE, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
-
-    # # genealogy, crossover and mutation levels.
-    # visualize_individual_maps(log_file=GENERATION_LOG_FILE, fit_file=GENERATION_FIT_FILE, ind_file=GENERATION_IND_MAP_FILE)
-    # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE)
+    saveLogbook(logbook=logbook, log_file=GENERATION_LOG_FILE) 
+    visualizeGenFitness(logbook=logbook, fitness_file=GENERATION_FIT_FILE)
+    visualizeGenFitnessViolin(violin_file=GENERATION_IND_VIOLIN_FLE, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+    # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
 
     # Pick the best individual
     best_ind = tools.selBest(final_pop, 1)[0]
-    best_ind_decoded = decode_integer_x(best_ind)
-    decoded_parameters = adjust_x_values(best_ind_decoded)
+    best_ind_decoded = ga_decodeInteger_x(best_ind)
+    decoded_parameters = ga_adjustReal_x(best_ind_decoded)
     
     # Call back the grid generator.
     gridGeneratorInit.update_parameters(decoded_parameters)
@@ -385,12 +226,13 @@ def main(random_seed=[], num_processes=1):
 
     # Visualization of the generated grids.
     print("best ind decoded parameter values:", decoded_parameters)
-    # gridGeneratorInit.visualization_2d_before_merge()
-    # gridGeneratorInit.visualization_2d_after_merge()
+    gridGeneratorInit.visualization_2d_before_merge()
+    gridGeneratorInit.visualization_2d_after_merge()
 
 if __name__ == "__main__":
 
     main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS)
+
 
 # ========================references===========================
 # https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py

@@ -1,6 +1,168 @@
 import os
+import json
 import random
+from math import ceil, log10
 from deap import tools
+import matplotlib.pyplot as plt
+
+#===================================================================================================
+# IFC related.
+def getIfcModelPaths(folder_path: str, only_first: bool=True, ) -> list:
+    model_paths = [filename for filename in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, filename))]
+    if not model_paths:
+        raise FileNotFoundError("No model files in the given path.")
+    if only_first:
+        model_paths = model_paths[0]
+    return model_paths
+
+#===================================================================================================
+# Parameter related.
+def getParameterScales(param_ranges):
+
+    # convert the dict ranges.
+    integer_param_ranges = {}
+    scale_param_ranges = {}
+
+    for key, (lower, upper) in param_ranges.items():
+
+        # Determine the smallest power of 10 that converts both limits to integers
+        lower_decimals = ceil(-log10(lower % 1)) if lower % 1 != 0 else 0
+        upper_decimals = ceil(-log10(upper % 1)) if upper % 1 != 0 else 0
+
+        # Choose the maximum number of decimal places to determine scale factor
+        max_decimals = max(lower_decimals,upper_decimals)
+        
+        # Apply the scale factor to convert both limits to integers
+        scale_factor = 10 ** max_decimals
+        new_lower, new_upper = int(lower * scale_factor), int(upper * scale_factor)
+
+        # store the new dictionarys and the scale values.
+        scale_param_ranges[key] = scale_factor
+        integer_param_ranges[key] = (new_lower, new_upper)
+
+    return scale_param_ranges, integer_param_ranges
+
+def getParameterVarLimits(param_ranges):
+    
+    str_lowers, str_uppers = [], []
+
+    for key, (lower, upper) in param_ranges.items():
+        # the upper value is excluded.
+        upper -= 1
+        size_max = len(str(abs(upper)))
+
+        str_lowers.append(str(lower).zfill(size_max))
+        str_uppers.append(str(upper).zfill(size_max))
+
+    str_lowers = list(map(int, list(''.join(v for v in str_lowers))))
+    str_uppers = list(map(int, list(''.join(v for v in str_uppers))))
+    
+    return str_lowers, str_uppers
+
+#===================================================================================================
+# Generation related.
+def generateOneInd(param_ranges):
+
+    # convert the dict param_ranges.
+    integer_individual = []
+
+    for key, (lower, upper) in param_ranges.items():
+        # the upper value is excluded.
+        upper -= 1
+        size_max = len(str(abs(upper)))
+        integer_v = str(random.randint(lower, upper)).zfill(size_max)
+        integer_individual.append(integer_v)
+        
+    integer_individual = list(''.join(v for v in integer_individual))
+    integer_individual = list(map(int, integer_individual))
+
+    return integer_individual
+
+def createInds(n, param_rangs,filename):
+    
+    int_lists = [generateOneInd(param_ranges=param_rangs) for _ in range(n)]
+
+    with open(filename, 'w') as file:
+        for int_list in int_lists:
+            file.write(str(int_list) + '\n')
+
+# ===================================================================================================
+# Storage and Visualization.
+def saveLogbook(logbook, log_file):
+    logbook_json = {}
+    logbook_json = logbook
+    
+    with open(log_file, "w") as output_file:
+        json.dump(logbook_json, output_file, indent = 3)
+
+def visualizeGenFitness(logbook, fitness_file):
+    gen = logbook.select("gen")
+    min_fitness = logbook.select("min")
+    max_fitness = logbook.select("max")
+    avg_fitness = logbook.select("avg")
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
+    plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
+    plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
+    
+    plt.xlabel("Generation")
+    plt.ylabel("Fitness")
+    plt.title("Fitness Over Generations")
+    plt.legend()
+    plt.grid(True)
+    
+    # Save the plot to a file
+    plt.savefig(fitness_file)
+    plt.close()  # Close the figure to free up memory
+
+def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
+
+    def read_floats_from_file(file_path):
+        float_list = []
+        try:
+            with open(file_path, 'r') as file:
+                for line in file:
+                    # Convert each line to a float and add it to the list
+                    try:
+                        float_value = float(line.strip())
+                        float_list.append(float_value)
+                    except ValueError:
+                        print(f"Warning: Could not convert '{line.strip()}' to float.")
+        except FileNotFoundError:
+            print(f"Error: The file {file_path} does not exist.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+        return float_list
+
+    # Create the violin plot
+    ind_data = read_floats_from_file(ind_file)
+    
+    violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
+
+    viol_h = 4
+    viol_w_per_gen = 2
+
+    plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h))
+    fig, ax = plt.subplots()
+    ax.violinplot(violin_data)
+
+    # Adding titles and labels
+    ax.set_title('Generation Fitnesses')
+    ax.set_xlabel('Generations')
+    ax.set_ylabel('Fitness')
+
+    # Setting x-tick labels to show group numbers
+    ax.set_xticks(range(1, len(violin_data) + 1))
+    ax.set_xticklabels([f'{i}' for i in range(len(violin_data))])
+
+    # Show the plot
+    plt.grid(True)
+    plt.savefig(violin_file)
+
+#===================================================================================================
+# Visualization for GA population fitnesses.
 
 def clearPopulationFitnesses(file_path):
 
