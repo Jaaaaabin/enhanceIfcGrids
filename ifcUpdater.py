@@ -14,7 +14,7 @@ class IfcUpdater:
         self.ifc_model = ifcopenshell.open(self.ifc_file_path_in)
         self.settings = ifcopenshell.geom.settings()
         
-        self.info_cleaning = {} 
+        self.info_labeling = {} 
 
     def _configure_settings(self):
 
@@ -77,7 +77,7 @@ class IfcUpdater:
         # create the property: name, description, entity_value.
         new_property = self.ifc_model.createIfcPropertySingleValue(property_name, None, self.ifc_model.create_entity("IfcBoolean", property_value), None),
         
-        wall_guids = self.info_cleaning.get(property_name, [])
+        wall_guids = self.info_labeling.get(property_name, [])
 
         if wall_guids:
             walls = []
@@ -89,16 +89,16 @@ class IfcUpdater:
         for wall in walls:
             self._set_one_wall_common_property(wall, property_name, new_property)
 
-    def collect_cleaning_information(self, property_cleaning, file_cleaning):
+    def collect_labeling_information(self, property_labeling, file_labeling):
         
         info_all = []
-        with open(file_cleaning, 'r') as file:
+        with open(file_labeling, 'r') as file:
             for line in file:
                 str_value = str(line.strip())
                 info_all.append(str_value)
 
-        self.info_cleaning.update({
-            property_cleaning: info_all,
+        self.info_labeling.update({
+            property_labeling: info_all,
         })
     
     def save_updated_model(self):
@@ -108,22 +108,21 @@ class IfcUpdater:
 
 PROJECT_DATA_PATH = r'C:\dev\phd\enrichIFC\enrichIFC\data'
 DATA_INPUT_PATH = os.path.join(PROJECT_DATA_PATH, 'saved_set1')
-DATA_OUTPUT_PATH = os.path.join(PROJECT_DATA_PATH, 'data_cleaned')
-DATA_NOTE_PATH = os.path.join(PROJECT_DATA_PATH, 'data_notes')
+DATA_OUTPUT_PATH = os.path.join(PROJECT_DATA_PATH, 'data_labled')
+DATA_LABEL_PATH = os.path.join(PROJECT_DATA_PATH, 'data_labels')
 
 ifc_file_name = '3776779.ifc'
 
 file_input = os.path.join(DATA_INPUT_PATH,ifc_file_name)
 file_output = os.path.join(DATA_OUTPUT_PATH,ifc_file_name)
 
-ifc_cleaning_file = ifc_file_name + '.txt'
-file_cleaning = os.path.join(DATA_NOTE_PATH,ifc_cleaning_file)
+# LoadBearing.
+file_labeling_loadbearing_file = ifc_file_name + '_lb.txt'
+file_labeling_loadbearing_file = os.path.join(DATA_LABEL_PATH,file_labeling_loadbearing_file)
 
 ifc_updater = IfcUpdater(file_in=file_input, file_out=file_output,)
-
-# LoadBearing.
 ifc_updater.modify_common_property_walls(property_name='LoadBearing', property_value=True)
-ifc_updater.collect_cleaning_information(property_cleaning='LoadBearing', file_cleaning=file_cleaning)
+ifc_updater.collect_labeling_information(property_labeling='LoadBearing', file_labeling=file_labeling_loadbearing_file)
 ifc_updater.modify_common_property_walls(property_name='LoadBearing', property_value=False)
 ifc_updater.save_updated_model()
 
