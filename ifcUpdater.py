@@ -109,6 +109,7 @@ class IfcUpdater:
 PROJECT_DATA_PATH = r'C:\dev\phd\enrichIFC\enrichIFC\data'
 DATA_INPUT_PATH = os.path.join(PROJECT_DATA_PATH, 'saved_set1')
 DATA_OUTPUT_PATH = os.path.join(PROJECT_DATA_PATH, 'data_cleaned')
+DATA_NOTE_PATH = os.path.join(PROJECT_DATA_PATH, 'data_notes')
 
 ifc_file_name = '3776779.ifc'
 
@@ -116,7 +117,7 @@ file_input = os.path.join(DATA_INPUT_PATH,ifc_file_name)
 file_output = os.path.join(DATA_OUTPUT_PATH,ifc_file_name)
 
 ifc_cleaning_file = ifc_file_name + '.txt'
-file_cleaning = os.path.join(DATA_OUTPUT_PATH,ifc_cleaning_file)
+file_cleaning = os.path.join(DATA_NOTE_PATH,ifc_cleaning_file)
 
 ifc_updater = IfcUpdater(file_in=file_input, file_out=file_output,)
 

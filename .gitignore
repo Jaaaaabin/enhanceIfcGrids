@@ -8,7 +8,10 @@ old*.py
 tempo*.py
 
 # Data
-data/
+data/*
+!data/data_notes/
+
+# Dynamo codes.
 dyn/
 
 # Result
