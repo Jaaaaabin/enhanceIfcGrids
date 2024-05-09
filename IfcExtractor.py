@@ -369,7 +369,7 @@ class IfcExtractor:
 
         return info_w
     
-    def split_st_ns_wall_information(self):
+    def split_st_ns_ct_wall_information(self):
         
         self.id_st_walls  = [w.GlobalId for w in self.walls if self.calc_wall_loadbearing(w)]
         self.id_ns_walls  = [w.GlobalId for w in self.walls if not self.calc_wall_loadbearing(w)]
@@ -380,6 +380,8 @@ class IfcExtractor:
                 self.info_st_walls.append(info_w)
             elif value_to_check in self.id_ns_walls:
                 self.info_ns_walls.append(info_w)
+
+        self.id_ct_walls  = [w.GlobalId for w in self.curtainwalls] if self.curtainwalls else []
 
     @time_decorator
     def extract_all_walls(self):
@@ -392,11 +394,12 @@ class IfcExtractor:
 
         self.get_wall_dimensions()
         self.enrich_wall_information()
-        self.split_st_ns_wall_information()
 
         self.info_curtainwalls = []
         self.process_curtainwall_subelements()
         self.get_curtainwall_information()
+
+        self.split_st_ns_ct_wall_information()
 
         #------
         # todo/
@@ -505,7 +508,17 @@ class IfcExtractor:
                     
                     cw_corner_points = get_rectangle_corners(plate_location_per_cw)
                     cw_elevation = min(pt[2] for pt in cw_corner_points)
-                    cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
+                    
+                    cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation] # this will return an invalid if the  curtain wall has been cut somewhere.
+                    
+                    # ----------------- switched version.
+                    if len(cw_location) < 2:
+                        corner_points = np.array(cw_corner_points)
+                        differences = np.abs(corner_points[:, 2] - cw_elevation)
+                        sorted_indices = np.argsort(differences)
+                        closest_indices = sorted_indices[:2]
+                        cw_location = [corner_points[idx].tolist() for idx in closest_indices]
+                                        
                     cw_length = distance_between_points(cw_location[0], cw_location[1])
                     cw_width = find_most_common_value(plate_width_per_cw)[0]
                     cw_orientation = find_most_common_value(plate_orientation_per_cw)[0]
@@ -716,20 +729,36 @@ class IfcExtractor:
         display_walls = self.info_walls + self.info_curtainwalls
         
         if display_walls:
-            wall_values = [w['location'] for w in display_walls if 'location' in w]
-            for v in wall_values:
-                start_point, end_point = v
+
+            st_wall_values, ns_wall_values =[], []
+            
+            for w in display_walls:
+                if 'location' in w and w['id'] in self.id_st_walls:
+                    st_wall_values.append(w['location'])
+                else:
+                    ns_wall_values.append(w['location'])
+            
+            for st_v in st_wall_values:
+                start_point, end_point = st_v
+                # start_point, end_point = st_v[0], st_v[1]
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='navy', linewidth=1, markersize=3, label="Walls")
+                ax.plot(xs, ys, zs, marker='o', color='orange', linewidth=1, markersize=1, label="Structural Walls")
+        
+            for ns_v in ns_wall_values:
+                start_point, end_point = ns_v
+                # start_point, end_point = ns_v[0], ns_v[1]
+                xs, ys, zs = zip(start_point, end_point)
+                ax.plot(xs, ys, zs, marker='o', color='navy', linewidth=1, markersize=1, label="Non-structural Walls")
         
         if display_columns:
+
             column_values = [c['location'] for c in display_columns if 'location' in c]
             for v in column_values:
                 start_point, end_point = v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='tomato', linewidth=1, markersize=3, label="Columns")
+                ax.plot(xs, ys, zs, marker='o', color='tomato', linewidth=1, markersize=2, label="Structural Columns")
 
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_and_wall_location_map.png'), dpi=200)
+        plt.savefig(os.path.join(self.out_fig_path, 'wall_and_column_location_map.png'), dpi=200)
         plt.close(fig)
 
     def floor_location_map(self):

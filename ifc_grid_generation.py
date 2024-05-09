@@ -53,29 +53,29 @@ def building_grid_generation(basic_generator, new_parameters):
     
     new_generator.visualization_2d_after_merge()
 
-# # ----------
-# try:
-#     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+# ----------
+try:
+    model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
     
-#     for model_path in model_paths:
+    for model_path in model_paths:
 
-#         # for each building model
-#         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+        # for each building model
+        init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
-#         best_thresholds = {
-#             'st_c_num': 3,
-#             'st_w_num': 1,
-#             'ns_w_num': 1,
-#             'st_w_accumuled_length_percent': 0.001,
-#             'ns_w_accumuled_length_percent': 0.001,
-#             'st_st_merge': 0.3,
-#             'ns_st_merge': 0.3,
-#             'st_c_dist': 0.0001,
-#             'st_w_dist': 0.0001,
-#             'ns_w_dist': 0.0001,
-#         }
+        best_thresholds = {
+            'st_c_num': 3,
+            'st_w_num': 2,
+            'ns_w_num': 2,
+            'st_w_accumuled_length_percent': 0.001,
+            'ns_w_accumuled_length_percent': 0.001,
+            'st_st_merge': 0.3,
+            'ns_st_merge': 0.3,
+            'st_c_dist': 0.0001,
+            'st_w_dist': 0.0001,
+            'ns_w_dist': 0.0001,
+        }
         
-#         building_grid_generation(init_grid_generator, best_thresholds)
+        building_grid_generation(init_grid_generator, best_thresholds)
 
-# except Exception as e:
-#     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
+except Exception as e:
+    print(f"Error accessing directory {DATA_RES_PATH}: {e}")

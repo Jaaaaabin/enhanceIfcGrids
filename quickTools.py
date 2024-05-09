@@ -150,7 +150,7 @@ def are_points_collinear(p1, p2, p3, p4, t):
     
     return all_collinear
 
-def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.0001):
+def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.001):
     """
     specific constraints that column-based gridlines must be located following the main directions of the building.
     """

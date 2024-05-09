@@ -24,7 +24,7 @@ from gaTools import ga_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
-POPULATION_SIZE = 30 # population size or no of individuals or solutions being considered in each generation.
+POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
 NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
@@ -58,8 +58,8 @@ PARAMS = {
     'ns_w_num': (2, 10), # [2,10)
     'st_w_accumuled_length_percent': (0.0001, 0.0100),
     'ns_w_accumuled_length_percent': (0.0001, 0.0100),
-    'st_st_merge': (0.01, 0.30),
-    'ns_st_merge': (0.10, 1.50),
+    'st_st_merge': (0.2, 0.90),
+    'ns_st_merge': (0.2, 2.00),
     # 'st_c_dist': (0.00001, 0.0001), # fixed as 0.001
     # 'st_w_dist': (0.00001, 0.0001), # fixed as 0.001
     # 'ns_w_dist': (0.00001, 0.0001), # fixed as 0.001

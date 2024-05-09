@@ -12,7 +12,7 @@ from collections import defaultdict
 
 import bokeh.plotting
 
-from quickTools import get_line_slope_by_points, remove_duplicate_points, are_points_collinear, deep_merge_dictionaries
+from quickTools import get_line_slope_by_points, remove_duplicate_points, are_points_collinear, deep_merge_dictionaries, is_close_to_known_slopes
 from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
 
 #===================================================================================================
@@ -176,21 +176,21 @@ class GridGenerator:
                 'color': "tomato",
                 'line_dash':'dotted',
                 'line_width':2,
-                'alpha':0.85,
+                'alpha':0.35,
             },
             'location_grids_st_w': {
                 'legend_label': 'Grids from structural Walls',
                 'color': "orange",
                 'line_dash':'dashed',
                 'line_width':2,
-                'alpha':0.60,
+                'alpha':0.35,
             },
             'location_grids_ns_w': {
                 'legend_label': 'Grids from non-structural Walls',
                 'color': "navy",
                 'line_dash':'dashed',
                 'line_width':2,
-                'alpha':0.60,
+                'alpha':0.35,
             },
 
             # processed grid lines.
@@ -198,15 +198,15 @@ class GridGenerator:
                 'legend_label': 'Structural Grids',
                 'color': "orange",
                 'line_dash':'dotdash',
-                'line_width':3,
-                'alpha':0.85,
+                'line_width':2,
+                'alpha':0.50,
             },
             'location_grids_ns_merged': {
                 'legend_label':'Non-structural Grids',
                 'color': "navy",
                 'line_dash':'dashed',
-                'line_width':3,
-                'alpha':0.85,
+                'line_width':2,
+                'alpha':0.50,
             },}
     
     # column-related.
@@ -261,23 +261,26 @@ class GridGenerator:
                 slope = get_line_slope_by_points(point1, point2)
                 
                 # for columns, ignore those pairs not located on the main directions.
-                # if not is_close_to_known_slopes(slope, self.main_directions):
-                #     continue
-                # else:
+                if not is_close_to_known_slopes(slope, self.main_directions):
+                    continue
+                else:
+                #|<- - - 
+                    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *     
+                    for k, (point, id_group_3) in enumerate(zip(uniq_element_points[j + 1:], uniq_element_ids[j + 1: ]), start=j+1):
 
-                for k, (point, id_group_3) in enumerate(zip(uniq_element_points[j + 1:], uniq_element_ids[j + 1: ]), start=j+1):
-
-                    if slope == float('inf'):  # Vertical line check
-                        if abs(point.x - point1.x) <= self.st_c_dist and abs(point.x - point2.x) <= self.st_c_dist:
-                            aligned_points.append(point)
-                            related_element_ids_reps.append(id_group_3[0])
-                            related_element_ids+=id_group_3
-                    else:
-                        # Use point-slope form of line equation to check alignment
-                        if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.st_c_dist:
-                            aligned_points.append(point)
-                            related_element_ids_reps.append(id_group_3[0])
-                            related_element_ids+=id_group_3
+                        if slope == float('inf'):  # Vertical line check
+                            if abs(point.x - point1.x) <= self.st_c_dist and abs(point.x - point2.x) <= self.st_c_dist:
+                                aligned_points.append(point)
+                                related_element_ids_reps.append(id_group_3[0])
+                                related_element_ids+=id_group_3
+                        else:
+                            # Use point-slope form of line equation to check alignment
+                            if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.st_c_dist:
+                                aligned_points.append(point)
+                                related_element_ids_reps.append(id_group_3[0])
+                                related_element_ids+=id_group_3
+                    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                #|<- - - 
 
                 # be careful with the hierarchy here.
                 # Check for minimum number of points and uniqueness before adding to the grid
@@ -513,12 +516,12 @@ class GridGenerator:
         for key, value in self.info_all_locations_by_storey.items():
 
             # ns_wall
-            ns_wall_lines = value.get('ns_wall_lines')
-            ns_wall_ids = value.get('ns_wall_ids')
+            ns_wall_lines = value.get('ns_wall_lines', []) # including the case without ns.
+            ns_wall_ids = value.get('ns_wall_ids', [])
             
             # curtain wall
-            ct_wall_lines = value.get('ct_wall_lines')
-            ct_wall_ids = value.get('ct_wall_ids')
+            ct_wall_lines = value.get('ct_wall_lines', []) # including the case without ct. 
+            ct_wall_ids = value.get('ct_wall_ids', [])
             
             ns_wall_lines += ct_wall_lines 
             ns_wall_ids += ct_wall_ids
@@ -661,9 +664,13 @@ class GridGenerator:
                 'bottom_z_ranges': bottom_z_ranges_per_storey,
                 })
         
-        # remove the storeys that doesn't have any attached floors.
+        # refine step 1: remove the storeys that doesn't have any attached floors.
         self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'floors' in value.keys()}
-         
+        
+        # refine step 2: drop the storeys that dont have walls and columns. (specifically the roof..)
+        self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'columns' in value.keys() or 'walls' in value.keys()}
+
+
     def get_main_directions(self, num_directions):
             
         def degree2slope(degree):
@@ -1028,7 +1035,7 @@ class GridGenerator:
         # step 2:
         # get the outlines. to invesitgate afer clean the models.
         ##############################
-        
+
         ##############################
         # Step 2 preprocessing on the main storeys: irst merge the actually connecting floors. [no need yet, but later use floor outlines.]
         # self.enrich_main_storeys_info_raised_area()
