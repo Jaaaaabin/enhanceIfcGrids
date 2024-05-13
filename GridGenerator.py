@@ -384,6 +384,9 @@ class GridGenerator:
                 aligned_element_ids = sorted(aligned_element_ids)
 
                 # be careful with the hierarchy here.
+                # option 1: satisfy both criteria?
+                # option 2: satisfy one of the criteria ?
+
                 if len(aligned_element_ids) >= minimum_alignment_number and \
                     (accumulated_length/self.total_wall_lengths) >= minimum_accumuled_wall_length_percent:
                     
@@ -1121,16 +1124,12 @@ class GridGenerator:
                     slope_2 = get_line_slope_by_points(list(gd_ln_2.boundary.geoms)[0], list(gd_ln_2.boundary.geoms)[1])
 
                     # only consider alignment among parallel lines.
-                    if abs(slope_1-slope_2) <= slope_tol or (slope_1==float('inf') and slope_2==float('inf')):
+                    if abs(slope_1-slope_2) <= slope_tol or slope_1==slope_2==float('inf'):
                     
                         # if "close enough"
-                        if not shapely.intersects(gd_ln_1,gd_ln_2) and shapely.distance(gd_ln_1,gd_ln_2) < tol:
+                        if shapely.distance(gd_ln_1,gd_ln_2) < tol:
                             aligned_id_pairs.append([i,j])
-                        
-                        # if equals.
-                        elif shapely.intersects(gd_ln_1,gd_ln_2):
-                            aligned_id_pairs.append([i,j])
-
+                            
                     else:
                         continue
                 else:
@@ -1185,103 +1184,6 @@ class GridGenerator:
 
         return location_grids_st, grids_st_ids
     
-    # old, work but too slow.
-    # def old_align_st4st_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
-        
-    #     # find all the pairs
-    #     aligned_idx = []
-
-    #     for i, gd_ln_1 in enumerate(grid_linestrings):
-
-    #         for j, gd_ln_2 in enumerate(grid_linestrings):
-        
-    #             # combination pairs (i,j)
-    #             if i < j:
-                    
-    #                 slope_1 = get_line_slope_by_points(list(gd_ln_1.boundary.geoms)[0], list(gd_ln_1.boundary.geoms)[1])
-    #                 slope_2 = get_line_slope_by_points(list(gd_ln_2.boundary.geoms)[0], list(gd_ln_2.boundary.geoms)[1])
-
-    #                 # only consider alignment among parallel lines.
-    #                 if abs(slope_1-slope_2) <= slope_tol or (slope_1==float('inf') and slope_2==float('inf')):
-                    
-    #                     # if "close enough"
-    #                     if not shapely.intersects(gd_ln_1,gd_ln_2) and shapely.distance(gd_ln_1,gd_ln_2) < tol:
-    #                         aligned_idx.append([i,j])
-                        
-    #                     # if equals.
-    #                     elif shapely.intersects(gd_ln_1,gd_ln_2):
-    #                         aligned_idx.append([i,j])
-
-    #                 else:
-    #                     continue
-    #             else:
-    #                 continue
-                    
-    #     # count and prioritize the alignment orders.
-    #     id_frequency = Counter([item for sublist in aligned_idx for item in sublist])
-    #     sorted_id_by_occurency = [item for item, count in id_frequency.most_common()]
-
-    #     # clear the alignment relationships.
-    #     logic_aligned_idx = []
-    #     for id_host in sorted_id_by_occurency:
-            
-    #         existing_logic_aligned_idx = [item for sublist in logic_aligned_idx for item in sublist]
-            
-    #         if id_host not in existing_logic_aligned_idx:
-                
-    #             idx = [pair for pair in aligned_idx if id_host in pair]
-    #             idx = list(set([item for sublist in idx for item in sublist]))
-
-    #             idx.remove(id_host)
-    #             [idx.remove(i) for i in existing_logic_aligned_idx if i in idx]
-
-    #             new_logic_aligned_idx = [id_host,*idx]
-
-    #             if len(new_logic_aligned_idx)>=2:
-    #                 logic_aligned_idx.append(new_logic_aligned_idx)
-            
-    #         else:
-    #             continue
-        
-    #     # alignment.
-    #     grid_linestrings_aligned, grid_componnets_aligned = [], []
-
-    #     for gd_id, gd_line in enumerate(grid_linestrings):
-            
-    #         # > not procesed yet
-    #         if grid_linestrings[gd_id] not in grid_linestrings_aligned:
-                
-    #             # > > if it's related to alignments
-    #             if gd_id in [item for sublist in logic_aligned_idx for item in sublist]:
-
-    #                 for logic_pair in logic_aligned_idx:
-                        
-    #                     # if it's related to an alignment, and it's a host
-    #                     if gd_id == logic_pair[0]:
-    #                         grid_linestrings_aligned.append(grid_linestrings[gd_id])
-    #                         new_components = [grid_componnets[id] for id in logic_pair]
-    #                         grid_componnets_aligned.append([item for sublist in new_components for item in sublist])
-    #                         break 
-                        
-    #                     # if it's related to an alignment, but it's not a host
-    #                     elif gd_id in logic_pair:
-    #                         break 
-                        
-    #                     # didn't find in this logic pair
-    #                     else:
-    #                         continue
-                
-    #             # > >if it's not related to any alignment.
-    #             else:
-    #                 grid_linestrings_aligned.append(grid_linestrings[gd_id])
-    #                 grid_componnets_aligned.append(grid_componnets[gd_id])
-
-    #         # > already procesed.
-    #         else:
-    #             continue
-
-    #     return grid_linestrings_aligned, grid_componnets_aligned
-    
     # @time_decorator
     def align_ns2st_grids(self, ns_grids, ns_grids_ids, tol=0.0, slope_tol=0.01):
         
@@ -1299,19 +1201,10 @@ class GridGenerator:
                     slope_ns = get_line_slope_by_points(list(gd_ln_ns.boundary.geoms)[0], list(gd_ln_ns.boundary.geoms)[1])
 
                     # only consider alignment among parallel lines.
-                    if abs(slope_st-slope_ns) <= slope_tol or (slope_st==float('inf') and slope_ns==float('inf')):
-
-                        # if "close enough."
-                        if not shapely.intersects(gd_ln_st, gd_ln_ns) and shapely.distance(gd_ln_st,gd_ln_ns) < tol:
+                    if abs(slope_st-slope_ns) <= slope_tol or slope_st==slope_ns==float('inf'):
                         
-                            # store the alignment maps.
-                            alignment_maps.append([ii,jj])
-                            # marked as merged.
-                            marks_aligned.append(jj)
-
-                        # if equals.
-                        elif shapely.intersects(gd_ln_st,gd_ln_ns):
-
+                        if shapely.distance(gd_ln_st,gd_ln_ns) < tol:
+                            
                             # store the alignment maps.
                             alignment_maps.append([ii,jj])
                             # marked as merged.
@@ -1324,6 +1217,7 @@ class GridGenerator:
                     continue
         
         # align the grid_ns to grid_st.
+        # 'location_grids_st_merged' and 'grids_st_merged_ids' are updated here.
         for [ii,jj] in alignment_maps:
             if ii < len(self.grids_merged['grids_st_merged_ids']) and jj < len(ns_grids_ids):
                 self.grids_merged['grids_st_merged_ids'][ii] += ns_grids_ids[jj]
@@ -1358,6 +1252,7 @@ class GridGenerator:
             if 'grids_ns_w_ids' in storey_value:
 
                 self.grids_merged[storey_key] = {}
+                # 'location_grids_ns_merged' and 'grids_ns_merged_ids' are updated here per (main) storey.
                 self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_ns2st_grids(
                     storey_value['location_grids_ns_w'], storey_value['grids_ns_w_ids'], tol = self.ns_st_merge)
                 
@@ -1368,6 +1263,7 @@ class GridGenerator:
 # Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
     # a loss about local performance of the grids.
+    # to minimize.
     def merged_loss_unbound_elements2grids(self):
 
         # the loss target.
@@ -1613,10 +1509,11 @@ class GridGenerator:
 
                 for config in grid_plot_configurations:
                     data_key, plot_type, attr = config
-                    grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
 
-                    if not grid_data:
-                        grid_data = self.grids_merged.get(data_key, []) # per building.
+                    if self.grids_merged.get(storey,[]):
+                        grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+                        if not grid_data:
+                            grid_data = self.grids_merged.get(data_key, []) # per building.
 
                     if grid_data:
                         g_plot = self.visualization_settings[data_key]

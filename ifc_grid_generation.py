@@ -48,8 +48,8 @@ def building_grid_generation(basic_generator, new_parameters):
     new_generator.merge_grids()
 
     # loss functions after merge the grids.
-    new_generator.merged_loss_unbound_elements2grids()
-    new_generator.merged_loss_distance_deviation()
+    # new_generator.merged_loss_unbound_elements2grids()
+    # new_generator.merged_loss_distance_deviation()
     
     new_generator.visualization_2d_after_merge()
 
@@ -63,13 +63,13 @@ try:
         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
         best_thresholds = {
-            'st_c_num': 3,
+            'st_c_num': 6,
             'st_w_num': 2,
             'ns_w_num': 2,
             'st_w_accumuled_length_percent': 0.001,
             'ns_w_accumuled_length_percent': 0.001,
-            'st_st_merge': 0.3,
-            'ns_st_merge': 0.3,
+            'st_st_merge': 0.6,
+            'ns_st_merge': 0.5,
             'st_c_dist': 0.0001,
             'st_w_dist': 0.0001,
             'ns_w_dist': 0.0001,
