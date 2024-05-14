@@ -57,12 +57,12 @@ PARAMS = {
     'ns_w_num': (1, 10), # [2,10)  # min = 2.
     'st_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
     'ns_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
-    'st_st_merge': (0.2, 0.50), # ....god sick
-    'ns_st_merge': (0.2, 1.00), # ....god sick
-    'ns_ns_merge': (0.2, 1.00), # ....god sick
-    # 'st_c_dist': (0.00001, 0.0001), # fixed as 0.001
-    # 'st_w_dist': (0.00001, 0.0001), # fixed as 0.001
-    # 'ns_w_dist': (0.00001, 0.0001), # fixed as 0.001
+    'st_st_merge': (0.2, 0.50), # ....god sick differentiate between merge
+    'ns_st_merge': (0.2, 1.00), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.2, 1.00), # ....god sick differentiate between merge
+    # 'st_c_align_dist': (0.00001, 0.0001), # fixed?
+    # 'st_w_align_dist': (0.00001, 0.0001), # fixed?
+    # 'ns_w_align_dist': (0.00001, 0.0001), # fixed?
 }
 
 # Get the additional Constant Values.

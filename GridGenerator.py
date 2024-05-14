@@ -53,9 +53,9 @@ class GridGenerator:
         self.ns_st_merge = 0.3
         self.ns_ns_merge = 0.3
 
-        self.st_c_dist = 0.001
-        self.st_w_dist = 0.1
-        self.ns_w_dist = 0.1
+        self.st_c_align_dist = 0.001
+        self.st_w_align_dist = 0.1
+        self.ns_w_align_dist = 0.1
         
         self.border_x = None
         self.border_y = None
@@ -83,9 +83,9 @@ class GridGenerator:
             'st_st_merge',
             'ns_st_merge',
             'ns_ns_merge',
-            'st_c_dist',
-            'st_w_dist',
-            'ns_w_dist',
+            'st_c_align_dist',
+            'st_w_align_dist',
+            'ns_w_align_dist',
             }
 
         for key, value in new_parameters.items():
@@ -196,8 +196,8 @@ class GridGenerator:
                 'alpha':0.90,
             },}
     
-    # column-related.
-    def get_grids_from_column_points(self, element_pts, element_ids):
+    # column-related alignment.
+    def get_grids_from_column_point_alignments(self, element_pts, element_ids):
         """
         Return: Points from collinear pairs of points.
         """
@@ -256,13 +256,13 @@ class GridGenerator:
                     for k, (point, id_group_3) in enumerate(zip(uniq_element_points[j + 1:], uniq_element_ids[j + 1: ]), start=j+1):
 
                         if slope == float('inf'):  # Vertical line check
-                            if abs(point.x - point1.x) <= self.st_c_dist and abs(point.x - point2.x) <= self.st_c_dist:
+                            if abs(point.x - point1.x) <= self.st_c_align_dist and abs(point.x - point2.x) <= self.st_c_align_dist:
                                 aligned_points.append(point)
                                 related_element_ids_reps.append(id_group_3[0])
                                 related_element_ids+=id_group_3
                         else:
                             # Use point-slope form of line equation to check alignment
-                            if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.st_c_dist:
+                            if abs((point.y - point1.y) - slope * (point.x - point1.x)) <= self.st_c_align_dist:
                                 aligned_points.append(point)
                                 related_element_ids_reps.append(id_group_3[0])
                                 related_element_ids+=id_group_3
@@ -289,7 +289,7 @@ class GridGenerator:
 
         return generated_grids, element_ids_per_grid
     
-    def get_grids_from_wall_lines(self, element_lns, element_ids, line_type=[]):
+    def get_grids_from_wall_line_alignments(self, element_lns, element_ids, line_type=[]):
         
         # check if the input data is feasible pairs.
         if len(element_lns)!= len(element_ids):
@@ -300,11 +300,11 @@ class GridGenerator:
         if line_type == 'structural':
             minimum_accumuled_wall_length_percent = self.st_w_accumuled_length_percent
             minimum_alignment_number = self.st_w_num
-            wall_offset_distance = self.st_w_dist  # area spanned by the triangle they would form
+            wall_offset_distance = self.st_w_align_dist  # area spanned by the triangle they would form
         elif line_type == 'non-structural':
             minimum_accumuled_wall_length_percent = self.ns_w_accumuled_length_percent
             minimum_alignment_number = self.ns_w_num
-            wall_offset_distance = self.ns_w_dist # area spanned by the triangle they would form
+            wall_offset_distance = self.ns_w_align_dist # area spanned by the triangle they would form
 
         # ##################################################################################
         # todo. Preprocessing for identifying the "same located walls (below and above)."
@@ -483,7 +483,7 @@ class GridGenerator:
         st_column_ids = self.info_all_locations.get('st_column_ids')
 
         if st_column_points and st_column_ids:
-            grids_st_c, grids_st_c_ids = self.get_grids_from_column_points(st_column_points, st_column_ids)
+            grids_st_c, grids_st_c_ids = self.get_grids_from_column_point_alignments(st_column_points, st_column_ids)
         
             self.grids_all.update({
                 'grids_st_c': grids_st_c,
@@ -503,7 +503,7 @@ class GridGenerator:
         st_wall_ids = self.info_all_locations.get('st_wall_ids')
 
         if st_wall_lines and st_wall_ids:
-            grids_st_w, grids_st_w_ids = self.get_grids_from_wall_lines(st_wall_lines, st_wall_ids,line_type='structural')
+            grids_st_w, grids_st_w_ids = self.get_grids_from_wall_line_alignments(st_wall_lines, st_wall_ids,line_type='structural')
         
             self.grids_all.update({
                 'grids_st_w': grids_st_w,
@@ -533,7 +533,7 @@ class GridGenerator:
             ns_wall_ids += ct_wall_ids
 
             if ns_wall_lines and ns_wall_ids:
-                grids_ns_w, grids_ns_w_ids = self.get_grids_from_wall_lines(ns_wall_lines, ns_wall_ids,line_type='non-structural')
+                grids_ns_w, grids_ns_w_ids = self.get_grids_from_wall_line_alignments(ns_wall_lines, ns_wall_ids,line_type='non-structural')
             
                 self.grids_all.update({
                     key: {
@@ -1110,12 +1110,11 @@ class GridGenerator:
 #Grid Alignment ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
     
     # @time_decorator
-    def align_same_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
-        
-        # the long running time coming from grids from non-main directions.
+    def merge_same_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):
 
+        # the long running time coming from grids from non-main directions.
         # find all the pairs
-        aligned_id_pairs = []
+        merged_id_pairs = []
 
         for i, gd_ln_1 in enumerate(grid_linestrings):
 
@@ -1127,93 +1126,94 @@ class GridGenerator:
                     slope_1 = get_line_slope_by_points(list(gd_ln_1.boundary.geoms)[0], list(gd_ln_1.boundary.geoms)[1])
                     slope_2 = get_line_slope_by_points(list(gd_ln_2.boundary.geoms)[0], list(gd_ln_2.boundary.geoms)[1])
 
-                    # only consider alignment among parallel lines.
+                    # only consider merging among parallel lines.
                     if abs(slope_1-slope_2) <= slope_tol or slope_1==slope_2==float('inf'):
                     
                         # if "close enough"
                         if shapely.distance(gd_ln_1,gd_ln_2) < tol:
-                            aligned_id_pairs.append([i,j])
+                            merged_id_pairs.append([i,j])
                             
                     else:
                         continue
                 else:
                     continue
 
-        # count and prioritize the alignment orders.
-        id_frequency = Counter([item for sublist in aligned_id_pairs for item in sublist])
+        # count and prioritize the merge orders by counting the number of merging connections.
+        id_frequency = Counter([item for sublist in merged_id_pairs for item in sublist])
         sorted_id_by_occurency = [item for item, count in id_frequency.most_common()]
         
-        # new 
-        alignment_maps = {}
-        alignment_built_ids = []
+        # merge maps. 
+        merge_maps = {}
+        merge_built_ids = []
 
         for id_host in sorted_id_by_occurency:
     
-            # iterate from the high prioritized id_host.    
-            counted_ids = [item for sublist in list(alignment_maps.values()) for item in sublist] 
+            # iterate from the high prioritized 'id_host'.    
+            counted_merge_ids = [item for sublist in list(merge_maps.values()) for item in sublist] 
             
-            if counted_ids:
+            if counted_merge_ids:
+                
                 # the grid with id_host is already aligned with other grid.
-                if id_host in counted_ids:
-                    continue
+                if id_host in counted_merge_ids:
+                    continue # skip.
 
             ids_guest = []
-            # the grid with id_host is not yet aligned with other grids, thus, identify all potential guest ids.
-            for jj, id_paris in enumerate(aligned_id_pairs):
+            # the grid with 'id_host' is not yet aligned with other grids, thus, identify all potential guest ids.
+            for jj, id_paris in enumerate(merged_id_pairs):
 
-                if jj not in alignment_built_ids and id_host in id_paris:
+                if jj not in merge_built_ids and id_host in id_paris:
 
                     new_guest_id = [item for item in id_paris if item != id_host][0]
                     
-                    if new_guest_id not in counted_ids:
+                    if new_guest_id not in counted_merge_ids:
                         ids_guest.append(new_guest_id)
-                        alignment_built_ids.append(jj)
+                        merge_built_ids.append(jj)
             
             if ids_guest:
-                alignment_maps.update({id_host: ids_guest})
+                merge_maps.update({id_host: ids_guest})
         
-        marks_aligned = list(set([item for sublist in list(alignment_maps.values()) for item in sublist]))
+        all_grids_marked_merged = list(set([item for sublist in list(merge_maps.values()) for item in sublist]))
 
         # add the guest grid_st(s) to the host grid_st.
-        for gd_host, gd_guests in alignment_maps.items():
+        for gd_host, gd_guests in merge_maps.items():
             for gd_guest in gd_guests:
                 grid_componnets[gd_host] += grid_componnets[gd_guest]
         
         # delete the "moved" grid_st(s).
         location_grids_st = copy.deepcopy(grid_linestrings)
         grids_st_ids = copy.deepcopy(grid_componnets)
-        for jj in sorted(marks_aligned, reverse=True):
+        for jj in sorted(all_grids_marked_merged, reverse=True):
             del location_grids_st[jj]
             del grids_st_ids[jj]
 
         return location_grids_st, grids_st_ids
     
     # @time_decorator
-    def align_ns2st_grids(self, ns_grids, ns_grids_ids, tol=0.0, slope_tol=0.01):
-        
-        alignment_maps = []
-        marks_aligned = []
+    def merge_ns2st_grids(self, ns_grids, ns_grids_ids, tol=0.0, slope_tol=0.01):
+
+        merge_maps = []
+        all_grids_marked_merged = []
 
         for ii, gd_ln_st in enumerate(self.grids_merged['location_grids_st_merged']):
 
             for jj, gd_ln_ns in enumerate(ns_grids):
                 
-                # if not aligned yet with structural grids.
-                if jj not in marks_aligned:
+                # if not merged yet with structural grids.
+                if jj not in all_grids_marked_merged:
 
                     slope_st = get_line_slope_by_points(list(gd_ln_st.boundary.geoms)[0], list(gd_ln_st.boundary.geoms)[1])
                     slope_ns = get_line_slope_by_points(list(gd_ln_ns.boundary.geoms)[0], list(gd_ln_ns.boundary.geoms)[1])
 
-                    # only consider alignment among parallel lines.
+                    # only consider merge among parallel lines.
                     if abs(slope_st-slope_ns) <= slope_tol or slope_st==slope_ns==float('inf'):
                         
                         
                         if shapely.distance(gd_ln_st,gd_ln_ns) < tol:
                     
-                            # store the alignment maps.
-                            alignment_maps.append([ii,jj])
+                            # store the merge maps.
+                            merge_maps.append([ii,jj])
                             # marked as merged.
-                            marks_aligned.append(jj)
+                            all_grids_marked_merged.append(jj)
 
                     else:
                         continue
@@ -1223,14 +1223,14 @@ class GridGenerator:
         
         # align the grid_ns to grid_st.
         # 'location_grids_st_merged' and 'grids_st_merged_ids' are updated here.
-        for [ii,jj] in alignment_maps:
+        for [ii,jj] in merge_maps:
             if ii < len(self.grids_merged['grids_st_merged_ids']) and jj < len(ns_grids_ids):
                 self.grids_merged['grids_st_merged_ids'][ii] += ns_grids_ids[jj]
 
         # delete the initial grid_ns.
         location_grids_ns_w_storey = copy.deepcopy(ns_grids)
         grids_ns_w_ids_storey = copy.deepcopy(ns_grids_ids)
-        for jj in sorted(marks_aligned, reverse=True):
+        for jj in sorted(all_grids_marked_merged, reverse=True):
             del location_grids_ns_w_storey[jj]
             del grids_ns_w_ids_storey[jj]
 
@@ -1242,17 +1242,17 @@ class GridGenerator:
         self.grids_merged = defaultdict(list)
 
         # ----------------------------------------------
-        # step1: align the st grids
+        # step1: merge the st grids
         # take all information from 'grids_all'
         all_st_grids = self.grids_all['location_grids_st_c'] + self.grids_all['location_grids_st_w']
         all_st_grids_ids = self.grids_all['grids_st_c_ids'] + self.grids_all['grids_st_w_ids']
 
         # location_grids_st_merged, grids_st_merged_ids are created in 'grids_merged' per building.
-        self.grids_merged['location_grids_st_merged'], self.grids_merged['grids_st_merged_ids'] = self.align_same_grids(
+        self.grids_merged['location_grids_st_merged'], self.grids_merged['grids_st_merged_ids'] = self.merge_same_grids(
             all_st_grids, all_st_grids_ids, tol = self.st_st_merge)
 
         # ----------------------------------------------
-        # step2: align ns to st grids per storey: location_grids_ns_merged, grids_ns_merged_ids
+        # step2: merge ns to st grids per storey: location_grids_ns_merged, grids_ns_merged_ids
         # take 'location_grids_ns_w' and 'grids_ns_w_ids' from 'grids_all'
         # take 'location_grids_st_merged' and 'grids_st_merged_ids' from 'grids_merged'
         for storey_key, storey_value in self.grids_all.items():
@@ -1260,18 +1260,18 @@ class GridGenerator:
             if 'grids_ns_w_ids' in storey_value:
                 # 'location_grids_ns_merged' and 'grids_ns_merged_ids' are updated per (main) storey.
                 self.grids_merged[storey_key] = {}
-                self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_ns2st_grids(
+                self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.merge_ns2st_grids(
                     storey_value['location_grids_ns_w'], storey_value['grids_ns_w_ids'], tol = self.ns_st_merge)
             else:
                 continue
         # ----------------------------------------------
-        # step3: align the ns grids per storey:
+        # step3: merge the ns grids per storey:
         # take 'location_grids_ns_merged' and 'grids_ns_merged_ids' from 'grids_merged'
         for storey_key, storey_value in self.grids_merged.items():
 
             if 'grids_ns_merged_ids' in storey_value:
                 # 'location_grids_ns_merged' and 'grids_ns_merged_ids' are updated per (main) storey.
-                self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_same_grids(
+                self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.merge_same_grids(
                     storey_value['location_grids_ns_merged'], storey_value['grids_ns_merged_ids'], tol = self.ns_ns_merge)
 
             else:
