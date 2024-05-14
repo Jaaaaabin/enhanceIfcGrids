@@ -285,7 +285,6 @@ class IfcExtractor:
         #------
         # todo/
         #------
-        print('here is a todo.')
         # here should be another function that handles the merge of connecting floors.
         # merge / correlate two floors if they're vertically close and locational separated.
         # To determine main storeys. considering that the IfcCurtainWall has vertical shifts.
@@ -401,11 +400,11 @@ class IfcExtractor:
 
         self.split_st_ns_ct_wall_information()
 
-        #------
-        # todo/
-        #------
         self.write_dict_walls()
         self.wall_display()
+        #------
+        # todo
+        #------
         print('here are a todos.')
         # also retest the IfcCurtainwalls, please do it with one example from the BIM.fundamentals.
         
@@ -643,9 +642,8 @@ class IfcExtractor:
         self.write_dict_columns()
         
         #------s
-        # todo/
+        # todo
         #------
-        print('here is a todo.')
         # display the columns, or consider to merge all the geometry displays.
         
 #column ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑

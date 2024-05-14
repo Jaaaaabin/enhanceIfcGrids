@@ -51,17 +51,6 @@ def check_repeats_in_list(container):
 
     return check_unique(container)
 
-def remove_duplicate_dicts(list_of_dicts):
-
-    unique_dicts = []
-    seen = set()
-    for d in list_of_dicts:
-        dict_str = json.dumps(d, sort_keys=True)
-        if dict_str not in seen:
-            seen.add(dict_str)
-            unique_dicts.append(d)
-    return unique_dicts
-
 def deep_merge_dictionaries(dict1, dict2):
     merged = dict1.copy()
     for key, value in dict2.items():
@@ -72,6 +61,17 @@ def deep_merge_dictionaries(dict1, dict2):
         else:
             merged[key] = value
     return merged
+
+def remove_duplicate_dicts(list_of_dicts):
+
+    unique_dicts = []
+    seen = set()
+    for d in list_of_dicts:
+        dict_str = json.dumps(d, sort_keys=True)
+        if dict_str not in seen:
+            seen.add(dict_str)
+            unique_dicts.append(d)
+    return unique_dicts
 
 def enrich_dict_with_another(dict_main, dict_new, remove_duplicate=False):
 
@@ -110,11 +110,11 @@ def find_most_common_value(values):
 
     return most_common_value, most_common_count
 
-def get_line_slope_by_points(point1, point2):
+def get_line_slope_by_points(point1, point2, round_demi=4):
     
     # works for x and y, doesn't matter is z exits or not.
-    dx = round(point2.x,3) - round(point1.x,3)
-    dy = round(point2.y,3) - round(point1.y,3)
+    dx = round(point2.x,round_demi) - round(point1.x,round_demi)
+    dy = round(point2.y,round_demi) - round(point1.y,round_demi)
     if abs(dx) > 0.00001:
         slope = dy / dx
     else:
@@ -129,26 +129,70 @@ def is_sloped_point_on_lineby2points(point, line_point1, line_point2, slope, thr
     return abs((point.y - line_point1.y) - slope * (point.x - line_point1.x)) <= threshold and \
             abs((point.y - line_point2.y) - slope * (point.x - line_point2.x)) <= threshold
 
-def are_points_collinear(p1, p2, p3, p4, t):
+# def line_points_are_same(p1, p2):
 
-    def is_collinear(x1, y1, x2, y2, x3, y3, t):
-        determinant = abs((x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)) # "cross product" of 2D vectors
-        if determinant <= t:
-            return True
-        else:
-            return False
+#     x1, y1 = p1.x, p1.y
+#     x2, y2 = p2.x, p2.y
+
+#     if abs(x1-x2) <=0.00001 and abs(y1-y2) <=0.00001:
+#         return True
+#     else:
+#         return False
     
-    # Extract coordinates
+def line_points_are_collinear(p1, p2, p3, t):
+
+    # are three points are collinear or not.
+    
     x1, y1 = p1.x, p1.y
     x2, y2 = p2.x, p2.y
     x3, y3 = p3.x, p3.y
-    x4, y4 = p4.x, p4.y
-    # Check if all points are collinear
-    all_collinear = (is_collinear(x1, y1, x2, y2, x3, y3, t) and
-                     is_collinear(x1, y1, x2, y2, x4, y4, t) and
-                     is_collinear(x1, y1, x3, y3, x4, y4, t))
+
+    determinant = abs((x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)) # "cross product" of 2D vectors
     
-    return all_collinear
+    if determinant <= t:
+        return True
+    else:
+        return False
+
+def line_points_are_close(p1, p2, p3, offset):
+    # p1, p2 are from one line.
+    # p3 is another point.
+
+    x1, y1 = p1.x, p1.y
+    x2, y2 = p2.x, p2.y
+    x3, y3 = p3.x, p3.y
+
+    # Coefficients of the line Ax + By + C = 0
+    # A B C are from one line.
+    A = y2 - y1
+    B = x1 - x2
+    C = x2 * y1 - x1 * y2
+
+    # Distance from point3 to the line
+    if A ==0 and B== 0:
+        distance = 0
+    else:
+        distance = abs(A*x3 + B*y3 + C) / np.sqrt(A**2 + B**2)
+
+    return distance<=offset
+
+def close_parallel_lines(p1, p2, p3, p4, offset, t=0.00001):
+    
+    # line1: p1, p2
+    # line2: p3, p4
+    
+    all_close = (line_points_are_close(p1, p2, p3, offset) and
+                    line_points_are_close(p1, p2, p4, offset) and
+                    line_points_are_close(p3, p4, p1, offset) and
+                    line_points_are_close(p3, p4, p2, offset))
+    
+    # Check if all points are collinear
+    all_collinear = (line_points_are_collinear(p1, p2, p3, t) and
+                     line_points_are_collinear(p1, p2, p4, t) and
+                     line_points_are_collinear(p3, p4, p1, t) and
+                     line_points_are_collinear(p3, p4, p2, t))
+    
+    return all_close, all_collinear
 
 def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.001):
     """

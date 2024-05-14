@@ -12,7 +12,7 @@ from collections import defaultdict
 
 import bokeh.plotting
 
-from quickTools import get_line_slope_by_points, remove_duplicate_points, are_points_collinear, deep_merge_dictionaries, is_close_to_known_slopes
+from quickTools import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes
 from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
 
 #===================================================================================================
@@ -46,31 +46,16 @@ class GridGenerator:
         self.st_w_num = 2
         self.ns_w_num = 2
 
-        self.st_w_accumuled_length_percent = 0.0001
-        self.ns_w_accumuled_length_percent = 0.0001
+        self.st_w_accumuled_length_percent = 0.0001 # to be more dynamic
+        self.ns_w_accumuled_length_percent = 0.0001 # to be more dynamic
 
         self.st_st_merge = 0.3
         self.ns_st_merge = 0.3
         self.ns_ns_merge = 0.3
 
         self.st_c_dist = 0.001
-        self.st_w_dist = 0.001
-        self.ns_w_dist = 0.001
-        #----------------------------------
-
-        #------
-        # todo/
-        #------
-        # print('here is a todo.')
-        # later switch the non-structural wall threshold values to floor-dependent?
-
-        #------
-        # todo/
-        #------
-        # print('here is a todo.')
-        # merging related
-        # self.t_self_dist = 0.2
-        # self.t_cross_dist = 0.5
+        self.st_w_dist = 0.1
+        self.ns_w_dist = 0.1
         
         self.border_x = None
         self.border_y = None
@@ -151,8 +136,8 @@ class GridGenerator:
             # points.
             'st_column_points':{
                 'legend_label':'Column Locations',
-                'color': "darkgreen",
-                'size':8,
+                'color': "grey",
+                'size':6,
                 'alpha':1,
             },
 
@@ -166,7 +151,7 @@ class GridGenerator:
             },
             'ns_wall_lines':{
                 'legend_label':'Non-structural Wall Locations',
-                'color': "dimgray",
+                'color': "silver",
                 'line_dash':'solid',
                 'line_width':3,
                 'alpha':1,
@@ -175,40 +160,40 @@ class GridGenerator:
             # grid lines.
             'location_grids_st_c': {
                 'legend_label':'Grids from structural Columns',
-                'color': "tomato",
-                'line_dash':'dotted',
-                'line_width':2,
-                'alpha':0.35,
+                'color': "#e9c716", # yellow.
+                'line_dash':'dashed',
+                'line_width':1.5,
+                'alpha':0.80,
             },
             'location_grids_st_w': {
                 'legend_label': 'Grids from structural Walls',
-                'color': "orange",
+                'color': "#bc272d", # red.
                 'line_dash':'dashed',
-                'line_width':2,
-                'alpha':0.35,
+                'line_width':1.5,
+                'alpha':0.80,
             },
             'location_grids_ns_w': {
                 'legend_label': 'Grids from non-structural Walls',
-                'color': "navy",
-                'line_dash':'dashed',
-                'line_width':2,
-                'alpha':0.35,
+                'color': "#50ad9f", # teal.
+                'line_dash':'dotted',
+                'line_width':1.5,
+                'alpha':0.80,
             },
 
             # processed grid lines.
             'location_grids_st_merged': {
                 'legend_label': 'Structural Grids',
-                'color': "orange",
-                'line_dash':'dotdash',
+                'color': "#bc272d", # red.
+                'line_dash':'dashed',
                 'line_width':2,
-                'alpha':0.50,
+                'alpha':0.90,
             },
             'location_grids_ns_merged': {
                 'legend_label':'Non-structural Grids',
-                'color': "navy",
-                'line_dash':'dashed',
+                'color': "#0000a2", # blue
+                'line_dash':'dotted',
                 'line_width':2,
-                'alpha':0.50,
+                'alpha':0.90,
             },}
     
     # column-related.
@@ -347,21 +332,25 @@ class GridGenerator:
                 
                 point1, point2 = list(ln_1.boundary.geoms)[0],list(ln_1.boundary.geoms)[1]
                 aligned_points = [[point1, point2]]
-                accumulated_length = length_1
+                collinear_points = []
+                accumulated_length = []
+                accumulated_length.append(length_1)
                 aligned_element_ids = {id_1}
 
-                # Sub-case of non-vertical lines.
+                # Sub-case of non-vertical lines. 
                 if slope != float('inf'):
 
                     for j, (ln_new, new_length, id_new) in enumerate(zip(
                         element_lns[i + 1:], ln_lengths[i + 1:], element_ids[i + 1:]), start=i + 1):
 
                         point3, point4 = list(ln_new.boundary.geoms)[0],list(ln_new.boundary.geoms)[1]
-
-                        if are_points_collinear(point1, point2, point3, point4, t=wall_offset_distance):
+                        are_close, are_collinear = close_parallel_lines(point1, point2, point3, point4, offset=wall_offset_distance)
+                        if are_close:
+                            collinear_points.append(are_collinear)
                             aligned_points.append([point3,point4])
-                            accumulated_length += new_length
+                            accumulated_length.append(new_length)
                             aligned_element_ids.add(id_new)
+
                         else:
                             continue
 
@@ -372,32 +361,44 @@ class GridGenerator:
                         element_lns[i + 1:], ln_lengths[i + 1:], element_ids[i + 1:]), start=i + 1):
 
                         point3, point4 = list(ln_new.boundary.geoms)[0],list(ln_new.boundary.geoms)[1]
-                        
-                        if abs(point3.x-point1.x) <= wall_offset_distance and \
-                            abs(point3.x-point2.x) <= wall_offset_distance and \
-                                abs(point4.x-point1.x) <= wall_offset_distance and \
-                                    abs(point4.x-point2.x) <= wall_offset_distance:
+                        are_close, are_collinear = close_parallel_lines(point1, point2, point3, point4, offset=wall_offset_distance)
+                        if are_close:
+                            collinear_points.append(are_collinear)
                             aligned_points.append([point3,point4])
-                            accumulated_length += new_length
+                            accumulated_length.append(new_length)
                             aligned_element_ids.add(id_new)
+
                         else:
                             continue
                 
                 aligned_element_ids = sorted(aligned_element_ids)
 
                 # be careful with the hierarchy here.
-                # option 1: satisfy both criteria?
-                # option 2: satisfy one of the criteria ?
+                # satisfy both criteria?
 
                 if len(aligned_element_ids) >= minimum_alignment_number and \
-                    (accumulated_length/self.total_wall_lengths) >= minimum_accumuled_wall_length_percent:
+                    (sum(accumulated_length)/self.total_wall_lengths) >= minimum_accumuled_wall_length_percent:
                     
                     id_tuple = tuple(aligned_element_ids)  # Convert to tuple for hashability
+
                     if id_tuple not in element_ids_per_grid:
+                        
+                        # the case when it's already there.
                         if element_ids_per_grid and any([
                             set(id_tuple).issubset(set(existing_ids_component)) for existing_ids_component in element_ids_per_grid]):
                             continue
+                        
+                        # the case when it's not there yet.
                         else:
+                            if not all(collinear_points):
+                                # easiest option: reserve only the longest one.
+                                for id, l in enumerate(accumulated_length):
+                                    if l == max(accumulated_length):
+                                        aligned_points = [aligned_points[id]]
+                                        break
+                                    else:
+                                        continue
+
                             generated_grids.append(aligned_points)
                             element_ids_per_grid.append(list(set(aligned_element_ids)))
                             
@@ -1202,7 +1203,7 @@ class GridGenerator:
 
                     slope_st = get_line_slope_by_points(list(gd_ln_st.boundary.geoms)[0], list(gd_ln_st.boundary.geoms)[1])
                     slope_ns = get_line_slope_by_points(list(gd_ln_ns.boundary.geoms)[0], list(gd_ln_ns.boundary.geoms)[1])
-                    
+
                     # only consider alignment among parallel lines.
                     if abs(slope_st-slope_ns) <= slope_tol or slope_st==slope_ns==float('inf'):
                         

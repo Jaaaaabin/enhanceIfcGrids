@@ -66,9 +66,9 @@ try:
             'st_st_merge': 0.3,
             'ns_st_merge': 0.3,
             'ns_ns_merge': 0.2,
-            'st_c_dist': 0.0001,
-            'st_w_dist': 0.0001,
-            'ns_w_dist': 0.0001,
+            'st_c_dist': 0.001,     # fixed value,
+            'st_w_dist': 0.1,       # fixed value, to be decided per project
+            'ns_w_dist': 0.1,       # fixed value, to be decided per project.
         }
         
         building_grid_generation(init_grid_generator, best_thresholds)
