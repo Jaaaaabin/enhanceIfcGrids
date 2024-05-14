@@ -24,7 +24,7 @@ from gaTools import ga_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 15 # number of iterations.
+NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
@@ -52,13 +52,14 @@ GENERATION_IND_VIOLIN_FLE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generati
 #===================================================================================================
 # Basic parameter & Customized Population setup:
 PARAMS = {
-    'st_c_num': (5, 10), # [3,10)  # min = 3
-    'st_w_num': (4, 10), # [3,10)  # min = num_main_floors.
-    'ns_w_num': (2, 10), # [2,10)  # min = 2.
-    'st_w_accumuled_length_percent': (0.0001, 0.0100), # should be more "dependent" on the average length.
-    'ns_w_accumuled_length_percent': (0.0001, 0.0100), # should be more "dependent" on the average length.
-    'st_st_merge': (0.2, 0.90), # ....god sick
-    'ns_st_merge': (0.2, 2.00), # ....god sick
+    'st_c_num': (2, 10), # [3,10)  # min = 3
+    'st_w_num': (1, 10), # [3,10)  # min = num_main_floors.
+    'ns_w_num': (1, 10), # [2,10)  # min = 2.
+    'st_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
+    'ns_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
+    'st_st_merge': (0.2, 0.50), # ....god sick
+    'ns_st_merge': (0.2, 1.00), # ....god sick
+    'ns_ns_merge': (0.2, 1.00), # ....god sick
     # 'st_c_dist': (0.00001, 0.0001), # fixed as 0.001
     # 'st_w_dist': (0.00001, 0.0001), # fixed as 0.001
     # 'ns_w_dist': (0.00001, 0.0001), # fixed as 0.001

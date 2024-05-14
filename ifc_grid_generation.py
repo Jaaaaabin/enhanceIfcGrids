@@ -37,11 +37,6 @@ def building_grid_generation(basic_generator, new_parameters):
     
     # generate the grids
     new_generator.create_grids()
-    
-    # loss functions before merge the grids.
-    # new_generator.calculate_grid_wall_cross_loss(ignore_cross_edge=True)    # loss calculation.
-    # new_generator.calculate_grid_distance_deviation_loss()
-    
     new_generator.visualization_2d_before_merge()
     
     # merge the grids
@@ -63,13 +58,14 @@ try:
         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
         best_thresholds = {
-            'st_c_num': 6,
+            'st_c_num': 3,
             'st_w_num': 2,
             'ns_w_num': 2,
-            'st_w_accumuled_length_percent': 0.001,
-            'ns_w_accumuled_length_percent': 0.001,
-            'st_st_merge': 0.6,
-            'ns_st_merge': 0.5,
+            'st_w_accumuled_length_percent': 0.00342,
+            'ns_w_accumuled_length_percent': 0.00056,
+            'st_st_merge': 0.3,
+            'ns_st_merge': 0.3,
+            'ns_ns_merge': 0.2,
             'st_c_dist': 0.0001,
             'st_w_dist': 0.0001,
             'ns_w_dist': 0.0001,

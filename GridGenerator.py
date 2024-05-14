@@ -51,6 +51,7 @@ class GridGenerator:
 
         self.st_st_merge = 0.3
         self.ns_st_merge = 0.3
+        self.ns_ns_merge = 0.3
 
         self.st_c_dist = 0.001
         self.st_w_dist = 0.001
@@ -96,6 +97,7 @@ class GridGenerator:
             'ns_w_accumuled_length_percent',
             'st_st_merge',
             'ns_st_merge',
+            'ns_ns_merge',
             'st_c_dist',
             'st_w_dist',
             'ns_w_dist',
@@ -1105,8 +1107,9 @@ class GridGenerator:
 
 #===================================================================================================
 #Grid Alignment ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
+    
     # @time_decorator
-    def align_st4st_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
+    def align_same_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):    
         
         # the long running time coming from grids from non-main directions.
 
@@ -1199,12 +1202,13 @@ class GridGenerator:
 
                     slope_st = get_line_slope_by_points(list(gd_ln_st.boundary.geoms)[0], list(gd_ln_st.boundary.geoms)[1])
                     slope_ns = get_line_slope_by_points(list(gd_ln_ns.boundary.geoms)[0], list(gd_ln_ns.boundary.geoms)[1])
-
+                    
                     # only consider alignment among parallel lines.
                     if abs(slope_st-slope_ns) <= slope_tol or slope_st==slope_ns==float('inf'):
                         
+                        
                         if shapely.distance(gd_ln_st,gd_ln_ns) < tol:
-                            
+                    
                             # store the alignment maps.
                             alignment_maps.append([ii,jj])
                             # marked as merged.
@@ -1237,25 +1241,40 @@ class GridGenerator:
         self.grids_merged = defaultdict(list)
 
         # ----------------------------------------------
-        # st grids: location_grids_st_merged, grids_st_merged_ids
+        # step1: align the st grids
+        # take all information from 'grids_all'
         all_st_grids = self.grids_all['location_grids_st_c'] + self.grids_all['location_grids_st_w']
         all_st_grids_ids = self.grids_all['grids_st_c_ids'] + self.grids_all['grids_st_w_ids']
 
-        self.grids_merged['location_grids_st_merged'], self.grids_merged['grids_st_merged_ids'] = self.align_st4st_grids(
+        # location_grids_st_merged, grids_st_merged_ids are created in 'grids_merged' per building.
+        self.grids_merged['location_grids_st_merged'], self.grids_merged['grids_st_merged_ids'] = self.align_same_grids(
             all_st_grids, all_st_grids_ids, tol = self.st_st_merge)
-        # print("all_st_grids has a len of: ", len(all_st_grids))
 
         # ----------------------------------------------
-        # ns to st per storey: location_grids_ns_merged, grids_ns_merged_ids
+        # step2: align ns to st grids per storey: location_grids_ns_merged, grids_ns_merged_ids
+        # take 'location_grids_ns_w' and 'grids_ns_w_ids' from 'grids_all'
+        # take 'location_grids_st_merged' and 'grids_st_merged_ids' from 'grids_merged'
         for storey_key, storey_value in self.grids_all.items():
 
             if 'grids_ns_w_ids' in storey_value:
-
+                # 'location_grids_ns_merged' and 'grids_ns_merged_ids' are updated per (main) storey.
                 self.grids_merged[storey_key] = {}
-                # 'location_grids_ns_merged' and 'grids_ns_merged_ids' are updated here per (main) storey.
                 self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_ns2st_grids(
                     storey_value['location_grids_ns_w'], storey_value['grids_ns_w_ids'], tol = self.ns_st_merge)
-                
+            else:
+                continue
+        # ----------------------------------------------
+        # step3: align the ns grids per storey:
+        # take 'location_grids_ns_merged' and 'grids_ns_merged_ids' from 'grids_merged'
+        for storey_key, storey_value in self.grids_merged.items():
+
+            if 'grids_ns_merged_ids' in storey_value:
+                # 'location_grids_ns_merged' and 'grids_ns_merged_ids' are updated per (main) storey.
+                self.grids_merged[storey_key]['location_grids_ns_merged'], self.grids_merged[storey_key]['grids_ns_merged_ids'] = self.align_same_grids(
+                    storey_value['location_grids_ns_merged'], storey_value['grids_ns_merged_ids'], tol = self.ns_ns_merge)
+
+            else:
+                continue
 # Grid Alignment ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
@@ -1270,13 +1289,25 @@ class GridGenerator:
         # get all walls bound to grids.
         self.ids_elements_bound = self.grids_merged['grids_st_merged_ids']
 
+        # get the numbers of ids bound to each grid.
+        num_bound_ids_per_grid = []
+        if self.grids_merged['grids_st_merged_ids']:
+            num_bound_ids_per_grid += [len(sublist) for sublist in self.grids_merged['grids_st_merged_ids']]
+
         for storey_key, storey_value in self.grids_merged.items():
             if 'grids_ns_merged_ids' in storey_value:
                 self.ids_elements_bound += storey_value['grids_ns_merged_ids']
+                num_bound_ids_per_grid += [len(sublist) for sublist in storey_value['grids_ns_merged_ids']]
+
         self.ids_elements_bound = set([item for sublist in self.ids_elements_bound for item in sublist])
-        
         self.percent_unbound_elements = (1 - len(self.ids_elements_bound) / self.total_bound_elements) # [0,1] to minimize
-    
+
+        if num_bound_ids_per_grid:
+            reversed_num_bound_ids_per_grid = [1/num for num in num_bound_ids_per_grid]
+            self.avg_reversed_num_bound_ids_per_grid = sum(reversed_num_bound_ids_per_grid)/len(reversed_num_bound_ids_per_grid) # [0,1] to minimize
+        else:
+            self.avg_reversed_num_bound_ids_per_grid = 0.5
+
     # a loss about global performance of the grids.
     def merged_loss_distance_deviation(self, min_size_group=3):
         """
@@ -1433,10 +1464,15 @@ class GridGenerator:
 
             for config in grid_plot_configurations:
                 data_key, plot_type, attr = config
-                grid_data = self.grids_all[storey].get(data_key, []) # per storey.
 
-                if not grid_data:
+                # grid_data = self.grids_all[storey].get(data_key, []) # per storey.
+                # if not grid_data:
+                #     grid_data = self.grids_all.get(data_key, []) # per building.
+        
+                if '_st_' in data_key:
                     grid_data = self.grids_all.get(data_key, []) # per building.
+                elif '_ns_' in data_key:
+                    grid_data = self.grids_all[storey].get(data_key, []) # per storey.
 
                 if grid_data:
                     g_plot = self.visualization_settings[data_key]
@@ -1509,11 +1545,11 @@ class GridGenerator:
 
                 for config in grid_plot_configurations:
                     data_key, plot_type, attr = config
-
-                    if self.grids_merged.get(storey,[]):
+                    
+                    if '_st_' in data_key:
+                        grid_data = self.grids_merged.get(data_key, []) # per building.
+                    elif '_ns_' in data_key:
                         grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
-                        if not grid_data:
-                            grid_data = self.grids_merged.get(data_key, []) # per building.
 
                     if grid_data:
                         g_plot = self.visualization_settings[data_key]

@@ -113,8 +113,8 @@ def find_most_common_value(values):
 def get_line_slope_by_points(point1, point2):
     
     # works for x and y, doesn't matter is z exits or not.
-    dx = point2.x - point1.x
-    dy = point2.y - point1.y
+    dx = round(point2.x,3) - round(point1.x,3)
+    dy = round(point2.y,3) - round(point1.y,3)
     if abs(dx) > 0.00001:
         slope = dy / dx
     else:
