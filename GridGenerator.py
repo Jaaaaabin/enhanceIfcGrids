@@ -15,9 +15,6 @@ import bokeh.plotting
 from quickTools import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes
 from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
 
-#===================================================================================================
-#Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-
 class GridGenerator:
 
     def __init__(self, figure_path, json_floors, json_st_columns, json_st_walls, json_ns_walls, json_ct_walls):
@@ -137,7 +134,7 @@ class GridGenerator:
             'st_column_points':{
                 'legend_label':'Column Locations',
                 'color': "grey",
-                'size':6,
+                'size':4,
                 'alpha':1,
             },
 
@@ -196,6 +193,9 @@ class GridGenerator:
                 'alpha':0.90,
             },}
     
+#===================================================================================================
+# Grid Creation ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
+
     # column-related alignment.
     def get_grids_from_column_point_alignments(self, element_pts, element_ids):
         """
@@ -935,7 +935,24 @@ class GridGenerator:
                         'ct_wall_lines': ls_per_storey,
                         'ct_wall_ids':ids_per_storey,
                         })
-    
+        
+        #  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        # collect all ids per storey.
+
+        for key, sub_dict in self.info_all_locations_by_storey.items():
+            
+            # get all sub keys with 'ids'
+            all_ids_per_storey = []
+            sub_keys = [sub_key for sub_key in sub_dict.keys() if '_ids' in sub_key]
+
+            if sub_keys:
+                for sub_key in sub_keys:
+                    all_ids_per_storey += sub_dict[sub_key]
+
+            self.info_all_locations_by_storey[key].update({
+                'all_ids':all_ids_per_storey
+            })
+
     def update_display_borders(self, all_references_x, all_references_y, pad_x_y):
 
         def calculate_and_update_border(current_border, refs):
@@ -1056,58 +1073,11 @@ class GridGenerator:
 
         self.calculate_grid_locations() # -> self.grids_all with grid locations.
 
-#Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+# Grid Creation ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
-#Loss with Initial Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-    # a loss about local performance of the grids.
-    def calculate_grid_wall_cross_loss(self, ignore_cross_edge=False, cross_threshold_percent=5):
-
-        # the loss target.
-        cross_w_lengths = 0.0
-        
-        # get all walls bound to grids.
-        self.ids_wall_bound = self.grids_all['grids_st_w_ids']
-        for storey_key, storey_value in self.grids_all.items():
-            if 'grids_ns_w_ids' in storey_value:
-                self.ids_wall_bound += storey_value['grids_ns_w_ids']
-        self.ids_wall_bound = set([item for sublist in self.ids_wall_bound for item in sublist])
-        
-        # get all global st grids and then do calculation per storey.
-        self.ids_wall_unbound_crossed = set()
-        global_st_grids = self.grids_all.get('location_grids_st_c', []) + self.grids_all.get('location_grids_st_w', [])
-
-        for storey_key, storey_value in self.info_all_locations_by_storey.items():
-            
-            # add the non-structural walls.
-            all_grids_on_storey = global_st_grids + self.grids_all.get(storey_key, {}).get('location_grids_ns_w', [])
-
-            ids_wall_on_storey = storey_value.get('st_wall_ids',[]) + storey_value.get('ns_wall_ids', [])
-            lns_wall_on_storey = storey_value.get('st_wall_lines',[]) + storey_value.get('ns_wall_lines', [])
-
-            for (wall_id, wall_line) in zip(ids_wall_on_storey, lns_wall_on_storey):
-                if wall_id not in self.ids_wall_bound:
-                    for g_line in all_grids_on_storey:
-                        if calculate_line_crosses(g_line, wall_line, ignore_cross_edge, cross_threshold_percent):
-                            self.ids_wall_unbound_crossed.add(wall_id)
-    
-        for wall_id in self.ids_wall_unbound_crossed:
-            cross_w_lengths += self.info_wall_length_by_id[wall_id]
-        
-        # get the percent of total number of unbound walls
-        # 1st Objective to minimize: to generate grids linking as many as possible the walls.
-        self.percent_unbound_w_numbers = (1 - len(self.ids_wall_bound) / self.total_wall_numbers) # [0,1] to minimize
-        
-        # get the percent of total lengths of crossed unbound walls.
-        # Maybe we donnot need this trick...
-        self.percent_cross_unbound_w_lengths =  (cross_w_lengths/self.total_wall_lengths) # [0,1] to minimize
-           
-#Loss with Initial Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
-#===================================================================================================
-
-#===================================================================================================
-#Grid Alignment ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
+# Grid Merge ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
     
     # @time_decorator
     def merge_same_grids(self, grid_linestrings, grid_componnets, tol=0.0, slope_tol=0.01):
@@ -1237,6 +1207,29 @@ class GridGenerator:
         return location_grids_ns_w_storey, grids_ns_w_ids_storey
     
     # @time_decorator
+    def relate_st_grids_storey(self, storey_key):
+
+        location_grids_st_per_storey, grids_st_ids_per_storey = [], []
+        
+        all_element_ids_per_storey = self.info_all_locations_by_storey[storey_key]['all_ids']
+        global_location_grids_st = self.grids_merged['location_grids_st_merged']
+        global_grids_st_ids = self.grids_merged['grids_st_merged_ids']
+        
+        related_iis = []
+        if global_location_grids_st and global_grids_st_ids and all_element_ids_per_storey:
+            for ii, st_ids in enumerate(global_grids_st_ids):
+                if bool(set(st_ids) & set(all_element_ids_per_storey)):
+                    related_iis.append(ii)
+                else:
+                    continue
+    
+        if related_iis:
+            location_grids_st_per_storey = [global_location_grids_st[i] for i in related_iis]
+            grids_st_ids_per_storey = [global_grids_st_ids[i] for i in related_iis]
+            
+        return location_grids_st_per_storey, grids_st_ids_per_storey
+    
+    # @time_decorator
     def merge_grids(self):
         
         self.grids_merged = defaultdict(list)
@@ -1264,6 +1257,7 @@ class GridGenerator:
                     storey_value['location_grids_ns_w'], storey_value['grids_ns_w_ids'], tol = self.ns_st_merge)
             else:
                 continue
+        
         # ----------------------------------------------
         # step3: merge the ns grids per storey:
         # take 'location_grids_ns_merged' and 'grids_ns_merged_ids' from 'grids_merged'
@@ -1276,12 +1270,25 @@ class GridGenerator:
 
             else:
                 continue
-# Grid Alignment ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+
+        # ----------------------------------------------
+        # step4: distribute the global st grids to all storeys:
+        for storey_key, storey_value in self.grids_merged.items():
+            
+            # if it's a storey key.    
+            if storey_key in self.info_all_locations_by_storey.keys():
+                
+                self.grids_merged[storey_key]['location_grids_st_merged'], self.grids_merged[storey_key]['grids_st_merged_ids'] = self.relate_st_grids_storey(storey_key=storey_key)
+            else:
+                continue
+    
+# Grid Merge ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
 # Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
+    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about local performance of the grids.
     # to minimize.
     def merged_loss_unbound_elements2grids(self):
@@ -1307,9 +1314,92 @@ class GridGenerator:
             reversed_num_bound_ids_per_grid = [1/num for num in num_bound_ids_per_grid]
             self.avg_reversed_num_bound_ids_per_grid = sum(reversed_num_bound_ids_per_grid)/len(reversed_num_bound_ids_per_grid) # [0,1] to minimize
         else:
-            self.avg_reversed_num_bound_ids_per_grid = 0.5
+            self.avg_reversed_num_bound_ids_per_grid = 1.0
 
+
+    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about global performance of the grids.
+    # to minimize.
+    def merged_loss_maxmin_deviation(self, min_size_group=3):
+        """
+        Calculate the grid distance deviation, requiring at 3 grids.
+        |           |               |                   |
+        |           |               |                   |
+        <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
+        - max = dist_3
+        - min = dist_1
+        """
+        
+        def perpendicular_distance(point1, point2):
+            A = point2.y - point1.y
+            B = -(point2.x - point1.x)
+            C = point1.x * point2.y - point2.x * point1.y
+            return C / math.sqrt(A**2 + B**2)
+    
+        def get_maxmin_deviations(grids):
+
+            grid_groups = defaultdict(list)
+            square_root_of_distance_differences = []
+            
+            # calculate the relative locations within a group of grids.
+            for ln in grids:
+                
+                point1, point2 = list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]
+                slope = get_line_slope_by_points(point1, point2)
+                slope = round(slope, 4)
+                grid_groups[slope].append([point1, point2, perpendicular_distance(point1, point2)])
+
+            # filter the minor groups that cannot be calculated for the deviation.
+            # it requires at least 3 grids to have a min and max.
+            grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
+            
+            max_min_deviations = []
+
+            # check if there's grid_groups left alter filtering the minor groups.
+            if grid_groups:
+
+                # sort each group by the perpendicular_distance value
+                for slope in grid_groups:
+                    grid_groups[slope] = sorted(grid_groups[slope], key=lambda x: x[-1])
+                
+                for slope, grid_group in grid_groups.items():
+                    
+                    distance_per_group = []
+                    for i in range(1, len(grid_group)):
+                        dist = (grid_group[i][-1] - grid_group[i-1][-1])
+                        distance_per_group.append(dist)
+
+                    if distance_per_group:
+                        max_min_distances_per_group = [max(distance_per_group), min(distance_per_group)]                        
+                        max_min_deviations.append((1-max_min_distances_per_group[1]/max_min_distances_per_group[0]))
+            
+            return max_min_deviations
+    
+        # initialize the loss target.
+        self.avg_deviation_maxmin = []
+        for storey_key, storey_value in self.grids_merged.items():
+            
+            if isinstance(storey_value, dict):
+                
+                grids_per_storey = []
+                storey_st_grids = storey_value.get('location_grids_st_merged', [])
+                storey_ns_grids = storey_value.get('location_grids_ns_merged', [])
+                grids_per_storey += storey_st_grids
+                grids_per_storey += storey_ns_grids
+
+                # put together and calculcate the distance deviations.
+                self.avg_deviation_maxmin.append(get_maxmin_deviations(grids_per_storey))
+        
+        self.avg_deviation_maxmin = [item for sublist in self.avg_deviation_maxmin for item in sublist]
+        if self.avg_deviation_maxmin and len(self.avg_deviation_maxmin)!=0:
+            self.avg_deviation_maxmin = sum(self.avg_deviation_maxmin)/len(self.avg_deviation_maxmin)
+        else:
+            print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_maxmin_deviation |")
+            self.avg_deviation_maxmin = 1.0
+
+    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    # a loss about global performance of the grids.
+    # to minimize.
     def merged_loss_distance_deviation(self, min_size_group=3):
         """
         Calculate the grid distance deviation, requiring at 3 grids.
@@ -1366,52 +1456,40 @@ class GridGenerator:
         
         # get the averaged rescaled deviation value.
         average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
-        # max_wall_length = max(list(self.info_wall_length_by_id.values())) # or we can also use the max_wall_length.
         
         # initialize the loss target.
         self.avg_deviation_distance = []
-
-        # get all global st grids.
-        global_st_grids = self.grids_merged.get('location_grids_st_merged', [])
-
         for storey_key, storey_value in self.grids_merged.items():
             
             if isinstance(storey_value, dict):
                 
-                # per storey, first take all st grids.
-                grids_per_storey = global_st_grids
-
-                # add the ns grids if any.
+                grids_per_storey = []
+                storey_st_grids = storey_value.get('location_grids_st_merged', [])
                 storey_ns_grids = storey_value.get('location_grids_ns_merged', [])
-                if storey_ns_grids:    
-                    grids_per_storey += storey_ns_grids
+                grids_per_storey += storey_st_grids
+                grids_per_storey += storey_ns_grids
 
                 # put together and calculcate the distance deviations.
                 self.avg_deviation_distance += get_distance_deviations(grids_per_storey)
 
         if self.avg_deviation_distance:
-            # get average.
             self.avg_deviation_distance = sum(self.avg_deviation_distance)/len(self.avg_deviation_distance)
-            # rescale it into [0, 1]
             self.avg_deviation_distance = sigmoid_scale(self.avg_deviation_distance, average_wall_length)
         else:
-            # if there's no "grouped" grids formulated in the results.
-            print ("|--------------------------------------------------------------------------->>>Warning: One penalty pic occurs |")
-            # return the extreme value 1 for cases less than 2 grids.
+            print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_distance_deviation |")
             self.avg_deviation_distance = sigmoid_scale(average_wall_length, average_wall_length)
-
-    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    # herehere.: add / reuse one more loss target to help the convergence. | simpler is better,  same for the distance divergence |
 
 # Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================
-
 
 #===================================================================================================
 # Visualization ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
     # @time_decorator
     def visualization_2d_before_merge(self):
+        
+        # this before merge visualization will always
+        # plot st grids globally and ns grids locally.
 
         for storey in self.main_storeys.keys():
 
@@ -1547,10 +1625,7 @@ class GridGenerator:
                 for config in grid_plot_configurations:
                     data_key, plot_type, attr = config
                     
-                    if '_st_' in data_key:
-                        grid_data = self.grids_merged.get(data_key, []) # per building.
-                    elif '_ns_' in data_key:
-                        grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+                    grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
 
                     if grid_data:
                         g_plot = self.visualization_settings[data_key]
@@ -1569,6 +1644,83 @@ class GridGenerator:
                 # Save the figure.
                 bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
                 bokeh.plotting.save(fig)
+    
+    # def visualization_2d_after_merge_old(self):
+            
+    #     for storey in self.main_storeys.keys():
+
+    #         # plotting settings.
+    #         plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Merged"
+    #         fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Merged"
+    #         fig = bokeh.plotting.figure(
+    #             title=plot_name,
+    #             title_location='above',
+    #             x_axis_label='x',
+    #             y_axis_label='y',
+    #             width=800,
+    #             height=800,
+    #             match_aspect=True)
+    #         fig.title.text_font_size = '11pt'
+    #         fig.xgrid.visible = False
+    #         fig.ygrid.visible = False
+
+    #         # plotting configurations of building elements.
+    #         element_plot_configurations = [
+    #             ('st_column_points', 'square', None),
+    #             ('st_wall_lines', 'line', 'coords'),
+    #             ('ns_wall_lines', 'line', 'coords'),
+    #         ]
+
+    #         for config in element_plot_configurations:
+    #             data_key, plot_type, attr = config
+    #             element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
+                
+    #             if element_data:
+    #                 g_plot = self.visualization_settings[data_key]
+    #                 for element in element_data:
+    #                     x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
+                        
+    #                     if plot_type == 'square':
+    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
+    #                     elif plot_type == 'line':
+    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+    #             else:
+    #                 continue
+    #                 # raise ValueError("element_plot_configurations dont' lead to correct values.")
+            
+    #         # plotting configurations of grids of different types.
+    #         grid_plot_configurations = [
+    #             ('location_grids_st_merged', 'line', 'coords'),
+    #             ('location_grids_ns_merged', 'line', 'coords'),
+    #         ]
+
+    #         for config in grid_plot_configurations:
+    #             data_key, plot_type, attr = config
+                
+    #             if '_st_' in data_key:
+    #                 grid_data = self.grids_merged.get(data_key, []) # per building.
+    #             elif '_ns_' in data_key:
+    #                 grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+
+    #             if grid_data:
+    #                 g_plot = self.visualization_settings[data_key]
+    #                 for grid in grid_data:
+    #                     x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
+                        
+    #                     if plot_type == 'square':
+    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
+    #                     elif plot_type == 'line':
+    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+    #             else:
+    #                 continue
+
+    #         # Save the figure.
+    #         bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
+    #         bokeh.plotting.save(fig)
 
 #Visualization ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================

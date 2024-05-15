@@ -23,7 +23,7 @@ from gaTools import ga_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
-POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
+POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
 NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
@@ -35,7 +35,7 @@ RANDOM_SEED = 20001
 #===================================================================================================
 # Paths setup and Log registration.
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_test')
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_ga')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
 MODEL_PATH = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
@@ -43,11 +43,11 @@ MODEL_PATH = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
 gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH)
 logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
 
-INI_GENERATION_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH,'GA_generation_ini_inds_integer.txt')
-GENERATION_LOG_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_log.json")
-GENERATION_FIT_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_fitness.png")
-GENERATION_IND_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_inds.txt")
-GENERATION_IND_VIOLIN_FLE = os.path.join(DATA_RES_PATH, MODEL_PATH, "GA_generation_ind_violin.png")
+INI_GENERATION_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_ini_inds_integer.txt")
+GENERATION_LOG_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_log.json")
+GENERATION_FIT_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_fitness.png")
+GENERATION_IND_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_inds.txt")
+GENERATION_IND_VIOLIN_FLE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_ind_violin.png")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
@@ -58,8 +58,8 @@ PARAMS = {
     'st_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
     'ns_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
     'st_st_merge': (0.2, 0.50), # ....god sick differentiate between merge
-    'ns_st_merge': (0.2, 1.00), # ....god sick differentiate between merge
-    'ns_ns_merge': (0.2, 1.00), # ....god sick differentiate between merge
+    'ns_st_merge': (0.2, 0.50), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.2, 0.50), # ....god sick differentiate between merge
     # 'st_c_align_dist': (0.00001, 0.0001), # fixed?
     # 'st_w_align_dist': (0.00001, 0.0001), # fixed?
     # 'ns_w_align_dist': (0.00001, 0.0001), # fixed?
@@ -143,9 +143,11 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.create_grids()
     gridGenerator.merge_grids()
     gridGenerator.merged_loss_unbound_elements2grids()
-    gridGenerator.merged_loss_distance_deviation()
+    gridGenerator.merged_loss_maxmin_deviation() # might work. please give long running on 3689939.ifc
+    # gridGenerator.merged_loss_distance_deviation() # might work. please give long running 3689939.ifc
 
-    individual_fitness = gridGenerator.percent_unbound_elements/2 + gridGenerator.avg_deviation_distance/2
+    individual_fitness = gridGenerator.percent_unbound_elements*0.8 + gridGenerator.avg_deviation_maxmin*0.2
+    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_distance*0.5
 
     return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
 
