@@ -130,7 +130,7 @@ class GridGenerator:
         """
 
         self.visualization_settings = {
-            # points.
+            # column points.
             'st_column_points':{
                 'legend_label':'Column Locations',
                 'color': "grey",
@@ -138,7 +138,7 @@ class GridGenerator:
                 'alpha':1,
             },
 
-            # lines.
+            # wall lines.
             'st_wall_lines':{
                 'legend_label':'Structural Wall Locations',
                 'color': "black",
@@ -282,10 +282,8 @@ class GridGenerator:
                         element_ids_per_grid_reps.append(id_tuple_reps)
                         element_ids_per_grid.append(list(id_tuple))
         
-        # todo.
-        # clean the points in generated_grids by considering:
-        # 1. weights from element_ids_per_grid
-        # 2. offset thresholds.
+        # todo. clean the points in generated_grids by considering:
+        # weights from element_ids_per_grid
 
         return generated_grids, element_ids_per_grid
     
@@ -305,10 +303,6 @@ class GridGenerator:
             minimum_accumuled_wall_length_percent = self.ns_w_accumuled_length_percent
             minimum_alignment_number = self.ns_w_num
             wall_offset_distance = self.ns_w_align_dist # area spanned by the triangle they would form
-
-        # ##################################################################################
-        # todo. Preprocessing for identifying the "same located walls (below and above)."
-        # ##################################################################################
 
         # Pre-calculate slopes for all lines
         line_slopes = [get_line_slope_by_points(list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]) for ln in element_lns]
@@ -405,10 +399,8 @@ class GridGenerator:
         generated_grids = [[e for element in elements for e in element] for elements in generated_grids]
         generated_grids = [remove_duplicate_points(elements) for elements in generated_grids]
 
-        # todo.
-        # clean the points in generated_grids by considering:
-        # 1. weights from element_ids_per_grid
-        # 2. offset thresholds.
+        # todo. clean the points in generated_grids by considering:
+        # weights from element_ids_per_grid
 
         return generated_grids, element_ids_per_grid
     
@@ -477,7 +469,7 @@ class GridGenerator:
         
         # st_column
         # ------------------
-        # by whole building.
+        # by the whole building.
         # ------------------
         st_column_points = self.info_all_locations.get('st_column_points')
         st_column_ids = self.info_all_locations.get('st_column_ids')
@@ -497,7 +489,7 @@ class GridGenerator:
         
         # st_wall
         # ------------------
-        # by whole building.
+        # by the whole building.
         # ------------------
         st_wall_lines = self.info_all_locations.get('st_wall_lines')
         st_wall_ids = self.info_all_locations.get('st_wall_ids')
@@ -517,7 +509,7 @@ class GridGenerator:
 
         # ns_wall
         # ------------------
-        # by storey.
+        # by every storey.
         # ------------------
         for key, value in self.info_all_locations_by_storey.items():
 
@@ -675,7 +667,6 @@ class GridGenerator:
         
         # refine step 2: drop the storeys that dont have walls and columns. (specifically the roof..)
         self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'columns' in value.keys() or 'walls' in value.keys()}
-
 
     def get_main_directions(self, num_directions):
             
@@ -990,6 +981,7 @@ class GridGenerator:
         st_grid_terms = ['grids_st_c', 'grids_st_w']
         ns_grid_terms = ['grids_ns_w']
         
+        # step1: calculate the st grids for the whole building.
         for grid_type_key in st_grid_terms:
 
             grid_location_key = 'location_' + grid_type_key
@@ -1002,6 +994,7 @@ class GridGenerator:
 
         ns_grids_by_storey = {key: self.grids_all[key] for key in self.main_storeys.keys()}
 
+        # step2: calculate the ns grids per storey.
         for storey_key, storey_value in ns_grids_by_storey.items():
             
             for grid_type_key in ns_grid_terms:
@@ -1017,6 +1010,24 @@ class GridGenerator:
                    self.grids_all[storey_key].update({
                         grid_location_key: []
                     })
+        
+        # step3: related the st grids to each storey.        
+        for storey_key, storey_value in self.grids_all.items():
+            
+            # if it's a storey key.    
+            if storey_key in self.info_all_locations_by_storey.keys():
+                
+                # for grids_st_c.
+                global_location_grids_st, global_grids_st_ids = self.grids_all['location_grids_st_c'], self.grids_all['grids_st_c_ids']
+                self.grids_all[storey_key]['location_grids_st_c'], self.grids_all[storey_key]['grids_st_c_ids'] = self.relate_st_grids_to_each_storey(
+                    storey_key=storey_key, global_location_grids_st=global_location_grids_st, global_grids_st_ids=global_grids_st_ids)
+                
+                # for grids_st_c.
+                global_location_grids_st, global_grids_st_ids = self.grids_all['location_grids_st_w'], self.grids_all['grids_st_w_ids']
+                self.grids_all[storey_key]['location_grids_st_w'], self.grids_all[storey_key]['grids_st_w_ids'] = self.relate_st_grids_to_each_storey(
+                    storey_key=storey_key, global_location_grids_st=global_location_grids_st, global_grids_st_ids=global_grids_st_ids)
+            else:
+                continue
 
     def prepare_wall_total_lengths_numbers(self):
 
@@ -1072,6 +1083,8 @@ class GridGenerator:
         self.extract_grid_overall_borders() # -> self.border_x, self.border_y
 
         self.calculate_grid_locations() # -> self.grids_all with grid locations.
+
+
 
 # Grid Creation ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -1207,15 +1220,12 @@ class GridGenerator:
         return location_grids_ns_w_storey, grids_ns_w_ids_storey
     
     # @time_decorator
-    def relate_st_grids_storey(self, storey_key):
+    def relate_st_grids_to_each_storey(self, storey_key, global_location_grids_st, global_grids_st_ids):
 
         location_grids_st_per_storey, grids_st_ids_per_storey = [], []
-        
         all_element_ids_per_storey = self.info_all_locations_by_storey[storey_key]['all_ids']
-        global_location_grids_st = self.grids_merged['location_grids_st_merged']
-        global_grids_st_ids = self.grids_merged['grids_st_merged_ids']
-        
         related_iis = []
+
         if global_location_grids_st and global_grids_st_ids and all_element_ids_per_storey:
             for ii, st_ids in enumerate(global_grids_st_ids):
                 if bool(set(st_ids) & set(all_element_ids_per_storey)):
@@ -1278,7 +1288,10 @@ class GridGenerator:
             # if it's a storey key.    
             if storey_key in self.info_all_locations_by_storey.keys():
                 
-                self.grids_merged[storey_key]['location_grids_st_merged'], self.grids_merged[storey_key]['grids_st_merged_ids'] = self.relate_st_grids_storey(storey_key=storey_key)
+                global_location_grids_st = self.grids_merged['location_grids_st_merged']
+                global_grids_st_ids = self.grids_merged['grids_st_merged_ids']
+                self.grids_merged[storey_key]['location_grids_st_merged'], self.grids_merged[storey_key]['grids_st_merged_ids'] = self.relate_st_grids_to_each_storey(
+                    storey_key=storey_key, global_location_grids_st=global_location_grids_st, global_grids_st_ids=global_grids_st_ids)
             else:
                 continue
     
@@ -1326,6 +1339,8 @@ class GridGenerator:
         |           |               |                   |
         |           |               |                   |
         <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
+        |           |               |                   |
+        |           |               |                   |
         - max = dist_3
         - min = dist_1
         """
@@ -1338,12 +1353,9 @@ class GridGenerator:
     
         def get_maxmin_deviations(grids):
 
-            grid_groups = defaultdict(list)
-            square_root_of_distance_differences = []
-            
             # calculate the relative locations within a group of grids.
+            grid_groups = defaultdict(list)
             for ln in grids:
-                
                 point1, point2 = list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]
                 slope = get_line_slope_by_points(point1, point2)
                 slope = round(slope, 4)
@@ -1406,6 +1418,8 @@ class GridGenerator:
         |           |               |                   |
         |           |               |                   |
         <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
+        |           |               |                   |
+        |           |               |                   |
         - abs(dist_1**2 - dist_2**2)
         - abs(dist_2**2 - dist_3**2)
         """
@@ -1446,15 +1460,14 @@ class GridGenerator:
 
                         square_root_diff = abs(dist_1**2 - dist_2**2)**0.5
                         square_root_of_distance_differences.append(square_root_diff)
-                        # direct_diff = abs(dist_1 - dist_2)
-                        # square_root_of_distance_differences.append(direct_diff)
 
             return square_root_of_distance_differences
         
         def sigmoid_scale(d, d_max):
             return 1 / (1 + np.exp(-10 * (d / d_max - 0.5)))
         
-        # get the averaged rescaled deviation value.
+        # todo, reconsider if there's any better scale function.
+        # get the averaged rescaled deviation value. 
         average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
         
         # initialize the loss target.
@@ -1487,9 +1500,6 @@ class GridGenerator:
 
     # @time_decorator
     def visualization_2d_before_merge(self):
-        
-        # this before merge visualization will always
-        # plot st grids globally and ns grids locally.
 
         for storey in self.main_storeys.keys():
 
@@ -1542,16 +1552,9 @@ class GridGenerator:
             ]
 
             for config in grid_plot_configurations:
-                data_key, plot_type, attr = config
 
-                # grid_data = self.grids_all[storey].get(data_key, []) # per storey.
-                # if not grid_data:
-                #     grid_data = self.grids_all.get(data_key, []) # per building.
-        
-                if '_st_' in data_key:
-                    grid_data = self.grids_all.get(data_key, []) # per building.
-                elif '_ns_' in data_key:
-                    grid_data = self.grids_all[storey].get(data_key, []) # per storey.
+                data_key, plot_type, attr = config
+                grid_data = self.grids_all[storey].get(data_key, []) # per storey.
 
                 if grid_data:
                     g_plot = self.visualization_settings[data_key]
@@ -1573,154 +1576,77 @@ class GridGenerator:
 
     def visualization_2d_after_merge(self):
             
-            for storey in self.main_storeys.keys():
+        for storey in self.main_storeys.keys():
 
-                # plotting settings.
-                plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Merged"
-                fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Merged"
-                fig = bokeh.plotting.figure(
-                    title=plot_name,
-                    title_location='above',
-                    x_axis_label='x',
-                    y_axis_label='y',
-                    width=800,
-                    height=800,
-                    match_aspect=True)
-                fig.title.text_font_size = '11pt'
-                fig.xgrid.visible = False
-                fig.ygrid.visible = False
+            # plotting settings.
+            plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Merged"
+            fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Merged"
+            fig = bokeh.plotting.figure(
+                title=plot_name,
+                title_location='above',
+                x_axis_label='x',
+                y_axis_label='y',
+                width=800,
+                height=800,
+                match_aspect=True)
+            fig.title.text_font_size = '11pt'
+            fig.xgrid.visible = False
+            fig.ygrid.visible = False
 
-                # plotting configurations of building elements.
-                element_plot_configurations = [
-                    ('st_column_points', 'square', None),
-                    ('st_wall_lines', 'line', 'coords'),
-                    ('ns_wall_lines', 'line', 'coords'),
-                ]
+            # plotting configurations of building elements.
+            element_plot_configurations = [
+                ('st_column_points', 'square', None),
+                ('st_wall_lines', 'line', 'coords'),
+                ('ns_wall_lines', 'line', 'coords'),
+            ]
 
-                for config in element_plot_configurations:
-                    data_key, plot_type, attr = config
-                    element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
-                    
-                    if element_data:
-                        g_plot = self.visualization_settings[data_key]
-                        for element in element_data:
-                            x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
-                            
-                            if plot_type == 'square':
-                                fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-                                        color=g_plot['color'], alpha=g_plot['alpha'])
-                            elif plot_type == 'line':
-                                fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-                                        line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-                    else:
-                        continue
-                        # raise ValueError("element_plot_configurations dont' lead to correct values.")
+            for config in element_plot_configurations:
+                data_key, plot_type, attr = config
+                element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
                 
-                # plotting configurations of grids of different types.
-                grid_plot_configurations = [
-                    ('location_grids_st_merged', 'line', 'coords'),
-                    ('location_grids_ns_merged', 'line', 'coords'),
-                ]
-
-                for config in grid_plot_configurations:
-                    data_key, plot_type, attr = config
-                    
-                    grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
-
-                    if grid_data:
-                        g_plot = self.visualization_settings[data_key]
-                        for grid in grid_data:
-                            x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
-                            
-                            if plot_type == 'square':
-                                fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-                                        color=g_plot['color'], alpha=g_plot['alpha'])
-                            elif plot_type == 'line':
-                                fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-                                        line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-                    else:
-                        continue
-
-                # Save the figure.
-                bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-                bokeh.plotting.save(fig)
-    
-    # def visualization_2d_after_merge_old(self):
-            
-    #     for storey in self.main_storeys.keys():
-
-    #         # plotting settings.
-    #         plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Merged"
-    #         fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Merged"
-    #         fig = bokeh.plotting.figure(
-    #             title=plot_name,
-    #             title_location='above',
-    #             x_axis_label='x',
-    #             y_axis_label='y',
-    #             width=800,
-    #             height=800,
-    #             match_aspect=True)
-    #         fig.title.text_font_size = '11pt'
-    #         fig.xgrid.visible = False
-    #         fig.ygrid.visible = False
-
-    #         # plotting configurations of building elements.
-    #         element_plot_configurations = [
-    #             ('st_column_points', 'square', None),
-    #             ('st_wall_lines', 'line', 'coords'),
-    #             ('ns_wall_lines', 'line', 'coords'),
-    #         ]
-
-    #         for config in element_plot_configurations:
-    #             data_key, plot_type, attr = config
-    #             element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
-                
-    #             if element_data:
-    #                 g_plot = self.visualization_settings[data_key]
-    #                 for element in element_data:
-    #                     x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
+                if element_data:
+                    g_plot = self.visualization_settings[data_key]
+                    for element in element_data:
+                        x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
                         
-    #                     if plot_type == 'square':
-    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
-    #                     elif plot_type == 'line':
-    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-    #             else:
-    #                 continue
-    #                 # raise ValueError("element_plot_configurations dont' lead to correct values.")
+                        if plot_type == 'square':
+                            fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+                                    color=g_plot['color'], alpha=g_plot['alpha'])
+                        elif plot_type == 'line':
+                            fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+                                    line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+                else:
+                    continue
+                    # raise ValueError("element_plot_configurations dont' lead to correct values.")
             
-    #         # plotting configurations of grids of different types.
-    #         grid_plot_configurations = [
-    #             ('location_grids_st_merged', 'line', 'coords'),
-    #             ('location_grids_ns_merged', 'line', 'coords'),
-    #         ]
+            # plotting configurations of grids of different types.
+            grid_plot_configurations = [
+                ('location_grids_st_merged', 'line', 'coords'),
+                ('location_grids_ns_merged', 'line', 'coords'),
+            ]
 
-    #         for config in grid_plot_configurations:
-    #             data_key, plot_type, attr = config
-                
-    #             if '_st_' in data_key:
-    #                 grid_data = self.grids_merged.get(data_key, []) # per building.
-    #             elif '_ns_' in data_key:
-    #                 grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+            for config in grid_plot_configurations:
 
-    #             if grid_data:
-    #                 g_plot = self.visualization_settings[data_key]
-    #                 for grid in grid_data:
-    #                     x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
+                data_key, plot_type, attr = config
+                grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+
+                if grid_data:
+                    g_plot = self.visualization_settings[data_key]
+                    for grid in grid_data:
+                        x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
                         
-    #                     if plot_type == 'square':
-    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
-    #                     elif plot_type == 'line':
-    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-    #             else:
-    #                 continue
+                        if plot_type == 'square':
+                            fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+                                    color=g_plot['color'], alpha=g_plot['alpha'])
+                        elif plot_type == 'line':
+                            fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+                                    line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+                else:
+                    continue
 
-    #         # Save the figure.
-    #         bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-    #         bokeh.plotting.save(fig)
+            # Save the figure.
+            bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
+            bokeh.plotting.save(fig)
 
 #Visualization ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================

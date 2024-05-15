@@ -45,7 +45,8 @@ def building_grid_generation(basic_generator, new_parameters):
     # loss functions after merge the grids.
     new_generator.merged_loss_unbound_elements2grids()
     new_generator.merged_loss_maxmin_deviation()
-    
+    new_generator.merged_loss_distance_deviation()
+        
     new_generator.visualization_2d_after_merge()
 
 # ----------

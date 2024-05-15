@@ -23,8 +23,8 @@ from gaTools import ga_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
-POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 20 # number of iterations.
+POPULATION_SIZE = 30 # population size or no of individuals or solutions being considered in each generation.
+NUM_GENERATIONS = 30 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
@@ -143,11 +143,12 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.create_grids()
     gridGenerator.merge_grids()
     gridGenerator.merged_loss_unbound_elements2grids()
-    gridGenerator.merged_loss_maxmin_deviation() # might work. please give long running on 3689939.ifc
-    # gridGenerator.merged_loss_distance_deviation() # might work. please give long running 3689939.ifc
+    gridGenerator.merged_loss_maxmin_deviation()
+    gridGenerator.merged_loss_distance_deviation()
 
-    individual_fitness = gridGenerator.percent_unbound_elements*0.8 + gridGenerator.avg_deviation_maxmin*0.2
-    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_distance*0.5
+    # can really be different options.. so maybe leave it open ?
+    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_distance*0.25
+    individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_distance*0.5
 
     return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
 
@@ -173,6 +174,11 @@ def main(random_seed=[], num_processes=1):
     toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB)
     toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
+
+    # here. todo. try different selections.
+    # https://github.com/DEAP/deap/issues/505
+    # https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#fitness
+    # An example of where the weights can be useful is in the crowding distance sort made in the NSGA-II selection algorithm.
     
     # Clear the old generation individual file.
     if os.path.exists(GENERATION_IND_FILE):
