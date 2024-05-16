@@ -24,7 +24,7 @@ from gaTools import ga_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 30 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 30 # number of iterations.
+NUM_GENERATIONS = 50 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
@@ -53,13 +53,13 @@ GENERATION_IND_VIOLIN_FLE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generati
 # Basic parameter & Customized Population setup:
 PARAMS = {
     'st_c_num': (2, 10), # [3,10)  # min = 3
-    'st_w_num': (1, 10), # [3,10)  # min = num_main_floors.
-    'ns_w_num': (1, 10), # [2,10)  # min = 2.
+    'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
+    'ns_w_num': (2, 10), # [2,10)  # min = 2.
     'st_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
     'ns_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
-    'st_st_merge': (0.2, 0.50), # ....god sick differentiate between merge
-    'ns_st_merge': (0.2, 0.50), # ....god sick differentiate between merge
-    'ns_ns_merge': (0.2, 0.50), # ....god sick differentiate between merge
+    'st_st_merge': (0.2, 1.00), # ....god sick differentiate between merge
+    'ns_st_merge': (0.2, 1.00), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.2, 1.00), # ....god sick differentiate between merge
     # 'st_c_align_dist': (0.00001, 0.0001), # fixed?
     # 'st_w_align_dist': (0.00001, 0.0001), # fixed?
     # 'ns_w_align_dist': (0.00001, 0.0001), # fixed?
@@ -146,12 +146,12 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.merged_loss_maxmin_deviation()
     gridGenerator.merged_loss_distance_deviation()
 
-    # can really be different options.. so maybe leave it open ?
-    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_distance*0.25
+    # for our problem, it might be a "dominated" problem.
     individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_distance*0.5
-
+    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_distance*0.25
     return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
 
+    # return (gridGenerator.percent_unbound_elements, gridGenerator.avg_deviation_distance,)
 # ===================================================================================================
 # main.
 def main(random_seed=[], num_processes=1):
@@ -167,18 +167,27 @@ def main(random_seed=[], num_processes=1):
     toolbox.register("population", ga_loadInds, creator.Individual)
 
     # Evaluator initializer
-    toolbox.register("evaluate", ga_objective) # privide the objective function here
+    toolbox.register("evaluate", ga_objective)
     # <To check if there's other more sustanible Penalty methods>, for example: toolbox.decorate("evaluate", tools.DeltaPenalty(feasible_fxn, 1.0))
     
     # registering basic processes using DEAP bulit-in functions
     toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB)
     toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
+    toolbox.register("select", tools.selNSGA2)
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
 
-    # here. todo. try different selections.
+    # toolbox.register("select", tools.selNSGA2, k=int(POPULATION_SIZE/5), nd='log')
+
+    # NSGA-II: Non-dominated Sorting Genetic Algorithm.
     # https://github.com/DEAP/deap/issues/505
-    # https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#fitness
-    # An example of where the weights can be useful is in the crowding distance sort made in the NSGA-II selection algorithm.
+    # https://medium.com/@rossleecooloh/optimization-algorithm-nsga-ii-and-python-package-deap-fca0be6b2ffc
+    # A has higher height than B but lower salary. In the contrary, B confronts the same situation. We call the situation “non-dominated”.
+    # If we can find a set of solutions that they don’t dominate each other and not dominated by any other solutions, we call them “Pareto-optimal” solutions.
+    # In each iteration, we combine the parent and the offspring after GA operations.
+    # Through the Non-dominated Sorting, we classify all individuals to different Pareto-optimal front level
+    # We then select individuals as the next population from Pareto-optimal front in the order of different levels.
+    # As for "diversity" preservation, the “Crowding Distance” is also computed.
+    # The crowded distance comparison guides the selection process at the various stages of the algorithm toward a uniformly "spread-out" Pareto-optimal front.
     
     # Clear the old generation individual file.
     if os.path.exists(GENERATION_IND_FILE):

@@ -294,7 +294,7 @@ class GridGenerator:
             return None, None
         
         if not line_type:
-            raise ValueError("line_type hasn't been specified for 'lines2grids'.")
+            raise ValueError("line_type hasn't been specified for 'get_grids_from_wall_line_alignments'.")
         if line_type == 'structural':
             minimum_accumuled_wall_length_percent = self.st_w_accumuled_length_percent
             minimum_alignment_number = self.st_w_num
@@ -1295,8 +1295,57 @@ class GridGenerator:
             else:
                 continue
     
-# Grid Merge ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+# Grid Merge ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
+
+#===================================================================================================
+# Relationships Extraction ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    def extract_relationships(self):
+        
+        self.grids_relationships = defaultdict(list)
+        gds, gd_types, gd_ids, gd_ids, gd_storeys = [], [], [], []
+
+        for storey_key, grids_per_storey in self.grids_merged.items():
+            if storey_key in self.info_all_locations_by_storey:
+                for grid_type in ['st', 'ns']:
+                    location_key, ids_key = f'location_grids_{grid_type}_merged', f'grids_{grid_type}_merged_ids'
+                    if location_key in grids_per_storey and ids_key in grids_per_storey:
+                        for gd, ids in zip(grids_per_storey[location_key], grids_per_storey[ids_key]):
+                            gd_storeys.append(storey_key)
+                            gd_types.append(grid_type)
+                            gds.append(gd)
+                            gd_ids.append(ids)
+
+        sublist_dict = defaultdict(list)
+        for index, sublist in enumerate(gd_ids):
+            sublist_dict[tuple(sublist)].append(index)
+        grid_groups = list(sublist_dict.values())
+
+        for i, grid_group in enumerate(grid_groups, start = 1):
+            grid_type = gd_types[grid_group[0]]
+            grid_ids = gd_ids[grid_group[0]]
+            grid_location_line = gds[grid_group[0]]
+            grid_location_points = list(grid_location_line.boundary.geoms)[:2]
+            grid_location = [[round(pt.x, 4), round(pt.y, 4)] for pt in grid_location_points]
+            grid_storeys = [gd_storeys[idx] for idx in grid_group]
+
+            self.grids_relationships[i] = {
+                'type': grid_type,
+                'storey': grid_storeys,
+                'location': grid_location,
+                'ids': grid_ids,
+            }
+
+        if self.grids_relationships:
+            
+            try:
+                with open(os.path.join(self.out_fig_path, 'info_grid_relationships.json'), 'w') as json_file:
+                    json.dump(self.grids_relationships, json_file, indent=4)
+            except IOError as e:
+                raise IOError(f"Failed to write to {self.out_fig_path + 'info_grid_relationships.json'}: {e}")
+
+# Relationships Extraction ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#=================================================================================================== 
 
 #===================================================================================================
 # Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
