@@ -12,7 +12,7 @@ from collections import defaultdict
 
 import bokeh.plotting
 
-from quickTools import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes
+from quickTools import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes, perpendicular_distance
 from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
 
 class GridGenerator:
@@ -1299,11 +1299,18 @@ class GridGenerator:
 #===================================================================================================
 
 #===================================================================================================
-# Relationships Extraction ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-    def extract_relationships(self):
+# Grid Analyses  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    
+    def analyze_grids(self):
+        
+        self.extract_grid_relationships()
+        self.calculate_grid_distribution()
+        self.extract_grid_neighborhoods()
+        
+    def extract_grid_relationships(self):
         
         self.grids_relationships = defaultdict(list)
-        gds, gd_types, gd_ids, gd_ids, gd_storeys = [], [], [], []
+        gds, gd_types, gd_ids, gd_storeys = [], [], [], []
 
         for storey_key, grids_per_storey in self.grids_merged.items():
             if storey_key in self.info_all_locations_by_storey:
@@ -1338,18 +1345,121 @@ class GridGenerator:
 
         if self.grids_relationships:
             
-            try:
-                with open(os.path.join(self.out_fig_path, 'info_grid_relationships.json'), 'w') as json_file:
-                    json.dump(self.grids_relationships, json_file, indent=4)
-            except IOError as e:
-                raise IOError(f"Failed to write to {self.out_fig_path + 'info_grid_relationships.json'}: {e}")
+            # sort them by the number of related value['storey'] and value['ids'].
+            sorted_grids_relationships = dict(
+                sorted(
+                    self.grids_relationships.items(),
+                    key=lambda item: (len(item[1]['storey']), len(item[1]['ids'])),
+                    reverse=True)) # in a descending order
+            self.grids_relationships = {i + 1: v for i, (k, v) in enumerate(sorted_grids_relationships.items())}
 
-# Relationships Extraction ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+    def calculate_grid_distribution(self):
+
+        for storey_key, storey_value in self.grids_merged.items():
+                    
+            # iterate through all storeys.
+            if storey_key in self.info_all_locations_by_storey:
+                
+                # get all involved grids per storey.
+                involved_grids_indices = [index for index in self.grids_relationships.keys() if storey_key in self.grids_relationships[index]['storey']]
+                grids_per_storey = {k: v for k, v in self.grids_relationships.items() if k in involved_grids_indices}
+
+                # calculate the relative locations within a group of grids.
+                grid_groups_per_storey = defaultdict(list)
+                for grid_index, grid_values in grids_per_storey.items():
+
+                    if len(grid_values['location']) != 2:
+                        raise ValueError(f"Grid {grid_index} location does not contain exactly two points.")
+                        
+                    slope = get_line_slope_by_points(grid_values['location'][0], grid_values['location'][1])
+                    grid_groups_per_storey[slope].append([
+                        grid_index, # grid index,.
+                        grid_values['location'][0], # location of endpoint 1.
+                        grid_values['location'][1], # location of endpoint 2.
+                        perpendicular_distance(grid_values['location'][0], grid_values['location'][1]) # perpendicular distance.
+                        ])
+                
+                # check if there's grid_groups_per_storey achieved.
+                if grid_groups_per_storey:
+
+                    # sort each group by the perpendicular_distance value
+                    for slope in grid_groups_per_storey:
+                        grid_groups_per_storey[slope] = sorted(grid_groups_per_storey[slope], key=lambda x: x[-1]) # sort them via the perpendicular distance.
+                
+                self.grids_merged[storey_key].update({
+                    'grid_groups': grid_groups_per_storey
+                })
+                
+            else:
+                continue
+
+    def extract_grid_neighborhoods(self):
+
+        def find_neighbors_for_index(group_data, index):
+
+            position = None
+            for i, item in enumerate(group_data):
+                if item[0] == index:
+                    position = i
+                    break
+                    
+            # Initialize neighbors list
+            neighbors = {}
+
+            if position is not None:
+
+                # Check the row before the given index
+                if position > 0:
+                    prev_item = group_data[position - 1]
+                    prev_index = prev_item[0]
+                    prev_diff = abs(group_data[position][3] - prev_item[3])
+                    neighbors.update(
+                        {prev_index: prev_diff})
+                
+                # Check the row after the given index
+                if position < len(group_data) - 1:
+                    next_item = group_data[position + 1]
+                    next_index = next_item[0]
+                    next_diff = abs(group_data[position][3] - next_item[3])
+                    neighbors.update(
+                        {next_index: next_diff})
+
+            return neighbors
+
+        for grid_index, grid_values in self.grids_relationships.items():
+            
+            self.grids_relationships[grid_index]['neighbor'] = {}
+            for st in grid_values['storey']:
+                if self.grids_merged[st].get('grid_groups', []):
+                    for grid_group_values in self.grids_merged[st]['grid_groups'].values():
+                        neighbor_indices = find_neighbors_for_index(grid_group_values, grid_index)
+                        if not neighbor_indices:
+                            # if the grid is not in the current grid_group:
+                            continue
+                        else:
+                            # if it's found.
+                            self.grids_relationships[grid_index]['neighbor'].update({
+                                st: neighbor_indices
+                            })
+
+        try:
+            with open(os.path.join(self.out_fig_path, 'info_grid_relationships.json'), 'w') as json_file:
+                json.dump(self.grids_relationships, json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'info_grid_relationships.json'}: {e}")
+
+# Grid Analyses  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #=================================================================================================== 
 
 #===================================================================================================
 # Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
+    def calculate_merged_losses(self):
+        
+        self.merged_loss_unbound_elements2grids()
+        self.merged_loss_maxmin_deviation()
+        self.merged_loss_distance_deviation()
+
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about local performance of the grids.
     # to minimize.
@@ -1378,11 +1488,10 @@ class GridGenerator:
         else:
             self.avg_reversed_num_bound_ids_per_grid = 1.0
 
-
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about global performance of the grids.
     # to minimize.
-    def merged_loss_maxmin_deviation(self, min_size_group=3):
+    def merged_loss_maxmin_deviation(self):
         """
         Calculate the grid distance deviation, requiring at 3 grids.
         |           |               |                   |
@@ -1393,38 +1502,16 @@ class GridGenerator:
         - max = dist_3
         - min = dist_1
         """
-        
-        def perpendicular_distance(point1, point2):
-            A = point2.y - point1.y
-            B = -(point2.x - point1.x)
-            C = point1.x * point2.y - point2.x * point1.y
-            return C / math.sqrt(A**2 + B**2)
-    
-        def get_maxmin_deviations(grids):
 
-            # calculate the relative locations within a group of grids.
-            grid_groups = defaultdict(list)
-            for ln in grids:
-                point1, point2 = list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]
-                slope = get_line_slope_by_points(point1, point2)
-                slope = round(slope, 4)
-                grid_groups[slope].append([point1, point2, perpendicular_distance(point1, point2)])
+        def get_maxmin_deviations(grid_groups, min_size_group=3):
 
-            # filter the minor groups that cannot be calculated for the deviation.
-            # it requires at least 3 grids to have a min and max.
-            grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
-            
             max_min_deviations = []
+            grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
 
             # check if there's grid_groups left alter filtering the minor groups.
             if grid_groups:
-
-                # sort each group by the perpendicular_distance value
-                for slope in grid_groups:
-                    grid_groups[slope] = sorted(grid_groups[slope], key=lambda x: x[-1])
                 
                 for slope, grid_group in grid_groups.items():
-                    
                     distance_per_group = []
                     for i in range(1, len(grid_group)):
                         dist = (grid_group[i][-1] - grid_group[i-1][-1])
@@ -1439,17 +1526,9 @@ class GridGenerator:
         # initialize the loss target.
         self.avg_deviation_maxmin = []
         for storey_key, storey_value in self.grids_merged.items():
-            
-            if isinstance(storey_value, dict):
-                
-                grids_per_storey = []
-                storey_st_grids = storey_value.get('location_grids_st_merged', [])
-                storey_ns_grids = storey_value.get('location_grids_ns_merged', [])
-                grids_per_storey += storey_st_grids
-                grids_per_storey += storey_ns_grids
-
-                # put together and calculcate the distance deviations.
-                self.avg_deviation_maxmin.append(get_maxmin_deviations(grids_per_storey))
+            if isinstance(storey_value, dict) and storey_value.get('grid_groups'):
+                grid_groups_per_storey = storey_value['grid_groups']
+                self.avg_deviation_maxmin.append(get_maxmin_deviations(grid_groups_per_storey))
         
         self.avg_deviation_maxmin = [item for sublist in self.avg_deviation_maxmin for item in sublist]
         if self.avg_deviation_maxmin and len(self.avg_deviation_maxmin)!=0:
@@ -1457,11 +1536,13 @@ class GridGenerator:
         else:
             print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_maxmin_deviation |")
             self.avg_deviation_maxmin = 1.0
-
+        
+        print ("avg_deviation_maxmin", self.avg_deviation_maxmin) # might have errors after the updates
+        
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about global performance of the grids.
     # to minimize.
-    def merged_loss_distance_deviation(self, min_size_group=3):
+    def merged_loss_distance_deviation(self):
         """
         Calculate the grid distance deviation, requiring at 3 grids.
         |           |               |                   |
@@ -1473,35 +1554,12 @@ class GridGenerator:
         - abs(dist_2**2 - dist_3**2)
         """
         
-        def perpendicular_distance(point1, point2):
-            A = point2.y - point1.y
-            B = -(point2.x - point1.x)
-            C = point1.x * point2.y - point2.x * point1.y
-            return C / math.sqrt(A**2 + B**2)
-    
-        def get_distance_deviations(grids):
+        def get_distance_deviations(grid_groups, min_size_group=3):
 
-            grid_groups = defaultdict(list)
             square_root_of_distance_differences = []
-            
-            # calculate the relative locations within a group of grids.
-            for ln in grids:
-                
-                point1, point2 = list(ln.boundary.geoms)[0], list(ln.boundary.geoms)[1]
-                slope = get_line_slope_by_points(point1, point2)
-                slope = round(slope, 4)
-                grid_groups[slope].append([point1, point2, perpendicular_distance(point1, point2)])
-
-            # filter the minor groups that cannot be calculated for the deviation.
             grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
             
-            # check if there's grid_groups left alter filtering the minor groups.
             if grid_groups:
-
-                # sort each group by the perpendicular_distance value
-                for slope in grid_groups:
-                    grid_groups[slope] = sorted(grid_groups[slope], key=lambda x: x[-1])
-
                 for slope, grid_group in grid_groups.items():
                     for i in range(1, len(grid_group)-1):
                         dist_1 = (grid_group[i][-1] - grid_group[i-1][-1])
@@ -1522,17 +1580,9 @@ class GridGenerator:
         # initialize the loss target.
         self.avg_deviation_distance = []
         for storey_key, storey_value in self.grids_merged.items():
-            
-            if isinstance(storey_value, dict):
-                
-                grids_per_storey = []
-                storey_st_grids = storey_value.get('location_grids_st_merged', [])
-                storey_ns_grids = storey_value.get('location_grids_ns_merged', [])
-                grids_per_storey += storey_st_grids
-                grids_per_storey += storey_ns_grids
-
-                # put together and calculcate the distance deviations.
-                self.avg_deviation_distance += get_distance_deviations(grids_per_storey)
+            if isinstance(storey_value, dict) and storey_value.get('grid_groups'):
+                grid_groups_per_storey = storey_value['grid_groups']
+                self.avg_deviation_distance += get_distance_deviations(grid_groups_per_storey)
 
         if self.avg_deviation_distance:
             self.avg_deviation_distance = sum(self.avg_deviation_distance)/len(self.avg_deviation_distance)
@@ -1541,6 +1591,8 @@ class GridGenerator:
             print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_distance_deviation |")
             self.avg_deviation_distance = sigmoid_scale(average_wall_length, average_wall_length)
 
+        print ("avg_deviation_distance", self.avg_deviation_distance) # might have errors after the updates
+        
 # Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================
 

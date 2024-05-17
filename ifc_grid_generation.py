@@ -35,22 +35,19 @@ def building_grid_generation(basic_generator, new_parameters):
     # update the parameters.
     new_generator = basic_generator.update_parameters(new_parameters)
     
-    # generate the grids
+    # generate the grids.
     new_generator.create_grids()
     new_generator.visualization_2d_before_merge()
     
-    # merge the grids
+    # merge the grids.
     new_generator.merge_grids()
-
-    # extract the relationships
-    new_generator.extract_relationships()
-
-    # [for ga] loss functions after merge the grids.
-    # new_generator.merged_loss_unbound_elements2grids()
-    # new_generator.merged_loss_maxmin_deviation()
-    # new_generator.merged_loss_distance_deviation()
-        
     new_generator.visualization_2d_after_merge()
+    
+    # extract the relationships from merged grids.
+    new_generator.analyze_grids()
+
+    # calculate the losses for merged girds.
+    new_generator.calculate_merged_losses()  #[for the ga optimization.]
 
 # ----------
 

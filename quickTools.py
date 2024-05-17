@@ -1,5 +1,6 @@
 import functools
 import time
+import math
 import json
 import numpy as np
 from collections import Counter
@@ -110,17 +111,45 @@ def find_most_common_value(values):
 
     return most_common_value, most_common_count
 
-def get_line_slope_by_points(point1, point2, round_demi=4):
+def get_coords(point, round_demi=4):
+
+    # Function to get the x and y values from points
+    if isinstance(point, list) or isinstance(point, tuple):
+        x, y = point[0], point[1]
+    elif (hasattr(point, 'x') and hasattr(point, 'y')):
+        x, y = point.x, point.y
+    else:
+        raise ValueError("Point objects must have 'x' and 'y' attributes")
+    return round(x, round_demi), round(y, round_demi)
+
+def get_line_slope_by_points(point1, point2):
+
+    # Extract x and y values for both points
+    x1, y1 = get_coords(point1)
+    x2, y2 = get_coords(point2)
     
-    # works for x and y, doesn't matter is z exits or not.
-    dx = round(point2.x,round_demi) - round(point1.x,round_demi)
-    dy = round(point2.y,round_demi) - round(point1.y,round_demi)
+    dx = x2 - x1
+    dy = y2 - y1
+    
     if abs(dx) > 0.00001:
         slope = dy / dx
     else:
         slope = float('inf')  # Vertical line
+
     return slope
 
+def perpendicular_distance(point1, point2):
+
+    # Extract x and y values for both points
+    x1, y1 = get_coords(point1)
+    x2, y2 = get_coords(point2)
+    
+    A = y2 - y1
+    B = -(x2 - x1)
+    C = x1 * y2 - x2 * y1
+    
+    return abs(C) / math.sqrt(A**2 + B**2)
+    
 def is_sloped_point_on_lineby2points(point, line_point1, line_point2, slope, threshold):
     """
     Checks if a point is within a specified distance (threshold) from a line

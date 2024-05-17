@@ -142,10 +142,8 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.update_parameters(decoded_parameters)
     gridGenerator.create_grids()
     gridGenerator.merge_grids()
-    gridGenerator.merged_loss_unbound_elements2grids()
-    gridGenerator.merged_loss_maxmin_deviation()
-    gridGenerator.merged_loss_distance_deviation()
-
+    gridGenerator.calculate_merged_losses()
+    
     # for our problem, it might be a "dominated" problem.
     individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_distance*0.5
     # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_distance*0.25
