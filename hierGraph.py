@@ -82,7 +82,9 @@ class HierarchicalGraph:
         # Default to all grid IDs if none are provided
         if selected_grid_ids is None:
             selected_grid_ids = self.info_grid_relationships.keys()
-
+        
+        # * * * * * * * * * * * * * * * * * * * 
+        # Directed Edges.
         # Level 0: Grid
         for grid_id, grid_info in self.info_grid_relationships.items():
             if grid_id not in selected_grid_ids:
@@ -110,14 +112,40 @@ class HierarchicalGraph:
                     # Level 2: Element ID (with type as an attribute)
                     for element_id in matching_storey_ids:
                         self.hierarchical_data[storey_node]['children'].append(element_id)
+        
+        # * * * * * * * * * * * * * * * * * * * 
+        # Directed Edges.
+        for grid_id, grid_info in self.info_grid_relationships.items():
+            
+            # doesn't working yet..
+            
+            if 'neighbor' in grid_info:
+                
+                for storey_id, neighbors in grid_info['neighbor'].items():
+                    host_storey_grid_node = f"Grid {grid_id} - Storey {storey_id}"
+                    self.hierarchical_data[host_storey_grid_node]['neighbor'] = {}
+                    
+                    for neighbor_grid_id, neighbor_distance in neighbors.items():
+                        neighbor_storey_grid_node = f"Grid {neighbor_grid_id} - Storey {storey_id}"
+                        self.hierarchical_data[host_storey_grid_node]['neighbor'].update({
+                            neighbor_storey_grid_node: neighbor_distance
+                        })
     
     def create_hierarchical_graph(self):
+
         self.graph.clear()
         for node, data in self.hierarchical_data.items():
             self.graph.add_node(node, type=data.get('type', ''))
+            
+            # hierarchical relations.
             for child in data.get('children', []):
                 self.graph.add_node(child, type=self.hierarchical_data[child].get('type', ''))
-                self.graph.add_edge(node, child)
+                self.graph.add_edge(node, child, length=0.)
+            
+            # neighboring relations.
+            if data.get('neighbor', []):
+                for neighbor, neighbor_distance in data['neighbor'].items():
+                    self.graph.add_edge(node, neighbor, length=neighbor_distance)
 
     def visualize_hierarchical_graph(self, nodes_of_interest=None):
 
@@ -148,9 +176,20 @@ class HierarchicalGraph:
             arrows=True
         )
 
+        label_mapping = {
+            'storey': 'Storey Grid',
+            'st_column': 'Structural Column',
+            'st_wall': 'Structural Wall',
+            'ns_wall': 'Non-Structural Wall',
+            'ct_wall': 'Curtain Wall',
+            'st_grid': 'Structural Grid',
+            'ns_grid': 'Non-Structural Grid'
+        }
+        
         involved_types = {self.visualized_graph.nodes[node]['type'] for node in self.visualized_graph.nodes}
-        legend_handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=self.visualization_settings[etype], markersize=10, label=etype.replace('_', ' ').title())
-                          for etype in involved_types if etype in self.visualization_settings]
+        legend_handles = [plt.Line2D(
+            [0], [0], marker='o', color='w', markerfacecolor=self.visualization_settings[etype], markersize=10,
+            label=label_mapping.get(etype, etype).replace('_', ' ').title()) for etype in involved_types if etype in self.visualization_settings]
 
         plt.title("Hierarchical Graph")
         plt.legend(handles=legend_handles, loc='upper right', fontsize='large', handletextpad=0.5, markerscale=1.5)

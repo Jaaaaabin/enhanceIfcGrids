@@ -1305,7 +1305,7 @@ class GridGenerator:
         
         self.extract_grid_relationships()
         self.calculate_grid_distribution()
-        self.extract_grid_neighborhoods()
+        self.extract_grid_neighbors()
         
     def extract_grid_relationships(self):
         
@@ -1393,7 +1393,7 @@ class GridGenerator:
             else:
                 continue
 
-    def extract_grid_neighborhoods(self):
+    def extract_grid_neighbors(self):
 
         def find_neighbors_for_index(group_data, index):
 
