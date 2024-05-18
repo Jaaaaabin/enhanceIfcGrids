@@ -24,7 +24,7 @@ from gaTools import ga_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 30 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 50 # number of iterations.
+NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
@@ -142,6 +142,7 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.update_parameters(decoded_parameters)
     gridGenerator.create_grids()
     gridGenerator.merge_grids()
+    gridGenerator.analyze_grids()
     gridGenerator.calculate_merged_losses()
     
     # for our problem, it might be a "dominated" problem.

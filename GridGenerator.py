@@ -1044,7 +1044,10 @@ class GridGenerator:
         # count all the walls and columns.
         self.total_wall_numbers = len(self.info_all_walls)
         self.total_column_numbers = len(self.info_st_columns)
-        self.total_bound_elements = self.total_wall_numbers + self.total_column_numbers  
+        self.total_canbound_element_numbers = self.total_wall_numbers + self.total_column_numbers
+        
+        self.total_canbound_elements = self.info_all_walls + self.info_st_columns
+        self.id_canbound_elements = set([elem['id'] for elem in self.total_canbound_elements])
 
     # @time_decorator
     def get_main_directions_and_storeys(self, num_directions=2):
@@ -1306,7 +1309,8 @@ class GridGenerator:
         self.extract_grid_relationships()
         self.calculate_grid_distribution()
         self.extract_grid_neighbors()
-        
+        self.summarize_bounding_results()
+
     def extract_grid_relationships(self):
         
         self.grids_relationships = defaultdict(list)
@@ -1355,7 +1359,7 @@ class GridGenerator:
 
     def calculate_grid_distribution(self):
 
-        for storey_key, storey_value in self.grids_merged.items():
+        for storey_key in self.grids_merged.keys():
                     
             # iterate through all storeys.
             if storey_key in self.info_all_locations_by_storey:
@@ -1412,7 +1416,7 @@ class GridGenerator:
                 if position > 0:
                     prev_item = group_data[position - 1]
                     prev_index = prev_item[0]
-                    prev_diff = abs(group_data[position][3] - prev_item[3])
+                    prev_diff = prev_item[3] - group_data[position][3]
                     neighbors.update(
                         {prev_index: prev_diff})
                 
@@ -1420,7 +1424,7 @@ class GridGenerator:
                 if position < len(group_data) - 1:
                     next_item = group_data[position + 1]
                     next_index = next_item[0]
-                    next_diff = abs(group_data[position][3] - next_item[3])
+                    next_diff = next_item[3] - group_data[position][3]
                     neighbors.update(
                         {next_index: next_diff})
 
@@ -1447,23 +1451,9 @@ class GridGenerator:
                 json.dump(self.grids_relationships, json_file, indent=4)
         except IOError as e:
             raise IOError(f"Failed to write to {self.out_fig_path + 'info_grid_relationships.json'}: {e}")
-
-# Grid Analyses  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
-#=================================================================================================== 
-
-#===================================================================================================
-# Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
-    def calculate_merged_losses(self):
-        
-        self.merged_loss_unbound_elements2grids()
-        self.merged_loss_maxmin_deviation()
-        self.merged_loss_distance_deviation()
-
-    # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    # a loss about local performance of the grids.
-    # to minimize.
-    def merged_loss_unbound_elements2grids(self):
+    # also a loss function for merged grids.
+    def summarize_bounding_results(self):
 
         # the loss target.
         # get all walls bound to grids.
@@ -1480,14 +1470,33 @@ class GridGenerator:
                 num_bound_ids_per_grid += [len(sublist) for sublist in storey_value['grids_ns_merged_ids']]
 
         self.ids_elements_bound = set([item for sublist in self.ids_elements_bound for item in sublist])
-        self.percent_unbound_elements = (1 - len(self.ids_elements_bound) / self.total_bound_elements) # [0,1] to minimize
-
+        self.ids_elements_unbound = self.id_canbound_elements.difference(self.ids_elements_bound)
+        self.percent_unbound_elements = (1 - len(self.ids_elements_bound) / self.total_canbound_element_numbers) # [0,1] to minimize
+        
         if num_bound_ids_per_grid:
             reversed_num_bound_ids_per_grid = [1/num for num in num_bound_ids_per_grid]
             self.avg_reversed_num_bound_ids_per_grid = sum(reversed_num_bound_ids_per_grid)/len(reversed_num_bound_ids_per_grid) # [0,1] to minimize
         else:
             self.avg_reversed_num_bound_ids_per_grid = 1.0
+        
+        # write the unbound elements.
+        try:
+            with open(os.path.join(self.out_fig_path, 'info_non_relationships.json'), 'w') as json_file:
+                json.dump(list(self.ids_elements_unbound), json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'info_non_relationships.json'}: {e}")
 
+# Grid Analyses  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+#=================================================================================================== 
+
+#===================================================================================================
+# Loss with Merged Grids ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    
+    def calculate_merged_losses(self):
+        
+        self.merged_loss_maxmin_deviation()
+        self.merged_loss_distance_deviation()
+    
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about global performance of the grids.
     # to minimize.

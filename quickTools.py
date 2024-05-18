@@ -138,6 +138,39 @@ def get_line_slope_by_points(point1, point2):
 
     return slope
 
+def point_to_line_distance(point, line, tol_distance=0.001):
+            
+    def point_get_coords(point):
+        return point[0], point[1], point[2]
+    
+    # line Ax+ By + C = 0 (x1,y1), (x2,y2), point (x0, y0).
+    x1, y1, z0 = point_get_coords(line[0])
+    x2, y2, z0 = point_get_coords(line[1])
+    x0, y0, _ = point_get_coords(point)
+    
+    A = y1 - y2
+    B = -(x1 - x2)
+    C = x1 * y2 - x2 * y1
+    distance = abs(A * x0 + B * y0 + C) / (A**2 + B**2)**0.5
+
+    if distance < tol_distance:
+        relative_distance = 0.
+    else:
+        # x1=x2
+        if abs(x1-x2) <tol_distance:
+            if x0>=x1:
+                direction = 1.0
+            elif x0<x1:
+                direction = -1.0
+        elif abs(y1-y2) <tol_distance:
+            if y0>=y1:
+                direction = 1.0
+            elif y0<y1:
+                direction = -1.0
+        relative_distance = distance * direction
+
+    return relative_distance
+
 def perpendicular_distance(point1, point2):
 
     # Extract x and y values for both points
@@ -148,7 +181,7 @@ def perpendicular_distance(point1, point2):
     B = -(x2 - x1)
     C = x1 * y2 - x2 * y1
     
-    return abs(C) / math.sqrt(A**2 + B**2)
+    return C / math.sqrt(A**2 + B**2)
     
 def is_sloped_point_on_lineby2points(point, line_point1, line_point2, slope, threshold):
     """
