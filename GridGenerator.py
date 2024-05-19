@@ -1546,7 +1546,7 @@ class GridGenerator:
             print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_maxmin_deviation |")
             self.avg_deviation_maxmin = 1.0
         
-        print ("avg_deviation_maxmin", self.avg_deviation_maxmin) # might have errors after the updates
+        # print ("avg_deviation_maxmin", self.avg_deviation_maxmin) # might have errors after the updates
         
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # a loss about global performance of the grids.
@@ -1600,7 +1600,7 @@ class GridGenerator:
             print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_distance_deviation |")
             self.avg_deviation_distance = sigmoid_scale(average_wall_length, average_wall_length)
 
-        print ("avg_deviation_distance", self.avg_deviation_distance) # might have errors after the updates
+        # print ("avg_deviation_distance", self.avg_deviation_distance) # might have errors after the updates
         
 # Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================

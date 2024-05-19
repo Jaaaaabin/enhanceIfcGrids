@@ -5,7 +5,7 @@ PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
-NUM_VISUALIZATION_GRIDS = 2
+NUM_VISUALIZATION_GRIDS = 4
 
 def get_hierarchical_data(
     work_path,

@@ -137,7 +137,6 @@ class HierarchicalGraph:
 #=========================================================================================
 # build data for graph  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
-    
     def calculate_location_relative_distance(self, loc_ref, loc_main):
        
         relative_distance = None
@@ -257,11 +256,12 @@ class HierarchicalGraph:
         for node, data in self.hierarchical_data.items():
             self.graph.add_node(node, type=data.get('type', ''))
             
-            # hierarchical relations.
+            # hierarchical relations - children
             for child in data.get('children', []):
                 self.graph.add_node(child, type=self.hierarchical_data[child].get('type', ''))
                 self.graph.add_edge(node, child, weight=1.0)
             
+            # hierarchical relations - nephew
             for nephew in data.get('nephew', []):
                 self.graph.add_node(nephew, type=self.hierarchical_data[nephew].get('type', ''))
                 self.graph.add_edge(node, nephew, weight=0.1)
@@ -270,11 +270,11 @@ class HierarchicalGraph:
                 # nx.set_edge_attributes(self.graph, {(node, child): {'relative_distance': 0.2}})
                 # print (self.graph.edges[1, 2]["relative_distance"])
             
-            # neighboring relations.
-            if data.get('neighbor', []):
-                for neighbor, neighbor_distance in data['neighbor'].items():
-                    self.graph.add_edge(node, neighbor, weight=0.0)
-                    nx.set_edge_attributes(self.graph, {(node, neighbor): {'relative_distance': neighbor_distance}})
+            # # neighboring relations.
+            # if data.get('neighbor', []):
+            #     for neighbor, neighbor_distance in data['neighbor'].items():
+            #         self.graph.add_edge(node, neighbor, weight=0.0)
+            #         nx.set_edge_attributes(self.graph, {(node, neighbor): {'relative_distance': neighbor_distance}})
 
 # create graph  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #=========================================================================================
