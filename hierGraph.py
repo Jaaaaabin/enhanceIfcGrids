@@ -7,7 +7,7 @@ from networkx.drawing.nx_agraph import graphviz_layout
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
-from quickTools import point_to_line_distance
+from toolsQuickUtils import point_to_line_distance
 
 class HierarchicalGraph:
 
@@ -169,7 +169,7 @@ class HierarchicalGraph:
             if grid_id not in selected_grid_ids:
                 continue
             
-            grid_node = f"Grid {grid_id}"
+            grid_node = f"{grid_id}"
             grid_loc_global =  grid_info['location']
             if grid_node not in self.hierarchical_data:
                 self.hierarchical_data[grid_node] = {
@@ -185,7 +185,8 @@ class HierarchicalGraph:
             for storey_id, storey_element_ids in self.ids_per_elevation.items():
 
                 grid_loc_storey = copy.deepcopy(grid_loc_global)
-                storey_node = f"{grid_node} - Storey {storey_id}"
+                grid_loc_storey = [loc[:2] for loc in grid_loc_storey]
+                storey_node = f"{grid_node}_{storey_id}"
 
                 matching_storey_child_ids = set(grid_info['ids']).intersection(set(storey_element_ids))
                 if matching_storey_child_ids:
@@ -235,15 +236,24 @@ class HierarchicalGraph:
             if 'neighbor' in grid_info:
                 
                 for storey_id, neighbors in grid_info['neighbor'].items():
-                    host_storey_grid_node = f"Grid {grid_id} - Storey {storey_id}"
+                    host_storey_grid_node = f"{grid_id}_{storey_id}"
                     self.hierarchical_data[host_storey_grid_node]['neighbor'] = {}
                     
                     for neighbor_grid_id, neighbor_distance in neighbors.items():
-                        neighbor_storey_grid_node = f"Grid {neighbor_grid_id} - Storey {storey_id}"
+                        neighbor_storey_grid_node = f"{neighbor_grid_id}_{storey_id}"
                         self.hierarchical_data[host_storey_grid_node]['neighbor'].update({
                             neighbor_storey_grid_node: neighbor_distance
                         })
-    
+
+    def save_hierarchical_data(self):
+        
+        if self.hierarchical_data:
+            try:
+                with open(os.path.join(self.output_figure_path, 'hierarchical_data.json'), 'w') as json_file:
+                    json.dump(self.hierarchical_data, json_file, indent=4)
+            except IOError as e:
+                raise IOError(f"Failed to write to {self.output_figure_path + 'hierarchical_data.json'}: {e}")
+
 # build data for graph  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #=========================================================================================
 

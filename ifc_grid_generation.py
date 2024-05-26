@@ -51,29 +51,29 @@ def building_grid_generation(basic_generator, new_parameters):
 
 # # ----------
 
-# try:
-#     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+try:
+    model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
     
-#     for model_path in model_paths:
+    for model_path in model_paths:
 
-#         # for each building model
-#         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+        # for each building model
+        init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
-#         best_thresholds = {
-#             'st_c_num': 3,
-#             'st_w_num': 2,
-#             'ns_w_num': 2,
-#             'st_w_accumuled_length_percent': 0.00342,
-#             'ns_w_accumuled_length_percent': 0.00056,
-#             'st_st_merge': 0.3,
-#             'ns_st_merge': 0.5,
-#             'ns_ns_merge': 0.2,
-#             'st_c_align_dist': 0.001,     # fixed value,
-#             'st_w_align_dist': 0.1,       # fixed value, to be decided per project
-#             'ns_w_align_dist': 0.1,       # fixed value, to be decided per project.
-#         }
+        best_thresholds = {
+            'st_c_num': 3,
+            'st_w_num': 2,
+            'ns_w_num': 2,
+            'st_w_accumuled_length_percent': 0.00342,
+            'ns_w_accumuled_length_percent': 0.00056,
+            'st_st_merge': 0.3,
+            'ns_st_merge': 0.5,
+            'ns_ns_merge': 0.2,
+            'st_c_align_dist': 0.001,     # fixed value,
+            'st_w_align_dist': 0.1,       # fixed value, to be decided per project
+            'ns_w_align_dist': 0.1,       # fixed value, to be decided per project.
+        }
         
-#         building_grid_generation(init_grid_generator, best_thresholds)
+        building_grid_generation(init_grid_generator, best_thresholds)
 
-# except Exception as e:
-#     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
+except Exception as e:
+    print(f"Error accessing directory {DATA_RES_PATH}: {e}")

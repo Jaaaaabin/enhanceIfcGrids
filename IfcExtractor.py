@@ -13,9 +13,10 @@ from matplotlib.ticker import PercentFormatter
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
 
-from quickTools import time_decorator
-from quickTools import remove_duplicate_dicts, find_most_common_value
-from quickTools import get_rectangle_corners, distance_between_points
+from toolsQuickUtils import time_decorator
+from toolsQuickUtils import remove_duplicate_dicts, find_most_common_value
+from toolsQuickUtils import get_rectangle_corners, distance_between_points
+from toolsSpatialGlue import spatial_process_lines
 
 #===================================================================================================
 #IfcGeneral ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
@@ -351,6 +352,9 @@ class IfcExtractor:
         ]
     
     # function notes.
+    # location shift problem might be solved by 
+    # info_w['length'] +/- info_w['width']
+    # so far, this seems a brilliant idea.
     def _update_wall_info(self, wall, info_w):
 
         orientation_deg = self._calc_element_orientation(wall)
@@ -360,6 +364,20 @@ class IfcExtractor:
             wall_location_p1[1] + info_w['length'] * math.sin(math.radians(orientation_deg)),
             wall_location_p1[2]
         )
+
+        # # adjustment.
+        # x_sign = np.sign(math.cos(math.radians(orientation_deg)))
+        # y_sign = np.sign(math.sin(math.radians(orientation_deg)))
+        # wall_location_p1 = (
+        #     wall_location_p1[0] + x_sign * info_w['width'] * math.cos(math.radians(orientation_deg)),
+        #     wall_location_p1[1] + y_sign * info_w['width'] * math.sin(math.radians(orientation_deg)),
+        #     wall_location_p1[2]
+        # )
+        # wall_location_p2 = (
+        #     wall_location_p2[0] - x_sign * info_w['width'] * math.cos(math.radians(orientation_deg)),
+        #     wall_location_p2[1] - y_sign * info_w['width'] * math.sin(math.radians(orientation_deg)),
+        #     wall_location_p2[2]
+        # )    
 
         info_w.update({
             'location': [wall_location_p1, wall_location_p2],
@@ -372,7 +390,8 @@ class IfcExtractor:
         
         self.id_st_walls  = [w.GlobalId for w in self.walls if self.calc_wall_loadbearing(w)]
         self.id_ns_walls  = [w.GlobalId for w in self.walls if not self.calc_wall_loadbearing(w)]
-        
+        self.id_ct_walls  = [w.GlobalId for w in self.curtainwalls] if self.curtainwalls else []
+
         for info_w in self.info_walls:
             value_to_check = info_w.get('id', None)
             if value_to_check in self.id_st_walls:
@@ -380,7 +399,38 @@ class IfcExtractor:
             elif value_to_check in self.id_ns_walls:
                 self.info_ns_walls.append(info_w)
 
-        self.id_ct_walls  = [w.GlobalId for w in self.curtainwalls] if self.curtainwalls else []
+    def glue_wall_connections(self):
+        
+        all_wall_data = self.info_st_walls + self.info_ns_walls + self.info_curtainwalls
+        glued_wall_data = spatial_process_lines(
+            all_wall_data,
+            plot_adjustments=True,
+            output_figure_folder=self.out_fig_path)
+        
+        new_info_st_walls = []
+        new_info_ns_walls = []
+        new_info_curtainwalls = []
+        
+        for info_w in glued_wall_data:
+
+            wall_id = info_w.get('id', None)
+            if wall_id in self.id_st_walls:
+                new_info_st_walls.append(info_w)
+            elif wall_id in self.id_ns_walls:
+                new_info_ns_walls.append(info_w)
+            elif wall_id in self.id_ct_walls:
+                new_info_curtainwalls.append(info_w)
+            else:
+                continue
+        if len(self.info_st_walls)==len(new_info_st_walls) and \
+            len(self.info_ns_walls)==len(new_info_ns_walls) and \
+                len(self.info_curtainwalls)==len(new_info_curtainwalls):
+            self.info_st_walls = new_info_st_walls
+            self.info_ns_walls = new_info_ns_walls
+            self.info_curtainwalls = new_info_curtainwalls
+
+        else:
+            raise ValueError("Errors occur during the process of glue_wall_connections.")
 
     @time_decorator
     def extract_all_walls(self):
@@ -399,6 +449,7 @@ class IfcExtractor:
         self.get_curtainwall_information()
 
         self.split_st_ns_ct_wall_information()
+        self.glue_wall_connections()
 
         self.write_dict_walls()
         self.wall_display()
@@ -508,7 +559,8 @@ class IfcExtractor:
                     cw_corner_points = get_rectangle_corners(plate_location_per_cw)
                     cw_elevation = min(pt[2] for pt in cw_corner_points)
                     
-                    cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation] # this will return an invalid if the  curtain wall has been cut somewhere.
+                    cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
+                    # this will return an invalid if the curtain wall has been cut somewhere.
                     
                     # ----------------- switched version.
                     if len(cw_location) < 2:
@@ -909,11 +961,6 @@ class IfcExtractor:
     # # kwargs = {"cap_style": CAP_STYLE.square, "join_style": JOIN_STYLE.mitre}
     # # boundary = wall_multipoints.buffer(interval/2, **kwargs).buffer(-interval/2, **kwargs)
     
-    # # convex hull. far from perfect.
-    # # convex_hull = wall_multipoints.convex_hull
-    # # convex_points_x, convex_points_y = convex_hull.exterior.xy
-
-
     # for merge.
     # for point in wall_points:
     #     fig.square(point.x, point.y, legend_label="wall points", size=2, color="maroon", alpha=1)

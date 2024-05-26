@@ -40,8 +40,9 @@ try:
         hierarchical_graph = get_hierarchical_data(DATA_RES_PATH, model_path)
         hierarchical_graph.process_relationships()
         hierarchical_graph.build_hierarchical_data()
+        hierarchical_graph.save_hierarchical_data()
         hierarchical_graph.create_hierarchical_graph()
-        selected_grids = [f'Grid {i}' for i in range(1, NUM_VISUALIZATION_GRIDS + 1)]
+        selected_grids = [str(i) for i in range(1, NUM_VISUALIZATION_GRIDS + 1)]
         hierarchical_graph.visualize_hierarchical_graph(nodes_of_interest=selected_grids)
 
 except Exception as e:

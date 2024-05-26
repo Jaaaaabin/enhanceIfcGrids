@@ -12,8 +12,8 @@ from collections import defaultdict
 
 import bokeh.plotting
 
-from quickTools import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes, perpendicular_distance
-from quickTools import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
+from toolsQuickUtils import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes, perpendicular_distance
+from toolsQuickUtils import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
 
 class GridGenerator:
 
