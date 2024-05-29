@@ -60,7 +60,7 @@ try:
         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
         best_thresholds = {
-            'st_c_num': 3,
+            'st_c_num': 6,
             'st_w_num': 2,
             'ns_w_num': 2,
             'st_w_accumuled_length_percent': 0.00342,

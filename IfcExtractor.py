@@ -229,20 +229,6 @@ class IfcExtractor:
                     if not iterator.next():
                         break
     
-    # def _update_floor_info(self, floor, info_f):
-        
-    #     print ("stop tempo.")
-    #     shape = ifcopenshell.geom.create_shape(self.settings, floor)
-    #     sg = shape.geometry
-    #     z = ifcopenshell.util.shape.get_element_bottom_elevation(floor,shape.geometry)
-    #     print ("stop tempo.")
-
-    #     floor_elevation = ifcopenshell.util.shape.get_shape_bottom_elevation(shape, shape.geometry)
-    #     info_f.update({
-    #         'elevation': floor_elevation
-    #     })
-    #     return info_f
-    
     def _update_floor_info(self, floor, info_f):
         
         # use this IFC query for temporary solution.
@@ -253,7 +239,7 @@ class IfcExtractor:
                 lc.append(floor_elevation)
 
         info_f.update({
-            'elevation': floor_elevation
+            'elevation': round(floor_elevation,4)
         })
         return info_f
 
@@ -331,7 +317,7 @@ class IfcExtractor:
 
                     dict_of_a_wall = {
                         "id": shape.guid,
-                        "elevation": wall_location_p1[-1],
+                        "elevation": round(wall_location_p1[-1],4),
                         "location":[wall_location_p1],
                         }
                     dict_of_a_wall.update(wall_dimensions)
@@ -422,15 +408,16 @@ class IfcExtractor:
                 new_info_curtainwalls.append(info_w)
             else:
                 continue
-        if len(self.info_st_walls)==len(new_info_st_walls) and \
-            len(self.info_ns_walls)==len(new_info_ns_walls) and \
-                len(self.info_curtainwalls)==len(new_info_curtainwalls):
-            self.info_st_walls = new_info_st_walls
-            self.info_ns_walls = new_info_ns_walls
-            self.info_curtainwalls = new_info_curtainwalls
+        
+        # if len(self.info_st_walls)==len(new_info_st_walls) and \
+        #     len(self.info_ns_walls)==len(new_info_ns_walls) and \
+        #         len(self.info_curtainwalls)==len(new_info_curtainwalls):
+        self.info_st_walls = new_info_st_walls
+        self.info_ns_walls = new_info_ns_walls
+        self.info_curtainwalls = new_info_curtainwalls
 
-        else:
-            raise ValueError("Errors occur during the process of glue_wall_connections.")
+        # else:
+        #     raise ValueError("Errors occur during the process of glue_wall_connections.")
 
     @time_decorator
     def extract_all_walls(self):
@@ -585,7 +572,7 @@ class IfcExtractor:
 
                     self.info_curtainwalls.append({
                         'id': cw.GlobalId,
-                        'elevation': cw_elevation,
+                        'elevation': round(cw_elevation,4),
                         'location': cw_location,
                         'length': cw_length,
                         'width': round(cw_width, 4),
@@ -672,7 +659,7 @@ class IfcExtractor:
         column_location_p2 = column_location_p1[:2] + (column_location_p1[2] + info_c['height'],)
 
         info_c.update({
-            "elevation": column_location_p1[-1],
+            "elevation": round(column_location_p1[-1],3),
             'location': [column_location_p1, column_location_p2],
         })
 
