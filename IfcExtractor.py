@@ -9,6 +9,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 from sklearn.cluster import DBSCAN
 from scipy.spatial.distance import pdist, squareform
@@ -439,7 +440,7 @@ class IfcExtractor:
         self.glue_wall_connections()
 
         self.write_dict_walls()
-        self.wall_display()
+        # self.wall_display()
         #------
         # todo
         #------
@@ -909,9 +910,209 @@ class IfcExtractor:
             
             plt.title(id)
             plt.show()
+    
+    # tempo visualization
+    def tempo_export_triangle_geometry_single_wall(self, ids=[], x_box=1, y_box=1, z_box=1, elev=30, azim=45):
         
-        # dimensions = self._vertices2dimensions(grouped_verts)
+        if not ids:
+            raise ValueError("Please specify the GUID of the element")
+        
+        for id in ids:
 
+            element = self.model.by_guid(id)
+            shape = ifcopenshell.geom.create_shape(self.settings, element)
+            matrix = shape.transformation.matrix.data
+            matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
+            location = matrix[:, 3][0:3]
+            
+            # Get vertices and faces
+            grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+            grouped_faces = ifcopenshell.util.shape.get_faces(shape.geometry)
+
+            fig = plt.figure(figsize=(12, 8))
+            ax = fig.add_subplot(111, projection='3d')
+            ax.set_box_aspect([x_box, y_box, z_box])  # Equal aspect ratio
+            
+            # Plot each face
+            for fc in grouped_faces:
+                vertices = grouped_verts[fc]
+                poly3d = [[tuple(vertices[j]) for j in range(len(vertices))]]
+                ax.add_collection3d(Poly3DCollection(poly3d, facecolors='w', linewidths=1, edgecolors='black', alpha=0.5))
+            
+            # Determine ranges for each axis
+            x_range = np.max(grouped_verts[:, 0]) - np.min(grouped_verts[:, 0])
+            y_range = np.max(grouped_verts[:, 1]) - np.min(grouped_verts[:, 1])
+            z_range = np.max(grouped_verts[:, 2]) - np.min(grouped_verts[:, 2])
+            
+            max_range = max(x_range, y_range, z_range)
+            
+            # Set larger limits for the axes to keep the box aspect consistent
+            ax.set_xlim([np.min(grouped_verts[:, 0]) - max_range * 0.1, np.max(grouped_verts[:, 0]) + max_range * 0.1])
+            ax.set_ylim([np.min(grouped_verts[:, 1]) - max_range * 0.1, np.max(grouped_verts[:, 1]) + max_range * 0.1])
+            ax.set_zlim([np.min(grouped_verts[:, 2]) - max_range * 0.1, np.max(grouped_verts[:, 2]) + max_range * 0.1])
+
+            ax.view_init(elev=elev, azim=azim)
+            
+            ax.set_title(id)
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_zticks([])
+            ax.grid(False)
+            ax.axis('off')
+
+            plt.tight_layout()
+            plt.savefig(os.path.join(self.out_fig_path, str(id) + 'triangle_meshes.png'), dpi=100)
+            plt.close(fig)
+    
+    def triangle_display_of_one_element(self, element):
+
+        shape = ifcopenshell.geom.create_shape(self.settings, element)
+        matrix = shape.transformation.matrix.data
+        matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
+        location = matrix[:, 3][0:3]
+
+        location_array = np.array(location)
+        # Get vertices and faces
+        grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
+        grouped_verts = location_array + grouped_verts
+        grouped_faces = ifcopenshell.util.shape.get_faces(shape.geometry)
+        
+        # Plot each face
+        poly3ds_per_element = []
+        for fc in grouped_faces:
+            vertices = grouped_verts[fc]
+            poly3d = [[tuple(vertices[j]) for j in range(len(vertices))]]
+            poly3ds_per_element.append(poly3d)
+    
+        return poly3ds_per_element, grouped_verts
+    
+    def export_triangle_geometry_of_all_walls(self, x_box=1, y_box=1, z_box=1, elev=45, azim=50):
+        
+        all_wall_ids = list(set(self.id_ns_walls)) # carefully!
+        all_plate_ids = [wall_plate.GlobalId for wall_plate in self.plates]
+        all_element_ids = all_wall_ids + all_plate_ids
+        
+        fig = plt.figure(figsize=(12, 8))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_box_aspect([x_box, y_box, z_box])  # Equal aspect ratio
+
+        all_grouped_verts = None
+        started = False
+        for id in all_element_ids:
+
+            # color setup. 
+            # wall_ids = ['1ikpL435zCYA4QPkDWyd7c', '1ikpL435zCYA4QPkDWyd4L', '1ikpL435zCYA4QPkDWydy1']
+            element_edgecolor = None
+            if id == '1ikpL435zCYA4QPkDWyd7c':
+                element_edgecolor = 'maroon'
+            elif id == '1ikpL435zCYA4QPkDWyd4L':
+                element_edgecolor = 'gray'
+            else:
+                element_edgecolor = 'lightskyblue'
+
+            element = self.model.by_guid(id)
+            poly3ds_per_element, grouped_verts_per_element = self.triangle_display_of_one_element(element)
+            
+            if started:
+                all_grouped_verts = np.vstack((all_grouped_verts, grouped_verts_per_element))
+            else:
+                all_grouped_verts = grouped_verts_per_element
+                started = True
+
+            # Plot each face
+            for poly3d in poly3ds_per_element:
+                ax.add_collection3d(Poly3DCollection(poly3d, facecolors='w', linewidths=1, edgecolors=element_edgecolor, alpha=0.5))
+                
+        x_range = np.max(all_grouped_verts[:, 0]) - np.min(all_grouped_verts[:, 0])
+        y_range = np.max(all_grouped_verts[:, 1]) - np.min(all_grouped_verts[:, 1])
+        z_range = np.max(all_grouped_verts[:, 2]) - np.min(all_grouped_verts[:, 2])
+        max_range = max(x_range, y_range, z_range)
+
+        # Set larger limits for the axes to keep the box aspect consistent
+        ax.set_xlim([np.min(all_grouped_verts[:, 0]) - max_range * 0.1, np.max(all_grouped_verts[:, 0]) + max_range * 0.1])
+        ax.set_ylim([np.min(all_grouped_verts[:, 1]) - max_range * 0.1, np.max(all_grouped_verts[:, 1]) + max_range * 0.1])
+        ax.set_zlim([np.min(all_grouped_verts[:, 2]) - max_range * 0.1, np.max(all_grouped_verts[:, 2]) + max_range * 0.1])
+
+        ax.view_init(elev=elev, azim=azim)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+        ax.grid(False)
+        ax.axis('off')
+
+        # Activate axis values
+        # ax.set_xlabel('X')
+        # ax.set_ylabel('Y')
+        # ax.set_zlabel('Z')
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.out_fig_path, self.ifc_file_name + str(elev) + str(azim) +'_triangle_meshes.png'), dpi=300)
+        plt.close(fig)
+
+    def export_triangle_geometry_of_a_curtainwall(self, x_box=1, y_box=1, z_box=1, elev=45, azim=50):
+        
+        all_plate_ids = [wall_plate.GlobalId for wall_plate in self.plates]
+        all_element_ids = all_plate_ids
+        
+        fig = plt.figure(figsize=(30, 20))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_box_aspect([x_box, y_box, z_box])  # Equal aspect ratio
+
+        all_grouped_verts = None
+        started = False
+        for id in all_element_ids:
+
+            # color setup. 
+            # wall_ids = ['1ikpL435zCYA4QPkDWyd7c', '1ikpL435zCYA4QPkDWyd4L', '1ikpL435zCYA4QPkDWydy1']
+            element_edgecolor = None
+            if id == '1ikpL435zCYA4QPkDWyd7c':
+                element_edgecolor = 'maroon'
+            elif id == '1ikpL435zCYA4QPkDWyd4L':
+                element_edgecolor = 'gray'
+            else:
+                element_edgecolor = 'lightskyblue'
+
+            element = self.model.by_guid(id)
+            poly3ds_per_element, grouped_verts_per_element = self.triangle_display_of_one_element(element)
+            
+            if started:
+                all_grouped_verts = np.vstack((all_grouped_verts, grouped_verts_per_element))
+            else:
+                all_grouped_verts = grouped_verts_per_element
+                started = True
+
+            # Plot each face
+            for poly3d in poly3ds_per_element:
+                ax.add_collection3d(Poly3DCollection(poly3d, facecolors='w', linewidths=1, edgecolors=element_edgecolor, alpha=0.95))
+                 
+        # Highlight vertices
+        ax.scatter(all_grouped_verts[:, 0], all_grouped_verts[:, 1], all_grouped_verts[:, 2], color='black', s=8)
+
+        x_range = np.max(all_grouped_verts[:, 0]) - np.min(all_grouped_verts[:, 0])
+        y_range = np.max(all_grouped_verts[:, 1]) - np.min(all_grouped_verts[:, 1])
+        z_range = np.max(all_grouped_verts[:, 2]) - np.min(all_grouped_verts[:, 2])
+        max_range = max(x_range, y_range, z_range)
+
+        # Set larger limits for the axes to keep the box aspect consistent
+        ax.set_xlim([np.min(all_grouped_verts[:, 0]) - max_range * 0.1, np.max(all_grouped_verts[:, 0]) + max_range * 0.1])
+        ax.set_ylim([np.min(all_grouped_verts[:, 1]) - max_range * 0.1, np.max(all_grouped_verts[:, 1]) + max_range * 0.1])
+        ax.set_zlim([np.min(all_grouped_verts[:, 2]) - max_range * 0.1, np.max(all_grouped_verts[:, 2]) + max_range * 0.1])
+
+        ax.view_init(elev=elev, azim=azim)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+        ax.grid(False)
+        ax.axis('off')
+
+        # Activate axis values
+        # ax.set_xlabel('X')
+        # ax.set_ylabel('Y')
+        # ax.set_zlabel('Z')
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.out_fig_path, 'curtainwall_triangle_meshes.png'), dpi=300)
+        plt.close(fig)
 # displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 

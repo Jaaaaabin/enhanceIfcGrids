@@ -40,7 +40,7 @@ def combinations_from_shared_ifc_basis(all_ifcs):
         basis_combinations[basis] = list(itertools.combinations(strings, 2))
 
     return basis_combinations
-    
+
 # ----------
 try:
     model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
@@ -66,7 +66,6 @@ except Exception as e:
 
 # except Exception as e:
 #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
-
 
 # outline detection
 # https://www.cgal.org/
