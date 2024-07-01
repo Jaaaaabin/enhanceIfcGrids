@@ -616,8 +616,9 @@ class GridGenerator:
 
         # column + walls 
         self.main_storeys = deep_merge_dictionaries(self.main_storeys_from_ifc_columns, self.main_storeys_from_ifc_walls)
-        # + floors.
+        # # + floors.
         self.main_storeys = deep_merge_dictionaries(self.main_storeys, self.main_storeys_from_ifc_floors)
+    
         # + curtain walls.
         if include_ct_walls:
             self.main_storeys = deep_merge_dictionaries(self.main_storeys, self.main_storeys_from_ifc_ct_walls)
@@ -1086,7 +1087,6 @@ class GridGenerator:
         self.extract_grid_overall_borders() # -> self.border_x, self.border_y
 
         self.calculate_grid_locations() # -> self.grids_all with grid locations.
-
 
 
 # Grid Creation ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑

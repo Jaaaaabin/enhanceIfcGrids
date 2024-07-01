@@ -138,7 +138,16 @@ class IfcExtractor:
         location = matrix[:,3][0:3]
         grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
         return location, grouped_verts
+    
+    def _divide_unit(self, loc):
 
+        for value in loc:
+            if abs(value) > 1000:
+                loc = tuple([value / 1000 for value in loc])
+                break
+            else:
+                continue
+        return loc
 #IfcGeneral ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
@@ -234,6 +243,8 @@ class IfcExtractor:
         
         # use this IFC query for temporary solution.
         floor_elevation = floor.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates[-1]
+        if abs(floor_elevation) > 100:
+            floor_elevation = floor_elevation / 1000
 
         for lcs in info_f['location']:
             for lc in lcs:
@@ -279,7 +290,6 @@ class IfcExtractor:
 
         # save data and display
         self.write_dict_floors()
-        self.floor_display()
 
 #slab ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -638,11 +648,15 @@ class IfcExtractor:
         
         for r in column.Representation.Representations:
             if r.RepresentationIdentifier == 'Body':
-                mapped_r = r.Items[0].MappingSource.MappedRepresentation
-                c_location_pt_from_body = mapped_r.Items[0].Position.Location.Coordinates
-                break  # Assuming we only need the first matching 'Body'
+                if hasattr(r.Items[0],'MappingSource'):
+                    mapped_r = r.Items[0].MappingSource.MappedRepresentation
+                    if hasattr(mapped_r.Items[0], 'Position'):
+                        c_location_pt_from_body = mapped_r.Items[0].Position.Location.Coordinates
+                        break  # Assuming we only need the first matching 'Body'
+                else:
+                    continue
         
-        if abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001:
+        if c_location_pt_from_body==None or (abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001):
             # risk: what will happen if it's really 0,0,x.
             c_location_pt_directplacement = column.ObjectPlacement.RelativePlacement.Location.Coordinates
             rel_storey_elevation = column.ObjectPlacement.PlacementRelTo.PlacesObject[0].Elevation
@@ -652,11 +666,13 @@ class IfcExtractor:
             return c_location_pt_directplacement
         else:
             return c_location_pt_from_body
-
+    
     # function notes.
     def _update_column_info(self, column, info_c):
 
         column_location_p1 = self._get_location_column(column)
+        column_location_p1 = self._divide_unit(column_location_p1)
+        
         column_location_p2 = column_location_p1[:2] + (column_location_p1[2] + info_c['height'],)
 
         info_c.update({
@@ -755,21 +771,18 @@ class IfcExtractor:
         self.wall_orientation_histogram(display_walls=self.info_walls+self.info_curtainwalls)
 
     @time_decorator
-    def wall_and_column_location_display(self):
-        
-        fig = plt.figure(figsize=(8, 8))
+    def wall_column_floor_location_display(self):
+
+        fig = plt.figure(figsize=(10, 10))
         ax = fig.add_subplot(111, projection='3d')
         ax.set_xlabel('X Axis')
         ax.set_ylabel('Y Axis')
         ax.set_zlabel('Z Axis')  # type: ignore
         
-        display_columns = self.info_st_columns
+        # Display Walls
         display_walls = self.info_walls + self.info_curtainwalls
-        
         if display_walls:
-
-            st_wall_values, ns_wall_values =[], []
-            
+            st_wall_values, ns_wall_values = [], []
             for w in display_walls:
                 if 'location' in w and w['id'] in self.id_st_walls:
                     st_wall_values.append(w['location'])
@@ -778,50 +791,97 @@ class IfcExtractor:
             
             for st_v in st_wall_values:
                 start_point, end_point = st_v
-                # start_point, end_point = st_v[0], st_v[1]
                 xs, ys, zs = zip(start_point, end_point)
                 ax.plot(xs, ys, zs, marker='o', color='orange', linewidth=1, markersize=1, label="Structural Walls")
         
             for ns_v in ns_wall_values:
                 start_point, end_point = ns_v
-                # start_point, end_point = ns_v[0], ns_v[1]
                 xs, ys, zs = zip(start_point, end_point)
                 ax.plot(xs, ys, zs, marker='o', color='navy', linewidth=1, markersize=1, label="Non-structural Walls")
         
+        # Display Columns
+        display_columns = self.info_st_columns
         if display_columns:
-
             column_values = [c['location'] for c in display_columns if 'location' in c]
             for v in column_values:
                 start_point, end_point = v
                 xs, ys, zs = zip(start_point, end_point)
                 ax.plot(xs, ys, zs, marker='o', color='tomato', linewidth=1, markersize=2, label="Structural Columns")
-
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_and_column_location_map.png'), dpi=200)
-        plt.close(fig)
-
-    def floor_location_map(self):
-
+        
+        # Display Floors
         values = [w['location'] for w in self.info_floors if 'location' in w]
         values = [x for xs in values for x in xs]
-
-        fig = plt.figure(figsize=(8, 8))
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlabel('X Axis')
-        ax.set_ylabel('Y Axis')
-        ax.set_zlabel('Z Axis')  # type: ignore
-
         for v in values:
             start_point, end_point = v
             xs, ys, zs = zip(start_point, end_point)
-            ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3)
-
-        plt.savefig(os.path.join(self.out_fig_path, 'floor_location_map.png'), dpi=200)
+            ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3, label="Floors")
+        
+        # Adjust layout
+        plt.tight_layout()
+        plt.legend()
+        plt.savefig(os.path.join(self.out_fig_path, 'wall_column_floor_location_map.png'), dpi=200)
         plt.close(fig)
-    
-    @time_decorator
-    def floor_display(self):
+        
+    # def wall_and_column_location_display(self):
 
-        self.floor_location_map()
+    #     fig = plt.figure(figsize=(8, 8))
+    #     ax = fig.add_subplot(111, projection='3d')
+    #     ax.set_xlabel('X Axis')
+    #     ax.set_ylabel('Y Axis')
+    #     ax.set_zlabel('Z Axis')  # type: ignore
+        
+    #     display_columns = self.info_st_columns
+    #     display_walls = self.info_walls + self.info_curtainwalls
+        
+    #     if display_walls:
+
+    #         st_wall_values, ns_wall_values =[], []
+            
+    #         for w in display_walls:
+    #             if 'location' in w and w['id'] in self.id_st_walls:
+    #                 st_wall_values.append(w['location'])
+    #             else:
+    #                 ns_wall_values.append(w['location'])
+            
+    #         for st_v in st_wall_values:
+    #             start_point, end_point = st_v
+    #             xs, ys, zs = zip(start_point, end_point)
+    #             ax.plot(xs, ys, zs, marker='o', color='orange', linewidth=1, markersize=1, label="Structural Walls")
+        
+    #         for ns_v in ns_wall_values:
+    #             start_point, end_point = ns_v
+    #             xs, ys, zs = zip(start_point, end_point)
+    #             ax.plot(xs, ys, zs, marker='o', color='navy', linewidth=1, markersize=1, label="Non-structural Walls")
+        
+    #     if display_columns:
+
+    #         column_values = [c['location'] for c in display_columns if 'location' in c]
+    #         for v in column_values:
+    #             start_point, end_point = v
+    #             xs, ys, zs = zip(start_point, end_point)
+    #             ax.plot(xs, ys, zs, marker='o', color='tomato', linewidth=1, markersize=2, label="Structural Columns")
+
+    #     plt.savefig(os.path.join(self.out_fig_path, 'wall_and_column_location_map.png'), dpi=200)
+    #     plt.close(fig)
+
+    # def floor_location_map(self):
+
+    #     values = [w['location'] for w in self.info_floors if 'location' in w]
+    #     values = [x for xs in values for x in xs]
+
+    #     fig = plt.figure(figsize=(8, 8))
+    #     ax = fig.add_subplot(111, projection='3d')
+    #     ax.set_xlabel('X Axis')
+    #     ax.set_ylabel('Y Axis')
+    #     ax.set_zlabel('Z Axis')  # type: ignore
+
+    #     for v in values:
+    #         start_point, end_point = v
+    #         xs, ys, zs = zip(start_point, end_point)
+    #         ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3)
+
+    #     plt.savefig(os.path.join(self.out_fig_path, 'floor_location_map.png'), dpi=200)
+    #     plt.close(fig)
 
     # function notes.
     def write_dict_floors(self):
@@ -1113,6 +1173,7 @@ class IfcExtractor:
         plt.tight_layout()
         plt.savefig(os.path.join(self.out_fig_path, 'curtainwall_triangle_meshes.png'), dpi=300)
         plt.close(fig)
+    
 # displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 

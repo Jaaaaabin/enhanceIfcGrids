@@ -1,0 +1,1078 @@
+{
+    "1": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            12.6
+        ],
+        "location": [
+            [
+                11.0154,
+                -6.3746
+            ],
+            [
+                11.0154,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "00BPVXMSv6bh6ayPl409Uo",
+            "01KIGkXlv6bxM52JS5KCT_",
+            "0DUWEL2Lb0Ke_KXcIKnsGX",
+            "0MZSJLx1XEAAAXrH2MfgU6",
+            "0OgFdPMOLAaxvakMCodxpw",
+            "0bjnTCGc1Ech6rOI7d88sf",
+            "0hKH16R8PC_OWEl6fARHIz",
+            "0kPFzp_CL0OAQiRWem5XRO",
+            "0uLFEcPyTCeu9$etmS0uZO",
+            "17ZL98ELXD0ALSGzF46Lek",
+            "19zuM9UAn5cfH4bFBQR7Bc",
+            "1CNNsGC5v34udqUmscCfnF",
+            "1JSccLyfLBRfuuL4ulCNzv",
+            "1SMXp27JnBje3_Fs04HY$T",
+            "1SlnlOdmTC6Px7TieL9nuj",
+            "1Y08whXa1E8Qz64XpU$y0Y",
+            "2IO2bn7Nr1WBWKkc6$Hs3b",
+            "2OyuIn7gXBVQCZTdxq35Tc",
+            "2S7$uB0BLBERVJUA11viSD",
+            "2b$9_$gWr6gAITIAWN_PYp",
+            "2oSXxsdEj5qAbD0iI3191U",
+            "2ySytRBRf96QDF5MbNSF_d",
+            "2ySzSF22z5vwgic0NOAD0P",
+            "3G6kB6MMz3Ohd4whphYayj",
+            "3Yj6josUr6nBSfwU0KYSXn",
+            "3i_zUjg0PCDQeqfv2WBjh_",
+            "3s2KqH_gb6DfAyHPaWbeq7",
+            "3vjhDvZ$L91ROcTKJ_JI7i",
+            "3zE5e6R3T2MgYxEsmPCAi8",
+            "3zbH46HJ96qPaLEvnmnLBF",
+            "2BcEZGR3TEGAzj7EUDxEeZ",
+            "37TEdfCh95o9TQEUq3ZFim",
+            "39b_UXRbnCFBzKt3BF71Os",
+            "2QEdxzDU9BdQaMi9Wk8IMk"
+        ],
+        "neighbor": {
+            "0.0": {
+                "11": -4.899999999999999,
+                "15": 3.4000000000000004
+            },
+            "8.4": {
+                "11": -4.899999999999999,
+                "15": 3.4000000000000004
+            },
+            "4.2": {
+                "11": -4.899999999999999,
+                "15": 3.4000000000000004
+            },
+            "12.6": {
+                "11": -4.899999999999999
+            }
+        }
+    },
+    "2": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                -28.1246,
+                25.0054
+            ],
+            [
+                39.8754,
+                25.0054
+            ]
+        ],
+        "ids": [
+            "00BPVXMSv6bh6ayPl409Uo",
+            "0QWh0$3jrACAspLT0lYEDg",
+            "0hzW8ZWwr0Vvp0MHx64Ot_",
+            "17y_bZRXP0195x0YC17LTj",
+            "1CNNsGC5v34udqUmscCfnF",
+            "1IOPBcOZD0uPz$QcuhMBxD",
+            "1Y08whXa1E8Qz64XpU$y0Y",
+            "20aas3z4PE399iRCzpUCzC",
+            "22cEjZH4j2vwgzUNhOG0VJ",
+            "2AYkyM34j4Xex6oGRpsPnY",
+            "2oSXxsdEj5qAbD0iI3191U",
+            "2tO_tFS1r9cAxDAhRUKUUk",
+            "33nsyo9VLEswCYWSdLeQ24",
+            "3VjNngvbH4Ou5eyuc0Wa3P",
+            "3Yj6josUr6nBSfwU0KYSXn",
+            "3fuOPD2n9B68Vvabjw7QSS",
+            "0I7h9hUUr3DvvNyw81iQ5C",
+            "1I7ejuU_T1TeOXE2IKu9sT",
+            "1ZaCvG3PjCtRuCVYLCQwVE",
+            "04ruEIijT6h9f3fjscMWTO",
+            "1F3Riv1gnF7Aa4EnrWfGte",
+            "3NalDWmTf5ihmPts9$vQsZ",
+            "1WXQ9M_$n7lhtzkNwwGE_x",
+            "0_mgFWHODD9QnyottLtKCA"
+        ],
+        "neighbor": {
+            "0.0": {
+                "23": -14.159999999999997,
+                "17": 5.400000000000002
+            },
+            "8.4": {
+                "7": -24.4,
+                "17": 5.400000000000002
+            },
+            "4.2": {
+                "7": -24.4,
+                "5": 14.26
+            },
+            "-4.2": {
+                "4": -38.00000000000001,
+                "8": 26.080000000000002
+            }
+        }
+    },
+    "3": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                21.4154,
+                -6.3746
+            ],
+            [
+                21.4154,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "0B5OxmCfz629FHtMrO7M3w",
+            "0D9rC6dOf9CR9mRABdEfEk",
+            "0daLaw22TFGgsB7cOdg8Q$",
+            "0z0fETRqXCa92bFY$ej8bd",
+            "1KUv1v_x9AGfHv5PefiXcS",
+            "1QWVMJL7r9$h9D5Abl7$J3",
+            "1omaxwaxv9oQAHxFdZ4RWz",
+            "20aas3z4PE399iRCzpUCzC",
+            "27Kihsj05EseOWkzihEZa0",
+            "27k97__5n8nuWRLeYd2fmD",
+            "2msENrXa95hADqkghtoCym",
+            "2pyF7Ocdj49QmchiGBHLap",
+            "3B6KNzHKP4DQReS44B9WOl",
+            "3CwZEDSqHDgvmggqVRyg0T",
+            "3EEO2kMFj8bO4ErX1N_6d1",
+            "3Sh$YG9M9Df9FIYHLcA8Hb",
+            "3aXjqy34HBdusMiYholUFx",
+            "3erODBA8TFVgJeztqi5KZo",
+            "3pMPzxMx5E3f$dTjbcGMY5",
+            "0zkR9j8gHBmxRJNPzM1s_f",
+            "3ONhNSoPb2cBAxznDyJuLj",
+            "1J5ANXPC51Ku3_1QL_PbXh",
+            "2CWX6SUDz4RxONGRD6X5Yw"
+        ],
+        "neighbor": {
+            "0.0": {
+                "20": -1.0,
+                "13": 12.999999999999996
+            },
+            "8.4": {
+                "15": -7.0000000000000036,
+                "21": 3.269999999999996
+            },
+            "4.2": {
+                "15": -7.0000000000000036,
+                "21": 3.269999999999996
+            },
+            "-4.2": {
+                "20": -1.0,
+                "13": 12.999999999999996
+            }
+        }
+    },
+    "4": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                -28.1246,
+                63.0054
+            ],
+            [
+                39.8754,
+                63.0054
+            ]
+        ],
+        "ids": [
+            "0fWMTTMtD4LgkXNbJisWEd",
+            "1_JOpYWn9At9YDnhNGH1cu",
+            "2ZSS7t8hT41QWsEyBg2ElW",
+            "2cFsvGuzbEQvFLyr1IBoiz",
+            "2dXQJ1wyb4UBD5ga1$3i2H",
+            "3FnJFyVq55IeQShAbxT3O8",
+            "3LofsgqoH0jgCX0UpfYE9k",
+            "3QtERFuZP8QBDHzuvbibBA",
+            "2uN3UW_aP8MhqZdtAhZHQ9",
+            "0wUXVM8nLFxxVkgurWEMPQ",
+            "2RTeUwevb8vRvKAp1iIR2z",
+            "1aHSLNB4jDreU8Iju6xYf7",
+            "0r36UOzizEhuEzyTOe21KT"
+        ],
+        "neighbor": {
+            "0.0": {
+                "6": 11.000000000000014
+            },
+            "8.4": {
+                "6": 11.000000000000014
+            },
+            "4.2": {
+                "6": 11.000000000000014
+            },
+            "-4.2": {
+                "2": 38.00000000000001
+            }
+        }
+    },
+    "5": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            12.6
+        ],
+        "location": [
+            [
+                -28.1246,
+                10.7454
+            ],
+            [
+                39.8754,
+                10.7454
+            ]
+        ],
+        "ids": [
+            "0AtjqClFX8bxZ1qh2dJ_aE",
+            "1_XqD8RkD4Whltjd_J0MmG",
+            "1xxUCF7Qj1vAphig2wTX$K",
+            "2qxu_X4eb5owzbJE6a_74Q",
+            "3gkpqvwzT3F8lq5pgXiXjA",
+            "3xvdDbQDP2UP1auph1YDW8",
+            "3f0ftE0izDGAOuj7t4cG0H",
+            "2hSqm$d$fD9QuHFWA$3bRQ",
+            "0JEqQ41crDE9szT$aVBG5C",
+            "1ADWAXXoz1uxvcwz1wx8c0",
+            "37KrVetEf858gzMqXuKO3F",
+            "0QkUUv4_f2CwdzkBOQATLd"
+        ],
+        "neighbor": {
+            "0.0": {
+                "18": -3.4599999999999955,
+                "8": 11.820000000000002
+            },
+            "8.4": {
+                "18": -3.4599999999999955,
+                "8": 11.820000000000002
+            },
+            "4.2": {
+                "2": -14.26,
+                "8": 11.820000000000002
+            },
+            "12.6": {
+                "7": -38.66
+            }
+        }
+    },
+    "6": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            12.6
+        ],
+        "location": [
+            [
+                -28.1246,
+                52.0054
+            ],
+            [
+                39.8754,
+                52.0054
+            ]
+        ],
+        "ids": [
+            "2sX8nbOu9DVvJa126CeNRP",
+            "0v0g2aG5v2DRh$CPwx8vhc",
+            "1x$eHGArH53gLbE6ul38AE",
+            "3od06cP_5BQgBNTWZGc48W",
+            "24BEzj74TBjRf7ECjjDwqd",
+            "3atbVtREP669BZaNRnRqu1",
+            "1J$_69qif6Te1LpxR1opuc",
+            "06EBrEZXzEx84KtfTx5m$f"
+        ],
+        "neighbor": {
+            "0.0": {
+                "4": -11.000000000000014,
+                "7": 2.5999999999999943
+            },
+            "8.4": {
+                "4": -11.000000000000014,
+                "7": 2.5999999999999943
+            },
+            "4.2": {
+                "4": -11.000000000000014,
+                "7": 2.5999999999999943
+            },
+            "12.6": {
+                "25": 1.0499999999999972
+            }
+        }
+    },
+    "7": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            12.6
+        ],
+        "location": [
+            [
+                -28.1246,
+                49.4054
+            ],
+            [
+                39.8754,
+                49.4054
+            ]
+        ],
+        "ids": [
+            "3_EaNSBUT5TwtH5IOaAmE0",
+            "22sbXgwWz8qBEnc0Sm8Nbt",
+            "0MP6QqAIDArOv4vAvrOlwT",
+            "09Lfzo3jfB09jbHmpfkFBn"
+        ],
+        "neighbor": {
+            "0.0": {
+                "6": -2.5999999999999943,
+                "24": 5.119999999999997
+            },
+            "8.4": {
+                "6": -2.5999999999999943,
+                "2": 24.4
+            },
+            "4.2": {
+                "6": -2.5999999999999943,
+                "2": 24.4
+            },
+            "12.6": {
+                "25": -1.5499999999999972,
+                "5": 38.66
+            }
+        }
+    },
+    "8": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                -28.1246,
+                -1.0746
+            ],
+            [
+                39.8754,
+                -1.0746
+            ]
+        ],
+        "ids": [
+            "1XY7iI63b2q9NRCw31BKgn",
+            "3wsRyFgW50yxVn3MMbZPML",
+            "1iE_eT8U14Q9VhU1Cg8vG8",
+            "2ENA9bCFfDnhSqP6MFcpOz"
+        ],
+        "neighbor": {
+            "0.0": {
+                "5": -11.820000000000002
+            },
+            "8.4": {
+                "5": -11.820000000000002
+            },
+            "4.2": {
+                "5": -11.820000000000002
+            },
+            "-4.2": {
+                "2": -26.080000000000002
+            }
+        }
+    },
+    "9": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            12.6
+        ],
+        "location": [
+            [
+                0.7354,
+                -6.3746
+            ],
+            [
+                0.7354,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "0ptcUpDMX9uxDuXu2ZVYNy",
+            "1RAhsQfBT8MB2d85CxDwVk",
+            "19IsA3YPzFnQabor3$aTib",
+            "2CKhzsW9bE8fQzvAtcnJB5"
+        ],
+        "neighbor": {
+            "0.0": {
+                "16": -0.39999999999999997,
+                "11": 5.379999999999999
+            },
+            "8.4": {
+                "16": -0.39999999999999997,
+                "11": 5.379999999999999
+            },
+            "4.2": {
+                "14": -3.4,
+                "11": 5.379999999999999
+            },
+            "12.6": {
+                "11": 5.379999999999999
+            }
+        }
+    },
+    "10": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                -9.6646,
+                -6.3746
+            ],
+            [
+                -9.6646,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "25SdGcDQb1HBgzb7lwgnjX",
+            "05gEjx9Zn4BOw5JmQcUJ3e",
+            "3O4rQv7Dz3QATn8yqrL1v3",
+            "0KH$Uild5Fd9UQsZJReJ2O"
+        ],
+        "neighbor": {
+            "0.0": {
+                "12": -13.000000000000002,
+                "19": 3.7399999999999984
+            },
+            "8.4": {
+                "22": -2.9700000000000024,
+                "14": 6.999999999999998
+            },
+            "4.2": {
+                "22": -2.9700000000000024,
+                "14": 6.999999999999998
+            },
+            "-4.2": {
+                "12": -13.000000000000002,
+                "19": 3.7399999999999984
+            }
+        }
+    },
+    "11": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            12.6
+        ],
+        "location": [
+            [
+                6.1154,
+                -6.3746
+            ],
+            [
+                6.1154,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "3UmKh6GQPAExG9NT_ZDUhQ",
+            "3sAx8JCLb0rOXTxU0ehWas",
+            "051J_Dgl54zeuqPH83F6_t",
+            "11ETUJjbH4ZBil0CsTRAjr"
+        ],
+        "neighbor": {
+            "0.0": {
+                "9": -5.379999999999999,
+                "1": 4.899999999999999
+            },
+            "8.4": {
+                "9": -5.379999999999999,
+                "1": 4.899999999999999
+            },
+            "4.2": {
+                "9": -5.379999999999999,
+                "1": 4.899999999999999
+            },
+            "12.6": {
+                "9": -5.379999999999999,
+                "1": 4.899999999999999
+            }
+        }
+    },
+    "12": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                -22.6646,
+                -6.3746
+            ],
+            [
+                -22.6646,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "1EgnMnaAL38BwXbWd85G6r",
+            "2W2dVViDf3uPVHIL$CAZU_",
+            "0y8vGyNgj0tPV2XUVcyToR",
+            "3i8K9fK3LFsuUyEPVGC5nu"
+        ],
+        "neighbor": {
+            "0.0": {
+                "10": 13.000000000000002
+            },
+            "8.4": {
+                "22": 10.03
+            },
+            "4.2": {
+                "22": 10.03
+            },
+            "-4.2": {
+                "10": 13.000000000000002
+            }
+        }
+    },
+    "13": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2,
+            -4.2
+        ],
+        "location": [
+            [
+                34.4154,
+                -6.3746
+            ],
+            [
+                34.4154,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "3ocg2293r5nfEpyYfUVMCs",
+            "28dB6igofATx5F_v$nrIl5",
+            "3feSJoQCHFQvPZei$GeY0h",
+            "2tNKXPeNH4AxMea99OpAPs"
+        ],
+        "neighbor": {
+            "0.0": {
+                "3": -12.999999999999996
+            },
+            "8.4": {
+                "21": -9.73
+            },
+            "4.2": {
+                "21": -9.73
+            },
+            "-4.2": {
+                "3": -12.999999999999996
+            }
+        }
+    },
+    "14": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2
+        ],
+        "location": [
+            [
+                -2.6646,
+                -6.3746
+            ],
+            [
+                -2.6646,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "1fgYD5wf11PemW5UZ9LIqc",
+            "2T$jUiN8r6Je5U6rsVaHVk",
+            "2xANVuvHr7HQZyC1LCYIwx"
+        ],
+        "neighbor": {
+            "0.0": {
+                "19": -3.26,
+                "16": 3.0
+            },
+            "8.4": {
+                "10": -6.999999999999998,
+                "16": 3.0
+            },
+            "4.2": {
+                "10": -6.999999999999998,
+                "9": 3.4
+            }
+        }
+    },
+    "15": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4,
+            4.2
+        ],
+        "location": [
+            [
+                14.4154,
+                -6.3746
+            ],
+            [
+                14.4154,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "2L3u5TWPf7pu0ZfbMopPYD",
+            "35Ti0LilD1euWRO0a9bNqu",
+            "0Pdy4WVQ12U8PTOZRJfoDV"
+        ],
+        "neighbor": {
+            "0.0": {
+                "1": -3.4000000000000004,
+                "20": 6.0000000000000036
+            },
+            "8.4": {
+                "1": -3.4000000000000004,
+                "3": 7.0000000000000036
+            },
+            "4.2": {
+                "1": -3.4000000000000004,
+                "3": 7.0000000000000036
+            }
+        }
+    },
+    "16": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4
+        ],
+        "location": [
+            [
+                0.3354,
+                -6.3746
+            ],
+            [
+                0.3354,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "0KfXwUC859DgoytaAWxjyl",
+            "0LqzJG_2jEGB2HYcava6vI",
+            "0b_SM24nn9pPQ0mP$AjHAU",
+            "0gBU9zrIX4DP6XkWa46HwB",
+            "0ljuejAXTDa9t_Ql$dKpNT",
+            "120OOC7r96UhTlaDCc9ey0",
+            "1H89Jay6v4U808l8Jd0VUF",
+            "1J1N7A_aPDz8lib1fLp1OO",
+            "1QkYhuY$b3jO8RwCZCjT76",
+            "1WOnulzinBVeLh90gsAXZG",
+            "1oUJsic$TFaP2JP0N9C$uU",
+            "1rgDFMpDX3jA$$wFmM_BMV",
+            "1vqd50HhH6oQgC9XFbpsIV",
+            "1z3lNyz$5AE8yTuW4oQ9H$",
+            "22cEjZH4j2vwgzUNhOG0VJ",
+            "23Gz6Nujf3HfF_ChgdGhs3",
+            "28CA$n9XX1RBnA2GXkf3e4",
+            "2tO_tFS1r9cAxDAhRUKUUk",
+            "2vMS8ZOi18VA3G8mHlgzTm",
+            "31AzCVJ49DkuonIL2csN_v",
+            "33nsyo9VLEswCYWSdLeQ24",
+            "3IjK9kjXnCVQ5xyb_utUa5",
+            "3TolDK2PT3a8CMPYWY$8UW",
+            "3VjNngvbH4Ou5eyuc0Wa3P",
+            "3cFEfr$gPA2Ri3aR_vBMQh",
+            "3eY_OrShTCCBdXsXHVsbzI",
+            "3fuOPD2n9B68Vvabjw7QSS",
+            "3hxrl7LFbCRQe29KEesoOl",
+            "3wOCFst9XEYBHb6iwLv17a"
+        ],
+        "neighbor": {
+            "0.0": {
+                "14": -3.0,
+                "9": 0.39999999999999997
+            },
+            "8.4": {
+                "14": -3.0,
+                "9": 0.39999999999999997
+            }
+        }
+    },
+    "17": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4
+        ],
+        "location": [
+            [
+                -28.1246,
+                19.6054
+            ],
+            [
+                39.8754,
+                19.6054
+            ]
+        ],
+        "ids": [
+            "01KIGkXlv6bxM52JS5KCT_",
+            "0B5OxmCfz629FHtMrO7M3w",
+            "0G0$ssjs9B2AhFHp7ftdwD",
+            "0KfXwUC859DgoytaAWxjyl",
+            "0LqzJG_2jEGB2HYcava6vI",
+            "0NTfUyCob6_ADTrVzbEfYQ",
+            "0OgFdPMOLAaxvakMCodxpw",
+            "0qYeHUsb9DR8mj7QnwxvO0",
+            "120OOC7r96UhTlaDCc9ey0",
+            "1H89Jay6v4U808l8Jd0VUF",
+            "1OZBtCRhTA_BAoq4NqXIB7",
+            "1QWVMJL7r9$h9D5Abl7$J3",
+            "1UxFekpObEERImf18C9Kss",
+            "1nHkfIVL588OmBJc5Q99Kg",
+            "2$PC0uca52MQr9CJMVNNZd",
+            "2CK9KTbp56iw2jYV3XX6tx",
+            "2DT_UCVW12VvK8fS8xIS54",
+            "2OyuIn7gXBVQCZTdxq35Tc",
+            "2iLwlHpI5AAONUwJ0QDvHd",
+            "2q_CO0MMD22hAgQTjDNSQX",
+            "2w2w_$1n57hg$ytPTH9T7O",
+            "2ySzSF22z5vwgic0NOAD0P",
+            "2yf09HoTn3uhgxGrXDm3BF",
+            "3CwZEDSqHDgvmggqVRyg0T",
+            "3erODBA8TFVgJeztqi5KZo",
+            "3hxrl7LFbCRQe29KEesoOl",
+            "3i_zUjg0PCDQeqfv2WBjh_",
+            "3pMPzxMx5E3f$dTjbcGMY5"
+        ],
+        "neighbor": {
+            "0.0": {
+                "2": -5.400000000000002,
+                "18": 5.400000000000002
+            },
+            "8.4": {
+                "2": -5.400000000000002,
+                "18": 5.400000000000002
+            }
+        }
+    },
+    "18": {
+        "type": "st",
+        "storey": [
+            0.0,
+            8.4
+        ],
+        "location": [
+            [
+                -28.1246,
+                14.2054
+            ],
+            [
+                39.8754,
+                14.2054
+            ]
+        ],
+        "ids": [
+            "0D9rC6dOf9CR9mRABdEfEk",
+            "0EGKXdmcD6qfnp9pjm_EYs",
+            "0FyeA9uTX3O8NQbBJ3iHTd",
+            "0ZbhwENn9AW8kFkqK0wVt1",
+            "0iFuyHAwb6WedarwmDkryv",
+            "0uLFEcPyTCeu9$etmS0uZO",
+            "17ZL98ELXD0ALSGzF46Lek",
+            "1C$IqKHxDD_BdbnrhsNp6w",
+            "1JSccLyfLBRfuuL4ulCNzv",
+            "1NzxyGu4PBuwBpD4tcCxCR",
+            "1OFRIKIMz78vREnnDfgmgZ",
+            "1QkYhuY$b3jO8RwCZCjT76",
+            "1cyzXDcxX1uxRTZhpSV6eX",
+            "1jnV3ZvGzCfPIPUB20s_yQ",
+            "1m_Dg8mCXC7QEjl8B_FapP",
+            "1vqd50HhH6oQgC9XFbpsIV",
+            "1zxU9Vq6PBAPY_s77rlLRL",
+            "27k97__5n8nuWRLeYd2fmD",
+            "2FR0eJQvb5JwlLB$u6Edky",
+            "2b$9_$gWr6gAITIAWN_PYp",
+            "2msENrXa95hADqkghtoCym",
+            "2ySytRBRf96QDF5MbNSF_d",
+            "31AzCVJ49DkuonIL2csN_v",
+            "3B6KNzHKP4DQReS44B9WOl",
+            "3EEO2kMFj8bO4ErX1N_6d1",
+            "3NcTUrbU50gvJNwm1PiB1e",
+            "3cFEfr$gPA2Ri3aR_vBMQh"
+        ],
+        "neighbor": {
+            "0.0": {
+                "17": -5.400000000000002,
+                "5": 3.4599999999999955
+            },
+            "8.4": {
+                "17": -5.400000000000002,
+                "5": 3.4599999999999955
+            }
+        }
+    },
+    "19": {
+        "type": "st",
+        "storey": [
+            0.0,
+            -4.2
+        ],
+        "location": [
+            [
+                -5.9246,
+                -6.3746
+            ],
+            [
+                -5.9246,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "21LrjezeP5jgZHBD2LzIia",
+            "1A2lyEd995BhsLbsWzfSik"
+        ],
+        "neighbor": {
+            "0.0": {
+                "10": -3.7399999999999984,
+                "14": 3.26
+            },
+            "-4.2": {
+                "10": -3.7399999999999984,
+                "20": 26.340000000000003
+            }
+        }
+    },
+    "20": {
+        "type": "st",
+        "storey": [
+            0.0,
+            -4.2
+        ],
+        "location": [
+            [
+                20.4154,
+                -6.3746
+            ],
+            [
+                20.4154,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "1ESkJcz6fETBrF$CEEdSVF",
+            "3ebtpKlQP9SAtBbjQARdG5"
+        ],
+        "neighbor": {
+            "0.0": {
+                "15": -6.0000000000000036,
+                "3": 1.0
+            },
+            "-4.2": {
+                "19": -26.340000000000003,
+                "3": 1.0
+            }
+        }
+    },
+    "21": {
+        "type": "st",
+        "storey": [
+            8.4,
+            4.2
+        ],
+        "location": [
+            [
+                24.6854,
+                -6.3746
+            ],
+            [
+                24.6854,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "1DaKj2HR1DDPkKEyQDWfLs",
+            "1gGCzmzhv4DOdrmTbkD$0N"
+        ],
+        "neighbor": {
+            "8.4": {
+                "3": -3.269999999999996,
+                "13": 9.73
+            },
+            "4.2": {
+                "3": -3.269999999999996,
+                "13": 9.73
+            }
+        }
+    },
+    "22": {
+        "type": "st",
+        "storey": [
+            8.4,
+            4.2
+        ],
+        "location": [
+            [
+                -12.6346,
+                -6.3746
+            ],
+            [
+                -12.6346,
+                68.0054
+            ]
+        ],
+        "ids": [
+            "3P_MJRryj4XwWB8yXLSYVe",
+            "0PdiyRxtT7nPDVNfdSTzdP"
+        ],
+        "neighbor": {
+            "8.4": {
+                "12": -10.03,
+                "10": 2.9700000000000024
+            },
+            "4.2": {
+                "12": -10.03,
+                "10": 2.9700000000000024
+            }
+        }
+    },
+    "23": {
+        "type": "ns",
+        "storey": [
+            0.0
+        ],
+        "location": [
+            [
+                -28.1246,
+                39.1654
+            ],
+            [
+                39.8754,
+                39.1654
+            ]
+        ],
+        "ids": [
+            "2EAuCwXt56Nv$Lq7mfkhSz",
+            "005_hBLr971xZ9oZiJl17E"
+        ],
+        "neighbor": {
+            "0.0": {
+                "24": -5.1200000000000045,
+                "2": 14.159999999999997
+            }
+        }
+    },
+    "24": {
+        "type": "ns",
+        "storey": [
+            0.0
+        ],
+        "location": [
+            [
+                -28.1246,
+                44.2854
+            ],
+            [
+                39.8754,
+                44.2854
+            ]
+        ],
+        "ids": [
+            "3_aTbKgvjFIuEyL0kiDngZ",
+            "0LIK$X$nr50OPYZcSzCmR0"
+        ],
+        "neighbor": {
+            "0.0": {
+                "7": -5.119999999999997,
+                "23": 5.1200000000000045
+            }
+        }
+    },
+    "25": {
+        "type": "st",
+        "storey": [
+            12.6
+        ],
+        "location": [
+            [
+                -28.1246,
+                50.9554
+            ],
+            [
+                39.8754,
+                50.9554
+            ]
+        ],
+        "ids": [
+            "3K5ebALVrBpOPczIN$srEq",
+            "0Htc35IhT4oBUR8M0hhh9b"
+        ],
+        "neighbor": {
+            "12.6": {
+                "6": -1.0499999999999972,
+                "7": 1.5499999999999972
+            }
+        }
+    }
+}

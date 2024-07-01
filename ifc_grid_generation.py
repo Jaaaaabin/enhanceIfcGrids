@@ -2,7 +2,7 @@ import os
 from gridGenerator import GridGenerator
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon1'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 def preparation_of_grid_generation(

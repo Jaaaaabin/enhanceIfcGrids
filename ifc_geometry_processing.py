@@ -1,11 +1,11 @@
 import os
-import itertools
-
 from ifcExtractor import IfcExtractor
-from infoAnalysis import JsonFileComparator
+
+# import itertools
+# from infoAnalysis import JsonFileComparator
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon1'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 def process_ifc_file(input_path, output_path):
@@ -15,31 +15,31 @@ def process_ifc_file(input_path, output_path):
     extractor.extract_all_floors()
     extractor.extract_all_columns()
     extractor.extract_all_walls()
-    extractor.wall_and_column_location_display()
+    extractor.wall_column_floor_location_display()
 
-def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
+# def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 
-    infoComparator = JsonFileComparator(data_path, ifc_a, ifc_2, json_name)
-    infoComparator.run_comparison()
+#     infoComparator = JsonFileComparator(data_path, ifc_a, ifc_2, json_name)
+#     infoComparator.run_comparison()
 
-def combinations_from_shared_ifc_basis(all_ifcs):
+# def combinations_from_shared_ifc_basis(all_ifcs):
     
-    ifc_groups = {}
-    basis_combinations = {}
+#     ifc_groups = {}
+#     basis_combinations = {}
 
-    for s in all_ifcs:
-        basis = s.rsplit('_', 1)[0] if '_' in s else s
-        if basis in ifc_groups:
-            ifc_groups[basis].append(s)
-        else:
-            ifc_groups[basis] = [s]
+#     for s in all_ifcs:
+#         basis = s.rsplit('_', 1)[0] if '_' in s else s
+#         if basis in ifc_groups:
+#             ifc_groups[basis].append(s)
+#         else:
+#             ifc_groups[basis] = [s]
 
-    shared_ifc_groups = {basis: strings for basis, strings in ifc_groups.items() if len(strings) > 1}
+#     shared_ifc_groups = {basis: strings for basis, strings in ifc_groups.items() if len(strings) > 1}
 
-    for basis, strings in shared_ifc_groups.items():
-        basis_combinations[basis] = list(itertools.combinations(strings, 2))
+#     for basis, strings in shared_ifc_groups.items():
+#         basis_combinations[basis] = list(itertools.combinations(strings, 2))
 
-    return basis_combinations
+#     return basis_combinations
 
 # ----------
 try:
