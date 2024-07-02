@@ -54,14 +54,112 @@ class IfcExtractor:
 
             self._extract_all_ifc_elements()
             
-            print(f"=============IfcExtractor=============\n{self.ifc_file_name}")
+            # hard_coded_part.
+            self._read_view_settings()
+            self._remove_slab_outliers()
+            # hard_coded_part.
+
+            print(f"=====================IfcExtractor=====================\n{self.ifc_file_name}\n=====================IfcExtractor=====================")
             
         except ifcopenshell.errors.FileNotFoundError: # type: ignore
             print(f"Error: File '{model_path}' not found.")
 
         except Exception as e:
             print(f"An error occurred: {e}")
-    
+
+    def _remove_slab_outliers(self):
+
+        slab_outliers ={
+
+            "11103190":[
+                '1lPJHttHj0t93Rx9JW$x8L',
+            ],
+
+            "11103085":[
+                '0lLezB9Eo$GvWuGLIrVqQT',
+                '2dgQT7c8heJAthKIf57922',
+                '2$TzztUz_nI9DzZezaA0Uf',
+                '19S$35tbDXGBvHnQP5VyE9',
+            ],
+
+            "11103035":[
+                '3Nvn$pqh7mHx_H$clYhRTH',
+                '3_uFSRcG9_IvnATDmaTf65',
+            ],
+
+            "11103223":[
+                '3gU8YbK9XBrRI57teoH1G_',
+                '0mSabJq$mkQti5Wbrc58uO',
+                '2POJPR4dfAxRjFwwgsyMmv',
+                '3$utHrBT4ZQgz5TTy1Dw69',
+            ],
+
+            "11103500":[
+                '3dpwgcQgv8T8ncC5EBAM$z',
+                '3dpwgcQgv8T8ncC5EBAM_4',
+            ],
+        }
+        
+        for key, values in slab_outliers.items():
+            if key in self.ifc_file_name:
+                self.slabs = [sl for sl in self.slabs if sl.GlobalId not in values]
+                break
+            else:
+                continue
+            
+    def _read_view_settings(self):
+
+        view_settings = {
+            "11103093": {
+                "type": 1,
+                "elev": 25,
+                "azim": -60
+            },
+            "11103024": {
+                "type": 2,
+                "elev": 30,
+                "azim": -15
+            },
+            "11103190": {
+                "type": 3,
+                "elev": 35,
+                "azim": -30
+            },
+            "11103085": {
+                "type": 4,
+                "elev": 25,
+                "azim": -40
+            },
+            "11103332": {
+                "type": 5,
+                "elev": 25,
+                "azim": -100
+            },
+            "11103035": {
+                "type": 6,
+                "elev": 20,
+                "azim": -60
+            },
+            "11103223": {
+                "type": 7,
+                "elev": 25,
+                "azim": 170
+            },
+            "11103500": {
+                "type": 8,
+                "elev": 25,
+                "azim": 170
+            }
+        }
+        self.elev, self.azim = 0, 0
+        for key, values in view_settings.items():
+            if key in self.ifc_file_name:
+                self.elev = values["elev"]
+                self.azim = values["azim"]
+                break
+            else:
+                continue
+
     def _configure_settings(self):
         
         if self.type_geo == 'triangle':
@@ -211,16 +309,55 @@ class IfcExtractor:
         floor_location_xy = [sublist for sublist in floor_location_xy if len(sublist) <= 2]
 
         return floor_width, floor_location_xy
+    
+    def get_floor_dimensions_non_av(self):
 
-    def get_floor_dimensions(self):
+        def add_values_to_points(points, add_values):
+            updated_points = []
+            for outer_point in points:
+                updated_outer = []
+                for point in outer_point:
+                    new_point = [
+                        point[0] + add_values[0],  # Add the first dimension
+                        point[1] + add_values[1],  # Add the second dimension
+                        add_values[2]              # Use the third value directly
+                    ]
+                    updated_outer.append(new_point)
+                updated_points.append(updated_outer)
+            return updated_points
+        
+        iterator = ifcopenshell.geom.iterator(
+                    self.settings, self.model, multiprocessing.cpu_count(), include=self.floors)
+
+        if self.type_geo == 'triangle':
+            if iterator.initialize():
+                while True:
+                
+                    shape = iterator.get()
+                    floor_width, floor_location_xy = self._floorshape_reasoning(shape)
+
+                    tempo_matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
+                    tempo_location = tempo_matrix[:,3][0:3]
+                    floor_location_xy = add_values_to_points(floor_location_xy, tempo_location)
+
+                    dict_of_a_floor = {
+                        "id": shape.guid,
+                        "location": floor_location_xy,
+                        "width": floor_width,
+                        "elevation": tempo_location[-1]
+                        }
+                    
+                    self.info_floors.append(dict_of_a_floor)
+                    if not iterator.next():
+                        break
+
+    def get_floor_dimensions_av(self):
 
         iterator = ifcopenshell.geom.iterator(
                     self.settings, self.model, multiprocessing.cpu_count(), include=self.floors)
 
         if self.type_geo == 'triangle':
-
             if iterator.initialize():
-
                 while True:
                 
                     shape = iterator.get()
@@ -233,9 +370,6 @@ class IfcExtractor:
                         }
                     
                     self.info_floors.append(dict_of_a_floor)
-
-                    # draw_3d_points(grouped_verts)
-
                     if not iterator.next():
                         break
     
@@ -245,7 +379,7 @@ class IfcExtractor:
         floor_elevation = floor.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates[-1]
         if abs(floor_elevation) > 100:
             floor_elevation = floor_elevation / 1000
-
+    
         for lcs in info_f['location']:
             for lc in lcs:
                 lc.append(floor_elevation)
@@ -267,19 +401,17 @@ class IfcExtractor:
     @time_decorator
     def extract_all_floors(self):
 
-        # all floors = IfcSlab + IfcRoof
-        # consider the IFC versions. IfcSlab and IfcRoof.
         self.info_floors = []
-        if self.version == 'IFC2X3':
-            self.floors = self.slabs
+        self.floors = self.slabs
+
+        # this part needs to be improved systematically before any publsihment.....
+        if '-AR-' not in self.ifc_file_name:
+            # case of non-Autodesk Revit as the initial authoring tools.
+            self.get_floor_dimensions_non_av()
         else:
-            self.floors = self.slabs + self.roofs
-
-        # get the id, planar_location, and width of the IfcSlabs.
-        self.get_floor_dimensions()
-
-        # update the elevation.
-        self.enrich_floor_information()
+            # case of Autodesk Revit as the initial authoring tools.
+            self.get_floor_dimensions_av()
+            self.enrich_floor_information()
         
         #------
         # todo/
@@ -296,7 +428,7 @@ class IfcExtractor:
 
 #===================================================================================================
 #beam ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-
+# not investigated yet.
         
 #beam ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -655,14 +787,22 @@ class IfcExtractor:
                         break  # Assuming we only need the first matching 'Body'
                 else:
                     continue
+
+        # # old version (save): some z coordinations are doubled due to the unclear reference storeys.
+        # if c_location_pt_from_body==None or (abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001):
+        #     c_location_pt_directplacement = column.ObjectPlacement.RelativePlacement.Location.Coordinates
+        #     rel_storey_elevation = column.ObjectPlacement.PlacementRelTo.PlacesObject[0].Elevation
+        #     rel_placement = column.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates
+        #     c_location_pt_directplacement = tuple(sum(x) for x in zip(c_location_pt_directplacement, rel_placement))
+        #     c_location_pt_directplacement = c_location_pt_directplacement[:2] + (c_location_pt_directplacement[2] + rel_storey_elevation,)
         
+        # directly use the "rel_storey_elevation" as the point location z value.
         if c_location_pt_from_body==None or (abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001):
-            # risk: what will happen if it's really 0,0,x.
             c_location_pt_directplacement = column.ObjectPlacement.RelativePlacement.Location.Coordinates
             rel_storey_elevation = column.ObjectPlacement.PlacementRelTo.PlacesObject[0].Elevation
             rel_placement = column.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates
             c_location_pt_directplacement = tuple(sum(x) for x in zip(c_location_pt_directplacement, rel_placement))
-            c_location_pt_directplacement = c_location_pt_directplacement[:2] + (c_location_pt_directplacement[2] + rel_storey_elevation,)
+            c_location_pt_directplacement = c_location_pt_directplacement[:2] + (rel_storey_elevation,)
             return c_location_pt_directplacement
         else:
             return c_location_pt_from_body
@@ -697,18 +837,68 @@ class IfcExtractor:
         # save data and display
         self.write_dict_columns()
         
-        #------s
-        # todo
-        #------
-        # display the columns, or consider to merge all the geometry displays.
-        
 #column ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
-#displayandexport ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+# write to dictionaries ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
     # function notes.
+    def write_dict_floors(self):
+        
+        dict_info_floors = remove_duplicate_dicts(self.info_floors)
+        try:
+            with open(os.path.join(self.out_fig_path, 'info_floors.json'), 'w') as json_file:
+                json.dump(dict_info_floors, json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'floors.json'}: {e}")
+        
+    # function notes.
+    def write_dict_columns(self):
+
+        dict_info_columns = remove_duplicate_dicts(self.info_st_columns)
+        try:
+            with open(os.path.join(self.out_fig_path, 'info_columns.json'), 'w') as json_file:
+                json.dump(dict_info_columns, json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'columns.json'}: {e}")
+
+    # function notes.
+    def write_dict_walls(self):
+        
+        # st_walls
+        dict_info_walls = remove_duplicate_dicts(self.info_st_walls)
+        if dict_info_walls:
+            try:
+                with open(os.path.join(self.out_fig_path, 'info_st_walls.json'), 'w') as json_file:
+                    json.dump(dict_info_walls, json_file, indent=4)
+            except IOError as e:
+                raise IOError(f"Failed to write to {self.out_fig_path + 'st_walls.json'}: {e}")
+        
+        # ns_walls
+        dict_info_walls = remove_duplicate_dicts(self.info_ns_walls)
+        if dict_info_walls:
+            try:
+                with open(os.path.join(self.out_fig_path, 'info_ns_walls.json'), 'w') as json_file:
+                    json.dump(dict_info_walls, json_file, indent=4)
+            except IOError as e:
+                raise IOError(f"Failed to write to {self.out_fig_path + 'ns_walls.json'}: {e}")
+
+        # curtain_walls
+        dict_info_walls = remove_duplicate_dicts(self.info_curtainwalls)
+        if dict_info_walls:
+            try:
+                with open(os.path.join(self.out_fig_path, 'info_ct_walls.json'), 'w') as json_file:
+                    json.dump(dict_info_walls, json_file, indent=4)
+            except IOError as e:
+                raise IOError(f"Failed to write to {self.out_fig_path + 'ct_walls.json'}: {e}")
+    
+# write to dictionaries ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+#===================================================================================================
+
+#===================================================================================================
+# wall visualizations ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+    # for walls
     def wall_width_histogram(self, display_walls=[]):
         
         if display_walls:
@@ -765,19 +955,69 @@ class IfcExtractor:
 
     @time_decorator
     def wall_display(self):
-
         self.wall_width_histogram(display_walls=self.info_walls+self.info_curtainwalls)
         self.wall_length_histogram(display_walls=self.info_walls+self.info_curtainwalls)
         self.wall_orientation_histogram(display_walls=self.info_walls+self.info_curtainwalls)
 
+# wall visualizations ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+#===================================================================================================
+
+#===================================================================================================
+# displayandexport ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
+
+    def test_debug_display(self):
+        fig = plt.figure(figsize=(12, 6))
+        ax = fig.add_subplot(111, projection='3d')
+
+        ax.view_init(elev=30, azim=0)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+        ax.grid(True)
+        ax.axis('on')
+        
+        # Display Columns
+        display_columns = self.info_st_columns
+        if display_columns:
+            column_values = [c['location'] for c in display_columns if 'location' in c]
+            for v in column_values:
+                start_point, end_point = v
+                xs, ys, zs = zip(start_point, end_point)
+                ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=2, label="IfcColumn(S)")
+        
+        # Display Floors
+        values = [w['location'] for w in self.info_floors if 'location' in w]
+        values = [x for xs in values for x in xs]
+        
+        # Use a set to track plotted lines
+        plotted_lines = set()
+        
+        for v in values:
+            start_point, end_point = tuple(v[0]), tuple(v[1])  # Convert to tuples
+            # Create a sorted tuple of the points to avoid duplicating lines
+            line = tuple(sorted((start_point, end_point)))
+            if line not in plotted_lines:
+                plotted_lines.add(line)
+                xs, ys, zs = zip(start_point, end_point)
+                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.5, alpha=0.33, label="IfcSlab")
+        
+        # Ensure tight layout
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.out_fig_path, 'test_debug.png'), dpi=200)
+        plt.close(fig)
+
     @time_decorator
     def wall_column_floor_location_display(self):
 
-        fig = plt.figure(figsize=(10, 10))
+        fig = plt.figure(figsize=(12, 6))
         ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlabel('X Axis')
-        ax.set_ylabel('Y Axis')
-        ax.set_zlabel('Z Axis')  # type: ignore
+
+        ax.view_init(elev=self.elev, azim=self.azim)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+        ax.grid(False)
+        ax.axis('off')
         
         # Display Walls
         display_walls = self.info_walls + self.info_curtainwalls
@@ -792,12 +1032,12 @@ class IfcExtractor:
             for st_v in st_wall_values:
                 start_point, end_point = st_v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='orange', linewidth=1, markersize=1, label="Structural Walls")
+                ax.plot(xs, ys, zs, marker='s', color='black', linewidth=1, markersize=2, label="IfcWall(S)")
         
             for ns_v in ns_wall_values:
                 start_point, end_point = ns_v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='navy', linewidth=1, markersize=1, label="Non-structural Walls")
+                ax.plot(xs, ys, zs, marker='s', color='grey', linewidth=1, markersize=2, label="IfcWall(N)")
         
         # Display Columns
         display_columns = self.info_st_columns
@@ -806,134 +1046,40 @@ class IfcExtractor:
             for v in column_values:
                 start_point, end_point = v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='tomato', linewidth=1, markersize=2, label="Structural Columns")
+                ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=2, label="IfcColumn(S)")
+        
+        # Display Floors (old)
+        # values = [w['location'] for w in self.info_floors if 'location' in w]
+        # values = [x for xs in values for x in xs]
+        # for v in values:
+        #     start_point, end_point = v
+        #     xs, ys, zs = zip(start_point, end_point)
+        #     ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.5, alpha=0.2, label="IfcSlab")
         
         # Display Floors
         values = [w['location'] for w in self.info_floors if 'location' in w]
         values = [x for xs in values for x in xs]
-        for v in values:
-            start_point, end_point = v
-            xs, ys, zs = zip(start_point, end_point)
-            ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3, label="Floors")
         
-        # Adjust layout
+        # Use a set to track plotted lines
+        plotted_lines = set()
+        
+        for v in values:
+            start_point, end_point = tuple(v[0]), tuple(v[1])  # Convert to tuples
+            # Create a sorted tuple of the points to avoid duplicating lines
+            line = tuple(sorted((start_point, end_point)))
+            if line not in plotted_lines:
+                plotted_lines.add(line)
+                xs, ys, zs = zip(start_point, end_point)
+                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.5, alpha=0.33, label="IfcSlab")
+        
+        # Ensure tight layout
         plt.tight_layout()
-        plt.legend()
+        
+        # Save the figure
         plt.savefig(os.path.join(self.out_fig_path, 'wall_column_floor_location_map.png'), dpi=200)
         plt.close(fig)
         
-    # def wall_and_column_location_display(self):
-
-    #     fig = plt.figure(figsize=(8, 8))
-    #     ax = fig.add_subplot(111, projection='3d')
-    #     ax.set_xlabel('X Axis')
-    #     ax.set_ylabel('Y Axis')
-    #     ax.set_zlabel('Z Axis')  # type: ignore
-        
-    #     display_columns = self.info_st_columns
-    #     display_walls = self.info_walls + self.info_curtainwalls
-        
-    #     if display_walls:
-
-    #         st_wall_values, ns_wall_values =[], []
-            
-    #         for w in display_walls:
-    #             if 'location' in w and w['id'] in self.id_st_walls:
-    #                 st_wall_values.append(w['location'])
-    #             else:
-    #                 ns_wall_values.append(w['location'])
-            
-    #         for st_v in st_wall_values:
-    #             start_point, end_point = st_v
-    #             xs, ys, zs = zip(start_point, end_point)
-    #             ax.plot(xs, ys, zs, marker='o', color='orange', linewidth=1, markersize=1, label="Structural Walls")
-        
-    #         for ns_v in ns_wall_values:
-    #             start_point, end_point = ns_v
-    #             xs, ys, zs = zip(start_point, end_point)
-    #             ax.plot(xs, ys, zs, marker='o', color='navy', linewidth=1, markersize=1, label="Non-structural Walls")
-        
-    #     if display_columns:
-
-    #         column_values = [c['location'] for c in display_columns if 'location' in c]
-    #         for v in column_values:
-    #             start_point, end_point = v
-    #             xs, ys, zs = zip(start_point, end_point)
-    #             ax.plot(xs, ys, zs, marker='o', color='tomato', linewidth=1, markersize=2, label="Structural Columns")
-
-    #     plt.savefig(os.path.join(self.out_fig_path, 'wall_and_column_location_map.png'), dpi=200)
-    #     plt.close(fig)
-
-    # def floor_location_map(self):
-
-    #     values = [w['location'] for w in self.info_floors if 'location' in w]
-    #     values = [x for xs in values for x in xs]
-
-    #     fig = plt.figure(figsize=(8, 8))
-    #     ax = fig.add_subplot(111, projection='3d')
-    #     ax.set_xlabel('X Axis')
-    #     ax.set_ylabel('Y Axis')
-    #     ax.set_zlabel('Z Axis')  # type: ignore
-
-    #     for v in values:
-    #         start_point, end_point = v
-    #         xs, ys, zs = zip(start_point, end_point)
-    #         ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=3)
-
-    #     plt.savefig(os.path.join(self.out_fig_path, 'floor_location_map.png'), dpi=200)
-    #     plt.close(fig)
-
-    # function notes.
-    def write_dict_floors(self):
-        
-        dict_info_floors = remove_duplicate_dicts(self.info_floors)
-        try:
-            with open(os.path.join(self.out_fig_path, 'info_floors.json'), 'w') as json_file:
-                json.dump(dict_info_floors, json_file, indent=4)
-        except IOError as e:
-            raise IOError(f"Failed to write to {self.out_fig_path + 'floors.json'}: {e}")
-        
-    # function notes.
-    def write_dict_columns(self):
-
-        dict_info_columns = remove_duplicate_dicts(self.info_st_columns)
-        try:
-            with open(os.path.join(self.out_fig_path, 'info_columns.json'), 'w') as json_file:
-                json.dump(dict_info_columns, json_file, indent=4)
-        except IOError as e:
-            raise IOError(f"Failed to write to {self.out_fig_path + 'columns.json'}: {e}")
-
-    # function notes.
-    def write_dict_walls(self):
-        
-        # st_walls
-        dict_info_walls = remove_duplicate_dicts(self.info_st_walls)
-        if dict_info_walls:
-            try:
-                with open(os.path.join(self.out_fig_path, 'info_st_walls.json'), 'w') as json_file:
-                    json.dump(dict_info_walls, json_file, indent=4)
-            except IOError as e:
-                raise IOError(f"Failed to write to {self.out_fig_path + 'st_walls.json'}: {e}")
-        
-        # ns_walls
-        dict_info_walls = remove_duplicate_dicts(self.info_ns_walls)
-        if dict_info_walls:
-            try:
-                with open(os.path.join(self.out_fig_path, 'info_ns_walls.json'), 'w') as json_file:
-                    json.dump(dict_info_walls, json_file, indent=4)
-            except IOError as e:
-                raise IOError(f"Failed to write to {self.out_fig_path + 'ns_walls.json'}: {e}")
-
-        # curtain_walls
-        dict_info_walls = remove_duplicate_dicts(self.info_curtainwalls)
-        if dict_info_walls:
-            try:
-                with open(os.path.join(self.out_fig_path, 'info_ct_walls.json'), 'w') as json_file:
-                    json.dump(dict_info_walls, json_file, indent=4)
-            except IOError as e:
-                raise IOError(f"Failed to write to {self.out_fig_path + 'ct_walls.json'}: {e}")
-    
-#displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+# displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
 #===================================================================================================
@@ -1174,31 +1320,12 @@ class IfcExtractor:
         plt.savefig(os.path.join(self.out_fig_path, 'curtainwall_triangle_meshes.png'), dpi=300)
         plt.close(fig)
     
-# displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
+# triangle display ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
-#===================================================================================================
-#space
-
-    # def calc_space_location(self, space):
-        
-    #     location = space.ObjectPlacement.RelativePlacement.Location.Coordinates if hasattr(space, "ObjectPlacement") else None
-    #     return location
-    
-    # def get_space_info(self):
-            
-    #     space_info = []
-    #     for space in self.spaces:
-    #         space_location = self.calc_space_location(space)
-    #         space_info.append({
-    #             "id": space.id(),
-    #             "location": space_location, # not working.
-    #         })
-    #     return space_info
 
 #===================================================================================================
     # plotting
-
     # # merged points.?
         # wall_points = [Point(wall_location_pt) for wall_loc in wall_locations for wall_location_pt in wall_loc]
     # # wall_points_connected = self.connect_wall_location_points(wall_locations)
@@ -1229,33 +1356,6 @@ class IfcExtractor:
     # fig.patches(xs, ys, fill_alpha=0.2, line_color="grey", line_width=1)
 
 #===================================================================================================
-    # --------------------for existing grids.
-    # def calc_grid_location(self, grid):
-
-    #     location = []
-    #     grid_items= grid.Representation.Representations[0].Items
-    #     for it in grid_items:
-    #         location.append([[[*p[0].Coordinates],[*p[1].Coordinates]] for p in it.Elements[0]])
-
-    #     # grid_line_2 = grid.ObjectPlacement
-    #     # grid_placement = 
-    #     #         if r.RepresentationIdentifier =='FootPrint':
-    #     return location
-    
-    # def get_grid_info(self):
-
-    #     self.grid_info = []
-
-    #     for grid in self.grids:
-    #         grid_location = self.calc_grid_location(grid)
-    #         grid_evlevation = self.get_object_elevation(grid)
-    #         self.grid_info.append({
-    #             "id": grid.GlobalId,
-    #             "location": grid_location,
-    #             "elevation": grid_evlevation,
-    #         })
-
-#===================================================================================================
     # some ifc connecting ... assuming there's no connecting elements can be directly used.
     # IfcRelConnectsElements
     # IfcRelConnectsPathElements
@@ -1274,345 +1374,3 @@ class IfcExtractor:
     #         xs.append(list(exterior_coords[0]))
     #         ys.append(list(exterior_coords[1]))
     #         return xs, ys
-    
-#===================================================================================================
-#geometry analysis
-
-    # def calc_shape_volume(self, shape):
-    #     props = OCC.Core.GProp.GProp_GProps()
-    #     OCC.Core.BRepGProp.brepgprop.SurfaceProperties(shape.geometry, props)
-    #     return props.Mass()
-
-    # def calc_shape_area(self, shape):
-    #     props = OCC.Core.GProp.GProp_GProps()
-    #     OCC.Core.BRepGProp.brepgprop.VolumeProperties(shape.geometry, props)
-    #     return props.Mass()
-
-    # def calc_wall_volume(self, wall):
-    #     shape = self.get_wall_shape(wall)
-    #     volume = self.calc_shape_volume(shape)
-    #     return volume
-    
-    # def calc_wall_area(self, wall):
-    #     shape = self.get_wall_shape(wall)
-    #     area = self.calc_shape_area(shape)
-    #     return area
-
-
-    # def get_wall_volume(self, wall):
-
-    #     psets = ifcopenshell.util.element.get_psets(wall)
-    #     if 'Dimensions' in psets.keys():
-    #         if 'Volume' in psets['Dimensions'].keys():
-    #             volume = psets['Dimensions']['Volume']
-    #             return volume
-    #         else:
-    #             return None
-    #     else:
-    #         return None
-        
-    # def get_wall_length(self, wall):
-
-    #     psets = ifcopenshell.util.element.get_psets(wall)
-
-    #     if 'Dimensions' in psets.keys():
-    #         if 'Length' in psets['Dimensions'].keys():
-    #             volume = psets['Dimensions']['Length']
-    #             return volume
-    #         else:
-    #             return None
-    #     else:
-    #         return None
-        
-        # print(ifcopenshell.util.element.get_psets(wall, psets_only=True))
-        # print(ifcopenshell.util.element.get_psets(wall, qtos_only=True))
-
-        # settings = ifcopenshell.geom.settings()
-        # shape = ifcopenshell.geom.create_shape(settings, wall)
-
-        # print(shape.guid)
-        # print(shape.id)
-        # print(shape.geometry.id)
-
-        # # A 4x4 matrix representing the location and rotation of the element, in the form:
-        # # [ [ x_x, y_x, z_x, x   ]
-        # #   [ x_y, y_y, z_y, y   ]
-        # #   [ x_z, y_z, z_z, z   ]
-        # #   [ 0.0, 0.0, 0.0, 1.0 ] ]
-        # # The position is given by the last column: (x, y, z)
-        # # The rotation is described by the first three columns, by explicitly specifying the local X, Y, Z axes.
-        # # The first column is a normalised vector of the local X axis: (x_x, x_y, x_z)
-        # # The second column is a normalised vector of the local Y axis: (y_x, y_y, y_z)
-        # # The third column is a normalised vector of the local Z axis: (z_x, z_y, z_z)
-        # # The axes follow a right-handed coordinate system.
-
-        # # Objects are never scaled, so the scale factor of the matrix is always 1.
-        # matrix = shape.transformation.matrix.data
-        # # For convenience, you might want the matrix as a nested numpy array, so you can do matrix math.
-        # matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
-        # # You can also extract the XYZ location of the matrix.
-        # location = matrix[:,3][0:3]
-
-        # # X Y Z of vertices in flattened list e.g. [v1x, v1y, v1z, v2x, v2y, v2z, ...]
-        # verts = shape.geometry.verts
-
-        # # Indices of vertices per edge e.g. [e1v1, e1v2, e2v1, e2v2, ...]
-        # # If the geometry is mesh-like, edges contain the original edges.
-        # # These may be quads or ngons and not necessarily triangles.
-        # edges = shape.geometry.edges
-
-        # # Indices of vertices per triangle face e.g. [f1v1, f1v2, f1v3, f2v1, f2v2, f2v3, ...]
-        # # Note that faces are always triangles.
-        # faces = shape.geometry.faces
-
-        # # Since the lists are flattened, you may prefer to group them like so depending on your geometry kernel
-        # # A nested numpy array e.g. [[v1x, v1y, v1z], [v2x, v2y, v2z], ...]
-        # grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
-        # # A nested numpy array e.g. [[e1v1, e1v2], [e2v1, e2v2], ...]
-        # grouped_edges = ifcopenshell.util.shape.get_edges(shape.geometry)
-        # # A nested numpy array e.g. [[f1v1, f1v2, f1v3], [f2v1, f2v2, f2v3], ...]
-        # grouped_faces = ifcopenshell.util.shape.get_faces(shape.geometry)
-                
-
-        # settings = ifcopenshell.geom.settings()
-        # settings.set(settings.USE_PYTHON_OPENCASCADE, True)
-        
-        # #f1
-        # # product = ifcopenshell.geom.create_shape(settings, wall)
-        # # shape = OCC.Core.TopoDS.TopoDS_Iterator(product.geometry).Value()
-        # # trsf = shape.geometry.Location().Transformation()
-        # # trsf.TranslationPart().X(), trsf.TranslationPart().Y(), trsf.TranslationPart.Z()
-
-        # #f2
-        # settings2 = ifcopenshell.geom.settings()
-        # product = ifcopenshell.geom.create_shape(settings2, wall)
-        # print (tuple(product.transformation.matrix.data))
-        
-
-    # def normalize(self, li):
-    #     mean = np.mean(list(li))
-    #     std = np.std(list(li))
-    #     nor = abs(li-mean) / std
-    #     return nor
-
-    # def plot(self, model_path):
-
-    #     ifc_file = ifcopenshell.open(model_path)
-    #     walls = ifc_file.by_type("IfcWall")
-
-    #     settings = ifcopenshell.geom.settings()
-    #     settings.set(settings.USE_PYTHON_OPENCASCADE, True)
-    #     settings.set(settings.USE_WORLD_COORDS, True)
-    #     settings.set(settings.INCLUDE_CURVES, True)
-
-    #     wall_shapes = []
-    #     bbox = OCC.Core.Bnd.Bnd_Box()
-
-    #     occ_display = ifcopenshell.geom.utils.initialize_display()
-
-    #     for wall in walls:
-
-    #         shape = ifcopenshell.geom.create_shape(settings, wall).geometry
-    #         tempo0 = wall.ObjectPlacement.RelativePlacement.Location
-    #         tempo1 = wall.ObjectPlacement.RelativePlacement.Location.Coordinates
-    #         tempo2 = wall.ObjectPlacement.RelativePlacement.RefDirection.DirectionRatios
-    #         print(tempo1)
-    #         wall_shapes.append((wall, shape))  
-            
-    #         ifcopenshell.geom.utils.display_shape(shape)
-        
-    #     occ_display.FitAll()
-    #     ifcopenshell.geom.utils.main_loop()
-
-    #     settings = ifcopenshell.geom.settings()
-    #     settings.set(settings.USE_PYTHON_OPENCASCADE, True)
-    #     settings.set(settings.USE_WORLD_COORDS, True)
-    #     settings.set(settings.INCLUDE_CURVES, True)
-
-    #     # get the shape geometry by creating the shape.
-    #     # wall_representation_axis = wall.Representation.Representations[0]
-    #     # wall_representation_boday = wall.Representation.Representations[1]
-    #     # wall_pnts = (wall_representation_axis.Items[0].Points[0].Coordinates,wall_representation_axis.Items[0].Points[1].Coordinates)
-
-    #     # occ display initialization.
-    #     # occ_display = ifcopenshell.geom.utils.initialize_display()
-    #     # occ_display.FitAll() # Fit the model into view
-    #     # ifcopenshell.geom.utils.main_loop() # Allow for user interaction
-
-    #     shape = ifcopenshell.geom.create_shape(settings, wall).geometry
-        
-    #     # ==================================
-    #     # List to store the faces of the wall
-    #     exp_face = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_FACE)
-    #     wall_faces = []
-
-    #     while exp_face.More():
-    #         face = exp_face.Current()
-    #         # face = OCC.Core.TopoDS.topods.Face(exp_face.Current())
-    #         wall_faces.append(face)
-    #         exp_face.Next()
-
-    #     for face in wall_faces:
-    #         print("Face :", face)
-
-        # # ==================================
-        # # List to store the edges (axes) of the wall
-        # exp_edge = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_EDGE)
-        # wall_edges = []
-
-        # while exp_edge.More():
-        #     edge = OCC.Core.TopoDS.topods_Edge(exp_edge.Current())
-        #     wall_edges.append(edge)
-        #     exp_edge.Next()
-
-        # for edge in wall_edges:
-        #     print("Edge (Axis):", edge)
-            
-        # # ==================================
-        # # List to store the vertices of the wall
-        # exp_vertice = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_VERTEX)
-        # wall_vertices = []
-
-        # while exp_vertice.More():
-        #     vertice = OCC.Core.TopoDS.TopoDS_Vertex(exp_vertice.Current())
-        #     wall_vertices.append(vertice)
-        #     exp_vertice.Next()
-
-        # for vertex in wall_vertices:
-        #     print("Vertex:", vertex)
-
-        # pt = OCC.Core.BRep.Pnt(vertex)
-        # print("Point:", pt)
-
-    
-        # shape = ifcopenshell.geom.create_shape(settings, wall).geometry
-        # # shape = ifcopenshell.geom.create_shape(settings, wall_axis_representation)
-
-        # # get the single edge of your wall axis representation
-        # exp1 = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_FACE)
-        
-        # # get vertices
-        # exp2 = OCC.Core.TopExp.topexp_Vertices(shape, OCC.Core.TopAbs.TopAbs_VERTEX)
-        
-        # # get the points associated to the vertices.
-        # exp3 = OCC.Core.BRep.Pnt(shape)
-
-        # out = []
-        # display_shape = ifcopenshell.geom.utils.display_shape(shape)
-
-        # faces = shape.geometry.faces
-        # face = faces[0]
-        
-        # # calculate the wall volume and area.
-        # volume = self.calc_volume(shape) 
-        # area = self.calc_area(shape)
-
-        # # feature = self.normalize(map(operator.truediv, area, volume))
-    
-        # # color = RED if feature > 1. else GRAY
-        # # ifcopenshell.geom.utils.display_shape(shape, clr = color)
-        
-        # exp = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_FACE)
-        # while exp.More():
-        #     face = OCC.Core.TopoDS.topods.Face(exp.Current())
-        #     prop = OCC.Core.BRepGProp.BRepGProp_Face(face)
-        #     p = OCC.gp.gp_Pnt()
-        #     normal_direction = OCC.gp.gp_Vec()
-        #     prop.Normal(0.,0.,p,normal_direction)
-        #     if abs(1. - normal_direction.Z()) < 1.e-5:
-        #         ifcopenshell.geom.utils.display_shape(face)
-        #     exp.Next()
-
-        # # Fit the model into view
-        # occ_display.FitAll()
-        
-        # # # Allow for user interaction
-        # ifcopenshell.geom.utils.main_loop()
-
-
-        # exp = OCC.Core.TopoDS.TopoDS_Shape.Location()
-    
-        # product = ifcopenshell.geom.create_shape(settings, wall)
-        # representation = wall.Representation.Axis
-        # shape = ifcopenshell.geom.create_shape(wall, representation)
-        
-        # # to get a single edge of your wall axis representation (ideally there should only be one).
-        # OCC.Core.TopExp.TopExp_Explorer
-
-        # # to get its vertices.
-        # OCC.Core.TopExp.topexp_Vertices
-
-        # # to get the points associated to the vertices.
-        # OCC.Core.BRep.Pnt 
-        
-            #     placement = object_placement.RelativePlacement
-            #     if placement and placement.is_a("IfcAxis2Placement3D"):
-            #         # Extract the transformation matrix
-            #         matrix = placement.Axis2Placement.Matrix
-            #         if matrix:
-            #             # Extract the orientation components
-            #             x_direction = matrix[0][0]
-            #             y_direction = matrix[1][0]
-            #             z_direction = matrix[2][0]
-            #             print(f"Orientation of Wall {wall.Name}:")
-            #             print(f"X Direction: {x_direction}")
-            #             print(f"Y Direction: {y_direction}")
-            #             print(f"Z Direction: {z_direction}")
-            # elif object_placement.is_a("IfcGridPlacement"):
-            #     # Handle other types of placements as needed
-            #     pass
-
-        # halfspaces = []
-
-        # for wall, shape in wall_shapes:
-
-        #     # topo = OCC.Utils.Topo(shape) # old
-        #     # topo = OCC.Extend.TopologyUtils.TopologyExplorer(shape)
-
-        #     exp_face = OCC.Core.TopExp.TopExp_Explorer(shape, OCC.Core.TopAbs.TopAbs_FACE)
-        #     wall_faces = []
-
-        #     while exp_face.More():
-        #         # face = exp_face.Current()
-        #         face = OCC.Core.TopoDS.topods_Edge(exp_face.Current())
-        #         wall_faces.append(face)
-        #         exp_face.Next()
-                
-        #     for face in wall_faces:
-        #         surf = OCC.Core.BRep.BRep_Tool.Surface(face)
-        #         obj = surf.GetObject()
-        #         assert obj.DynamicType().GetObject().Name() == "Geom_Plane"
-                
-        #         plane = OCC.Core.Geom.Handle_Geom_Plane.DownCast(surf).GetObject()
-                
-        #         if plane.Axis().Direction().Z() == 0:
-        #             face_bbox = OCC.Core.Bnd.Bnd_Box()
-        #             OCC.Core.BRepBndLib.brepbndlib_Add(face, face_bbox)
-        #             face_center = ifcopenshell.geom.utils.get_bounding_box_center(face_bbox).XYZ()
-                    
-        #             face_normal = plane.Axis().Direction().XYZ()
-        #             face_towards_center = bounding_box_center.XYZ() - face_center
-        #             face_towards_center.Normalize()
-                    
-        #             dot = face_towards_center.Dot(face_normal)
-                    
-        #             if dot < -0.8:
-                        
-        #                 ifcopenshell.geom.utils.display_shape(face)
-                        
-        #                 face_plane = plane.Pln()
-        #                 new_face = OCC.Core.BRepBuilderAPI.BRepBuilderAPI_MakeFace(face_plane).Face()
-        #                 halfspace = OCC.Core.BRepPrimAPI.BRepPrimAPI_MakeHalfSpace(
-        #                     new_face, bounding_box_center).Solid()
-        #                 halfspaces.append(halfspace)
-
-        # for wall in walls:
-        #     if wall.Representation:
-        #         # tempo = wall.Representation
-        #         shape = ifcopenshell.geom.create_shape(settings, wall).geometry
-        #         # OCC.Core.BRepBndLib.brepbndlib_Add(shape, bbox)
-        #         # display_shape = ifcopenshell.geom.utils.display_shape(shape)
-        
-        # check: https://sourceforge.net/p/ifcopenshell/discussion/1782716/thread/014c820c23/
-        # check: https://sourceforge.net/p/ifcopenshell/discussion/1782717/thread/409ef11620/
-

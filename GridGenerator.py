@@ -133,7 +133,7 @@ class GridGenerator:
             # column points.
             'st_column_points':{
                 'legend_label':'Column Locations',
-                'color': "grey",
+                'color': "black",
                 'size':4,
                 'alpha':1,
             },
