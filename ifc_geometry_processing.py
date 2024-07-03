@@ -15,6 +15,9 @@ def process_ifc_file(input_path, output_path):
     extractor.extract_all_floors()
     extractor.extract_all_columns()
     extractor.extract_all_walls()
+    extractor.extract_all_curtainwalls()
+
+    extractor.post_processing_walls()
     extractor.wall_column_floor_location_display()
 
 # def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):

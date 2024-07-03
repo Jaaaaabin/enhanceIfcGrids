@@ -11,8 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-from sklearn.cluster import DBSCAN
-from scipy.spatial.distance import pdist, squareform
+from sklearn.decomposition import PCA
 
 from toolsQuickUtils import time_decorator
 from toolsQuickUtils import remove_duplicate_dicts, find_most_common_value
@@ -33,6 +32,8 @@ class IfcExtractor:
             self.model = ifcopenshell.open(model_path)
 
             self.ifc_file_name = os.path.basename(model_path)
+            self.authoring_tool = 'non-ar' if '-AR-' not in self.ifc_file_name else 'ar'
+
             self.out_fig_path = figure_path
             os.makedirs(figure_path, exist_ok=True)
 
@@ -138,7 +139,7 @@ class IfcExtractor:
             "11103035": {
                 "type": 6,
                 "elev": 20,
-                "azim": -60
+                "azim": -75
             },
             "11103223": {
                 "type": 7,
@@ -228,6 +229,58 @@ class IfcExtractor:
             'height': round(height, deci),
         }
     
+    def _vertices2dimensions_pca_advanced(self, vertices, deci=6):
+        
+        # Perform PCA to find the main directions
+        pca = PCA(n_components=3)
+        pca.fit(vertices)
+        
+        # Transform the points to the new coordinate system
+        transformed_points = pca.transform(vertices)
+        
+        # Calculate the differences along each principal component
+        max_transformed = np.max(transformed_points, axis=0)
+        min_transformed = np.min(transformed_points, axis=0)
+        
+        # The dimensions along the principal components
+        dimensions = max_transformed - min_transformed
+        
+        # Sort the dimensions from max to min
+        sorted_dimensions = sorted(dimensions, reverse=True)
+        
+        # Calculate the height by finding the dimension close to the max distance in z axis
+        max_z = np.max(vertices[:, 2])
+        min_z = np.min(vertices[:, 2])
+        max_distance_z = max_z - min_z
+        
+        # Determine the height as the dimension closest to max_distance_z
+        height = min(sorted_dimensions, key=lambda x: abs(x - max_distance_z))
+        
+        # Remove the height from the sorted dimensions list
+        sorted_dimensions.remove(height)
+        
+        # Assign the remaining dimensions to length and width
+        length, width = sorted(sorted_dimensions, reverse=True)
+
+        # Identify the principal component corresponding to the length
+        length_index = np.argmax(dimensions == length)
+        length_vector = pca.components_[length_index]
+        
+        # Calculate the direction of the length in the xy-plane
+        angle_rad = np.arctan2(length_vector[1], length_vector[0])
+        angle_deg = np.degrees(angle_rad)
+        
+        # Ensure the angle is in the range [0, 360)
+        if angle_deg < 0:
+            angle_deg += 360
+        
+        return {
+            'length': round(length, deci),
+            'width': round(width, deci),
+            'height': round(height, deci),
+            'orientation': round(angle_deg, 4),
+        }
+
     # function notes.
     def _shape2_location_verts(self, shape):
 
@@ -237,6 +290,7 @@ class IfcExtractor:
         grouped_verts = ifcopenshell.util.shape.get_vertices(shape.geometry)
         return location, grouped_verts
     
+    # function notes.
     def _divide_unit(self, loc):
 
         for value in loc:
@@ -310,7 +364,7 @@ class IfcExtractor:
 
         return floor_width, floor_location_xy
     
-    def get_floor_dimensions_non_av(self):
+    def get_floor_dimensions_non_ar(self):
 
         def add_values_to_points(points, add_values):
             updated_points = []
@@ -351,7 +405,7 @@ class IfcExtractor:
                     if not iterator.next():
                         break
 
-    def get_floor_dimensions_av(self):
+    def get_floor_dimensions_ar(self):
 
         iterator = ifcopenshell.geom.iterator(
                     self.settings, self.model, multiprocessing.cpu_count(), include=self.floors)
@@ -405,12 +459,12 @@ class IfcExtractor:
         self.floors = self.slabs
 
         # this part needs to be improved systematically before any publsihment.....
-        if '-AR-' not in self.ifc_file_name:
+        if self.authoring_tool != 'ar':
             # case of non-Autodesk Revit as the initial authoring tools.
-            self.get_floor_dimensions_non_av()
+            self.get_floor_dimensions_non_ar()
         else:
             # case of Autodesk Revit as the initial authoring tools.
-            self.get_floor_dimensions_av()
+            self.get_floor_dimensions_ar()
             self.enrich_floor_information()
         
         #------
@@ -480,10 +534,6 @@ class IfcExtractor:
                             info['length'] is not None
         ]
     
-    # function notes.
-    # location shift problem might be solved by 
-    # info_w['length'] +/- info_w['width']
-    # so far, this seems a brilliant idea.
     def _update_wall_info(self, wall, info_w):
 
         orientation_deg = self._calc_element_orientation(wall)
@@ -492,21 +542,7 @@ class IfcExtractor:
             wall_location_p1[0] + info_w['length'] * math.cos(math.radians(orientation_deg)),
             wall_location_p1[1] + info_w['length'] * math.sin(math.radians(orientation_deg)),
             wall_location_p1[2]
-        )
-
-        # # adjustment.
-        # x_sign = np.sign(math.cos(math.radians(orientation_deg)))
-        # y_sign = np.sign(math.sin(math.radians(orientation_deg)))
-        # wall_location_p1 = (
-        #     wall_location_p1[0] + x_sign * info_w['width'] * math.cos(math.radians(orientation_deg)),
-        #     wall_location_p1[1] + y_sign * info_w['width'] * math.sin(math.radians(orientation_deg)),
-        #     wall_location_p1[2]
-        # )
-        # wall_location_p2 = (
-        #     wall_location_p2[0] - x_sign * info_w['width'] * math.cos(math.radians(orientation_deg)),
-        #     wall_location_p2[1] - y_sign * info_w['width'] * math.sin(math.radians(orientation_deg)),
-        #     wall_location_p2[2]
-        # )    
+        ) 
 
         info_w.update({
             'location': [wall_location_p1, wall_location_p2],
@@ -551,21 +587,14 @@ class IfcExtractor:
                 new_info_curtainwalls.append(info_w)
             else:
                 continue
-        
-        # if len(self.info_st_walls)==len(new_info_st_walls) and \
-        #     len(self.info_ns_walls)==len(new_info_ns_walls) and \
-        #         len(self.info_curtainwalls)==len(new_info_curtainwalls):
+
         self.info_st_walls = new_info_st_walls
         self.info_ns_walls = new_info_ns_walls
         self.info_curtainwalls = new_info_curtainwalls
 
-        # else:
-        #     raise ValueError("Errors occur during the process of glue_wall_connections.")
-
     @time_decorator
     def extract_all_walls(self):
         
-        # walls
         # first write to info_walls and then split by st_walls or ns_walls.
         self.info_walls = []
         self.info_st_walls = []
@@ -574,20 +603,19 @@ class IfcExtractor:
         self.get_wall_dimensions()
         self.enrich_wall_information()
 
+    @time_decorator
+    def extract_all_curtainwalls(self):
+
         self.info_curtainwalls = []
+
         self.process_curtainwall_subelements()
         self.get_curtainwall_information()
 
+    def post_processing_walls(self):
+
         self.split_st_ns_ct_wall_information()
         self.glue_wall_connections()
-
         self.write_dict_walls()
-        # self.wall_display()
-        #------
-        # todo
-        #------
-        print('here are a todos.')
-        # also retest the IfcCurtainwalls, please do it with one example from the BIM.fundamentals.
         
 #wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -595,6 +623,34 @@ class IfcExtractor:
 #===================================================================================================
 #curtainwall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
+    # curtain wall as assembly ----------------------------------------------------------------
+    def get_curtainwall_dimensions(self, curtainwall_element):
+
+        shape = ifcopenshell.geom.create_shape(self.settings, curtainwall_element)
+        wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
+        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
+
+        wall_location_p1 = wall_location_p1.tolist()
+        wall_location_p2 = (
+            wall_location_p1[0] + wall_dimensions['length'] * math.cos(math.radians(wall_dimensions['orientation'])),
+            wall_location_p1[1] + wall_dimensions['length'] * math.sin(math.radians(wall_dimensions['orientation'])),
+            wall_location_p1[2]
+        ) 
+        
+        dict_of_a_curtainwall = {
+            "id": shape.guid,
+            "elevation": round(wall_location_p1[-1],4),
+            'location': [wall_location_p1, wall_location_p2]}
+        dict_of_a_curtainwall.update(wall_dimensions)
+
+        orientation_in180 = wall_dimensions['orientation']-180 if wall_dimensions['orientation']>=180 else wall_dimensions['orientation']
+        dict_of_a_curtainwall.update({
+            'orientation': orientation_in180})
+        self.info_curtainwalls.append(dict_of_a_curtainwall)
+
+    # curtain wall as assembly ----------------------------------------------------------------
+
+    # curtain wall with sub elements. ----------------------------------------------------------------
     def process_curtainwall_subelements(self):
 
         self.id2orientation_plates = dict()
@@ -608,13 +664,15 @@ class IfcExtractor:
             self.id2orientation_members.update({
                 member.GlobalId: self._calc_element_orientation(member)
             })
+    # curtain wall with sub elements. ----------------------------------------------------------------
 
     def get_curtainwall_information(self):
         
         try:
-
+            
             for cw in self.curtainwalls:
-
+                
+                # curtain wall with sub elements. ----------------------------------------------------------------
                 if hasattr(cw,'IsDecomposedBy') and len(cw.IsDecomposedBy)==1 and cw.IsDecomposedBy[0].is_a('IfcRelAggregates'):
 
                     cw_related_objects = cw.IsDecomposedBy[0].RelatedObjects
@@ -721,11 +779,22 @@ class IfcExtractor:
                         'width': round(cw_width, 4),
                         'orientation': cw_orientation % 180.0,
                         })
-                
+                # curtain wall with sub elements. ----------------------------------------------------------------
+
+                elif hasattr(cw, 'Representation'):
+
+                    # curtain wall as assembly ----------------------------------------------------------------
+                    if hasattr(cw.Representation,'Representations'):
+                        for r in cw.Representation.Representations:
+                            if r.RepresentationIdentifier == 'Body':
+                                self.get_curtainwall_dimensions(cw)
+                                break
+                    # curtain wall as assembly ----------------------------------------------------------------
+
                 else:
                     # Logging the missing or malformed attribute rather than raising an exception to allow processing to continue
                     print(f'Attribute check failed for IfcCurtainWall with guid {cw.GlobalId}.')
-        
+
         except Exception as e:
             # General exception handling to catch unexpected errors
             print(f"An error occurred: {str(e)}")
@@ -788,6 +857,7 @@ class IfcExtractor:
                 else:
                     continue
 
+        # ---------------------------------------------------------------------------------------------------------------------------
         # # old version (save): some z coordinations are doubled due to the unclear reference storeys.
         # if c_location_pt_from_body==None or (abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001):
         #     c_location_pt_directplacement = column.ObjectPlacement.RelativePlacement.Location.Coordinates
@@ -795,6 +865,7 @@ class IfcExtractor:
         #     rel_placement = column.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates
         #     c_location_pt_directplacement = tuple(sum(x) for x in zip(c_location_pt_directplacement, rel_placement))
         #     c_location_pt_directplacement = c_location_pt_directplacement[:2] + (c_location_pt_directplacement[2] + rel_storey_elevation,)
+        # ---------------------------------------------------------------------------------------------------------------------------
         
         # directly use the "rel_storey_elevation" as the point location z value.
         if c_location_pt_from_body==None or (abs(c_location_pt_from_body[0])<0.001 and abs(c_location_pt_from_body[1])<0.001):
@@ -966,6 +1037,7 @@ class IfcExtractor:
 # displayandexport ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
 
     def test_debug_display(self):
+
         fig = plt.figure(figsize=(12, 6))
         ax = fig.add_subplot(111, projection='3d')
 
@@ -1022,22 +1094,30 @@ class IfcExtractor:
         # Display Walls
         display_walls = self.info_walls + self.info_curtainwalls
         if display_walls:
-            st_wall_values, ns_wall_values = [], []
+            st_wall_values, ns_wall_values, ct_wall_values = [], [], []
             for w in display_walls:
-                if 'location' in w and w['id'] in self.id_st_walls:
-                    st_wall_values.append(w['location'])
-                else:
-                    ns_wall_values.append(w['location'])
-            
+                if 'location' in w:
+                    if w['id'] in self.id_st_walls:
+                        st_wall_values.append(w['location'])
+                    elif  w['id'] in self.id_ns_walls:
+                        ns_wall_values.append(w['location'])
+                    elif  w['id'] in self.id_ct_walls:
+                        ct_wall_values.append(w['location'])
+
             for st_v in st_wall_values:
                 start_point, end_point = st_v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='s', color='black', linewidth=1, markersize=2, label="IfcWall(S)")
+                ax.plot(xs, ys, zs, marker='s', color='black', linewidth=1.5, markersize=1, label="IfcWall(S)")
         
             for ns_v in ns_wall_values:
                 start_point, end_point = ns_v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='s', color='grey', linewidth=1, markersize=2, label="IfcWall(N)")
+                ax.plot(xs, ys, zs, marker='s', color='grey', linewidth=1, markersize=1, alpha=0.8, label="IfcWall(N)")
+
+            for ct_v in ct_wall_values:
+                start_point, end_point = ct_v
+                xs, ys, zs = zip(start_point, end_point)
+                ax.plot(xs, ys, zs, marker='s', color='royalblue', linewidth=1, markersize=1, label="IfcWall(CT)")
         
         # Display Columns
         display_columns = self.info_st_columns
@@ -1046,15 +1126,7 @@ class IfcExtractor:
             for v in column_values:
                 start_point, end_point = v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=2, label="IfcColumn(S)")
-        
-        # Display Floors (old)
-        # values = [w['location'] for w in self.info_floors if 'location' in w]
-        # values = [x for xs in values for x in xs]
-        # for v in values:
-        #     start_point, end_point = v
-        #     xs, ys, zs = zip(start_point, end_point)
-        #     ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.5, alpha=0.2, label="IfcSlab")
+                ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1.5, markersize=1, alpha=0.8, label="IfcColumn(S)")
         
         # Display Floors
         values = [w['location'] for w in self.info_floors if 'location' in w]
@@ -1070,7 +1142,7 @@ class IfcExtractor:
             if line not in plotted_lines:
                 plotted_lines.add(line)
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.5, alpha=0.33, label="IfcSlab")
+                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.25, alpha=0.33, label="IfcSlab")
         
         # Ensure tight layout
         plt.tight_layout()

@@ -240,26 +240,6 @@
         "orientation": 0.0
     },
     {
-        "id": "1W9tN5pDj0QuNvsNl7Qvbb",
-        "elevation": 8.4,
-        "location": [
-            [
-                0.7354166666666746,
-                39.4054166666667,
-                8.4
-            ],
-            [
-                0.7354166666666746,
-                49.4054166666667,
-                8.4
-            ]
-        ],
-        "length": 10.0,
-        "width": 0.24,
-        "height": 4.0,
-        "orientation": 90.0
-    },
-    {
         "id": "0qAgOQ5wb97glH3IgfxY4g",
         "elevation": 8.4,
         "location": [
@@ -275,6 +255,26 @@
             ]
         ],
         "length": 9.76,
+        "width": 0.24,
+        "height": 4.0,
+        "orientation": 90.0
+    },
+    {
+        "id": "1W9tN5pDj0QuNvsNl7Qvbb",
+        "elevation": 8.4,
+        "location": [
+            [
+                0.7354166666666746,
+                39.4054166666667,
+                8.4
+            ],
+            [
+                0.7354166666666746,
+                49.4054166666667,
+                8.4
+            ]
+        ],
+        "length": 10.0,
         "width": 0.24,
         "height": 4.0,
         "orientation": 90.0
@@ -320,26 +320,6 @@
         "orientation": 0.0
     },
     {
-        "id": "2nmuwuWwD63u80ohlPIp8Q",
-        "elevation": 12.6,
-        "location": [
-            [
-                0.7354166666666746,
-                39.4054166666667,
-                12.6
-            ],
-            [
-                0.7354166666666746,
-                49.4054166666667,
-                12.6
-            ]
-        ],
-        "length": 10.0,
-        "width": 0.24,
-        "height": 4.0,
-        "orientation": 90.0
-    },
-    {
         "id": "2_8a19G_b7Hxf5m$eITj3K",
         "elevation": 12.6,
         "location": [
@@ -355,6 +335,26 @@
             ]
         ],
         "length": 9.76,
+        "width": 0.24,
+        "height": 4.0,
+        "orientation": 90.0
+    },
+    {
+        "id": "2nmuwuWwD63u80ohlPIp8Q",
+        "elevation": 12.6,
+        "location": [
+            [
+                0.7354166666666746,
+                39.4054166666667,
+                12.6
+            ],
+            [
+                0.7354166666666746,
+                49.4054166666667,
+                12.6
+            ]
+        ],
+        "length": 10.0,
         "width": 0.24,
         "height": 4.0,
         "orientation": 90.0
