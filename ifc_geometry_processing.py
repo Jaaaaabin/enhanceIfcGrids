@@ -69,9 +69,3 @@ except Exception as e:
 
 # except Exception as e:
 #     print(f"Error accessing directory {DATA_RES_PATH}: {e}")
-
-# outline detection
-# https://www.cgal.org/
-# https://stackoverflow.com/questions/2741589/given-a-large-set-of-vertices-in-a-non-convex-polygon-how-can-i-find-the-edges
-# https://stackoverflow.com/questions/25585401/travelling-salesman-in-scipy
-# https://gis.stackexchange.com/questions/417467/how-to-extract-the-boundaries-of-shapely-multipoint

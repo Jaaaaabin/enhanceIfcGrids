@@ -632,89 +632,6 @@ class IfcExtractor:
 #===================================================================================================
 #curtainwall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
     
-    # curtain wall as assembly ----------------------------------------------------------------
-    def get_curtainwall_dimensions(self, curtainwall_element):
-
-        def normalize_orientation(angle):
-            return angle - 180 if angle >= 180 else angle
-        
-        # Create shape from curtain wall element
-        shape = ifcopenshell.geom.create_shape(self.settings, curtainwall_element)
-        
-        # Get the location and grouped vertices
-        wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
-        wall_location_p1 = wall_location_p1.tolist()
-        
-        # Get the centroid of the shape
-        location_centroid = ifcopenshell.util.shape.get_shape_bbox_centroid(shape, shape.geometry)
-        
-        # Calculate wall dimensions using PCA
-        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
-        
-        # Calculate wall orientation
-        wall_orientation = self._calc_element_orientation_from_reference_points(wall_location_p1, location_centroid)
-        orientation_in180 = normalize_orientation(wall_orientation)
-        
-        # Calculate the second point of the wall location
-        wall_length = wall_dimensions.get('length', 0)
-        if wall_length == 0:
-            raise ValueError("Wall length is zero. Cannot determine wall location p2.")
-        wall_location_p2 = (
-            wall_location_p1[0] + wall_length * math.cos(math.radians(wall_orientation)),
-            wall_location_p1[1] + wall_length * math.sin(math.radians(wall_orientation)),
-            wall_location_p1[2]
-        )
-        
-        # Create a dictionary of the curtain wall details
-        dict_of_a_curtainwall = {
-            "id": shape.guid,
-            "elevation": round(wall_location_p1[-1], 4),
-            "location": [wall_location_p1, wall_location_p2],
-            "orientation": orientation_in180,
-        }
-        dict_of_a_curtainwall.update(wall_dimensions)
-        
-        # Append the dictionary to the list of curtain walls
-        self.info_curtainwalls.append(dict_of_a_curtainwall)
-    
-    def adjust_curtainwall_z_location(self, wall_location_p1, wall_dimensions, wall_location_centroid):
-        
-        half_h = wall_dimensions['height'] * 0.5
-        if abs(wall_location_p1[-1]-wall_location_centroid[-1]) > 0.5: # tempo hard-coded threshold value.
-            wall_location_p1[-1] = round(wall_location_centroid[-1] - half_h, 6)
-        
-        return wall_location_p1
-        
-    def get_curtainwall_dimensions(self, curtainwall_element):
-
-        shape = ifcopenshell.geom.create_shape(self.settings, curtainwall_element)
-        wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
-
-        wall_location_p1 = wall_location_p1.tolist()
-        location_centroid = ifcopenshell.util.shape.get_shape_bbox_centroid(shape, shape.geometry)
-        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
-
-        wall_location_p1 = self.adjust_curtainwall_z_location(wall_location_p1, wall_dimensions, location_centroid)
-        wall_orientation = self._calc_element_orientation_from_reference_points(wall_location_p1, location_centroid)
-        orientation_in180 = wall_orientation-180 if wall_orientation>=180 else wall_orientation
-
-        wall_location_p2 = (
-            wall_location_p1[0] + wall_dimensions['length'] * math.cos(math.radians(wall_orientation)),
-            wall_location_p1[1] + wall_dimensions['length'] * math.sin(math.radians(wall_orientation)),
-            wall_location_p1[2]
-        ) 
-    
-        dict_of_a_curtainwall = {
-            "id": shape.guid,
-            "elevation": round(wall_location_p1[-1],4),
-            "location": [wall_location_p1, wall_location_p2],
-            "orientation": orientation_in180,
-            }
-        dict_of_a_curtainwall.update(wall_dimensions)
-        self.info_curtainwalls.append(dict_of_a_curtainwall)
-
-    # curtain wall as assembly ----------------------------------------------------------------
-
     # curtain wall with sub elements. ----------------------------------------------------------------
     def process_curtainwall_subelements(self):
 
@@ -731,138 +648,287 @@ class IfcExtractor:
             })
     # curtain wall with sub elements. ----------------------------------------------------------------
 
-    def get_curtainwall_information(self):
+    def _process_ifc_members(self, cw_related_members):
+        member_z_location_per_cw = []
+        if self.type_geo == 'triangle' and cw_related_members:
+            member_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_members)
+            if member_iterator.initialize():
+                while True:
+                    shape = member_iterator.get()
+                    location, _ = self._shape2_location_verts(shape)
+                    member_z_location_per_cw.append(list(location)[-1])
+                    if not member_iterator.next():
+                        break
+        return min(member_z_location_per_cw) if member_z_location_per_cw else None
+
+    def _process_ifc_plates(self, cw_related_plates):
+        plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = [], [], []
+        if self.type_geo == 'triangle' and cw_related_plates:
+            plate_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_plates)
+            if plate_iterator.initialize():
+                while True:
+                    shape = plate_iterator.get()
+                    location, grouped_verts = self._shape2_location_verts(shape)
+                    dimensions = self._vertices2dimensions(grouped_verts)
+                    orientation_deg = self.id2orientation_plates[shape.guid]
+                    plate_locations = self._calculate_plate_locations(location, dimensions, orientation_deg)
+                    plate_location_per_cw.extend(plate_locations)
+                    plate_orientation_per_cw.append(orientation_deg)
+                    plate_width_per_cw.append(dimensions['width'])
+                    if not plate_iterator.next():
+                        break
+        return plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw
+
+    def _calculate_plate_locations(self, location, dimensions, orientation_deg):
+        location_p_center = location.tolist()
+        location_p1 = [
+            location_p_center[0] - 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
+            location_p_center[1] - 0.5 * dimensions['length'] * math.sin(math.radians(orientation_deg)),
+            location_p_center[2]
+        ]
+        location_p2 = [
+            location_p_center[0] + 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
+            location_p_center[1] + 0.5 * dimensions['length'] * math.sin(math.radians(orientation_deg)),
+            location_p_center[2]
+        ]
+        location_p3 = location_p1[:2] + [location_p1[2] + dimensions['height']]
+        location_p4 = location_p2[:2] + [location_p2[2] + dimensions['height']]
+        return [location_p1, location_p2, location_p3, location_p4]
+
+    def _get_closest_points_to_elevation(self, corner_points, elevation):
+        corner_points = np.array(corner_points)
+        differences = np.abs(corner_points[:, 2] - elevation)
+        sorted_indices = np.argsort(differences)
+        closest_indices = sorted_indices[:2]
+        return [corner_points[idx].tolist() for idx in closest_indices]
+
+    # curtain wall as assembly (representation) ----------------------------------------------------------------
+    def _adjust_curtainwall_z_location(self, wall_location_p1, wall_dimensions, wall_location_centroid):
         
+        half_h = wall_dimensions['height'] * 0.5
+        if abs(wall_location_p1[-1]-wall_location_centroid[-1]) > 0.5: # tempo hard-coded threshold value.
+            wall_location_p1[-1] = round(wall_location_centroid[-1] - half_h, 6)
+        
+        return wall_location_p1
+        
+    def _get_curtainwall_dimensions(self, curtainwall_element):
+
+        shape = ifcopenshell.geom.create_shape(self.settings, curtainwall_element)
+        wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
+
+        wall_location_p1 = wall_location_p1.tolist()
+        location_centroid = ifcopenshell.util.shape.get_shape_bbox_centroid(shape, shape.geometry)
+        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
+
+        wall_location_p1 = self._adjust_curtainwall_z_location(wall_location_p1, wall_dimensions, location_centroid)
+        wall_orientation = self._calc_element_orientation_from_reference_points(wall_location_p1, location_centroid)
+        orientation_in180 = wall_orientation-180 if wall_orientation>=180 else wall_orientation
+
+        wall_location_p2 = (
+            wall_location_p1[0] + wall_dimensions['length'] * math.cos(math.radians(wall_orientation)),
+            wall_location_p1[1] + wall_dimensions['length'] * math.sin(math.radians(wall_orientation)),
+            wall_location_p1[2]
+        ) 
+    
+        dict_of_a_curtainwall = {
+            "id": shape.guid,
+            "elevation": round(wall_location_p1[-1],4),
+            "location": [wall_location_p1, wall_location_p2],
+            "orientation": orientation_in180,
+            }
+        
+        dict_of_a_curtainwall.update(wall_dimensions)
+        self.info_curtainwalls.append(dict_of_a_curtainwall)
+    
+    # curtain wall as assembly (representation) ----------------------------------------------------------------
+    
+    # final processing functions ----------------------------------------------------------------
+    
+    def _process_curtainwall_with_sub_elements(self, cw):
+
+        cw_related_objects = cw.IsDecomposedBy[0].RelatedObjects
+        cw_related_members = [ob for ob in cw_related_objects if ob.is_a('IfcMember')]
+        cw_related_plates = [ob for ob in cw_related_objects if ob.is_a('IfcPlate')]
+
+        min_z_per_cw = self._process_ifc_members(cw_related_members)
+        plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = self._process_ifc_plates(cw_related_plates)
+
+        cw_corner_points = get_rectangle_corners(plate_location_per_cw)
+        cw_elevation = min(pt[2] for pt in cw_corner_points)
+        cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
+
+        if len(cw_location) < 2:
+            cw_location = self._get_closest_points_to_elevation(cw_corner_points, cw_elevation)
+
+        cw_length = distance_between_points(cw_location[0], cw_location[1])
+        cw_width = find_most_common_value(plate_width_per_cw)[0]
+        cw_orientation = find_most_common_value(plate_orientation_per_cw)[0]
+
+        if min_z_per_cw is not None and min_z_per_cw < cw_elevation:
+            cw_elevation = min_z_per_cw
+            for sub_loc in cw_location:
+                sub_loc[-1] = cw_elevation
+
+        self.info_curtainwalls.append({
+            'id': cw.GlobalId,
+            'elevation': round(cw_elevation, 4),
+            'location': cw_location,
+            'length': cw_length,
+            'width': round(cw_width, 4),
+            'orientation': cw_orientation % 180.0,
+        })
+        # todo. get the height of the IfcCurtainWall with "sub elements."
+
+    def _process_curtainwall_with_representation(self, cw):
+        if hasattr(cw.Representation, 'Representations'):
+            for r in cw.Representation.Representations:
+                if r.RepresentationIdentifier == 'Body':
+                    self._get_curtainwall_dimensions(cw)
+                    break
+    
+    # final processing functions ----------------------------------------------------------------
+
+    def get_curtainwall_information(self):
         try:
-            
             for cw in self.curtainwalls:
-                
-                # curtain wall with sub elements. ----------------------------------------------------------------
-                if hasattr(cw,'IsDecomposedBy') and len(cw.IsDecomposedBy)==1 and cw.IsDecomposedBy[0].is_a('IfcRelAggregates'):
-
-                    cw_related_objects = cw.IsDecomposedBy[0].RelatedObjects
-                    cw_related_members = [ob for ob in cw_related_objects if ob.is_a('IfcMember')]
-                    cw_related_plates = [ob for ob in cw_related_objects if ob.is_a('IfcPlate')]
-                    
-                    # # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-                    # IfcMembers.
-                    ### here might exist one issue. case happend that there's actually only one IfcMember rendering bizzare min_z_per_cw. 
-                    member_z_location_per_cw = []
-                    min_z_per_cw = None
-
-                    if self.type_geo == 'triangle':
-
-                        if cw_related_members:
-
-                            member_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_members)
-                            
-                            if member_iterator.initialize():
-                                while True:
-
-                                    shape = member_iterator.get()
-                                    location, grouped_verts = self._shape2_location_verts(shape)
-                                    # dimensions = self._vertices2dimensions(grouped_verts)
-                                    member_z_location_per_cw.append(list(location)[-1])
-                                    
-                                    if not member_iterator.next():
-                                        break
-                            if member_z_location_per_cw:
-                                min_z_per_cw = min(member_z_location_per_cw)
-
-                    # # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-                    # IfcPlates.
-                    plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = [], [], []
-
-                    if self.type_geo == 'triangle':
-
-                        if cw_related_plates:
-                            
-                            plate_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_plates)
-                            
-                            if plate_iterator.initialize():
-                                while True:
-
-                                    shape = plate_iterator.get()
-                                    location, grouped_verts = self._shape2_location_verts(shape)
-                                    dimensions = self._vertices2dimensions(grouped_verts)
-                                    
-                                    orientation_deg = self.id2orientation_plates[shape.guid]
-
-                                    location_p_center = location.tolist() # center part of the IfcPlate.
-                                    location_p1 = [
-                                        location_p_center[0] - 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
-                                        location_p_center[1] - 0.5 * dimensions['length'] * math.sin(math.radians(orientation_deg)),
-                                        location_p_center[2]]
-                                    
-                                    location_p2 = [
-                                        location_p_center[0] + 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
-                                        location_p_center[1] + 0.5 * dimensions['length'] * math.sin(math.radians(orientation_deg)),
-                                        location_p_center[2]]
-                                    
-                                    location_p3 = location_p1[:2] + [location_p1[2] + dimensions['height']]
-                                    location_p4 = location_p2[:2] + [location_p2[2] + dimensions['height']]
-                                    
-                                    plate_location_per_cw.extend([location_p1, location_p2, location_p3, location_p4]) # no need for further flatten.
-                                    plate_orientation_per_cw.append(orientation_deg) # ok
-                                    plate_width_per_cw.append(dimensions['width']) # ok
-                                    
-                                    if not plate_iterator.next():
-                                        break
-                    
-                    cw_corner_points = get_rectangle_corners(plate_location_per_cw)
-                    cw_elevation = min(pt[2] for pt in cw_corner_points)
-                    
-                    cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
-                    # this will return an invalid if the curtain wall has been cut somewhere.
-                    
-                    # ----------------- switched version.
-                    if len(cw_location) < 2:
-                        corner_points = np.array(cw_corner_points)
-                        differences = np.abs(corner_points[:, 2] - cw_elevation)
-                        sorted_indices = np.argsort(differences)
-                        closest_indices = sorted_indices[:2]
-                        cw_location = [corner_points[idx].tolist() for idx in closest_indices]
-                                        
-                    cw_length = distance_between_points(cw_location[0], cw_location[1])
-                    cw_width = find_most_common_value(plate_width_per_cw)[0]
-                    cw_orientation = find_most_common_value(plate_orientation_per_cw)[0]
-                    
-                    # use the IfcMember bottom to update the elevation and 3D location.
-                    if min_z_per_cw is not None and min_z_per_cw < cw_elevation:
-                        
-                        cw_elevation = min_z_per_cw
-
-                        for sub_loc in cw_location:
-                            if sub_loc:
-                                sub_loc[-1] = cw_elevation
-
-                    self.info_curtainwalls.append({
-                        'id': cw.GlobalId,
-                        'elevation': round(cw_elevation,4),
-                        'location': cw_location,
-                        'length': cw_length,
-                        'width': round(cw_width, 4),
-                        'orientation': cw_orientation % 180.0,
-                        })
-                # curtain wall with sub elements. ----------------------------------------------------------------
-
+                if hasattr(cw, 'IsDecomposedBy') and len(cw.IsDecomposedBy) == 1 and cw.IsDecomposedBy[0].is_a('IfcRelAggregates'):
+                    self._process_curtainwall_with_sub_elements(cw)
                 elif hasattr(cw, 'Representation'):
-
-                    # curtain wall as assembly ----------------------------------------------------------------
-                    if hasattr(cw.Representation,'Representations'):
-                        for r in cw.Representation.Representations:
-                            if r.RepresentationIdentifier == 'Body':
-                                self.get_curtainwall_dimensions(cw)
-                                break
-                    # curtain wall as assembly ----------------------------------------------------------------
-
+                    self._process_curtainwall_with_representation(cw)
                 else:
-                    # Logging the missing or malformed attribute rather than raising an exception to allow processing to continue
                     print(f'Attribute check failed for IfcCurtainWall with guid {cw.GlobalId}.')
-
         except Exception as e:
-            # General exception handling to catch unexpected errors
             print(f"An error occurred: {str(e)}")
+    
+    # old function----------------------------------------------------------------
+    # def get_curtainwall_information(self):
+        # try:
+            
+        #     for cw in self.curtainwalls:
+                
+        #         
+        #         if hasattr(cw,'IsDecomposedBy') and len(cw.IsDecomposedBy)==1 and cw.IsDecomposedBy[0].is_a('IfcRelAggregates'):
+
+        #             cw_related_objects = cw.IsDecomposedBy[0].RelatedObjects
+        #             cw_related_members = [ob for ob in cw_related_objects if ob.is_a('IfcMember')]
+        #             cw_related_plates = [ob for ob in cw_related_objects if ob.is_a('IfcPlate')]
+                    
+        #             # # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        #             # IfcMembers.
+        #             ### here might exist one issue. case happend that there's actually only one IfcMember rendering bizzare min_z_per_cw. 
+        #             member_z_location_per_cw = []
+        #             min_z_per_cw = None
+
+        #             if self.type_geo == 'triangle':
+
+        #                 if cw_related_members:
+
+        #                     member_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_members)
+                            
+        #                     if member_iterator.initialize():
+        #                         while True:
+
+        #                             shape = member_iterator.get()
+        #                             location, grouped_verts = self._shape2_location_verts(shape)
+        #                             # dimensions = self._vertices2dimensions(grouped_verts)
+        #                             member_z_location_per_cw.append(list(location)[-1])
+                                    
+        #                             if not member_iterator.next():
+        #                                 break
+        #                     if member_z_location_per_cw:
+        #                         min_z_per_cw = min(member_z_location_per_cw)
+
+        #             # # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        #             # IfcPlates.
+        #             plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = [], [], []
+
+        #             if self.type_geo == 'triangle':
+
+        #                 if cw_related_plates:
+                            
+        #                     plate_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_plates)
+                            
+        #                     if plate_iterator.initialize():
+        #                         while True:
+
+        #                             shape = plate_iterator.get()
+        #                             location, grouped_verts = self._shape2_location_verts(shape)
+        #                             dimensions = self._vertices2dimensions(grouped_verts)
+                                    
+        #                             orientation_deg = self.id2orientation_plates[shape.guid]
+
+        #                             location_p_center = location.tolist() # center part of the IfcPlate.
+        #                             location_p1 = [
+        #                                 location_p_center[0] - 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
+        #                                 location_p_center[1] - 0.5 * dimensions['length'] * math.sin(math.radians(orientation_deg)),
+        #                                 location_p_center[2]]
+                                    
+        #                             location_p2 = [
+        #                                 location_p_center[0] + 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
+        #                                 location_p_center[1] + 0.5 * dimensions['length'] * math.sin(math.radians(orientation_deg)),
+        #                                 location_p_center[2]]
+                                    
+        #                             location_p3 = location_p1[:2] + [location_p1[2] + dimensions['height']]
+        #                             location_p4 = location_p2[:2] + [location_p2[2] + dimensions['height']]
+                                    
+        #                             plate_location_per_cw.extend([location_p1, location_p2, location_p3, location_p4]) # no need for further flatten.
+        #                             plate_orientation_per_cw.append(orientation_deg) # ok
+        #                             plate_width_per_cw.append(dimensions['width']) # ok
+                                    
+        #                             if not plate_iterator.next():
+        #                                 break
+                    
+        #             cw_corner_points = get_rectangle_corners(plate_location_per_cw)
+        #             cw_elevation = min(pt[2] for pt in cw_corner_points)
+                    
+        #             cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
+        #             # this will return an invalid if the curtain wall has been cut somewhere.
+                    
+        #             # ----------------- switched version.
+        #             if len(cw_location) < 2:
+        #                 corner_points = np.array(cw_corner_points)
+        #                 differences = np.abs(corner_points[:, 2] - cw_elevation)
+        #                 sorted_indices = np.argsort(differences)
+        #                 closest_indices = sorted_indices[:2]
+        #                 cw_location = [corner_points[idx].tolist() for idx in closest_indices]
+                                        
+        #             cw_length = distance_between_points(cw_location[0], cw_location[1])
+        #             cw_width = find_most_common_value(plate_width_per_cw)[0]
+        #             cw_orientation = find_most_common_value(plate_orientation_per_cw)[0]
+                    
+        #             # use the IfcMember bottom to update the elevation and 3D location.
+        #             if min_z_per_cw is not None and min_z_per_cw < cw_elevation:
+                        
+        #                 cw_elevation = min_z_per_cw
+
+        #                 for sub_loc in cw_location:
+        #                     if sub_loc:
+        #                         sub_loc[-1] = cw_elevation
+
+        #             self.info_curtainwalls.append({
+        #                 'id': cw.GlobalId,
+        #                 'elevation': round(cw_elevation,4),
+        #                 'location': cw_location,
+        #                 'length': cw_length,
+        #                 'width': round(cw_width, 4),
+        #                 'orientation': cw_orientation % 180.0,
+        #                 })
+        #         
+        #         elif hasattr(cw, 'Representation'):
+
+        #             if hasattr(cw.Representation,'Representations'):
+        #                 for r in cw.Representation.Representations:
+        #                     if r.RepresentationIdentifier == 'Body':
+        #                         self._get_curtainwall_dimensions(cw)
+        #                         break
+        #             
+        #         else:
+        #             # Logging the missing or malformed attribute rather than raising an exception to allow processing to continue
+        #             print(f'Attribute check failed for IfcCurtainWall with guid {cw.GlobalId}.')
+
+        # except Exception as e:
+        #     # General exception handling to catch unexpected errors
+        #     print(f"An error occurred: {str(e)}")
 
 #curtainwall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
