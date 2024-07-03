@@ -152,7 +152,7 @@ class IfcExtractor:
                 "azim": 170
             }
         }
-        self.elev, self.azim = 0, 0
+        self.elev, self.azim = 25, 50
         for key, values in view_settings.items():
             if key in self.ifc_file_name:
                 self.elev = values["elev"]
@@ -216,6 +216,20 @@ class IfcExtractor:
         
         return round(orientation_deg, 4)
     
+    def _calc_element_orientation_from_reference_points(self, endpoint, midpoint, deg_range=360):
+
+        # Convert points to numpy arrays
+        p1 = np.array(endpoint)
+        p2 = np.array(midpoint)
+        
+        # Calculate the direction vector from point1 to point2
+        direction_vector = p2 - p1
+        angle_deg = math.degrees(math.atan2(direction_vector[1], direction_vector[0]))
+        if angle_deg < 0:
+            angle_deg += deg_range
+        
+        return angle_deg
+
     # function notes.
     def _vertices2dimensions(self, vertices, deci=6):
         verts_array = np.array(vertices)
@@ -230,7 +244,7 @@ class IfcExtractor:
         }
     
     def _vertices2dimensions_pca_advanced(self, vertices, deci=6):
-        
+
         # Perform PCA to find the main directions
         pca = PCA(n_components=3)
         pca.fit(vertices)
@@ -261,19 +275,15 @@ class IfcExtractor:
         
         # Assign the remaining dimensions to length and width
         length, width = sorted(sorted_dimensions, reverse=True)
-
+        
         # Identify the principal component corresponding to the length
         length_index = np.argmax(dimensions == length)
         length_vector = pca.components_[length_index]
         
         # Calculate the direction of the length in the xy-plane
-        angle_rad = np.arctan2(length_vector[1], length_vector[0])
+        angle_rad = np.arctan2(length_vector[1], length_vector[0]) # in the range [-pi, pi]
         angle_deg = np.degrees(angle_rad)
-        
-        # Ensure the angle is in the range [0, 360)
-        if angle_deg < 0:
-            angle_deg += 360
-        
+
         return {
             'length': round(length, deci),
             'width': round(width, deci),
@@ -607,7 +617,6 @@ class IfcExtractor:
     def extract_all_curtainwalls(self):
 
         self.info_curtainwalls = []
-
         self.process_curtainwall_subelements()
         self.get_curtainwall_information()
 
@@ -626,26 +635,82 @@ class IfcExtractor:
     # curtain wall as assembly ----------------------------------------------------------------
     def get_curtainwall_dimensions(self, curtainwall_element):
 
+        def normalize_orientation(angle):
+            return angle - 180 if angle >= 180 else angle
+        
+        # Create shape from curtain wall element
+        shape = ifcopenshell.geom.create_shape(self.settings, curtainwall_element)
+        
+        # Get the location and grouped vertices
+        wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
+        wall_location_p1 = wall_location_p1.tolist()
+        
+        # Get the centroid of the shape
+        location_centroid = ifcopenshell.util.shape.get_shape_bbox_centroid(shape, shape.geometry)
+        
+        # Calculate wall dimensions using PCA
+        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
+        
+        # Calculate wall orientation
+        wall_orientation = self._calc_element_orientation_from_reference_points(wall_location_p1, location_centroid)
+        orientation_in180 = normalize_orientation(wall_orientation)
+        
+        # Calculate the second point of the wall location
+        wall_length = wall_dimensions.get('length', 0)
+        if wall_length == 0:
+            raise ValueError("Wall length is zero. Cannot determine wall location p2.")
+        wall_location_p2 = (
+            wall_location_p1[0] + wall_length * math.cos(math.radians(wall_orientation)),
+            wall_location_p1[1] + wall_length * math.sin(math.radians(wall_orientation)),
+            wall_location_p1[2]
+        )
+        
+        # Create a dictionary of the curtain wall details
+        dict_of_a_curtainwall = {
+            "id": shape.guid,
+            "elevation": round(wall_location_p1[-1], 4),
+            "location": [wall_location_p1, wall_location_p2],
+            "orientation": orientation_in180,
+        }
+        dict_of_a_curtainwall.update(wall_dimensions)
+        
+        # Append the dictionary to the list of curtain walls
+        self.info_curtainwalls.append(dict_of_a_curtainwall)
+    
+    def adjust_curtainwall_z_location(self, wall_location_p1, wall_dimensions, wall_location_centroid):
+        
+        half_h = wall_dimensions['height'] * 0.5
+        if abs(wall_location_p1[-1]-wall_location_centroid[-1]) > 0.5: # tempo hard-coded threshold value.
+            wall_location_p1[-1] = round(wall_location_centroid[-1] - half_h, 6)
+        
+        return wall_location_p1
+        
+    def get_curtainwall_dimensions(self, curtainwall_element):
+
         shape = ifcopenshell.geom.create_shape(self.settings, curtainwall_element)
         wall_location_p1, grouped_verts = self._shape2_location_verts(shape)
-        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
 
         wall_location_p1 = wall_location_p1.tolist()
+        location_centroid = ifcopenshell.util.shape.get_shape_bbox_centroid(shape, shape.geometry)
+        wall_dimensions = self._vertices2dimensions_pca_advanced(grouped_verts)
+
+        wall_location_p1 = self.adjust_curtainwall_z_location(wall_location_p1, wall_dimensions, location_centroid)
+        wall_orientation = self._calc_element_orientation_from_reference_points(wall_location_p1, location_centroid)
+        orientation_in180 = wall_orientation-180 if wall_orientation>=180 else wall_orientation
+
         wall_location_p2 = (
-            wall_location_p1[0] + wall_dimensions['length'] * math.cos(math.radians(wall_dimensions['orientation'])),
-            wall_location_p1[1] + wall_dimensions['length'] * math.sin(math.radians(wall_dimensions['orientation'])),
+            wall_location_p1[0] + wall_dimensions['length'] * math.cos(math.radians(wall_orientation)),
+            wall_location_p1[1] + wall_dimensions['length'] * math.sin(math.radians(wall_orientation)),
             wall_location_p1[2]
         ) 
-        
+    
         dict_of_a_curtainwall = {
             "id": shape.guid,
             "elevation": round(wall_location_p1[-1],4),
-            'location': [wall_location_p1, wall_location_p2]}
+            "location": [wall_location_p1, wall_location_p2],
+            "orientation": orientation_in180,
+            }
         dict_of_a_curtainwall.update(wall_dimensions)
-
-        orientation_in180 = wall_dimensions['orientation']-180 if wall_dimensions['orientation']>=180 else wall_dimensions['orientation']
-        dict_of_a_curtainwall.update({
-            'orientation': orientation_in180})
         self.info_curtainwalls.append(dict_of_a_curtainwall)
 
     # curtain wall as assembly ----------------------------------------------------------------
