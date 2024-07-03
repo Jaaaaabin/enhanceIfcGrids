@@ -231,7 +231,7 @@ class IfcExtractor:
         return angle_deg
 
     # function notes.
-    def _vertices2dimensions(self, vertices, deci=6):
+    def _vertices2dimensions(self, vertices, deci=4):
         verts_array = np.array(vertices)
         x_range, y_range, z_range = np.ptp(verts_array, axis=0)
         length, width = max(x_range, y_range), min(x_range, y_range)
@@ -243,7 +243,7 @@ class IfcExtractor:
             'height': round(height, deci),
         }
     
-    def _vertices2dimensions_pca_advanced(self, vertices, deci=6):
+    def _vertices2dimensions_pca_advanced(self, vertices, deci=4):
 
         # Perform PCA to find the main directions
         pca = PCA(n_components=3)
@@ -662,7 +662,8 @@ class IfcExtractor:
         return min(member_z_location_per_cw) if member_z_location_per_cw else None
 
     def _process_ifc_plates(self, cw_related_plates):
-        plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = [], [], []
+
+        plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw, plate_z_ranges_per_cw= [], [], [], []
         if self.type_geo == 'triangle' and cw_related_plates:
             plate_iterator = ifcopenshell.geom.iterator(self.settings, self.model, multiprocessing.cpu_count(), include=cw_related_plates)
             if plate_iterator.initialize():
@@ -675,11 +676,15 @@ class IfcExtractor:
                     plate_location_per_cw.extend(plate_locations)
                     plate_orientation_per_cw.append(orientation_deg)
                     plate_width_per_cw.append(dimensions['width'])
+                    plate_z_values = [sublist[2] for sublist in plate_locations]
+                    plate_z_ranges = [min(plate_z_values), max(plate_z_values)]
+                    plate_z_ranges_per_cw.extend(plate_z_ranges)
                     if not plate_iterator.next():
                         break
-        return plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw
+        return plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw, plate_z_ranges_per_cw
 
     def _calculate_plate_locations(self, location, dimensions, orientation_deg):
+
         location_p_center = location.tolist()
         location_p1 = [
             location_p_center[0] - 0.5 * dimensions['length'] * math.cos(math.radians(orientation_deg)),
@@ -744,19 +749,20 @@ class IfcExtractor:
     
     # final processing functions ----------------------------------------------------------------
     
-    def _process_curtainwall_with_sub_elements(self, cw):
+    def _process_curtainwall_with_sub_elements(self, cw, deci=4):
 
         cw_related_objects = cw.IsDecomposedBy[0].RelatedObjects
         cw_related_members = [ob for ob in cw_related_objects if ob.is_a('IfcMember')]
         cw_related_plates = [ob for ob in cw_related_objects if ob.is_a('IfcPlate')]
 
         min_z_per_cw = self._process_ifc_members(cw_related_members)
-        plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw = self._process_ifc_plates(cw_related_plates)
+        plate_location_per_cw, plate_orientation_per_cw, plate_width_per_cw, plate_z_ranges_per_cw= self._process_ifc_plates(cw_related_plates)
 
         cw_corner_points = get_rectangle_corners(plate_location_per_cw)
         cw_elevation = min(pt[2] for pt in cw_corner_points)
         cw_location = [pt.tolist() for pt in cw_corner_points if pt[2] == cw_elevation]
-
+        cw_height = max(plate_z_ranges_per_cw) - min(plate_z_ranges_per_cw)
+        
         if len(cw_location) < 2:
             cw_location = self._get_closest_points_to_elevation(cw_corner_points, cw_elevation)
 
@@ -771,10 +777,11 @@ class IfcExtractor:
 
         self.info_curtainwalls.append({
             'id': cw.GlobalId,
-            'elevation': round(cw_elevation, 4),
+            'elevation': round(cw_elevation, deci),
             'location': cw_location,
+            'height': round(cw_height, deci),
             'length': cw_length,
-            'width': round(cw_width, 4),
+            'width': round(cw_width, deci),
             'orientation': cw_orientation % 180.0,
         })
         # todo. get the height of the IfcCurtainWall with "sub elements."
@@ -1238,12 +1245,12 @@ class IfcExtractor:
             for st_v in st_wall_values:
                 start_point, end_point = st_v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='s', color='black', linewidth=1.5, markersize=1, label="IfcWall(S)")
+                ax.plot(xs, ys, zs, marker='s', color='black', linewidth=1.5, markersize=1, alpha=0.875, label="IfcWall(S)")
         
             for ns_v in ns_wall_values:
                 start_point, end_point = ns_v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='s', color='grey', linewidth=1, markersize=1, alpha=0.8, label="IfcWall(N)")
+                ax.plot(xs, ys, zs, marker='s', color='grey', linewidth=1, markersize=1, label="IfcWall(N)")
 
             for ct_v in ct_wall_values:
                 start_point, end_point = ct_v
@@ -1257,7 +1264,7 @@ class IfcExtractor:
             for v in column_values:
                 start_point, end_point = v
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1.5, markersize=1, alpha=0.8, label="IfcColumn(S)")
+                ax.plot(xs, ys, zs, marker='o', color='olivedrab', linewidth=1.5, markersize=1, alpha=0.375, label="IfcColumn(S)")
         
         # Display Floors
         values = [w['location'] for w in self.info_floors if 'location' in w]
@@ -1273,7 +1280,7 @@ class IfcExtractor:
             if line not in plotted_lines:
                 plotted_lines.add(line)
                 xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.25, alpha=0.33, label="IfcSlab")
+                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.25, alpha=0.35, label="IfcSlab")
         
         # Ensure tight layout
         plt.tight_layout()
