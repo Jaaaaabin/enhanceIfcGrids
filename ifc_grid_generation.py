@@ -1,10 +1,12 @@
 import os
 from gridGenerator import GridGenerator
+from toolsQuickUtils import time_decorator
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon1'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
+@time_decorator
 def preparation_of_grid_generation(
     work_path,
     ifc_model,
@@ -23,7 +25,7 @@ def preparation_of_grid_generation(
         os.path.join(work_path, ifc_model, info_ns_walls),
         os.path.join(work_path, ifc_model, info_ct_walls),
         )
-    
+     
     # preparation.
     generator.get_main_directions_and_storeys(num_directions=2) # static.
     generator.enrich_all_element_locations() # static.
@@ -62,12 +64,12 @@ try:
         best_thresholds = {
             'st_c_num': 6,
             'st_w_num': 2,
-            'ns_w_num': 2,
-            'st_w_accumuled_length_percent': 0.00342,
-            'ns_w_accumuled_length_percent': 0.00056,
-            'st_st_merge': 0.3,
+            'ns_w_num': 3,
+            'st_w_accumuled_length_percent': 0.005,
+            'ns_w_accumuled_length_percent': 0.0005,
+            'st_st_merge': 0.5,
             'ns_st_merge': 0.5,
-            'ns_ns_merge': 0.2,
+            'ns_ns_merge': 0.5,
             'st_c_align_dist': 0.001,     # fixed value,
             'st_w_align_dist': 0.1,       # fixed value, to be decided per project
             'ns_w_align_dist': 0.1,       # fixed value, to be decided per project.

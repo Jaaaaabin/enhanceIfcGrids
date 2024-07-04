@@ -1,0 +1,2516 @@
+{
+    "1": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                4.2477
+            ],
+            [
+                25.0366,
+                4.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzb",
+            "0DQKznS5rESeTbuE1_EJzc",
+            "0DQKznS5rESeTbuE1_EJzd",
+            "0DQKznS5rESeTbuE1_EJze",
+            "0DQKznS5rESeTbuE1_EJzf",
+            "0DQKznS5rESeTbuE1_EJzh",
+            "0DQKznS5rESeTbuE1_EJzi",
+            "0DQKznS5rESeTbuE1_EJzj",
+            "0DQKznS5rESeTbuE9_EJz0",
+            "0DQKznS5rESeTbuE9_EJz1",
+            "0DQKznS5rESeTbuE9_EJz2",
+            "0DQKznS5rESeTbuE9_EJzF",
+            "0DQKznS5rESeTbuE9_EJzG",
+            "0DQKznS5rESeTbuE9_EJzH",
+            "0DQKznS5rESeTbuE9_EJzI",
+            "0DQKznS5rESeTbuE9_EJzJ",
+            "0DQKznS5rESeTbuE9_EJzL",
+            "0DQKznS5rESeTbuE9_EJzM",
+            "0DQKznS5rESeTbuE9_EJzN",
+            "0DQKznS5rESeTbuE9_EJz_",
+            "0DQKznS5rESeTbuE9_EJzb",
+            "0DQKznS5rESeTbuE9_EJzc",
+            "0DQKznS5rESeTbuE9_EJzd",
+            "0DQKznS5rESeTbuE9_EJze",
+            "0DQKznS5rESeTbuE9_EJzf",
+            "0DQKznS5rESeTbuE9_EJzh",
+            "0DQKznS5rESeTbuE9_EJzi",
+            "0DQKznS5rESeTbuE9_EJzj",
+            "0DQKznS5rESeTbuE9_EJzw",
+            "0DQKznS5rESeTbuE9_EJzx",
+            "0DQKznS5rESeTbuE9_EJzy",
+            "0DQKznS5rESeTbuE9_EJzz",
+            "0DQKznS5rESeTbuED_EJz0",
+            "0DQKznS5rESeTbuED_EJz1",
+            "0DQKznS5rESeTbuED_EJz2",
+            "0DQKznS5rESeTbuED_EJz_",
+            "0DQKznS5rESeTbuED_EJzb",
+            "0DQKznS5rESeTbuED_EJzc",
+            "0DQKznS5rESeTbuED_EJzd",
+            "0DQKznS5rESeTbuED_EJze",
+            "0DQKznS5rESeTbuED_EJzf",
+            "0DQKznS5rESeTbuED_EJzh",
+            "0DQKznS5rESeTbuED_EJzi",
+            "0DQKznS5rESeTbuED_EJzj",
+            "0DQKznS5rESeTbuED_EJzw",
+            "0DQKznS5rESeTbuED_EJzx",
+            "0DQKznS5rESeTbuED_EJzy",
+            "0DQKznS5rESeTbuED_EJzz",
+            "0DQKznS5rESeTbuEH_EJya",
+            "0DQKznS5rESeTbuEH_EJyb",
+            "0DQKznS5rESeTbuEH_EJyc",
+            "0DQKznS5rESeTbuEH_EJyd",
+            "0DQKznS5rESeTbuEH_EJye",
+            "0DQKznS5rESeTbuEH_EJyg",
+            "0DQKznS5rESeTbuEH_EJyh",
+            "0DQKznS5rESeTbuEH_EJyi",
+            "0DQKznS5rESeTbuEH_EJz0",
+            "0DQKznS5rESeTbuEH_EJz1",
+            "0DQKznS5rESeTbuEH_EJz2",
+            "0DQKznS5rESeTbuEH_EJzF",
+            "0DQKznS5rESeTbuEH_EJzG",
+            "0DQKznS5rESeTbuEH_EJzH",
+            "0DQKznS5rESeTbuEH_EJzI",
+            "0DQKznS5rESeTbuEH_EJzJ",
+            "0DQKznS5rESeTbuEH_EJzL",
+            "0DQKznS5rESeTbuEH_EJzM",
+            "0DQKznS5rESeTbuEH_EJzN",
+            "0DQKznS5rESeTbuEH_EJz_",
+            "0DQKznS5rESeTbuEH_EJzb",
+            "0DQKznS5rESeTbuEH_EJzc",
+            "0DQKznS5rESeTbuEH_EJzd",
+            "0DQKznS5rESeTbuEH_EJze",
+            "0DQKznS5rESeTbuEH_EJzf",
+            "0DQKznS5rESeTbuEH_EJzh",
+            "0DQKznS5rESeTbuEH_EJzi",
+            "0DQKznS5rESeTbuEH_EJzj",
+            "0DQKznS5rESeTbuEH_EJzw",
+            "0DQKznS5rESeTbuEH_EJzx",
+            "0DQKznS5rESeTbuEH_EJzy",
+            "0DQKznS5rESeTbuEH_EJzz",
+            "0DQKznS5rESeTbuEL_EJya",
+            "0DQKznS5rESeTbuEL_EJyb",
+            "0DQKznS5rESeTbuEL_EJyc",
+            "0DQKznS5rESeTbuEL_EJyd",
+            "0DQKznS5rESeTbuEL_EJye",
+            "0DQKznS5rESeTbuEL_EJyg",
+            "0DQKznS5rESeTbuEL_EJyh",
+            "0DQKznS5rESeTbuEL_EJyi",
+            "0DQKznS5rESeTbuEL_EJz0",
+            "0DQKznS5rESeTbuEL_EJz1",
+            "0DQKznS5rESeTbuEL_EJz2",
+            "0DQKznS5rESeTbuEL_EJzF",
+            "0DQKznS5rESeTbuEL_EJzG",
+            "0DQKznS5rESeTbuEL_EJzH",
+            "0DQKznS5rESeTbuEL_EJzI",
+            "0DQKznS5rESeTbuEL_EJzJ",
+            "0DQKznS5rESeTbuEL_EJzL",
+            "0DQKznS5rESeTbuEL_EJzM",
+            "0DQKznS5rESeTbuEL_EJzN",
+            "0DQKznS5rESeTbuEL_EJz_",
+            "0DQKznS5rESeTbuEL_EJzb",
+            "0DQKznS5rESeTbuEL_EJzc",
+            "0DQKznS5rESeTbuEL_EJzd",
+            "0DQKznS5rESeTbuEL_EJze",
+            "0DQKznS5rESeTbuEL_EJzf",
+            "0DQKznS5rESeTbuEL_EJzh",
+            "0DQKznS5rESeTbuEL_EJzi",
+            "0DQKznS5rESeTbuEL_EJzj",
+            "0DQKznS5rESeTbuEL_EJzw",
+            "0DQKznS5rESeTbuEL_EJzx",
+            "0DQKznS5rESeTbuEL_EJzy",
+            "0DQKznS5rESeTbuEL_EJzz",
+            "0DQKznS5rESeTbuET_EJya",
+            "0DQKznS5rESeTbuET_EJyb",
+            "0DQKznS5rESeTbuET_EJyc",
+            "0DQKznS5rESeTbuET_EJyd",
+            "0DQKznS5rESeTbuET_EJye",
+            "0DQKznS5rESeTbuET_EJyf",
+            "0DQKznS5rESeTbuET_EJyg",
+            "0DQKznS5rESeTbuET_EJyh",
+            "0DQKznS5rESeTbuET_EJyi",
+            "0DQKznS5rESeTbuET_EJz$",
+            "0DQKznS5rESeTbuET_EJz0",
+            "0DQKznS5rESeTbuET_EJz1",
+            "0DQKznS5rESeTbuET_EJz2",
+            "0DQKznS5rESeTbuET_EJzF",
+            "0DQKznS5rESeTbuET_EJzG",
+            "0DQKznS5rESeTbuET_EJzH",
+            "0DQKznS5rESeTbuET_EJzI",
+            "0DQKznS5rESeTbuET_EJzJ",
+            "0DQKznS5rESeTbuET_EJzK",
+            "0DQKznS5rESeTbuET_EJzL",
+            "0DQKznS5rESeTbuET_EJzM",
+            "0DQKznS5rESeTbuET_EJzN",
+            "0DQKznS5rESeTbuET_EJz_",
+            "0DQKznS5rESeTbuET_EJzb",
+            "0DQKznS5rESeTbuET_EJzc",
+            "0DQKznS5rESeTbuET_EJzd",
+            "0DQKznS5rESeTbuET_EJze",
+            "0DQKznS5rESeTbuET_EJzf",
+            "0DQKznS5rESeTbuET_EJzg",
+            "0DQKznS5rESeTbuET_EJzh",
+            "0DQKznS5rESeTbuET_EJzi",
+            "0DQKznS5rESeTbuET_EJzj",
+            "0DQKznS5rESeTbuET_EJzw",
+            "0DQKznS5rESeTbuET_EJzx",
+            "0DQKznS5rESeTbuET_EJzy",
+            "0DQKznS5rESeTbuET_EJzz",
+            "1Z$KVt3J5C6hZCgX19sUO7",
+            "1Z$KVt3J5C6hZCgX59sUO7",
+            "1Z$KVt3J5C6hZCgX99sUO7",
+            "1Z$KVt3J5C6hZCgXL9sUO7",
+            "1Z$KVt3J5C6hZCgXP9sUO7",
+            "1Z$KVt3J5C6hZCgXT9sUO7",
+            "2zFQTiy7rFAAe2LdX_Yh3U",
+            "2zFQTiy7rFAAe2LdX_YhGb",
+            "2zFQTiy7rFAAe2LdX_YhOt",
+            "2zFQTiy7rFAAe2LdX_YhRU",
+            "2zFQTiy7rFAAe2LdX_YhS5",
+            "2zFQTiy7rFAAe2LdX_YhUE",
+            "2zFQTiy7rFAAe2LdX_Yhl5",
+            "2zFQTiy7rFAAe2LdX_Yhom",
+            "2zFQTiy7rFAAe2LdX_Yhx5",
+            "2zFQTiy7rFAAe2Ldb_Yh3U",
+            "2zFQTiy7rFAAe2Ldb_YhGb",
+            "2zFQTiy7rFAAe2Ldb_YhOt",
+            "2zFQTiy7rFAAe2Ldb_YhRU",
+            "2zFQTiy7rFAAe2Ldb_YhS5",
+            "2zFQTiy7rFAAe2Ldb_YhUE",
+            "2zFQTiy7rFAAe2Ldb_Yhl5",
+            "2zFQTiy7rFAAe2Ldb_Yhom",
+            "2zFQTiy7rFAAe2Ldb_Yhx5",
+            "2zFQTiy7rFAAe2Ldf_Yh3U",
+            "2zFQTiy7rFAAe2Ldf_YhGb",
+            "2zFQTiy7rFAAe2Ldf_YhLY",
+            "2zFQTiy7rFAAe2Ldf_YhOt",
+            "2zFQTiy7rFAAe2Ldf_YhRU",
+            "2zFQTiy7rFAAe2Ldf_YhS5",
+            "2zFQTiy7rFAAe2Ldf_YhUE",
+            "2zFQTiy7rFAAe2Ldf_Yhl5",
+            "2zFQTiy7rFAAe2Ldf_Yhom",
+            "2zFQTiy7rFAAe2Ldf_Yhx5",
+            "2zFQTiy7rFAAe2Ldr_Yh3U",
+            "2zFQTiy7rFAAe2Ldr_YhGb",
+            "2zFQTiy7rFAAe2Ldr_YhOt",
+            "2zFQTiy7rFAAe2Ldr_YhRU",
+            "2zFQTiy7rFAAe2Ldr_YhS5",
+            "2zFQTiy7rFAAe2Ldr_YhUE",
+            "2zFQTiy7rFAAe2Ldr_Yhl5",
+            "2zFQTiy7rFAAe2Ldr_Yhom",
+            "2zFQTiy7rFAAe2Ldr_Yhx5",
+            "2zFQTiy7rFAAe2Ldv_Yh3U",
+            "2zFQTiy7rFAAe2Ldv_YhGb",
+            "2zFQTiy7rFAAe2Ldv_YhOt",
+            "2zFQTiy7rFAAe2Ldv_YhRU",
+            "2zFQTiy7rFAAe2Ldv_YhS5",
+            "2zFQTiy7rFAAe2Ldv_YhUE",
+            "2zFQTiy7rFAAe2Ldv_Yhl5",
+            "2zFQTiy7rFAAe2Ldv_Yhom",
+            "2zFQTiy7rFAAe2Ldv_Yhx5",
+            "2zFQTiy7rFAAe2Ldz_Yh3U",
+            "2zFQTiy7rFAAe2Ldz_YhGb",
+            "2zFQTiy7rFAAe2Ldz_YhOt",
+            "2zFQTiy7rFAAe2Ldz_YhRU",
+            "2zFQTiy7rFAAe2Ldz_YhS5",
+            "2zFQTiy7rFAAe2Ldz_YhUE",
+            "2zFQTiy7rFAAe2Ldz_Yhl5",
+            "2zFQTiy7rFAAe2Ldz_Yhom",
+            "2zFQTiy7rFAAe2Ldz_Yhx5",
+            "31Up7frhfCS9bXrmKvk0wJ",
+            "31Up7frhfCS9bXrmKvk0h1",
+            "31Up7frhfCS9bXrmKvk0gI",
+            "31Up7frhfCS9bXrmKvk0wI",
+            "31Up7frhfCS9bXrmKvk0h2",
+            "31Up7frhfCS9bXrmKvk0ik",
+            "31Up7frhfCS9bXrmKvk0im",
+            "31Up7frhfCS9bXrmKvk0h$",
+            "2zFQTiy7rFAAe2Ndj_Yeiq",
+            "2zFQTiy7rFAAe2Ndj_Yejc",
+            "31Up7frhfCS9bXrmKvk0gJ",
+            "31Up7frhfCS9bXrmKvk0in",
+            "31Up7frhfCS9bXrmKvk0w8",
+            "31Up7frhfCS9bXrmKvk0g8",
+            "2zFQTiy7rFAAe2Ndj_Ye$K",
+            "31Up7frhfCS9bXrmKvk0f$",
+            "31Up7frhfCS9bXrmKvk0f0",
+            "31Up7frhfCS9bXrmKvk0f1",
+            "31Up7frhfCS9bXrmKvk0f_",
+            "3mmcj5MMz6MQWKg2sHSMur",
+            "3mmcj5MMz6MQWKg2sHS9vk",
+            "3mmcj5MMz6MQWKg2sHS96S",
+            "3mmcj5MMz6MQWKg2sHS94h",
+            "31Up7frhfCS9bXrmKvk0v_",
+            "31Up7frhfCS9bXrmKvk0v1",
+            "31Up7frhfCS9bXrmKvk0v0",
+            "31Up7frhfCS9bXrmKvk0v$",
+            "31Up7frhfCS9bXrmKvk0iT",
+            "31Up7frhfCS9bXrmKvk0iS",
+            "31Up7frhfCS9bXrmKvk0hc",
+            "31Up7frhfCS9bXrmKvk0hd",
+            "31Up7frhfCS9bXrmKvk0gm",
+            "31Up7frhfCS9bXrmKvk0gt",
+            "31Up7frhfCS9bXrmKvk0gk",
+            "31Up7frhfCS9bXrmKvk0gj"
+        ],
+        "neighbor": {
+            "15.6": {
+                "14": -5.0
+            },
+            "0.0": {
+                "14": -5.0
+            },
+            "3.9": {
+                "14": -5.0
+            },
+            "7.8": {
+                "14": -5.0
+            },
+            "11.7": {
+                "14": -5.0
+            }
+        }
+    },
+    "2": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                1.1053
+            ],
+            [
+                25.0366,
+                1.1175
+            ]
+        ],
+        "ids": [
+            "2Z72RcXXzCWuDL91AOPD75",
+            "2Z72RcXXzCWuDL91IOPD18",
+            "2Z72RcXXzCWuDL91IOPD75",
+            "2Z72RcXXzCWuDL91IOPDDJ",
+            "2Z72RcXXzCWuDL91MOPD18",
+            "2Z72RcXXzCWuDL91MOPDDJ",
+            "2Z72RcXXzCWuDL91MOPDqH",
+            "2Z72RcXXzCWuDL91QOPD18",
+            "2Z72RcXXzCWuDL91QOPDDJ",
+            "2Z72RcXXzCWuDL91QOPDqH",
+            "2Z72RcXXzCWuDL91AOPD75",
+            "2Z72RcXXzCWuDL91AOPDmn",
+            "2Z72RcXXzCWuDL91EOPDmn",
+            "2Z72RcXXzCWuDL91IOPD18",
+            "2Z72RcXXzCWuDL91IOPD75",
+            "2Z72RcXXzCWuDL91IOPDDJ",
+            "2Z72RcXXzCWuDL91IOPDmn",
+            "2Z72RcXXzCWuDL91IOPDqH",
+            "2Z72RcXXzCWuDL91MOPDDJ",
+            "2Z72RcXXzCWuDL91MOPDmn",
+            "2Z72RcXXzCWuDL91MOPDqH",
+            "2Z72RcXXzCWuDL91QOPDDJ",
+            "2Z72RcXXzCWuDL91QOPDmn",
+            "2Z72RcXXzCWuDL91QOPDqH",
+            "2Z72RcXXzCWuDL91AOPDmn",
+            "2Z72RcXXzCWuDL91EOPD75",
+            "2Z72RcXXzCWuDL91EOPDmn",
+            "2Z72RcXXzCWuDL91IOPD18",
+            "2Z72RcXXzCWuDL91IOPDDJ",
+            "2Z72RcXXzCWuDL91IOPDmn",
+            "2Z72RcXXzCWuDL91IOPDqH",
+            "2Z72RcXXzCWuDL91MOPD18",
+            "2Z72RcXXzCWuDL91MOPD75",
+            "2Z72RcXXzCWuDL91MOPDDJ",
+            "2Z72RcXXzCWuDL91MOPDmn",
+            "2Z72RcXXzCWuDL91MOPDqH",
+            "2Z72RcXXzCWuDL91QOPD18",
+            "2Z72RcXXzCWuDL91QOPD75",
+            "2Z72RcXXzCWuDL91QOPDDJ",
+            "2Z72RcXXzCWuDL91QOPDmn",
+            "2Z72RcXXzCWuDL91QOPDqH",
+            "0DQKznS5rESeTbuE1_EJzo",
+            "0DQKznS5rESeTbuE1_EJzp",
+            "0DQKznS5rESeTbuE1_EJzq",
+            "0DQKznS5rESeTbuE1_EJzr",
+            "0DQKznS5rESeTbuE1_EJzs",
+            "0DQKznS5rESeTbuE9_EJyW",
+            "0DQKznS5rESeTbuE9_EJz7",
+            "0DQKznS5rESeTbuE9_EJz8",
+            "0DQKznS5rESeTbuE9_EJz9",
+            "0DQKznS5rESeTbuE9_EJzA",
+            "0DQKznS5rESeTbuE9_EJzB",
+            "0DQKznS5rESeTbuE9_EJzS",
+            "0DQKznS5rESeTbuE9_EJzT",
+            "0DQKznS5rESeTbuE9_EJzU",
+            "0DQKznS5rESeTbuE9_EJzV",
+            "0DQKznS5rESeTbuE9_EJzo",
+            "0DQKznS5rESeTbuE9_EJzp",
+            "0DQKznS5rESeTbuE9_EJzq",
+            "0DQKznS5rESeTbuE9_EJzr",
+            "0DQKznS5rESeTbuE9_EJzs",
+            "0DQKznS5rESeTbuED_EJz7",
+            "0DQKznS5rESeTbuED_EJz8",
+            "0DQKznS5rESeTbuED_EJz9",
+            "0DQKznS5rESeTbuED_EJzA",
+            "0DQKznS5rESeTbuED_EJzB",
+            "0DQKznS5rESeTbuED_EJzo",
+            "0DQKznS5rESeTbuED_EJzp",
+            "0DQKznS5rESeTbuED_EJzq",
+            "0DQKznS5rESeTbuED_EJzr",
+            "0DQKznS5rESeTbuED_EJzs",
+            "0DQKznS5rESeTbuEH_EJyW",
+            "0DQKznS5rESeTbuEH_EJyn",
+            "0DQKznS5rESeTbuEH_EJyo",
+            "0DQKznS5rESeTbuEH_EJyp",
+            "0DQKznS5rESeTbuEH_EJyq",
+            "0DQKznS5rESeTbuEH_EJyr",
+            "0DQKznS5rESeTbuEH_EJz7",
+            "0DQKznS5rESeTbuEH_EJz8",
+            "0DQKznS5rESeTbuEH_EJz9",
+            "0DQKznS5rESeTbuEH_EJzA",
+            "0DQKznS5rESeTbuEH_EJzB",
+            "0DQKznS5rESeTbuEH_EJzS",
+            "0DQKznS5rESeTbuEH_EJzT",
+            "0DQKznS5rESeTbuEH_EJzU",
+            "0DQKznS5rESeTbuEH_EJzV",
+            "0DQKznS5rESeTbuEH_EJzo",
+            "0DQKznS5rESeTbuEH_EJzp",
+            "0DQKznS5rESeTbuEH_EJzq",
+            "0DQKznS5rESeTbuEH_EJzr",
+            "0DQKznS5rESeTbuEH_EJzs",
+            "0DQKznS5rESeTbuEL_EJyW",
+            "0DQKznS5rESeTbuEL_EJyn",
+            "0DQKznS5rESeTbuEL_EJyo",
+            "0DQKznS5rESeTbuEL_EJyp",
+            "0DQKznS5rESeTbuEL_EJyq",
+            "0DQKznS5rESeTbuEL_EJyr",
+            "0DQKznS5rESeTbuEL_EJz7",
+            "0DQKznS5rESeTbuEL_EJz8",
+            "0DQKznS5rESeTbuEL_EJz9",
+            "0DQKznS5rESeTbuEL_EJzA",
+            "0DQKznS5rESeTbuEL_EJzB",
+            "0DQKznS5rESeTbuEL_EJzS",
+            "0DQKznS5rESeTbuEL_EJzT",
+            "0DQKznS5rESeTbuEL_EJzU",
+            "0DQKznS5rESeTbuEL_EJzV",
+            "0DQKznS5rESeTbuEL_EJzo",
+            "0DQKznS5rESeTbuEL_EJzp",
+            "0DQKznS5rESeTbuEL_EJzq",
+            "0DQKznS5rESeTbuEL_EJzr",
+            "0DQKznS5rESeTbuEL_EJzs",
+            "0DQKznS5rESeTbuET_EJyW",
+            "0DQKznS5rESeTbuET_EJyn",
+            "0DQKznS5rESeTbuET_EJyo",
+            "0DQKznS5rESeTbuET_EJyp",
+            "0DQKznS5rESeTbuET_EJyq",
+            "0DQKznS5rESeTbuET_EJyr",
+            "0DQKznS5rESeTbuET_EJz7",
+            "0DQKznS5rESeTbuET_EJz8",
+            "0DQKznS5rESeTbuET_EJz9",
+            "0DQKznS5rESeTbuET_EJzA",
+            "0DQKznS5rESeTbuET_EJzB",
+            "0DQKznS5rESeTbuET_EJzS",
+            "0DQKznS5rESeTbuET_EJzT",
+            "0DQKznS5rESeTbuET_EJzU",
+            "0DQKznS5rESeTbuET_EJzV",
+            "0DQKznS5rESeTbuET_EJzo",
+            "0DQKznS5rESeTbuET_EJzp",
+            "0DQKznS5rESeTbuET_EJzq",
+            "0DQKznS5rESeTbuET_EJzr",
+            "0DQKznS5rESeTbuET_EJzs",
+            "1Z$KVt3J5C6hZCgX19sUOE",
+            "1Z$KVt3J5C6hZCgX19sUOF",
+            "1Z$KVt3J5C6hZCgX19sUOp",
+            "1Z$KVt3J5C6hZCgX19sUV3",
+            "1Z$KVt3J5C6hZCgX59sUOE",
+            "1Z$KVt3J5C6hZCgX59sUOF",
+            "1Z$KVt3J5C6hZCgX59sUOp",
+            "1Z$KVt3J5C6hZCgX59sUV3",
+            "1Z$KVt3J5C6hZCgX99sUOE",
+            "1Z$KVt3J5C6hZCgX99sUOF",
+            "1Z$KVt3J5C6hZCgX99sUOp",
+            "1Z$KVt3J5C6hZCgX99sUV3",
+            "1Z$KVt3J5C6hZCgXL9sUOE",
+            "1Z$KVt3J5C6hZCgXL9sUOF",
+            "1Z$KVt3J5C6hZCgXL9sUOp",
+            "1Z$KVt3J5C6hZCgXL9sUV3",
+            "1Z$KVt3J5C6hZCgXP9sUOE",
+            "1Z$KVt3J5C6hZCgXP9sUOF",
+            "1Z$KVt3J5C6hZCgXP9sUOp",
+            "1Z$KVt3J5C6hZCgXP9sUV3",
+            "1Z$KVt3J5C6hZCgXT9sUOE",
+            "1Z$KVt3J5C6hZCgXT9sUOF",
+            "1Z$KVt3J5C6hZCgXT9sUOp",
+            "1Z$KVt3J5C6hZCgXT9sUV3",
+            "2Z72RcXXzCWuDL916OPFEB",
+            "2Z72RcXXzCWuDL916OPFF0",
+            "2Z72RcXXzCWuDL91AOPFEB",
+            "2Z72RcXXzCWuDL91AOPFF0",
+            "2Z72RcXXzCWuDL91EOPFEB",
+            "2Z72RcXXzCWuDL91EOPFF0",
+            "2Z72RcXXzCWuDL91IOPFEB",
+            "2Z72RcXXzCWuDL91IOPFF0",
+            "2Z72RcXXzCWuDL91MOPFEB",
+            "2Z72RcXXzCWuDL91MOPFF0",
+            "2Z72RcXXzCWuDL91QOPFEB",
+            "2Z72RcXXzCWuDL91QOPFF0",
+            "31Up7frhfCS9bXrmKvk0he",
+            "31Up7frhfCS9bXrmKvk0hl",
+            "31Up7frhfCS9bXrmKvk0w$",
+            "31Up7frhfCS9bXrmKvk0hf",
+            "0YD_ZCQRvBHx8pGcMVFGwf",
+            "31Up7frhfCS9bXrmKvk0gw",
+            "31Up7frhfCS9bXrmKvk0jV",
+            "31Up7frhfCS9bXrmKvk0jO",
+            "2zFQTiy7rFAAe2Ndj_YkXd",
+            "31Up7frhfCS9bXrmKvk0jT",
+            "31Up7frhfCS9bXrmKvk0gu",
+            "2zFQTiy7rFAAe2Ndj_YkaU",
+            "31Up7frhfCS9bXrmKvk0ww",
+            "31Up7frhfCS9bXrmKvk0jU",
+            "31Up7frhfCS9bXrmKvk0g$",
+            "31Up7frhfCS9bXrmKvk0hk",
+            "31Up7frhfCS9bXrmKvk0wv",
+            "2zFQTiy7rFAAe2Ndj_YkW_",
+            "2zFQTiy7rFAAe2Ndj_Yky4",
+            "0YD_ZCQRvBHx8pGcAVFGwf",
+            "31Up7frhfCS9bXrmKvk0wu",
+            "0YD_ZCQRvBHx8pGcUVFGwf",
+            "0YD_ZCQRvBHx8pGcIVFGwf",
+            "31Up7frhfCS9bXrmKvk0gv",
+            "2C7yCMlwD3KuY7UfKyHfZI",
+            "2C7yCMlwD3KuY7UfKyHfgP",
+            "2C7yCMlwD3KuY7UfKyHeRk"
+        ],
+        "neighbor": {}
+    },
+    "3": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -26.1039,
+                -23.7523
+            ],
+            [
+                -26.1039,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzf",
+            "0DQKznS5rESeTbuE1_EJzk",
+            "0DQKznS5rESeTbuE1_EJzn",
+            "0DQKznS5rESeTbuE1_EJzo",
+            "0DQKznS5rESeTbuE9_EJz3",
+            "0DQKznS5rESeTbuE9_EJz6",
+            "0DQKznS5rESeTbuE9_EJz7",
+            "0DQKznS5rESeTbuE9_EJzJ",
+            "0DQKznS5rESeTbuE9_EJzO",
+            "0DQKznS5rESeTbuE9_EJzR",
+            "0DQKznS5rESeTbuE9_EJzS",
+            "0DQKznS5rESeTbuE9_EJz_",
+            "0DQKznS5rESeTbuE9_EJzf",
+            "0DQKznS5rESeTbuE9_EJzk",
+            "0DQKznS5rESeTbuE9_EJzn",
+            "0DQKznS5rESeTbuE9_EJzo",
+            "0DQKznS5rESeTbuED_EJz3",
+            "0DQKznS5rESeTbuED_EJz6",
+            "0DQKznS5rESeTbuED_EJz7",
+            "0DQKznS5rESeTbuED_EJz_",
+            "0DQKznS5rESeTbuED_EJzf",
+            "0DQKznS5rESeTbuED_EJzk",
+            "0DQKznS5rESeTbuED_EJzn",
+            "0DQKznS5rESeTbuED_EJzo",
+            "0DQKznS5rESeTbuEH_EJye",
+            "0DQKznS5rESeTbuEH_EJyj",
+            "0DQKznS5rESeTbuEH_EJym",
+            "0DQKznS5rESeTbuEH_EJyn",
+            "0DQKznS5rESeTbuEH_EJz3",
+            "0DQKznS5rESeTbuEH_EJz6",
+            "0DQKznS5rESeTbuEH_EJz7",
+            "0DQKznS5rESeTbuEH_EJzJ",
+            "0DQKznS5rESeTbuEH_EJzO",
+            "0DQKznS5rESeTbuEH_EJzR",
+            "0DQKznS5rESeTbuEH_EJzS",
+            "0DQKznS5rESeTbuEH_EJz_",
+            "0DQKznS5rESeTbuEH_EJzf",
+            "0DQKznS5rESeTbuEH_EJzk",
+            "0DQKznS5rESeTbuEH_EJzn",
+            "0DQKznS5rESeTbuEH_EJzo",
+            "0DQKznS5rESeTbuEL_EJye",
+            "0DQKznS5rESeTbuEL_EJyj",
+            "0DQKznS5rESeTbuEL_EJym",
+            "0DQKznS5rESeTbuEL_EJyn",
+            "0DQKznS5rESeTbuEL_EJz3",
+            "0DQKznS5rESeTbuEL_EJz6",
+            "0DQKznS5rESeTbuEL_EJz7",
+            "0DQKznS5rESeTbuEL_EJzJ",
+            "0DQKznS5rESeTbuEL_EJzO",
+            "0DQKznS5rESeTbuEL_EJzR",
+            "0DQKznS5rESeTbuEL_EJzS",
+            "0DQKznS5rESeTbuEL_EJz_",
+            "0DQKznS5rESeTbuEL_EJzf",
+            "0DQKznS5rESeTbuEL_EJzk",
+            "0DQKznS5rESeTbuEL_EJzn",
+            "0DQKznS5rESeTbuEL_EJzo",
+            "0DQKznS5rESeTbuET_EJye",
+            "0DQKznS5rESeTbuET_EJyj",
+            "0DQKznS5rESeTbuET_EJym",
+            "0DQKznS5rESeTbuET_EJyn",
+            "0DQKznS5rESeTbuET_EJz3",
+            "0DQKznS5rESeTbuET_EJz6",
+            "0DQKznS5rESeTbuET_EJz7",
+            "0DQKznS5rESeTbuET_EJzJ",
+            "0DQKznS5rESeTbuET_EJzO",
+            "0DQKznS5rESeTbuET_EJzR",
+            "0DQKznS5rESeTbuET_EJzS",
+            "0DQKznS5rESeTbuET_EJz_",
+            "0DQKznS5rESeTbuET_EJzf",
+            "0DQKznS5rESeTbuET_EJzk",
+            "0DQKznS5rESeTbuET_EJzn",
+            "0DQKznS5rESeTbuET_EJzo",
+            "1Z$KVt3J5C6hZCgX19sUOF",
+            "1Z$KVt3J5C6hZCgX19sUVO",
+            "1Z$KVt3J5C6hZCgX59sUOF",
+            "1Z$KVt3J5C6hZCgX59sUVO",
+            "1Z$KVt3J5C6hZCgX99sUOF",
+            "1Z$KVt3J5C6hZCgX99sUOa",
+            "1Z$KVt3J5C6hZCgX99sUVO",
+            "1Z$KVt3J5C6hZCgXL9sUOF",
+            "1Z$KVt3J5C6hZCgXL9sUVO",
+            "1Z$KVt3J5C6hZCgXP9sUOF",
+            "1Z$KVt3J5C6hZCgXP9sUVO",
+            "1Z$KVt3J5C6hZCgXT9sUOF",
+            "1Z$KVt3J5C6hZCgXT9sUVO",
+            "2Z72RcXXzCWuDL916OPCTf",
+            "2Z72RcXXzCWuDL916OPFAj",
+            "2Z72RcXXzCWuDL916OPFMm",
+            "2Z72RcXXzCWuDL91AOPCTf",
+            "2Z72RcXXzCWuDL91AOPFAj",
+            "2Z72RcXXzCWuDL91AOPFMm",
+            "2Z72RcXXzCWuDL91EOPCTf",
+            "2Z72RcXXzCWuDL91EOPFAj",
+            "2Z72RcXXzCWuDL91EOPFMm",
+            "2Z72RcXXzCWuDL91IOPCTf",
+            "2Z72RcXXzCWuDL91IOPFAj",
+            "2Z72RcXXzCWuDL91IOPFMm",
+            "2Z72RcXXzCWuDL91MOPCTf",
+            "2Z72RcXXzCWuDL91MOPFAj",
+            "2Z72RcXXzCWuDL91MOPFMm",
+            "2Z72RcXXzCWuDL91QOPCTf",
+            "2Z72RcXXzCWuDL91QOPFAj",
+            "2Z72RcXXzCWuDL91QOPFMm",
+            "2zFQTiy7rFAAe2LdX_YhRU",
+            "2zFQTiy7rFAAe2Ldb_YhRU",
+            "2zFQTiy7rFAAe2Ldf_YhRU",
+            "2zFQTiy7rFAAe2Ldr_YhRU",
+            "2zFQTiy7rFAAe2Ldv_YhRU",
+            "2zFQTiy7rFAAe2Ldz_YhRU",
+            "31Up7frhfCS9bXrmKvk0ft",
+            "31Up7frhfCS9bXrmKvk0gc",
+            "1yUtk4LVLEiw0i$UPsn6c6",
+            "31Up7frhfCS9bXrmKvk0fs",
+            "1yUtk4LVLEiw0i$UPsn6es",
+            "31Up7frhfCS9bXrmKvk0vs",
+            "31Up7frhfCS9bXrmKvk0gb",
+            "31Up7frhfCS9bXrmKvk0iL",
+            "31Up7frhfCS9bXrmKvk0vt",
+            "31Up7frhfCS9bXrmKvk0iK"
+        ],
+        "neighbor": {
+            "15.6": {
+                "12": -5.613499999999998,
+                "5": 6.0
+            },
+            "0.0": {
+                "12": -5.613499999999998,
+                "5": 6.0
+            },
+            "3.9": {
+                "12": -5.613499999999998,
+                "5": 6.0
+            },
+            "7.8": {
+                "12": -5.613499999999998,
+                "5": 6.0
+            },
+            "11.7": {
+                "12": -5.613499999999998,
+                "5": 6.0
+            }
+        }
+    },
+    "4": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -15.1039,
+                -23.7523
+            ],
+            [
+                -15.1039,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJze",
+            "0DQKznS5rESeTbuE1_EJzl",
+            "0DQKznS5rESeTbuE1_EJzq",
+            "0DQKznS5rESeTbuE9_EJz4",
+            "0DQKznS5rESeTbuE9_EJz9",
+            "0DQKznS5rESeTbuE9_EJzI",
+            "0DQKznS5rESeTbuE9_EJzP",
+            "0DQKznS5rESeTbuE9_EJzU",
+            "0DQKznS5rESeTbuE9_EJze",
+            "0DQKznS5rESeTbuE9_EJzl",
+            "0DQKznS5rESeTbuE9_EJzq",
+            "0DQKznS5rESeTbuE9_EJzz",
+            "0DQKznS5rESeTbuED_EJz4",
+            "0DQKznS5rESeTbuED_EJz9",
+            "0DQKznS5rESeTbuED_EJze",
+            "0DQKznS5rESeTbuED_EJzl",
+            "0DQKznS5rESeTbuED_EJzq",
+            "0DQKznS5rESeTbuED_EJzz",
+            "0DQKznS5rESeTbuEH_EJyd",
+            "0DQKznS5rESeTbuEH_EJyk",
+            "0DQKznS5rESeTbuEH_EJyp",
+            "0DQKznS5rESeTbuEH_EJz4",
+            "0DQKznS5rESeTbuEH_EJz9",
+            "0DQKznS5rESeTbuEH_EJzI",
+            "0DQKznS5rESeTbuEH_EJzP",
+            "0DQKznS5rESeTbuEH_EJzU",
+            "0DQKznS5rESeTbuEH_EJze",
+            "0DQKznS5rESeTbuEH_EJzl",
+            "0DQKznS5rESeTbuEH_EJzq",
+            "0DQKznS5rESeTbuEH_EJzz",
+            "0DQKznS5rESeTbuEL_EJyd",
+            "0DQKznS5rESeTbuEL_EJyk",
+            "0DQKznS5rESeTbuEL_EJyp",
+            "0DQKznS5rESeTbuEL_EJz4",
+            "0DQKznS5rESeTbuEL_EJz9",
+            "0DQKznS5rESeTbuEL_EJzI",
+            "0DQKznS5rESeTbuEL_EJzP",
+            "0DQKznS5rESeTbuEL_EJzU",
+            "0DQKznS5rESeTbuEL_EJze",
+            "0DQKznS5rESeTbuEL_EJzl",
+            "0DQKznS5rESeTbuEL_EJzq",
+            "0DQKznS5rESeTbuEL_EJzz",
+            "0DQKznS5rESeTbuET_EJyd",
+            "0DQKznS5rESeTbuET_EJyk",
+            "0DQKznS5rESeTbuET_EJyp",
+            "0DQKznS5rESeTbuET_EJz4",
+            "0DQKznS5rESeTbuET_EJz9",
+            "0DQKznS5rESeTbuET_EJzI",
+            "0DQKznS5rESeTbuET_EJzP",
+            "0DQKznS5rESeTbuET_EJzU",
+            "0DQKznS5rESeTbuET_EJze",
+            "0DQKznS5rESeTbuET_EJzl",
+            "0DQKznS5rESeTbuET_EJzq",
+            "0DQKznS5rESeTbuET_EJzz",
+            "1Z$KVt3J5C6hZCgX99sUOg",
+            "2Z72RcXXzCWuDL916OPAID",
+            "2Z72RcXXzCWuDL916OPCD3",
+            "2Z72RcXXzCWuDL916OPCP7",
+            "2Z72RcXXzCWuDL916OPCta",
+            "2Z72RcXXzCWuDL916OPF9z",
+            "2Z72RcXXzCWuDL916OPFF0",
+            "2Z72RcXXzCWuDL91AOPAID",
+            "2Z72RcXXzCWuDL91AOPCD3",
+            "2Z72RcXXzCWuDL91AOPCP7",
+            "2Z72RcXXzCWuDL91AOPCta",
+            "2Z72RcXXzCWuDL91AOPF9z",
+            "2Z72RcXXzCWuDL91AOPFF0",
+            "2Z72RcXXzCWuDL91EOPAID",
+            "2Z72RcXXzCWuDL91EOPCD3",
+            "2Z72RcXXzCWuDL91EOPCP7",
+            "2Z72RcXXzCWuDL91EOPCta",
+            "2Z72RcXXzCWuDL91EOPF9z",
+            "2Z72RcXXzCWuDL91EOPFF0",
+            "2Z72RcXXzCWuDL91IOPAID",
+            "2Z72RcXXzCWuDL91IOPCD3",
+            "2Z72RcXXzCWuDL91IOPCP7",
+            "2Z72RcXXzCWuDL91IOPCta",
+            "2Z72RcXXzCWuDL91IOPF9z",
+            "2Z72RcXXzCWuDL91IOPFF0",
+            "2Z72RcXXzCWuDL91MOPAID",
+            "2Z72RcXXzCWuDL91MOPCD3",
+            "2Z72RcXXzCWuDL91MOPCP7",
+            "2Z72RcXXzCWuDL91MOPCta",
+            "2Z72RcXXzCWuDL91MOPF9z",
+            "2Z72RcXXzCWuDL91MOPFF0",
+            "2Z72RcXXzCWuDL91QOPAID",
+            "2Z72RcXXzCWuDL91QOPCD3",
+            "2Z72RcXXzCWuDL91QOPCP7",
+            "2Z72RcXXzCWuDL91QOPCta",
+            "2Z72RcXXzCWuDL91QOPF9z",
+            "2Z72RcXXzCWuDL91QOPFF0",
+            "2zFQTiy7rFAAe2LdX_YhOt",
+            "2zFQTiy7rFAAe2Ldb_YhOt",
+            "2zFQTiy7rFAAe2Ldf_YhOt",
+            "2zFQTiy7rFAAe2Ldr_YhOt",
+            "2zFQTiy7rFAAe2Ldv_YhOt",
+            "2zFQTiy7rFAAe2Ldz_YhOt",
+            "2zFQTiy7rFAAe2Ndj_YeoN",
+            "31Up7frhfCS9bXrmKvk0g9",
+            "31Up7frhfCS9bXrmKvk0w9",
+            "31Up7frhfCS9bXrmKvk0ht",
+            "31Up7frhfCS9bXrmKvk0ib",
+            "31Up7frhfCS9bXrmKvk0hu",
+            "2zFQTiy7rFAAe2Ndj_Yewm",
+            "31Up7frhfCS9bXrmKvk0g0",
+            "31Up7frhfCS9bXrmKvk0hv",
+            "31Up7frhfCS9bXrmKvk0gA",
+            "31Up7frhfCS9bXrmKvk0g7",
+            "31Up7frhfCS9bXrmKvk0w0",
+            "31Up7frhfCS9bXrmKvk0wA",
+            "31Up7frhfCS9bXrmKvk0ic",
+            "2zFQTiy7rFAAe2Ndj_YhEg",
+            "31Up7frhfCS9bXrmKvk0hs",
+            "31Up7frhfCS9bXrmKvk0il",
+            "31Up7frhfCS9bXrmKvk0ie",
+            "2zFQTiy7rFAAe2Ndj_Yev5",
+            "31Up7frhfCS9bXrmKvk0w7"
+        ],
+        "neighbor": {
+            "15.6": {
+                "5": -5.000000000000002,
+                "11": 5.0
+            },
+            "0.0": {
+                "5": -5.000000000000002,
+                "11": 5.0
+            },
+            "3.9": {
+                "5": -5.000000000000002,
+                "11": 5.0
+            },
+            "7.8": {
+                "5": -5.000000000000002,
+                "11": 5.0
+            },
+            "11.7": {
+                "5": -5.000000000000002,
+                "11": 5.0
+            }
+        }
+    },
+    "5": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -20.1039,
+                -23.7523
+            ],
+            [
+                -20.1039,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzj",
+            "0DQKznS5rESeTbuE1_EJzm",
+            "0DQKznS5rESeTbuE1_EJzp",
+            "0DQKznS5rESeTbuE9_EJz2",
+            "0DQKznS5rESeTbuE9_EJz5",
+            "0DQKznS5rESeTbuE9_EJz8",
+            "0DQKznS5rESeTbuE9_EJzN",
+            "0DQKznS5rESeTbuE9_EJzQ",
+            "0DQKznS5rESeTbuE9_EJzT",
+            "0DQKznS5rESeTbuE9_EJzj",
+            "0DQKznS5rESeTbuE9_EJzm",
+            "0DQKznS5rESeTbuE9_EJzp",
+            "0DQKznS5rESeTbuED_EJz2",
+            "0DQKznS5rESeTbuED_EJz5",
+            "0DQKznS5rESeTbuED_EJz8",
+            "0DQKznS5rESeTbuED_EJzj",
+            "0DQKznS5rESeTbuED_EJzm",
+            "0DQKznS5rESeTbuED_EJzp",
+            "0DQKznS5rESeTbuEH_EJyi",
+            "0DQKznS5rESeTbuEH_EJyl",
+            "0DQKznS5rESeTbuEH_EJyo",
+            "0DQKznS5rESeTbuEH_EJz2",
+            "0DQKznS5rESeTbuEH_EJz5",
+            "0DQKznS5rESeTbuEH_EJz8",
+            "0DQKznS5rESeTbuEH_EJzN",
+            "0DQKznS5rESeTbuEH_EJzQ",
+            "0DQKznS5rESeTbuEH_EJzT",
+            "0DQKznS5rESeTbuEH_EJzj",
+            "0DQKznS5rESeTbuEH_EJzm",
+            "0DQKznS5rESeTbuEH_EJzp",
+            "0DQKznS5rESeTbuEL_EJyi",
+            "0DQKznS5rESeTbuEL_EJyl",
+            "0DQKznS5rESeTbuEL_EJyo",
+            "0DQKznS5rESeTbuEL_EJz2",
+            "0DQKznS5rESeTbuEL_EJz5",
+            "0DQKznS5rESeTbuEL_EJz8",
+            "0DQKznS5rESeTbuEL_EJzN",
+            "0DQKznS5rESeTbuEL_EJzQ",
+            "0DQKznS5rESeTbuEL_EJzT",
+            "0DQKznS5rESeTbuEL_EJzj",
+            "0DQKznS5rESeTbuEL_EJzm",
+            "0DQKznS5rESeTbuEL_EJzp",
+            "0DQKznS5rESeTbuET_EJyi",
+            "0DQKznS5rESeTbuET_EJyl",
+            "0DQKznS5rESeTbuET_EJyo",
+            "0DQKznS5rESeTbuET_EJz2",
+            "0DQKznS5rESeTbuET_EJz5",
+            "0DQKznS5rESeTbuET_EJz8",
+            "0DQKznS5rESeTbuET_EJzN",
+            "0DQKznS5rESeTbuET_EJzQ",
+            "0DQKznS5rESeTbuET_EJzT",
+            "0DQKznS5rESeTbuET_EJzj",
+            "0DQKznS5rESeTbuET_EJzm",
+            "0DQKznS5rESeTbuET_EJzp",
+            "1Z$KVt3J5C6hZCgX19sUOE",
+            "1Z$KVt3J5C6hZCgX59sUOE",
+            "1Z$KVt3J5C6hZCgX99sUOE",
+            "1Z$KVt3J5C6hZCgX99sUOh",
+            "1Z$KVt3J5C6hZCgXL9sUOE",
+            "1Z$KVt3J5C6hZCgXP9sUOE",
+            "1Z$KVt3J5C6hZCgXT9sUOE",
+            "2Z72RcXXzCWuDL916OPAKy",
+            "2Z72RcXXzCWuDL916OPCCI",
+            "2Z72RcXXzCWuDL916OPCOM",
+            "2Z72RcXXzCWuDL916OPCrP",
+            "2Z72RcXXzCWuDL916OPF8U",
+            "2Z72RcXXzCWuDL91AOPAKy",
+            "2Z72RcXXzCWuDL91AOPCCI",
+            "2Z72RcXXzCWuDL91AOPCOM",
+            "2Z72RcXXzCWuDL91AOPCrP",
+            "2Z72RcXXzCWuDL91AOPF8U",
+            "2Z72RcXXzCWuDL91EOPAKy",
+            "2Z72RcXXzCWuDL91EOPCCI",
+            "2Z72RcXXzCWuDL91EOPCOM",
+            "2Z72RcXXzCWuDL91EOPCrP",
+            "2Z72RcXXzCWuDL91EOPF8U",
+            "2Z72RcXXzCWuDL91IOPAKy",
+            "2Z72RcXXzCWuDL91IOPCCI",
+            "2Z72RcXXzCWuDL91IOPCOM",
+            "2Z72RcXXzCWuDL91IOPCrP",
+            "2Z72RcXXzCWuDL91IOPF8U",
+            "2Z72RcXXzCWuDL91MOPAKy",
+            "2Z72RcXXzCWuDL91MOPCCI",
+            "2Z72RcXXzCWuDL91MOPCOM",
+            "2Z72RcXXzCWuDL91MOPCrP",
+            "2Z72RcXXzCWuDL91MOPF8U",
+            "2Z72RcXXzCWuDL91QOPAKy",
+            "2Z72RcXXzCWuDL91QOPCCI",
+            "2Z72RcXXzCWuDL91QOPCOM",
+            "2Z72RcXXzCWuDL91QOPCrP",
+            "2Z72RcXXzCWuDL91QOPF8U",
+            "2zFQTiy7rFAAe2LdX_Yhl5",
+            "2zFQTiy7rFAAe2Ldb_Yhl5",
+            "2zFQTiy7rFAAe2Ldf_Yhl5",
+            "2zFQTiy7rFAAe2Ldr_Yhl5",
+            "2zFQTiy7rFAAe2Ldv_Yhl5",
+            "2zFQTiy7rFAAe2Ldz_Yhl5",
+            "2zFQTiy7rFAAe2Ndj_YgVF",
+            "31Up7frhfCS9bXrmKvk0g2",
+            "31Up7frhfCS9bXrmKvk0hm",
+            "31Up7frhfCS9bXrmKvk0w1",
+            "2zFQTiy7rFAAe2Ndj_Yg14",
+            "31Up7frhfCS9bXrmKvk0w2",
+            "31Up7frhfCS9bXrmKvk0w3",
+            "31Up7frhfCS9bXrmKvk0iW",
+            "31Up7frhfCS9bXrmKvk0ho",
+            "31Up7frhfCS9bXrmKvk0hn",
+            "31Up7frhfCS9bXrmKvk0g3",
+            "31Up7frhfCS9bXrmKvk0iX",
+            "31Up7frhfCS9bXrmKvk0g1",
+            "31Up7frhfCS9bXrmKvk0id",
+            "2zFQTiy7rFAAe2Ndj_YgSy"
+        ],
+        "neighbor": {
+            "15.6": {
+                "3": -6.0,
+                "4": 5.000000000000002
+            },
+            "0.0": {
+                "3": -6.0,
+                "4": 5.000000000000002
+            },
+            "3.9": {
+                "3": -6.0,
+                "4": 5.000000000000002
+            },
+            "7.8": {
+                "3": -6.0,
+                "4": 5.000000000000002
+            },
+            "11.7": {
+                "3": -6.0,
+                "4": 5.000000000000002
+            }
+        }
+    },
+    "6": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                14.2477
+            ],
+            [
+                25.0366,
+                14.2477
+            ]
+        ],
+        "ids": [
+            "2Z72RcXXzCWuDL916OPBm3",
+            "2Z72RcXXzCWuDL916OPCOM",
+            "2Z72RcXXzCWuDL916OPCP7",
+            "2Z72RcXXzCWuDL916OPCTf",
+            "2Z72RcXXzCWuDL916OPCWi",
+            "2Z72RcXXzCWuDL916OPCZ1",
+            "2Z72RcXXzCWuDL916OPCa1",
+            "2Z72RcXXzCWuDL916OPCbc",
+            "2Z72RcXXzCWuDL916OPCcq",
+            "2Z72RcXXzCWuDL916OPCkR",
+            "2Z72RcXXzCWuDL91AOPBm3",
+            "2Z72RcXXzCWuDL91AOPCOM",
+            "2Z72RcXXzCWuDL91AOPCP7",
+            "2Z72RcXXzCWuDL91AOPCTf",
+            "2Z72RcXXzCWuDL91AOPCWi",
+            "2Z72RcXXzCWuDL91AOPCZ1",
+            "2Z72RcXXzCWuDL91AOPCa1",
+            "2Z72RcXXzCWuDL91AOPCbc",
+            "2Z72RcXXzCWuDL91AOPCcq",
+            "2Z72RcXXzCWuDL91AOPCkR",
+            "2Z72RcXXzCWuDL91EOPBm3",
+            "2Z72RcXXzCWuDL91EOPCOM",
+            "2Z72RcXXzCWuDL91EOPCP7",
+            "2Z72RcXXzCWuDL91EOPCTf",
+            "2Z72RcXXzCWuDL91EOPCWi",
+            "2Z72RcXXzCWuDL91EOPCZ1",
+            "2Z72RcXXzCWuDL91EOPCa1",
+            "2Z72RcXXzCWuDL91EOPCbc",
+            "2Z72RcXXzCWuDL91EOPCcq",
+            "2Z72RcXXzCWuDL91EOPCkR",
+            "2Z72RcXXzCWuDL91IOPBm3",
+            "2Z72RcXXzCWuDL91IOPCOM",
+            "2Z72RcXXzCWuDL91IOPCP7",
+            "2Z72RcXXzCWuDL91IOPCTf",
+            "2Z72RcXXzCWuDL91IOPCWi",
+            "2Z72RcXXzCWuDL91IOPCZ1",
+            "2Z72RcXXzCWuDL91IOPCa1",
+            "2Z72RcXXzCWuDL91IOPCbc",
+            "2Z72RcXXzCWuDL91IOPCcq",
+            "2Z72RcXXzCWuDL91IOPCkR",
+            "2Z72RcXXzCWuDL91MOPBm3",
+            "2Z72RcXXzCWuDL91MOPCOM",
+            "2Z72RcXXzCWuDL91MOPCP7",
+            "2Z72RcXXzCWuDL91MOPCTf",
+            "2Z72RcXXzCWuDL91MOPCWi",
+            "2Z72RcXXzCWuDL91MOPCZ1",
+            "2Z72RcXXzCWuDL91MOPCa1",
+            "2Z72RcXXzCWuDL91MOPCbc",
+            "2Z72RcXXzCWuDL91MOPCcq",
+            "2Z72RcXXzCWuDL91MOPCkR",
+            "2Z72RcXXzCWuDL91QOPBm3",
+            "2Z72RcXXzCWuDL91QOPCOM",
+            "2Z72RcXXzCWuDL91QOPCP7",
+            "2Z72RcXXzCWuDL91QOPCTf",
+            "2Z72RcXXzCWuDL91QOPCWi",
+            "2Z72RcXXzCWuDL91QOPCZ1",
+            "2Z72RcXXzCWuDL91QOPCa1",
+            "2Z72RcXXzCWuDL91QOPCbc",
+            "2Z72RcXXzCWuDL91QOPCcq",
+            "2Z72RcXXzCWuDL91QOPCkR",
+            "31Up7frhfCS9bXrmKvk0gM",
+            "31Up7frhfCS9bXrmKvk0gl",
+            "31Up7frhfCS9bXrmKvk0gQ",
+            "31Up7frhfCS9bXrmKvk0hy",
+            "31Up7frhfCS9bXrmKvk0wM",
+            "31Up7frhfCS9bXrmKvk0f6",
+            "31Up7frhfCS9bXrmKvk0hr",
+            "31Up7frhfCS9bXrmKvk0ip",
+            "31Up7frhfCS9bXrmKvk0w5",
+            "31Up7frhfCS9bXrmKvk0fu",
+            "31Up7frhfCS9bXrmKvk0w6",
+            "1yUtk4LVLEiw0i$UPsn5M9",
+            "31Up7frhfCS9bXrmKvk0iU",
+            "31Up7frhfCS9bXrmKvk0wD",
+            "31Up7frhfCS9bXrmKvk0wQ",
+            "2zFQTiy7rFAAe2Ndj_Yf_4",
+            "31Up7frhfCS9bXrmKvk0gC",
+            "31Up7frhfCS9bXrmKvk0vu",
+            "31Up7frhfCS9bXrmKvk0h3",
+            "2zFQTiy7rFAAe2Ndj_Yem7",
+            "31Up7frhfCS9bXrmKvk0h5",
+            "2zFQTiy7rFAAe2Ndj_Yel2",
+            "31Up7frhfCS9bXrmKvk0h9",
+            "2zFQTiy7rFAAe2Ndj_Yet0",
+            "31Up7frhfCS9bXrmKvk0v6",
+            "31Up7frhfCS9bXrmKvk0gD",
+            "31Up7frhfCS9bXrmKvk0ha",
+            "31Up7frhfCS9bXrmKvk0wC",
+            "31Up7frhfCS9bXrmKvk0io",
+            "2zFQTiy7rFAAe2Ndj_YefQ",
+            "31Up7frhfCS9bXrmKvk0iu",
+            "31Up7frhfCS9bXrmKvk0g6",
+            "31Up7frhfCS9bXrmKvk0g5",
+            "31Up7frhfCS9bXrmKvk0ih",
+            "31Up7frhfCS9bXrmKvk0ia",
+            "3mmcj5MMz6MQWKg2sHSNZw",
+            "2zFQTiy7rFAAe2Ndj_YeV3",
+            "31Up7frhfCS9bXrmKvk0iq",
+            "31Up7frhfCS9bXrmKvk0hq",
+            "31Up7frhfCS9bXrmKvk0gr"
+        ],
+        "neighbor": {
+            "15.6": {
+                "24": -2.9999999999999947,
+                "19": 3.0
+            },
+            "0.0": {
+                "25": -2.9999999999999947,
+                "20": 3.0
+            },
+            "3.9": {
+                "26": -2.9999999999999947,
+                "21": 3.0
+            },
+            "7.8": {
+                "27": -2.9999999999999947,
+                "22": 3.0
+            },
+            "11.7": {
+                "28": -2.9999999999999947,
+                "23": 3.0
+            }
+        }
+    },
+    "7": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -5.1039,
+                -23.7523
+            ],
+            [
+                -5.1039,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzd",
+            "0DQKznS5rESeTbuE1_EJzs",
+            "0DQKznS5rESeTbuE9_EJyW",
+            "0DQKznS5rESeTbuE9_EJzB",
+            "0DQKznS5rESeTbuE9_EJzH",
+            "0DQKznS5rESeTbuE9_EJzd",
+            "0DQKznS5rESeTbuE9_EJzs",
+            "0DQKznS5rESeTbuE9_EJzy",
+            "0DQKznS5rESeTbuED_EJzB",
+            "0DQKznS5rESeTbuED_EJzd",
+            "0DQKznS5rESeTbuED_EJzs",
+            "0DQKznS5rESeTbuED_EJzy",
+            "0DQKznS5rESeTbuEH_EJyW",
+            "0DQKznS5rESeTbuEH_EJyc",
+            "0DQKznS5rESeTbuEH_EJyr",
+            "0DQKznS5rESeTbuEH_EJzB",
+            "0DQKznS5rESeTbuEH_EJzH",
+            "0DQKznS5rESeTbuEH_EJzd",
+            "0DQKznS5rESeTbuEH_EJzs",
+            "0DQKznS5rESeTbuEH_EJzy",
+            "0DQKznS5rESeTbuEL_EJyW",
+            "0DQKznS5rESeTbuEL_EJyc",
+            "0DQKznS5rESeTbuEL_EJyr",
+            "0DQKznS5rESeTbuEL_EJzB",
+            "0DQKznS5rESeTbuEL_EJzH",
+            "0DQKznS5rESeTbuEL_EJzd",
+            "0DQKznS5rESeTbuEL_EJzs",
+            "0DQKznS5rESeTbuEL_EJzy",
+            "0DQKznS5rESeTbuET_EJyW",
+            "0DQKznS5rESeTbuET_EJyc",
+            "0DQKznS5rESeTbuET_EJyr",
+            "0DQKznS5rESeTbuET_EJzB",
+            "0DQKznS5rESeTbuET_EJzH",
+            "0DQKznS5rESeTbuET_EJzd",
+            "0DQKznS5rESeTbuET_EJzs",
+            "0DQKznS5rESeTbuET_EJzy",
+            "1Z$KVt3J5C6hZCgX19sUOp",
+            "1Z$KVt3J5C6hZCgX59sUOp",
+            "1Z$KVt3J5C6hZCgX99sUOp",
+            "1Z$KVt3J5C6hZCgXL9sUOp",
+            "1Z$KVt3J5C6hZCgXP9sUOp",
+            "1Z$KVt3J5C6hZCgXT9sUOp",
+            "2Z72RcXXzCWuDL916OPAHp",
+            "2Z72RcXXzCWuDL916OPCIQ",
+            "2Z72RcXXzCWuDL916OPCa1",
+            "2Z72RcXXzCWuDL916OPCfK",
+            "2Z72RcXXzCWuDL91AOPAHp",
+            "2Z72RcXXzCWuDL91AOPCIQ",
+            "2Z72RcXXzCWuDL91AOPCa1",
+            "2Z72RcXXzCWuDL91AOPCfK",
+            "2Z72RcXXzCWuDL91EOPAHp",
+            "2Z72RcXXzCWuDL91EOPCIQ",
+            "2Z72RcXXzCWuDL91EOPCa1",
+            "2Z72RcXXzCWuDL91EOPCfK",
+            "2Z72RcXXzCWuDL91IOPAHp",
+            "2Z72RcXXzCWuDL91IOPCIQ",
+            "2Z72RcXXzCWuDL91IOPCa1",
+            "2Z72RcXXzCWuDL91IOPCfK",
+            "2Z72RcXXzCWuDL91MOPAHp",
+            "2Z72RcXXzCWuDL91MOPCIQ",
+            "2Z72RcXXzCWuDL91MOPCa1",
+            "2Z72RcXXzCWuDL91MOPCfK",
+            "2Z72RcXXzCWuDL91QOPAHp",
+            "2Z72RcXXzCWuDL91QOPCIQ",
+            "2Z72RcXXzCWuDL91QOPCa1",
+            "2Z72RcXXzCWuDL91QOPCfK",
+            "2zFQTiy7rFAAe2LdX_YhUE",
+            "2zFQTiy7rFAAe2Ldb_YhUE",
+            "2zFQTiy7rFAAe2Ldf_YhUE",
+            "2zFQTiy7rFAAe2Ldr_YhUE",
+            "2zFQTiy7rFAAe2Ldv_YhUE",
+            "2zFQTiy7rFAAe2Ldz_YhUE",
+            "2zFQTiy7rFAAe2Ndj_Yerd",
+            "31Up7frhfCS9bXrmKvk0w4",
+            "31Up7frhfCS9bXrmKvk0hx",
+            "31Up7frhfCS9bXrmKvk0gF",
+            "31Up7frhfCS9bXrmKvk0if",
+            "31Up7frhfCS9bXrmKvk0hw",
+            "31Up7frhfCS9bXrmKvk0wB",
+            "31Up7frhfCS9bXrmKvk0ig",
+            "31Up7frhfCS9bXrmKvk0h_",
+            "31Up7frhfCS9bXrmKvk0g4",
+            "31Up7frhfCS9bXrmKvk0ij",
+            "2zFQTiy7rFAAe2Ndj_YeZk",
+            "2zFQTiy7rFAAe2Ndj_Yeq_",
+            "31Up7frhfCS9bXrmKvk0gB",
+            "31Up7frhfCS9bXrmKvk0wF"
+        ],
+        "neighbor": {
+            "15.6": {
+                "11": -4.999999999999997,
+                "13": 5.0
+            },
+            "0.0": {
+                "11": -4.999999999999997,
+                "13": 5.0
+            },
+            "3.9": {
+                "11": -4.999999999999997,
+                "13": 5.0
+            },
+            "7.8": {
+                "11": -4.999999999999997,
+                "13": 5.0
+            },
+            "11.7": {
+                "11": -4.999999999999997,
+                "13": 5.0
+            }
+        }
+    },
+    "8": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                4.8961,
+                -23.7523
+            ],
+            [
+                4.8961,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzc",
+            "0DQKznS5rESeTbuE9_EJzG",
+            "0DQKznS5rESeTbuE9_EJzc",
+            "0DQKznS5rESeTbuE9_EJzx",
+            "0DQKznS5rESeTbuED_EJzc",
+            "0DQKznS5rESeTbuED_EJzx",
+            "0DQKznS5rESeTbuEH_EJyb",
+            "0DQKznS5rESeTbuEH_EJzG",
+            "0DQKznS5rESeTbuEH_EJzc",
+            "0DQKznS5rESeTbuEH_EJzx",
+            "0DQKznS5rESeTbuEL_EJyb",
+            "0DQKznS5rESeTbuEL_EJzG",
+            "0DQKznS5rESeTbuEL_EJzc",
+            "0DQKznS5rESeTbuEL_EJzx",
+            "0DQKznS5rESeTbuET_EJyb",
+            "0DQKznS5rESeTbuET_EJzG",
+            "0DQKznS5rESeTbuET_EJzc",
+            "0DQKznS5rESeTbuET_EJzx",
+            "2Z72RcXXzCWuDL916OPATL",
+            "2Z72RcXXzCWuDL916OPCGc",
+            "2Z72RcXXzCWuDL916OPCZ1",
+            "2Z72RcXXzCWuDL916OPCgG",
+            "2Z72RcXXzCWuDL916OPDqH",
+            "2Z72RcXXzCWuDL91AOPATL",
+            "2Z72RcXXzCWuDL91AOPCGc",
+            "2Z72RcXXzCWuDL91AOPCZ1",
+            "2Z72RcXXzCWuDL91AOPCgG",
+            "2Z72RcXXzCWuDL91AOPDqH",
+            "2Z72RcXXzCWuDL91EOPATL",
+            "2Z72RcXXzCWuDL91EOPCGc",
+            "2Z72RcXXzCWuDL91EOPCZ1",
+            "2Z72RcXXzCWuDL91EOPCgG",
+            "2Z72RcXXzCWuDL91EOPDqH",
+            "2Z72RcXXzCWuDL91IOPATL",
+            "2Z72RcXXzCWuDL91IOPCGc",
+            "2Z72RcXXzCWuDL91IOPCZ1",
+            "2Z72RcXXzCWuDL91IOPCgG",
+            "2Z72RcXXzCWuDL91IOPDqH",
+            "2Z72RcXXzCWuDL91MOPATL",
+            "2Z72RcXXzCWuDL91MOPCGc",
+            "2Z72RcXXzCWuDL91MOPCZ1",
+            "2Z72RcXXzCWuDL91MOPCgG",
+            "2Z72RcXXzCWuDL91QOPATL",
+            "2Z72RcXXzCWuDL91QOPCGc",
+            "2Z72RcXXzCWuDL91QOPCZ1",
+            "2Z72RcXXzCWuDL91QOPCgG",
+            "2zFQTiy7rFAAe2LdX_YhS5",
+            "2zFQTiy7rFAAe2Ldb_YhS5",
+            "2zFQTiy7rFAAe2Ldf_YhS5",
+            "2zFQTiy7rFAAe2Ldr_YhS5",
+            "2zFQTiy7rFAAe2Ldv_YhS5",
+            "2zFQTiy7rFAAe2Ldz_YhS5",
+            "31Up7frhfCS9bXrmKvk0h7",
+            "31Up7frhfCS9bXrmKvk0h6",
+            "31Up7frhfCS9bXrmKvk0iw",
+            "31Up7frhfCS9bXrmKvk0hB",
+            "31Up7frhfCS9bXrmKvk0wN",
+            "31Up7frhfCS9bXrmKvk0iP",
+            "1yUtk4LVLEiw0i$UPsn6l0",
+            "2zFQTiy7rFAAe2Ndj_YeP4",
+            "31Up7frhfCS9bXrmKvk0vx",
+            "31Up7frhfCS9bXrmKvk0wG",
+            "31Up7frhfCS9bXrmKvk0gg",
+            "31Up7frhfCS9bXrmKvk0ir",
+            "31Up7frhfCS9bXrmKvk0gG",
+            "2zFQTiy7rFAAe2Ndj_Ye1y",
+            "31Up7frhfCS9bXrmKvk0gK",
+            "31Up7frhfCS9bXrmKvk0wK",
+            "2zFQTiy7rFAAe2Ndj_YeR8",
+            "31Up7frhfCS9bXrmKvk0fx",
+            "31Up7frhfCS9bXrmKvk0is",
+            "31Up7frhfCS9bXrmKvk0gN"
+        ],
+        "neighbor": {
+            "15.6": {
+                "13": -5.0,
+                "9": 5.000000000000003
+            },
+            "0.0": {
+                "13": -5.0,
+                "9": 5.000000000000003
+            },
+            "3.9": {
+                "13": -5.0,
+                "9": 5.000000000000003
+            },
+            "7.8": {
+                "13": -5.0,
+                "9": 5.000000000000003
+            },
+            "11.7": {
+                "13": -5.0,
+                "9": 5.000000000000003
+            }
+        }
+    },
+    "9": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                9.8961,
+                -23.7523
+            ],
+            [
+                9.8961,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzg",
+            "0DQKznS5rESeTbuE9_EJz$",
+            "0DQKznS5rESeTbuE9_EJzK",
+            "0DQKznS5rESeTbuE9_EJzg",
+            "0DQKznS5rESeTbuED_EJz$",
+            "0DQKznS5rESeTbuED_EJzg",
+            "0DQKznS5rESeTbuEH_EJyf",
+            "0DQKznS5rESeTbuEH_EJz$",
+            "0DQKznS5rESeTbuEH_EJzK",
+            "0DQKznS5rESeTbuEH_EJzg",
+            "0DQKznS5rESeTbuEL_EJyf",
+            "0DQKznS5rESeTbuEL_EJz$",
+            "0DQKznS5rESeTbuEL_EJzK",
+            "0DQKznS5rESeTbuEL_EJzg",
+            "0DQKznS5rESeTbuET_EJyf",
+            "0DQKznS5rESeTbuET_EJz$",
+            "0DQKznS5rESeTbuET_EJzK",
+            "0DQKznS5rESeTbuET_EJzg",
+            "2Z72RcXXzCWuDL916OPARC",
+            "2Z72RcXXzCWuDL916OPCUH",
+            "2Z72RcXXzCWuDL916OPCWi",
+            "2Z72RcXXzCWuDL916OPCi$",
+            "2Z72RcXXzCWuDL916OPDDJ",
+            "2Z72RcXXzCWuDL91AOPARC",
+            "2Z72RcXXzCWuDL91AOPCUH",
+            "2Z72RcXXzCWuDL91AOPCWi",
+            "2Z72RcXXzCWuDL91AOPCi$",
+            "2Z72RcXXzCWuDL91AOPDDJ",
+            "2Z72RcXXzCWuDL91EOPARC",
+            "2Z72RcXXzCWuDL91EOPCUH",
+            "2Z72RcXXzCWuDL91EOPCWi",
+            "2Z72RcXXzCWuDL91EOPCi$",
+            "2Z72RcXXzCWuDL91EOPDDJ",
+            "2Z72RcXXzCWuDL91IOPARC",
+            "2Z72RcXXzCWuDL91IOPCUH",
+            "2Z72RcXXzCWuDL91IOPCWi",
+            "2Z72RcXXzCWuDL91IOPCi$",
+            "2Z72RcXXzCWuDL91IOPDDJ",
+            "2Z72RcXXzCWuDL91MOPARC",
+            "2Z72RcXXzCWuDL91MOPCUH",
+            "2Z72RcXXzCWuDL91MOPCWi",
+            "2Z72RcXXzCWuDL91MOPCi$",
+            "2Z72RcXXzCWuDL91QOPARC",
+            "2Z72RcXXzCWuDL91QOPCUH",
+            "2Z72RcXXzCWuDL91QOPCWi",
+            "2Z72RcXXzCWuDL91QOPCi$",
+            "2zFQTiy7rFAAe2LdX_YhLY",
+            "2zFQTiy7rFAAe2Ldb_YhLY",
+            "2zFQTiy7rFAAe2Ldf_YhLY",
+            "2zFQTiy7rFAAe2Ldr_YhLY",
+            "2zFQTiy7rFAAe2Ldv_YhLY",
+            "2zFQTiy7rFAAe2Ldz_YhLY",
+            "2zFQTiy7rFAAe2Ndj_YeHA",
+            "31Up7frhfCS9bXrmKvk0ii",
+            "31Up7frhfCS9bXrmKvk0fw",
+            "31Up7frhfCS9bXrmKvk0vv",
+            "2zFQTiy7rFAAe2Ndj_Yeb$",
+            "1yUtk4LVLEiw0i$UPsn6Na",
+            "31Up7frhfCS9bXrmKvk0ge",
+            "31Up7frhfCS9bXrmKvk0gE",
+            "31Up7frhfCS9bXrmKvk0iV",
+            "31Up7frhfCS9bXrmKvk0it",
+            "31Up7frhfCS9bXrmKvk0fv",
+            "31Up7frhfCS9bXrmKvk0gf",
+            "1yUtk4LVLEiw0i$UPsn6JE",
+            "31Up7frhfCS9bXrmKvk0iO",
+            "31Up7frhfCS9bXrmKvk0gH",
+            "31Up7frhfCS9bXrmKvk0vw",
+            "31Up7frhfCS9bXrmKvk0h0",
+            "31Up7frhfCS9bXrmKvk0wE",
+            "31Up7frhfCS9bXrmKvk0hz",
+            "31Up7frhfCS9bXrmKvk0wH"
+        ],
+        "neighbor": {
+            "15.6": {
+                "8": -5.000000000000003,
+                "16": 5.0
+            },
+            "0.0": {
+                "8": -5.000000000000003,
+                "16": 5.0
+            },
+            "3.9": {
+                "8": -5.000000000000003,
+                "16": 5.0
+            },
+            "7.8": {
+                "8": -5.000000000000003,
+                "16": 5.0
+            },
+            "11.7": {
+                "8": -5.000000000000003,
+                "16": 5.0
+            }
+        }
+    },
+    "10": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                23.8652
+            ],
+            [
+                25.0366,
+                23.8652
+            ]
+        ],
+        "ids": [
+            "1Z$KVt3J5C6hZCgX19sUV7",
+            "1Z$KVt3J5C6hZCgX19sUVO",
+            "1Z$KVt3J5C6hZCgX59sUV7",
+            "1Z$KVt3J5C6hZCgX59sUVO",
+            "1Z$KVt3J5C6hZCgXL9sUV7",
+            "1Z$KVt3J5C6hZCgXL9sUVO",
+            "1Z$KVt3J5C6hZCgXP9sUV7",
+            "1Z$KVt3J5C6hZCgXP9sUVO",
+            "1Z$KVt3J5C6hZCgXT9sUV7",
+            "1Z$KVt3J5C6hZCgXT9sUVO",
+            "2Z72RcXXzCWuDL91AOPAHp",
+            "2Z72RcXXzCWuDL91AOPAID",
+            "2Z72RcXXzCWuDL91AOPAJk",
+            "2Z72RcXXzCWuDL91AOPAKy",
+            "2Z72RcXXzCWuDL91AOPAOt",
+            "2Z72RcXXzCWuDL91AOPARC",
+            "2Z72RcXXzCWuDL91AOPATL",
+            "2Z72RcXXzCWuDL91AOPAV8",
+            "2Z72RcXXzCWuDL91EOPAHp",
+            "2Z72RcXXzCWuDL91EOPAID",
+            "2Z72RcXXzCWuDL91EOPAJk",
+            "2Z72RcXXzCWuDL91EOPAKy",
+            "2Z72RcXXzCWuDL91EOPAOt",
+            "2Z72RcXXzCWuDL91EOPARC",
+            "2Z72RcXXzCWuDL91EOPATL",
+            "2Z72RcXXzCWuDL91EOPAV8",
+            "2Z72RcXXzCWuDL91IOPAHp",
+            "2Z72RcXXzCWuDL91IOPAID",
+            "2Z72RcXXzCWuDL91IOPAJk",
+            "2Z72RcXXzCWuDL91IOPAKy",
+            "2Z72RcXXzCWuDL91IOPAOt",
+            "2Z72RcXXzCWuDL91IOPARC",
+            "2Z72RcXXzCWuDL91IOPATL",
+            "2Z72RcXXzCWuDL91IOPAV8",
+            "2Z72RcXXzCWuDL91MOPAHp",
+            "2Z72RcXXzCWuDL91MOPAID",
+            "2Z72RcXXzCWuDL91MOPAJk",
+            "2Z72RcXXzCWuDL91MOPAKy",
+            "2Z72RcXXzCWuDL91MOPAOt",
+            "2Z72RcXXzCWuDL91MOPARC",
+            "2Z72RcXXzCWuDL91MOPATL",
+            "2Z72RcXXzCWuDL91MOPAV8",
+            "2Z72RcXXzCWuDL91QOPAHp",
+            "2Z72RcXXzCWuDL91QOPAID",
+            "2Z72RcXXzCWuDL91QOPAJk",
+            "2Z72RcXXzCWuDL91QOPAKy",
+            "2Z72RcXXzCWuDL91QOPAOt",
+            "2Z72RcXXzCWuDL91QOPARC",
+            "2Z72RcXXzCWuDL91QOPATL",
+            "2Z72RcXXzCWuDL91QOPAV8",
+            "1Z$KVt3J5C6hZCgX99sUV7",
+            "1Z$KVt3J5C6hZCgX99sUVO",
+            "2Z72RcXXzCWuDL916OPAHp",
+            "2Z72RcXXzCWuDL916OPAID",
+            "2Z72RcXXzCWuDL916OPAJk",
+            "2Z72RcXXzCWuDL916OPAKy",
+            "2Z72RcXXzCWuDL916OPAOt",
+            "2Z72RcXXzCWuDL916OPARC",
+            "2Z72RcXXzCWuDL916OPATL",
+            "2Z72RcXXzCWuDL916OPAV8",
+            "2Z72RcXXzCWuDL916OPAcw",
+            "2Z72RcXXzCWuDL91AOPAcw",
+            "2Z72RcXXzCWuDL91EOPAcw",
+            "2Z72RcXXzCWuDL91IOPAcw",
+            "2Z72RcXXzCWuDL91MOPAcw",
+            "2Z72RcXXzCWuDL91QOPAcw",
+            "0YD_ZCQRvBHx8pGcEVFGzQ",
+            "0YD_ZCQRvBHx8pGcAVFGzQ",
+            "0YD_ZCQRvBHx8pGcMVFGzQ",
+            "0YD_ZCQRvBHx8pGcIVFGzQ",
+            "0YD_ZCQRvBHx8pGcUVFGzQ"
+        ],
+        "neighbor": {
+            "15.6": {
+                "15": 4.617500000000003
+            },
+            "0.0": {
+                "15": 4.617500000000003
+            },
+            "3.9": {
+                "15": 4.617500000000003
+            },
+            "7.8": {
+                "15": 4.617500000000003
+            },
+            "11.7": {
+                "15": 4.617500000000003
+            }
+        }
+    },
+    "11": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -10.1039,
+                -23.7523
+            ],
+            [
+                -10.1039,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzi",
+            "0DQKznS5rESeTbuE1_EJzr",
+            "0DQKznS5rESeTbuE9_EJz1",
+            "0DQKznS5rESeTbuE9_EJzA",
+            "0DQKznS5rESeTbuE9_EJzM",
+            "0DQKznS5rESeTbuE9_EJzV",
+            "0DQKznS5rESeTbuE9_EJzi",
+            "0DQKznS5rESeTbuE9_EJzr",
+            "0DQKznS5rESeTbuED_EJz1",
+            "0DQKznS5rESeTbuED_EJzA",
+            "0DQKznS5rESeTbuED_EJzi",
+            "0DQKznS5rESeTbuED_EJzr",
+            "0DQKznS5rESeTbuEH_EJyh",
+            "0DQKznS5rESeTbuEH_EJyq",
+            "0DQKznS5rESeTbuEH_EJz1",
+            "0DQKznS5rESeTbuEH_EJzA",
+            "0DQKznS5rESeTbuEH_EJzM",
+            "0DQKznS5rESeTbuEH_EJzV",
+            "0DQKznS5rESeTbuEH_EJzi",
+            "0DQKznS5rESeTbuEH_EJzr",
+            "0DQKznS5rESeTbuEL_EJyh",
+            "0DQKznS5rESeTbuEL_EJyq",
+            "0DQKznS5rESeTbuEL_EJz1",
+            "0DQKznS5rESeTbuEL_EJzA",
+            "0DQKznS5rESeTbuEL_EJzM",
+            "0DQKznS5rESeTbuEL_EJzV",
+            "0DQKznS5rESeTbuEL_EJzi",
+            "0DQKznS5rESeTbuEL_EJzr",
+            "0DQKznS5rESeTbuET_EJyh",
+            "0DQKznS5rESeTbuET_EJyq",
+            "0DQKznS5rESeTbuET_EJz1",
+            "0DQKznS5rESeTbuET_EJzA",
+            "0DQKznS5rESeTbuET_EJzM",
+            "0DQKznS5rESeTbuET_EJzV",
+            "0DQKznS5rESeTbuET_EJzi",
+            "0DQKznS5rESeTbuET_EJzr",
+            "1Z$KVt3J5C6hZCgX19sUO7",
+            "1Z$KVt3J5C6hZCgX59sUO7",
+            "1Z$KVt3J5C6hZCgX99sUO7",
+            "1Z$KVt3J5C6hZCgXL9sUO7",
+            "1Z$KVt3J5C6hZCgXP9sUO7",
+            "1Z$KVt3J5C6hZCgXT9sUO7",
+            "2Z72RcXXzCWuDL916OPAJk",
+            "2Z72RcXXzCWuDL916OPCcq",
+            "2Z72RcXXzCWuDL916OPDRU",
+            "2Z72RcXXzCWuDL916OPFEB",
+            "2Z72RcXXzCWuDL91AOPAJk",
+            "2Z72RcXXzCWuDL91AOPCcq",
+            "2Z72RcXXzCWuDL91AOPFEB",
+            "2Z72RcXXzCWuDL91EOPAJk",
+            "2Z72RcXXzCWuDL91EOPCcq",
+            "2Z72RcXXzCWuDL91EOPFEB",
+            "2Z72RcXXzCWuDL91IOPAJk",
+            "2Z72RcXXzCWuDL91IOPCcq",
+            "2Z72RcXXzCWuDL91IOPFEB",
+            "2Z72RcXXzCWuDL91MOPAJk",
+            "2Z72RcXXzCWuDL91MOPCcq",
+            "2Z72RcXXzCWuDL91MOPFEB",
+            "2Z72RcXXzCWuDL91QOPAJk",
+            "2Z72RcXXzCWuDL91QOPCcq",
+            "2Z72RcXXzCWuDL91QOPFEB",
+            "31Up7frhfCS9bXrmKvk0fr",
+            "1yUtk4LVLEiw0i$UPsn6j5",
+            "31Up7frhfCS9bXrmKvk0iQ",
+            "31Up7frhfCS9bXrmKvk0vq",
+            "1yUtk4LVLEiw0i$UPsn6gl",
+            "31Up7frhfCS9bXrmKvk0iR",
+            "31Up7frhfCS9bXrmKvk0gh",
+            "31Up7frhfCS9bXrmKvk0vr",
+            "31Up7frhfCS9bXrmKvk0fq",
+            "31Up7frhfCS9bXrmKvk0ga"
+        ],
+        "neighbor": {
+            "15.6": {
+                "4": -5.0,
+                "7": 4.999999999999997
+            },
+            "0.0": {
+                "4": -5.0,
+                "7": 4.999999999999997
+            },
+            "3.9": {
+                "4": -5.0,
+                "7": 4.999999999999997
+            },
+            "7.8": {
+                "4": -5.0,
+                "7": 4.999999999999997
+            },
+            "11.7": {
+                "4": -5.0,
+                "7": 4.999999999999997
+            }
+        }
+    },
+    "12": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -31.7174,
+                -23.7523
+            ],
+            [
+                -31.7174,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "1Z$KVt3J5C6hZCgX19sUV0",
+            "1Z$KVt3J5C6hZCgX19sUV3",
+            "1Z$KVt3J5C6hZCgX19sUV7",
+            "1Z$KVt3J5C6hZCgX19sUVS",
+            "1Z$KVt3J5C6hZCgX19sUVT",
+            "1Z$KVt3J5C6hZCgX19sUVU",
+            "1Z$KVt3J5C6hZCgX59sUV0",
+            "1Z$KVt3J5C6hZCgX59sUV3",
+            "1Z$KVt3J5C6hZCgX59sUV7",
+            "1Z$KVt3J5C6hZCgX59sUVS",
+            "1Z$KVt3J5C6hZCgX59sUVT",
+            "1Z$KVt3J5C6hZCgX59sUVU",
+            "1Z$KVt3J5C6hZCgXL9sUV0",
+            "1Z$KVt3J5C6hZCgXL9sUV3",
+            "1Z$KVt3J5C6hZCgXL9sUV7",
+            "1Z$KVt3J5C6hZCgXL9sUVS",
+            "1Z$KVt3J5C6hZCgXL9sUVT",
+            "1Z$KVt3J5C6hZCgXL9sUVU",
+            "1Z$KVt3J5C6hZCgXP9sUV0",
+            "1Z$KVt3J5C6hZCgXP9sUV3",
+            "1Z$KVt3J5C6hZCgXP9sUV7",
+            "1Z$KVt3J5C6hZCgXP9sUVS",
+            "1Z$KVt3J5C6hZCgXP9sUVT",
+            "1Z$KVt3J5C6hZCgXP9sUVU",
+            "1Z$KVt3J5C6hZCgXT9sUV0",
+            "1Z$KVt3J5C6hZCgXT9sUV3",
+            "1Z$KVt3J5C6hZCgXT9sUV7",
+            "1Z$KVt3J5C6hZCgXT9sUVS",
+            "1Z$KVt3J5C6hZCgXT9sUVT",
+            "1Z$KVt3J5C6hZCgXT9sUVU",
+            "2Z72RcXXzCWuDL91AOPB$K",
+            "2Z72RcXXzCWuDL91AOPBm3",
+            "2Z72RcXXzCWuDL91EOPACs",
+            "2Z72RcXXzCWuDL91EOPB$K",
+            "2Z72RcXXzCWuDL91EOPBm3",
+            "2Z72RcXXzCWuDL91IOPB$K",
+            "2Z72RcXXzCWuDL91IOPBm3",
+            "2Z72RcXXzCWuDL91MOPB$K",
+            "2Z72RcXXzCWuDL91MOPBm3",
+            "2Z72RcXXzCWuDL91QOPB$K",
+            "2Z72RcXXzCWuDL91QOPBm3",
+            "2zFQTiy7rFAAe2LdX_Yhom",
+            "2zFQTiy7rFAAe2Ldb_Yhom",
+            "2zFQTiy7rFAAe2Ldr_Yhom",
+            "2zFQTiy7rFAAe2Ldv_Yhom",
+            "2zFQTiy7rFAAe2Ldz_Yhom",
+            "1Z$KVt3J5C6hZCgX99sUV0",
+            "1Z$KVt3J5C6hZCgX99sUV3",
+            "1Z$KVt3J5C6hZCgX99sUV7",
+            "1Z$KVt3J5C6hZCgX99sUVS",
+            "1Z$KVt3J5C6hZCgX99sUVT",
+            "1Z$KVt3J5C6hZCgX99sUVU",
+            "2Z72RcXXzCWuDL916OPACs",
+            "2Z72RcXXzCWuDL916OPB$K",
+            "2Z72RcXXzCWuDL916OPBm3",
+            "2zFQTiy7rFAAe2Ldf_Yhom",
+            "0YD_ZCQRvBHx8pGcUVFGt3",
+            "0YD_ZCQRvBHx8pGcAVFGt3",
+            "0YD_ZCQRvBHx8pGcEVFGt3",
+            "0YD_ZCQRvBHx8pGcMVFGt3",
+            "0YD_ZCQRvBHx8pGcIVFGt3"
+        ],
+        "neighbor": {
+            "15.6": {
+                "3": 5.613499999999998
+            },
+            "0.0": {
+                "3": 5.613499999999998
+            },
+            "3.9": {
+                "3": 5.613499999999998
+            },
+            "7.8": {
+                "3": 5.613499999999998
+            },
+            "11.7": {
+                "3": 5.613499999999998
+            }
+        }
+    },
+    "13": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -0.1039,
+                -23.7523
+            ],
+            [
+                -0.1039,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuE1_EJzh",
+            "0DQKznS5rESeTbuE9_EJz0",
+            "0DQKznS5rESeTbuE9_EJzL",
+            "0DQKznS5rESeTbuE9_EJzh",
+            "0DQKznS5rESeTbuED_EJz0",
+            "0DQKznS5rESeTbuED_EJzh",
+            "0DQKznS5rESeTbuEH_EJyg",
+            "0DQKznS5rESeTbuEH_EJz0",
+            "0DQKznS5rESeTbuEH_EJzL",
+            "0DQKznS5rESeTbuEH_EJzh",
+            "0DQKznS5rESeTbuEL_EJyg",
+            "0DQKznS5rESeTbuEL_EJz0",
+            "0DQKznS5rESeTbuEL_EJzL",
+            "0DQKznS5rESeTbuEL_EJzh",
+            "0DQKznS5rESeTbuET_EJyg",
+            "0DQKznS5rESeTbuET_EJz0",
+            "0DQKznS5rESeTbuET_EJzL",
+            "0DQKznS5rESeTbuET_EJzh",
+            "2Z72RcXXzCWuDL916OPAV8",
+            "2Z72RcXXzCWuDL916OPCbc",
+            "2Z72RcXXzCWuDL916OPCh1",
+            "2Z72RcXXzCWuDL916OPDmn",
+            "2Z72RcXXzCWuDL91AOPAV8",
+            "2Z72RcXXzCWuDL91AOPCbc",
+            "2Z72RcXXzCWuDL91AOPCh1",
+            "2Z72RcXXzCWuDL91EOPAV8",
+            "2Z72RcXXzCWuDL91EOPCbc",
+            "2Z72RcXXzCWuDL91EOPCh1",
+            "2Z72RcXXzCWuDL91IOPAV8",
+            "2Z72RcXXzCWuDL91IOPCbc",
+            "2Z72RcXXzCWuDL91IOPCh1",
+            "2Z72RcXXzCWuDL91MOPAV8",
+            "2Z72RcXXzCWuDL91MOPCbc",
+            "2Z72RcXXzCWuDL91MOPCh1",
+            "2Z72RcXXzCWuDL91QOPAV8",
+            "2Z72RcXXzCWuDL91QOPCbc",
+            "2Z72RcXXzCWuDL91QOPCh1",
+            "2zFQTiy7rFAAe2LdX_YhGb",
+            "2zFQTiy7rFAAe2Ldb_YhGb",
+            "2zFQTiy7rFAAe2Ldf_YhGb",
+            "2zFQTiy7rFAAe2Ldr_YhGb",
+            "2zFQTiy7rFAAe2Ldv_YhGb",
+            "2zFQTiy7rFAAe2Ldz_YhGb",
+            "31Up7frhfCS9bXrmKvk0f2",
+            "31Up7frhfCS9bXrmKvk0fY",
+            "31Up7frhfCS9bXrmKvk0fX",
+            "2zFQTiy7rFAAe2Ndj_YfH8",
+            "2zFQTiy7rFAAe2Ndj_YfM_",
+            "3mmcj5MMz6MQWKg2sHS9$5",
+            "31Up7frhfCS9bXrmKvk0vX",
+            "31Up7frhfCS9bXrmKvk0vY",
+            "31Up7frhfCS9bXrmKvk0v2",
+            "31Up7frhfCS9bXrmKvk0i7",
+            "31Up7frhfCS9bXrmKvk0i0",
+            "31Up7frhfCS9bXrmKvk0hW",
+            "31Up7frhfCS9bXrmKvk0hG",
+            "31Up7frhfCS9bXrmKvk0hH",
+            "31Up7frhfCS9bXrmKvk0gn"
+        ],
+        "neighbor": {
+            "15.6": {
+                "7": -5.0,
+                "8": 5.0
+            },
+            "0.0": {
+                "7": -5.0,
+                "8": 5.0
+            },
+            "3.9": {
+                "7": -5.0,
+                "8": 5.0
+            },
+            "7.8": {
+                "7": -5.0,
+                "8": 5.0
+            },
+            "11.7": {
+                "7": -5.0,
+                "8": 5.0
+            }
+        }
+    },
+    "14": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                9.2477
+            ],
+            [
+                25.0366,
+                9.2477
+            ]
+        ],
+        "ids": [
+            "2Z72RcXXzCWuDL916OPAzR",
+            "2Z72RcXXzCWuDL916OPB$K",
+            "2Z72RcXXzCWuDL916OPCfK",
+            "2Z72RcXXzCWuDL916OPCgG",
+            "2Z72RcXXzCWuDL916OPCh1",
+            "2Z72RcXXzCWuDL916OPCi$",
+            "2Z72RcXXzCWuDL916OPCrP",
+            "2Z72RcXXzCWuDL916OPCta",
+            "2Z72RcXXzCWuDL91AOPAzR",
+            "2Z72RcXXzCWuDL91AOPB$K",
+            "2Z72RcXXzCWuDL91AOPCfK",
+            "2Z72RcXXzCWuDL91AOPCgG",
+            "2Z72RcXXzCWuDL91AOPCh1",
+            "2Z72RcXXzCWuDL91AOPCi$",
+            "2Z72RcXXzCWuDL91AOPCrP",
+            "2Z72RcXXzCWuDL91AOPCta",
+            "2Z72RcXXzCWuDL91EOPAzR",
+            "2Z72RcXXzCWuDL91EOPB$K",
+            "2Z72RcXXzCWuDL91EOPCfK",
+            "2Z72RcXXzCWuDL91EOPCgG",
+            "2Z72RcXXzCWuDL91EOPCh1",
+            "2Z72RcXXzCWuDL91EOPCi$",
+            "2Z72RcXXzCWuDL91EOPCrP",
+            "2Z72RcXXzCWuDL91EOPCta",
+            "2Z72RcXXzCWuDL91IOPAzR",
+            "2Z72RcXXzCWuDL91IOPB$K",
+            "2Z72RcXXzCWuDL91IOPCfK",
+            "2Z72RcXXzCWuDL91IOPCgG",
+            "2Z72RcXXzCWuDL91IOPCh1",
+            "2Z72RcXXzCWuDL91IOPCi$",
+            "2Z72RcXXzCWuDL91IOPCrP",
+            "2Z72RcXXzCWuDL91IOPCta",
+            "2Z72RcXXzCWuDL91MOPAzR",
+            "2Z72RcXXzCWuDL91MOPB$K",
+            "2Z72RcXXzCWuDL91MOPCfK",
+            "2Z72RcXXzCWuDL91MOPCgG",
+            "2Z72RcXXzCWuDL91MOPCh1",
+            "2Z72RcXXzCWuDL91MOPCi$",
+            "2Z72RcXXzCWuDL91MOPCrP",
+            "2Z72RcXXzCWuDL91MOPCta",
+            "2Z72RcXXzCWuDL91QOPAzR",
+            "2Z72RcXXzCWuDL91QOPB$K",
+            "2Z72RcXXzCWuDL91QOPCfK",
+            "2Z72RcXXzCWuDL91QOPCgG",
+            "2Z72RcXXzCWuDL91QOPCh1",
+            "2Z72RcXXzCWuDL91QOPCi$",
+            "2Z72RcXXzCWuDL91QOPCrP",
+            "2Z72RcXXzCWuDL91QOPCta",
+            "31Up7frhfCS9bXrmKvk0h4",
+            "31Up7frhfCS9bXrmKvk0wL",
+            "31Up7frhfCS9bXrmKvk0gL",
+            "31Up7frhfCS9bXrmKvk0ix",
+            "2zFQTiy7rFAAe2Ndj_Ye2j"
+        ],
+        "neighbor": {
+            "15.6": {
+                "19": -2.0,
+                "1": 5.0
+            },
+            "0.0": {
+                "20": -2.0,
+                "1": 5.0
+            },
+            "3.9": {
+                "21": -2.0,
+                "1": 5.0
+            },
+            "7.8": {
+                "22": -2.0,
+                "1": 5.0
+            },
+            "11.7": {
+                "23": -2.0,
+                "1": 5.0
+            }
+        }
+    },
+    "15": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                19.2477
+            ],
+            [
+                25.0366,
+                19.2477
+            ]
+        ],
+        "ids": [
+            "1Z$KVt3J5C6hZCgX19sUV0",
+            "1Z$KVt3J5C6hZCgX59sUV0",
+            "1Z$KVt3J5C6hZCgX99sUV0",
+            "1Z$KVt3J5C6hZCgXL9sUV0",
+            "1Z$KVt3J5C6hZCgXP9sUV0",
+            "1Z$KVt3J5C6hZCgXT9sUV0",
+            "2Z72RcXXzCWuDL916OPApC",
+            "2Z72RcXXzCWuDL916OPCCI",
+            "2Z72RcXXzCWuDL916OPCD3",
+            "2Z72RcXXzCWuDL916OPCGc",
+            "2Z72RcXXzCWuDL916OPCIQ",
+            "2Z72RcXXzCWuDL916OPCUH",
+            "2Z72RcXXzCWuDL91AOPApC",
+            "2Z72RcXXzCWuDL91AOPCCI",
+            "2Z72RcXXzCWuDL91AOPCD3",
+            "2Z72RcXXzCWuDL91AOPCGc",
+            "2Z72RcXXzCWuDL91AOPCIQ",
+            "2Z72RcXXzCWuDL91AOPCUH",
+            "2Z72RcXXzCWuDL91EOPApC",
+            "2Z72RcXXzCWuDL91EOPCCI",
+            "2Z72RcXXzCWuDL91EOPCD3",
+            "2Z72RcXXzCWuDL91EOPCGc",
+            "2Z72RcXXzCWuDL91EOPCIQ",
+            "2Z72RcXXzCWuDL91EOPCUH",
+            "2Z72RcXXzCWuDL91IOPApC",
+            "2Z72RcXXzCWuDL91IOPCCI",
+            "2Z72RcXXzCWuDL91IOPCD3",
+            "2Z72RcXXzCWuDL91IOPCGc",
+            "2Z72RcXXzCWuDL91IOPCIQ",
+            "2Z72RcXXzCWuDL91IOPCUH",
+            "2Z72RcXXzCWuDL91MOPApC",
+            "2Z72RcXXzCWuDL91MOPCCI",
+            "2Z72RcXXzCWuDL91MOPCD3",
+            "2Z72RcXXzCWuDL91MOPCGc",
+            "2Z72RcXXzCWuDL91MOPCIQ",
+            "2Z72RcXXzCWuDL91MOPCUH",
+            "2Z72RcXXzCWuDL91QOPApC",
+            "2Z72RcXXzCWuDL91QOPCCI",
+            "2Z72RcXXzCWuDL91QOPCD3",
+            "2Z72RcXXzCWuDL91QOPCGc",
+            "2Z72RcXXzCWuDL91QOPCIQ",
+            "2Z72RcXXzCWuDL91QOPCUH"
+        ],
+        "neighbor": {
+            "15.6": {
+                "10": -4.617500000000003,
+                "24": 2.0000000000000036
+            },
+            "0.0": {
+                "10": -4.617500000000003,
+                "25": 2.0000000000000036
+            },
+            "3.9": {
+                "10": -4.617500000000003,
+                "26": 2.0000000000000036
+            },
+            "7.8": {
+                "10": -4.617500000000003,
+                "27": 2.0000000000000036
+            },
+            "11.7": {
+                "10": -4.617500000000003,
+                "28": 2.0000000000000036
+            }
+        }
+    },
+    "16": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                14.8961,
+                -23.7523
+            ],
+            [
+                14.8961,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "0DQKznS5rESeTbuET_EJya",
+            "0DQKznS5rESeTbuET_EJzF",
+            "0DQKznS5rESeTbuET_EJzb",
+            "0DQKznS5rESeTbuET_EJzw",
+            "2Z72RcXXzCWuDL916OPAOt",
+            "2Z72RcXXzCWuDL916OPCkR",
+            "2Z72RcXXzCWuDL916OPD18",
+            "2Z72RcXXzCWuDL91AOPAOt",
+            "2Z72RcXXzCWuDL91AOPCkR",
+            "2Z72RcXXzCWuDL91AOPD18",
+            "2Z72RcXXzCWuDL91EOPAOt",
+            "2Z72RcXXzCWuDL91EOPCkR",
+            "2Z72RcXXzCWuDL91EOPD18",
+            "2Z72RcXXzCWuDL91IOPAOt",
+            "2Z72RcXXzCWuDL91IOPCkR",
+            "2Z72RcXXzCWuDL91IOPD18",
+            "2Z72RcXXzCWuDL91MOPAOt",
+            "2Z72RcXXzCWuDL91MOPCkR",
+            "2Z72RcXXzCWuDL91QOPAOt",
+            "2Z72RcXXzCWuDL91QOPCkR",
+            "2zFQTiy7rFAAe2Ldf_Yh3U"
+        ],
+        "neighbor": {
+            "15.6": {
+                "9": -5.0,
+                "17": 4.747999999999999
+            },
+            "0.0": {
+                "9": -5.0,
+                "17": 4.747999999999999
+            },
+            "3.9": {
+                "9": -5.0,
+                "17": 4.747999999999999
+            },
+            "7.8": {
+                "9": -5.0,
+                "17": 4.747999999999999
+            },
+            "11.7": {
+                "9": -5.0,
+                "17": 4.747999999999999
+            }
+        }
+    },
+    "17": {
+        "type": "st",
+        "storey": [
+            15.6,
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                19.6441,
+                -23.7523
+            ],
+            [
+                19.6441,
+                29.2477
+            ]
+        ],
+        "ids": [
+            "2Z72RcXXzCWuDL916OPAfL",
+            "2Z72RcXXzCWuDL916OPApC",
+            "2Z72RcXXzCWuDL916OPAzR",
+            "2Z72RcXXzCWuDL916OPD75",
+            "2Z72RcXXzCWuDL91AOPD75",
+            "2Z72RcXXzCWuDL91IOPD75",
+            "2zFQTiy7rFAAe2Ldf_Yhx5",
+            "0YD_ZCQRvBHx8pGcIVFGxy",
+            "0YD_ZCQRvBHx8pGcEVFGxy",
+            "0YD_ZCQRvBHx8pGcMVFGxy",
+            "0YD_ZCQRvBHx8pGcUVFGxy",
+            "0YD_ZCQRvBHx8pGcAVFGxy"
+        ],
+        "neighbor": {
+            "15.6": {
+                "16": -4.747999999999999
+            },
+            "0.0": {
+                "16": -4.747999999999999
+            },
+            "3.9": {
+                "16": -4.747999999999999
+            },
+            "7.8": {
+                "16": -4.747999999999999
+            },
+            "11.7": {
+                "16": -4.747999999999999
+            }
+        }
+    },
+    "18": {
+        "type": "st",
+        "storey": [
+            0.0,
+            3.9,
+            7.8,
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                -21.8773
+            ],
+            [
+                25.0366,
+                16.9605
+            ]
+        ],
+        "ids": [
+            "0YD_ZCQRvBHx8pGcIVFGur",
+            "0YD_ZCQRvBHx8pGcAVFGur",
+            "0YD_ZCQRvBHx8pGcUVFGur",
+            "0YD_ZCQRvBHx8pGcMVFGur"
+        ],
+        "neighbor": {}
+    },
+    "19": {
+        "type": "ns",
+        "storey": [
+            15.6
+        ],
+        "location": [
+            [
+                -37.1039,
+                11.2477
+            ],
+            [
+                25.0366,
+                11.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0gU",
+            "31Up7frhfCS9bXrmKvk0gS",
+            "31Up7frhfCS9bXrmKvk0fe",
+            "31Up7frhfCS9bXrmKvk0fW"
+        ],
+        "neighbor": {
+            "15.6": {
+                "6": -3.0,
+                "14": 2.0
+            }
+        }
+    },
+    "20": {
+        "type": "ns",
+        "storey": [
+            0.0
+        ],
+        "location": [
+            [
+                -37.1039,
+                11.2477
+            ],
+            [
+                25.0366,
+                11.2477
+            ]
+        ],
+        "ids": [
+            "2zFQTiy7rFAAe2Ndj_YfL0",
+            "2zFQTiy7rFAAe2Ndj_YfjV",
+            "2zFQTiy7rFAAe2Ndj_Yfao",
+            "2zFQTiy7rFAAe2Ndj_Yf1M"
+        ],
+        "neighbor": {
+            "0.0": {
+                "6": -3.0,
+                "14": 2.0
+            }
+        }
+    },
+    "21": {
+        "type": "ns",
+        "storey": [
+            3.9
+        ],
+        "location": [
+            [
+                -37.1039,
+                11.2477
+            ],
+            [
+                25.0366,
+                11.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0vW",
+            "31Up7frhfCS9bXrmKvk0wU",
+            "31Up7frhfCS9bXrmKvk0wS",
+            "31Up7frhfCS9bXrmKvk0ve"
+        ],
+        "neighbor": {
+            "3.9": {
+                "6": -3.0,
+                "14": 2.0
+            }
+        }
+    },
+    "22": {
+        "type": "ns",
+        "storey": [
+            7.8
+        ],
+        "location": [
+            [
+                -37.1039,
+                11.2477
+            ],
+            [
+                25.0366,
+                11.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0iy",
+            "31Up7frhfCS9bXrmKvk0iE",
+            "31Up7frhfCS9bXrmKvk0i2",
+            "31Up7frhfCS9bXrmKvk0i6"
+        ],
+        "neighbor": {
+            "7.8": {
+                "6": -3.0,
+                "14": 2.0
+            }
+        }
+    },
+    "23": {
+        "type": "ns",
+        "storey": [
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                11.2477
+            ],
+            [
+                25.0366,
+                11.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0hD",
+            "31Up7frhfCS9bXrmKvk0hN",
+            "31Up7frhfCS9bXrmKvk0hV",
+            "31Up7frhfCS9bXrmKvk0hJ"
+        ],
+        "neighbor": {
+            "11.7": {
+                "6": -3.0,
+                "14": 2.0
+            }
+        }
+    },
+    "24": {
+        "type": "ns",
+        "storey": [
+            15.6
+        ],
+        "location": [
+            [
+                -37.1039,
+                17.2477
+            ],
+            [
+                25.0366,
+                17.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0gT",
+            "31Up7frhfCS9bXrmKvk0fZ",
+            "31Up7frhfCS9bXrmKvk0fg"
+        ],
+        "neighbor": {
+            "15.6": {
+                "15": -2.0000000000000036,
+                "6": 2.9999999999999947
+            }
+        }
+    },
+    "25": {
+        "type": "ns",
+        "storey": [
+            0.0
+        ],
+        "location": [
+            [
+                -37.1039,
+                17.2477
+            ],
+            [
+                25.0366,
+                17.2477
+            ]
+        ],
+        "ids": [
+            "2zFQTiy7rFAAe2Ndj_YflG",
+            "2zFQTiy7rFAAe2Ndj_Yf3Q",
+            "2zFQTiy7rFAAe2Ndj_YfI6"
+        ],
+        "neighbor": {
+            "0.0": {
+                "15": -2.0000000000000036,
+                "6": 2.9999999999999947
+            }
+        }
+    },
+    "26": {
+        "type": "ns",
+        "storey": [
+            3.9
+        ],
+        "location": [
+            [
+                -37.1039,
+                17.2477
+            ],
+            [
+                25.0366,
+                17.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0vg",
+            "31Up7frhfCS9bXrmKvk0vZ",
+            "31Up7frhfCS9bXrmKvk0wT"
+        ],
+        "neighbor": {
+            "3.9": {
+                "15": -2.0000000000000036,
+                "6": 2.9999999999999947
+            }
+        }
+    },
+    "27": {
+        "type": "ns",
+        "storey": [
+            7.8
+        ],
+        "location": [
+            [
+                -37.1039,
+                17.2477
+            ],
+            [
+                25.0366,
+                17.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0i1",
+            "31Up7frhfCS9bXrmKvk0i8",
+            "31Up7frhfCS9bXrmKvk0i3"
+        ],
+        "neighbor": {
+            "7.8": {
+                "15": -2.0000000000000036,
+                "6": 2.9999999999999947
+            }
+        }
+    },
+    "28": {
+        "type": "ns",
+        "storey": [
+            11.7
+        ],
+        "location": [
+            [
+                -37.1039,
+                17.2477
+            ],
+            [
+                25.0366,
+                17.2477
+            ]
+        ],
+        "ids": [
+            "31Up7frhfCS9bXrmKvk0hP",
+            "31Up7frhfCS9bXrmKvk0hI",
+            "31Up7frhfCS9bXrmKvk0hC"
+        ],
+        "neighbor": {
+            "11.7": {
+                "15": -2.0000000000000036,
+                "6": 2.9999999999999947
+            }
+        }
+    }
+}

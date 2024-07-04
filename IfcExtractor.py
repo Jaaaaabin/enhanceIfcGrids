@@ -71,39 +71,54 @@ class IfcExtractor:
     def _remove_slab_outliers(self):
 
         slab_outliers ={
-
             "11103190":[
                 '1lPJHttHj0t93Rx9JW$x8L',
             ],
-
             "11103085":[
                 '0lLezB9Eo$GvWuGLIrVqQT',
                 '2dgQT7c8heJAthKIf57922',
                 '2$TzztUz_nI9DzZezaA0Uf',
                 '19S$35tbDXGBvHnQP5VyE9',
             ],
-
             "11103035":[
                 '3Nvn$pqh7mHx_H$clYhRTH',
                 '3_uFSRcG9_IvnATDmaTf65',
             ],
-
             "11103223":[
                 '3gU8YbK9XBrRI57teoH1G_',
                 '0mSabJq$mkQti5Wbrc58uO',
                 '2POJPR4dfAxRjFwwgsyMmv',
                 '3$utHrBT4ZQgz5TTy1Dw69',
             ],
-
-            "11103500":[
-                '3dpwgcQgv8T8ncC5EBAM$z',
-                '3dpwgcQgv8T8ncC5EBAM_4',
-            ],
+            "11103438":[
+                '2EoIrT87f9BffvlijK50Zv',
+                '2EoIrT87f9BffvlijK50dX',
+                '2EoIrT87f9BffvlijK50i5',
+                '2EoIrT87f9BffvlijK50kH',
+                '2EoIrT87f9BffvlijK50Xj',
+                '2EoIrT87f9BffvlijK50bg',
+                '2EoIrT87f9BffvlijK50hC',
+                '2EoIrT87f9BffvlijK53CR',
+                '2EoIrT87f9BffvlijK53CJ',
+                '1pR$bNwgP9swl7km4GAk2q',
+                '1pR$bNwgP9swl7km4GAk1O',
+            ]
         }
         
+        # filter out non-relevant slabs with specific guids.
         for key, values in slab_outliers.items():
             if key in self.ifc_file_name:
                 self.slabs = [sl for sl in self.slabs if sl.GlobalId not in values]
+                break
+            else:
+                continue
+        
+        slab_type_outliers = {"11103186": "Footing"}
+        
+        # filter out non-relevant slabs with specific slab types "string".
+        for key, type_name_string in slab_type_outliers.items():
+            if key in self.ifc_file_name:
+                self.slabs = [sl for sl in self.slabs if type_name_string not in sl.Name]
                 break
             else:
                 continue
@@ -131,10 +146,10 @@ class IfcExtractor:
                 "elev": 25,
                 "azim": -40
             },
-            "11103332": {
+            "11103186": {
                 "type": 5,
                 "elev": 25,
-                "azim": -100
+                "azim": -110
             },
             "11103035": {
                 "type": 6,
@@ -146,10 +161,10 @@ class IfcExtractor:
                 "elev": 25,
                 "azim": 170
             },
-            "11103500": {
+            "11103438": {
                 "type": 8,
                 "elev": 25,
-                "azim": 170
+                "azim": 20
             }
         }
         self.elev, self.azim = 25, 50
@@ -1219,6 +1234,10 @@ class IfcExtractor:
     @time_decorator
     def wall_column_floor_location_display(self):
 
+        def get_file_prefix_code(filename):
+            parts = filename.split('-')
+            return '-'.join(parts[:2])
+        
         fig = plt.figure(figsize=(12, 6))
         ax = fig.add_subplot(111, projection='3d')
 
@@ -1286,7 +1305,8 @@ class IfcExtractor:
         plt.tight_layout()
         
         # Save the figure
-        plt.savefig(os.path.join(self.out_fig_path, 'wall_column_floor_location_map.png'), dpi=200)
+        plt.savefig(os.path.join(
+            self.out_fig_path, get_file_prefix_code(self.ifc_file_name)+'_wall_column_floor_location_map.png'), dpi=200)
         plt.close(fig)
         
 # displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑

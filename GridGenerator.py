@@ -11,6 +11,7 @@ from shapely.geometry import Point, LineString, MultiPoint
 from collections import defaultdict
 
 import bokeh.plotting
+from bokeh.models import Legend, LegendItem
 
 from toolsQuickUtils import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes, perpendicular_distance
 from toolsQuickUtils import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
@@ -60,9 +61,14 @@ class GridGenerator:
         self.out_fig_path = figure_path
         self.read_infos(json_floors, json_st_columns, json_st_walls, json_ns_walls, json_ct_walls)
         self.init_visualization_settings()
-
-        # print ("=============GridGenerator=============")
-        # print (self.out_fig_path)
+        
+        self.ifc_file_name = figure_path.split('\\')[-1]
+        self.prefix = self._get_file_prefix_code(self.ifc_file_name)
+        print(f"=====================GridGenerator=====================\n{self.ifc_file_name}\n=====================GridGenerator=====================")
+            
+    def _get_file_prefix_code(self, filename):
+        parts = filename.split('-')
+        return '-'.join(parts[:2])
     
     # @time_decorator
     def update_parameters(self, new_parameters):
@@ -132,65 +138,65 @@ class GridGenerator:
         self.visualization_settings = {
             # column points.
             'st_column_points':{
-                'legend_label':'Column Locations',
+                'legend_label':'Column(S)',
                 'color': "black",
-                'size':4,
-                'alpha':1,
+                'size':5,
+                'alpha':0.675,
             },
 
             # wall lines.
             'st_wall_lines':{
-                'legend_label':'Structural Wall Locations',
+                'legend_label':'Wall(S)',
                 'color': "black",
                 'line_dash':'solid',
-                'line_width':3,
-                'alpha':1,
+                'line_width':5,
+                'alpha':0.675,
             },
             'ns_wall_lines':{
-                'legend_label':'Non-structural Wall Locations',
-                'color': "silver",
+                'legend_label':'Wall(N)',
+                'color': "#9a9a9a",
                 'line_dash':'solid',
-                'line_width':3,
-                'alpha':1,
+                'line_width':4,
+                'alpha':0.675,
             },
 
             # grid lines.
             'location_grids_st_c': {
-                'legend_label':'Grids from structural Columns',
-                'color': "#e9c716", # yellow.
+                'legend_label':'Grid-Column(S)',
+                'color': "#805A00", # yellow.
                 'line_dash':'dashed',
                 'line_width':1.5,
-                'alpha':0.80,
+                'alpha':0.90,
             },
             'location_grids_st_w': {
-                'legend_label': 'Grids from structural Walls',
+                'legend_label': 'Grid-Wall(S)',
                 'color': "#bc272d", # red.
                 'line_dash':'dashed',
                 'line_width':1.5,
-                'alpha':0.80,
+                'alpha':0.90,
             },
             'location_grids_ns_w': {
-                'legend_label': 'Grids from non-structural Walls',
-                'color': "#50ad9f", # teal.
+                'legend_label': 'Grid-Wall(N)',
+                'color': "#2e2eb8", # teal.
                 'line_dash':'dotted',
                 'line_width':1.5,
-                'alpha':0.80,
+                'alpha':0.90,
             },
 
             # processed grid lines.
             'location_grids_st_merged': {
-                'legend_label': 'Structural Grids',
+                'legend_label': 'Grid(S)',
                 'color': "#bc272d", # red.
                 'line_dash':'dashed',
                 'line_width':2,
-                'alpha':0.90,
+                'alpha':1.0,
             },
             'location_grids_ns_merged': {
-                'legend_label':'Non-structural Grids',
+                'legend_label':'Grid(N)',
                 'color': "#0000a2", # blue
                 'line_dash':'dotted',
                 'line_width':2,
-                'alpha':0.90,
+                'alpha':1.0,
             },}
     
 #===================================================================================================
@@ -553,7 +559,7 @@ class GridGenerator:
                 continue  # Skip the current iteration if elevation key is missing
             columns_by_elevation.setdefault(elevation, []).append(w)
 
-        self.main_storeys_from_ifc_columns = {elevation: {"columns": columns}
+        self.main_storeys_from_ifc_columns = {round(elevation,2): {"columns": columns}
                                           for elevation, columns in columns_by_elevation.items() if len(columns) >= num_columns}
 
     def get_main_storeys_with_walls(self, num_walls=1, include_ct_walls=False):
@@ -572,7 +578,7 @@ class GridGenerator:
                 continue  # Skip if elevation key is missing
             walls_by_elevation.setdefault(elevation, []).append(w)
 
-        self.main_storeys_from_ifc_walls = {elevation: {"walls": walls}
+        self.main_storeys_from_ifc_walls = {round(elevation,2): {"walls": walls}
                                         for elevation, walls in walls_by_elevation.items() if len(walls) >= num_walls}
 
         # curtain walls.
@@ -587,7 +593,7 @@ class GridGenerator:
                     continue  # Skip if elevation key is missing
                 ct_walls_by_elevation.setdefault(elevation, []).append(w)
         
-            self.main_storeys_from_ifc_ct_walls = {elevation: {"curtain walls": walls}
+            self.main_storeys_from_ifc_ct_walls = {round(elevation,2): {"curtain walls": walls}
                                             for elevation, walls in ct_walls_by_elevation.items() if len(walls) >= num_walls}
         
     def get_main_storeys_with_floors(self, num_floors=1):
@@ -604,7 +610,7 @@ class GridGenerator:
                 continue  # Skip if elevation key is missing
             floors_by_elevation.setdefault(elevation, []).append(fl)
 
-        self.main_storeys_from_ifc_floors = {elevation: {"floors": floors}
+        self.main_storeys_from_ifc_floors = {round(elevation,2): {"floors": floors}
                                          for elevation, floors in floors_by_elevation.items() if len(floors) >= num_floors}
 
     def get_main_storeys_init(self, include_ct_walls=False):
@@ -663,11 +669,14 @@ class GridGenerator:
                 'bottom_z_ranges': bottom_z_ranges_per_storey,
                 })
         
-        # refine step 1: remove the storeys that doesn't have any attached floors.
-        self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'floors' in value.keys()}
+        # # refine step 1: remove the storeys that doesn't have any attached floors.
+        # self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'floors' in value.keys()}
         
-        # refine step 2: drop the storeys that dont have walls and columns. (specifically the roof..)
-        self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'columns' in value.keys() or 'walls' in value.keys()}
+        # (old) refine step 2: only keep the storeys that 'either have walls' or 'either have columns' or 'have both walls and columns'.
+        # self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'columns' in value.keys() or 'walls' in value.keys()}
+        
+        # refine step 2: only keep the storeys that  have walls
+        self.main_storeys =  {key: value for key, value in self.main_storeys.items() if 'walls' in value.keys()}
 
     def get_main_directions(self, num_directions):
             
@@ -1079,7 +1088,7 @@ class GridGenerator:
         # self.enrich_main_storeys_info_raised_area()
         ##############################
     
-    # @time_decorator
+    @time_decorator
     def create_grids(self):
 
         self.get_element_information_for_grid() # - > self.grids_all
@@ -1242,7 +1251,7 @@ class GridGenerator:
             
         return location_grids_st_per_storey, grids_st_ids_per_storey
     
-    # @time_decorator
+    @time_decorator
     def merge_grids(self):
         
         self.grids_merged = defaultdict(list)
@@ -1614,8 +1623,8 @@ class GridGenerator:
         for storey in self.main_storeys.keys():
 
             # plotting settings.
-            plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Initial"
-            fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Initial"
+            plot_name = f"Elevation {str(round(storey, 4))} - before merging"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_before_merging"
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1624,9 +1633,16 @@ class GridGenerator:
                 width=800,
                 height=800,
                 match_aspect=True)
-            fig.title.text_font_size = '11pt'
+            
+            # plotting tunning 
+            fig.title.align = 'center'
+            fig.title.text_font_size = '14pt'
             fig.xgrid.visible = False
             fig.ygrid.visible = False
+            fig.xaxis.axis_label_standoff = -20
+            fig.yaxis.axis_label_standoff = -25
+            fig.xaxis.major_label_standoff = -20
+            fig.yaxis.major_label_standoff = -20
 
             # plotting configurations of building elements.
             element_plot_configurations = [
@@ -1680,17 +1696,27 @@ class GridGenerator:
                 else:
                     continue
 
+            # Adjust the legend settings.
+            legend = fig.legend[0]
+            legend.location = "top_center"
+            legend.orientation = "horizontal"
+            legend.spacing = 10
+            legend.padding = 10
+            legend.margin = 0
+            legend.label_text_font_size = "12pt"
+
             # Save the figure.
             bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
             bokeh.plotting.save(fig)
 
+    # @time_decorator
     def visualization_2d_after_merge(self):
             
         for storey in self.main_storeys.keys():
 
             # plotting settings.
-            plot_name = f"Floor Plan Elevation {str(round(storey, 4))} - Merged"
-            fig_save_name = f"Floor_Plan_Elevation_{str(round(storey,4))}_Merged"
+            plot_name = f"Elevation {str(round(storey, 4))} - after merging"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_after_merging"
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1699,9 +1725,16 @@ class GridGenerator:
                 width=800,
                 height=800,
                 match_aspect=True)
-            fig.title.text_font_size = '11pt'
+            
+            # plotting tunning 
+            fig.title.align = 'center'
+            fig.title.text_font_size = '14pt'
             fig.xgrid.visible = False
             fig.ygrid.visible = False
+            fig.xaxis.axis_label_standoff = -20
+            fig.yaxis.axis_label_standoff = -25
+            fig.xaxis.major_label_standoff = -20
+            fig.yaxis.major_label_standoff = -20
 
             # plotting configurations of building elements.
             element_plot_configurations = [
@@ -1753,6 +1786,15 @@ class GridGenerator:
                                     line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
                 else:
                     continue
+
+            # Adjust the legend settings.
+            legend = fig.legend[0]
+            legend.location = "top_center"
+            legend.orientation = "horizontal"
+            legend.spacing = 10
+            legend.padding = 10
+            legend.margin = 0
+            legend.label_text_font_size = "12pt"
 
             # Save the figure.
             bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
