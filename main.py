@@ -35,7 +35,8 @@ RANDOM_SEED = 20001
 
 #===================================================================================================
 # Paths setup and Log registration.
-PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
+
+PROJECT_PATH = os.getcwd()
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
@@ -253,7 +254,7 @@ def main(random_seed=[], num_processes=1, set_visualization=True):
 
 if __name__ == "__main__":
 
-    main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS, set_visualization=False)
+    main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS, set_visualization=True)
 
 
 # ========================references===========================

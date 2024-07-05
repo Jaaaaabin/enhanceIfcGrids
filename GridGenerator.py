@@ -69,7 +69,7 @@ class GridGenerator:
         
         self.ifc_file_name = figure_path.split('\\')[-1]
         self.prefix = self._get_file_prefix_code(self.ifc_file_name)
-        print(f"=====================GridGenerator=====================\n{self.ifc_file_name}\n=====================GridGenerator=====================")
+        # print(f"=====================GridGenerator=====================\n{self.ifc_file_name}\n=====================GridGenerator=====================")
             
     def _get_file_prefix_code(self, filename):
         parts = filename.split('-')

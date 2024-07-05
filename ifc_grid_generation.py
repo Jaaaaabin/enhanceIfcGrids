@@ -2,7 +2,7 @@ import os
 from gridGenerator import GridGenerator
 from toolsQuickUtils import time_decorator
 
-PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
+PROJECT_PATH = os.getcwd()
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 

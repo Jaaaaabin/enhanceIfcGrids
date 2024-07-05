@@ -4,7 +4,7 @@ from ifcExtractor import IfcExtractor
 # import itertools
 # from infoAnalysis import JsonFileComparator
 
-PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
+PROJECT_PATH = os.getcwd()
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
