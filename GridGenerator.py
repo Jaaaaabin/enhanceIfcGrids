@@ -1,4 +1,3 @@
-import ifcopenshell
 import os
 import copy
 import json

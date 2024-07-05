@@ -1,5 +1,5 @@
 import os
-from gridGenerator import GridGenerator
+from GridGenerator import GridGenerator
 from toolsQuickUtils import time_decorator
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
