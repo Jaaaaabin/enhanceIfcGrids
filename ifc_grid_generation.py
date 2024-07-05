@@ -1,5 +1,5 @@
 import os
-from gridGenerator import GridGenerator
+from gridSystemGenerator import GridGenerator
 from toolsQuickUtils import time_decorator
 
 PROJECT_PATH = os.getcwd()
