@@ -17,6 +17,8 @@ dyn/
 # Result
 *.html
 *.png
+*.svg
+
 # Distribution / packaging
 .Python
 lib/

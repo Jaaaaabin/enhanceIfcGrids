@@ -11,7 +11,13 @@ from shapely.geometry import Point, LineString, MultiPoint
 from collections import defaultdict
 
 import bokeh.plotting
-from bokeh.models import Legend, LegendItem
+from bokeh.io import export_svgs
+
+import chromedriver_binary
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+import cairosvg
 
 from toolsQuickUtils import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes, perpendicular_distance
 from toolsQuickUtils import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
@@ -139,7 +145,7 @@ class GridGenerator:
             # column points.
             'st_column_points':{
                 'legend_label':'Column(S)',
-                'color': "black",
+                'color': "#006400",
                 'size':5,
                 'alpha':0.675,
             },
@@ -156,31 +162,31 @@ class GridGenerator:
                 'legend_label':'Wall(N)',
                 'color': "#9a9a9a",
                 'line_dash':'solid',
-                'line_width':4,
+                'line_width':3,
                 'alpha':0.675,
             },
 
             # grid lines.
             'location_grids_st_c': {
                 'legend_label':'Grid-Column(S)',
-                'color': "#805A00", # yellow.
+                'color': "#B8860B", 
                 'line_dash':'dashed',
-                'line_width':1.5,
-                'alpha':0.90,
+                'line_width':2,
+                'alpha':0.95,
             },
             'location_grids_st_w': {
                 'legend_label': 'Grid-Wall(S)',
                 'color': "#bc272d", # red.
                 'line_dash':'dashed',
-                'line_width':1.5,
-                'alpha':0.90,
+                'line_width':2,
+                'alpha':0.95,
             },
             'location_grids_ns_w': {
                 'legend_label': 'Grid-Wall(N)',
                 'color': "#2e2eb8", # teal.
                 'line_dash':'dotted',
-                'line_width':1.5,
-                'alpha':0.90,
+                'line_width':2,
+                'alpha':0.95,
             },
 
             # processed grid lines.
@@ -188,14 +194,14 @@ class GridGenerator:
                 'legend_label': 'Grid(S)',
                 'color': "#bc272d", # red.
                 'line_dash':'dashed',
-                'line_width':2,
+                'line_width':2.5,
                 'alpha':1.0,
             },
             'location_grids_ns_merged': {
                 'legend_label':'Grid(N)',
                 'color': "#0000a2", # blue
                 'line_dash':'dotted',
-                'line_width':2,
+                'line_width':2.5,
                 'alpha':1.0,
             },}
     
@@ -1617,6 +1623,33 @@ class GridGenerator:
 #===================================================================================================
 # Visualization ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
+    def _save_svg_chromedriver(self, fig, output_svg_path):
+
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        service = Service(chromedriver_binary.chromedriver_filename)
+        driver = webdriver.Chrome(service=service, options=options)
+        
+        fig.output_backend = "svg"
+        export_svgs(fig, filename=output_svg_path, webdriver=driver)
+        driver.quit()
+
+    def _convert_svg_to_pdf(self, svg_path, pdf_path):
+        
+        cairosvg.svg2pdf(url=svg_path, write_to=pdf_path)
+
+        # cairosvg.svg2png(
+        #     url=svg_path,
+        #     write_to=png_path,
+        #     scale=scale_factor, 
+        #     output_width=width,
+        #     output_height=height,
+        #     dpi=dpi
+        # )
+    
     # @time_decorator
     def visualization_2d_before_merge(self):
 
@@ -1624,7 +1657,7 @@ class GridGenerator:
 
             # plotting settings.
             plot_name = f"Elevation {str(round(storey, 4))} - before merging"
-            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_before_merging"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_creation"
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1646,9 +1679,9 @@ class GridGenerator:
 
             # plotting configurations of building elements.
             element_plot_configurations = [
-                ('st_column_points', 'square', None),
-                ('st_wall_lines', 'line', 'coords'),
                 ('ns_wall_lines', 'line', 'coords'),
+                ('st_wall_lines', 'line', 'coords'),
+                ('st_column_points', 'square', None),
             ]
 
             for config in element_plot_configurations:
@@ -1672,9 +1705,9 @@ class GridGenerator:
             
             # plotting configurations of grids of different types.
             grid_plot_configurations = [
-                ('location_grids_st_c', 'line', 'coords'),
-                ('location_grids_st_w', 'line', 'coords'),
                 ('location_grids_ns_w', 'line', 'coords'),
+                ('location_grids_st_w', 'line', 'coords'),
+                ('location_grids_st_c', 'line', 'coords'),
             ]
 
             for config in grid_plot_configurations:
@@ -1706,8 +1739,14 @@ class GridGenerator:
             legend.label_text_font_size = "12pt"
 
             # Save the figure.
-            bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-            bokeh.plotting.save(fig)
+            svg_file_path = os.path.join(self.out_fig_path, fig_save_name + ".svg")
+            pdf_file_path = os.path.join(self.out_fig_path, fig_save_name + ".pdf")
+
+            self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+            self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+        
+            # bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
+            # bokeh.plotting.save(fig)
 
     # @time_decorator
     def visualization_2d_after_merge(self):
@@ -1716,7 +1755,7 @@ class GridGenerator:
 
             # plotting settings.
             plot_name = f"Elevation {str(round(storey, 4))} - after merging"
-            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_after_merging"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_merging"
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1738,9 +1777,9 @@ class GridGenerator:
 
             # plotting configurations of building elements.
             element_plot_configurations = [
-                ('st_column_points', 'square', None),
-                ('st_wall_lines', 'line', 'coords'),
                 ('ns_wall_lines', 'line', 'coords'),
+                ('st_wall_lines', 'line', 'coords'),
+                ('st_column_points', 'square', None),
             ]
 
             for config in element_plot_configurations:
@@ -1764,8 +1803,8 @@ class GridGenerator:
             
             # plotting configurations of grids of different types.
             grid_plot_configurations = [
-                ('location_grids_st_merged', 'line', 'coords'),
                 ('location_grids_ns_merged', 'line', 'coords'),
+                ('location_grids_st_merged', 'line', 'coords'),
             ]
 
             for config in grid_plot_configurations:
@@ -1797,8 +1836,12 @@ class GridGenerator:
             legend.label_text_font_size = "12pt"
 
             # Save the figure.
-            bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-            bokeh.plotting.save(fig)
+            svg_file_path = os.path.join(self.out_fig_path, fig_save_name + ".svg")
+            pdf_file_path = os.path.join(self.out_fig_path, fig_save_name + ".pdf")
+
+            self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+            self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+            
 
 #Visualization ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================
