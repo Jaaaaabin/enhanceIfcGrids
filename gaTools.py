@@ -95,25 +95,39 @@ def saveLogbook(logbook, log_file):
     with open(log_file, "w") as output_file:
         json.dump(logbook_json, output_file, indent = 3)
 
-def visualizeGenFitness(logbook, fitness_file):
+def save_fitness_data(logbook, json_file):
+    data = {
+        "generation": logbook.select("gen"),
+        "min_fitness": logbook.select("min"),
+        "max_fitness": logbook.select("max"),
+        "avg_fitness": logbook.select("avg")
+    }
+    with open(json_file, 'w') as f:
+        json.dump(data, f, indent=4)
+
+def visualizeGenFitness(logbook, fitness_file, show_max=True):
+    
     gen = logbook.select("gen")
     min_fitness = logbook.select("min")
     max_fitness = logbook.select("max")
     avg_fitness = logbook.select("avg")
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(12, 6), dpi=300)
     plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
-    plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
     plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
+
+    if show_max:
+        max_fitness = logbook.select("max")
+        plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
     
     plt.xlabel("Generation")
     plt.ylabel("Fitness")
     plt.title("Fitness Over Generations")
     plt.legend()
     plt.grid(True)
-    
-    # Save the plot to a file
-    plt.savefig(fitness_file)
+    plt.tight_layout()
+
+    plt.savefig(fitness_file, dpi=300)
     plt.close()  # Close the figure to free up memory
 
 def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
@@ -144,9 +158,15 @@ def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
     viol_h = 4
     viol_w_per_gen = 2
 
-    plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h))
+    plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h), dpi=300)
     fig, ax = plt.subplots()
-    ax.violinplot(violin_data)
+    
+    # Customize the violin plot
+    parts = ax.violinplot(violin_data)
+    for partname in ('cbars', 'cmins', 'cmaxes'):
+        parts[partname].set_edgecolor('black')
+        parts[partname].set_linestyle('--')
+        parts[partname].set_alpha(0.5)
 
     # Adding titles and labels
     ax.set_title('Generation Fitnesses')
@@ -159,7 +179,9 @@ def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
 
     # Show the plot
     plt.grid(True)
-    plt.savefig(violin_file)
+    plt.tight_layout()
+    plt.savefig(violin_file, dpi=300)
+    plt.close()
 
 #===================================================================================================
 # Visualization for GA population fitnesses.

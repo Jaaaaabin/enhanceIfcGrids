@@ -5,7 +5,7 @@ from ifcExtractor import IfcExtractor
 # from infoAnalysis import JsonFileComparator
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon1'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 def process_ifc_file(input_path, output_path):

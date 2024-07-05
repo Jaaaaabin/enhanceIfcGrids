@@ -2,7 +2,7 @@ import os
 from hierGraph import HierarchicalGraph
 
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 NUM_VISUALIZATION_GRIDS = 4

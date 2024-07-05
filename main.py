@@ -24,7 +24,7 @@ from gaTools import ga_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 30 # number of iterations.
+NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
@@ -32,22 +32,26 @@ MUTAT_PROB = 0.1 # the probability for mutating an individual
 
 NUM_PROCESS = 8
 RANDOM_SEED = 20001
+
 #===================================================================================================
 # Paths setup and Log registration.
 PROJECT_PATH = r'C:\dev\phd\enrichIFC\enrichIFC'
-DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_ga')
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
-MODEL_PATH = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
+MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
 
-gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_PATH)
+MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
+os.makedirs(MODEL_GA_RES_PATH, exist_ok=True)
+
+gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
 logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
 
-INI_GENERATION_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_ini_inds_integer.txt")
-GENERATION_LOG_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_log.json")
-GENERATION_FIT_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_fitness.png")
-GENERATION_IND_FILE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_inds.txt")
-GENERATION_IND_VIOLIN_FLE = os.path.join(DATA_RES_PATH, MODEL_PATH, "ga_generation_ind_violin.png")
+INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
+GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
+GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness.png")
+GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
+GENERATION_IND_VIOLIN_FLE = os.path.join(MODEL_GA_RES_PATH, "ga_ind_violin.png")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
@@ -153,7 +157,7 @@ def ga_objective(individual: list) -> tuple:
     # return (gridGenerator.percent_unbound_elements, gridGenerator.avg_deviation_distance,)
 # ===================================================================================================
 # main.
-def main(random_seed=[], num_processes=1):
+def main(random_seed=[], num_processes=1, set_visualization=True):
 
     if random_seed:
         random.seed(random_seed)
@@ -224,9 +228,9 @@ def main(random_seed=[], num_processes=1):
     if num_processes > 1:
         pool.close()
     
-    # Analysis of the GA.
-    saveLogbook(logbook=logbook, log_file=GENERATION_LOG_FILE) 
-    visualizeGenFitness(logbook=logbook, fitness_file=GENERATION_FIT_FILE)
+    # Analysis of the GA results.
+    saveLogbook(logbook=logbook, log_file=GENERATION_LOG_FILE)
+    visualizeGenFitness(logbook=logbook, fitness_file=GENERATION_FIT_FILE, show_max=False)
     visualizeGenFitnessViolin(violin_file=GENERATION_IND_VIOLIN_FLE, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
     # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
 
@@ -242,12 +246,14 @@ def main(random_seed=[], num_processes=1):
 
     # Visualization of the generated grids.
     print("best ind decoded parameter values:", decoded_parameters)
-    gridGeneratorInit.visualization_2d_before_merge()
-    gridGeneratorInit.visualization_2d_after_merge()
+
+    if set_visualization:
+        gridGeneratorInit.visualization_2d_before_merge(visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+        gridGeneratorInit.visualization_2d_after_merge(visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
 
 if __name__ == "__main__":
 
-    main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS)
+    main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS, set_visualization=False)
 
 
 # ========================references===========================

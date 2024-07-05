@@ -1093,7 +1093,7 @@ class GridGenerator:
         # self.enrich_main_storeys_info_raised_area()
         ##############################
     
-    @time_decorator
+    # @time_decorator
     def create_grids(self):
 
         self.get_element_information_for_grid() # - > self.grids_all
@@ -1256,7 +1256,7 @@ class GridGenerator:
             
         return location_grids_st_per_storey, grids_st_ids_per_storey
     
-    @time_decorator
+    # @time_decorator
     def merge_grids(self):
         
         self.grids_merged = defaultdict(list)
@@ -1639,24 +1639,19 @@ class GridGenerator:
     def _convert_svg_to_pdf(self, svg_path, pdf_path):
         
         cairosvg.svg2pdf(url=svg_path, write_to=pdf_path)
-
-        # cairosvg.svg2png(
-        #     url=svg_path,
-        #     write_to=png_path,
-        #     scale=scale_factor, 
-        #     output_width=width,
-        #     output_height=height,
-        #     dpi=dpi
-        # )
-    
+        
     # @time_decorator
-    def visualization_2d_before_merge(self):
+    def visualization_2d_before_merge(self, visualization_storage_path=None, add_strs=''):
 
+        if visualization_storage_path is None:
+            visualization_storage_path = self.out_fig_path
+            
         for storey in self.main_storeys.keys():
 
             # plotting settings.
             plot_name = f"Elevation {str(round(storey, 4))} - before merging"
-            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_creation"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_creation" if not add_strs else \
+                f"{self.prefix}_Elevation_{str(round(storey,4))}_creation_{add_strs}"
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1738,8 +1733,8 @@ class GridGenerator:
             legend.label_text_font_size = "12pt"
 
             # Save the figure.
-            svg_file_path = os.path.join(self.out_fig_path, fig_save_name + ".svg")
-            pdf_file_path = os.path.join(self.out_fig_path, fig_save_name + ".pdf")
+            svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
+            pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
 
             self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
             self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
@@ -1748,13 +1743,17 @@ class GridGenerator:
             # bokeh.plotting.save(fig)
 
     # @time_decorator
-    def visualization_2d_after_merge(self):
-            
+    def visualization_2d_after_merge(self, visualization_storage_path=None, add_strs=''):
+        
+        if visualization_storage_path is None:
+            visualization_storage_path = self.out_fig_path
+
         for storey in self.main_storeys.keys():
 
             # plotting settings.
             plot_name = f"Elevation {str(round(storey, 4))} - after merging"
-            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_merging"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_merging" if not add_strs else \
+                f"{self.prefix}_Elevation_{str(round(storey,4))}_merging_{add_strs}"
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1835,8 +1834,8 @@ class GridGenerator:
             legend.label_text_font_size = "12pt"
 
             # Save the figure.
-            svg_file_path = os.path.join(self.out_fig_path, fig_save_name + ".svg")
-            pdf_file_path = os.path.join(self.out_fig_path, fig_save_name + ".pdf")
+            svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
+            pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
 
             self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
             self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
