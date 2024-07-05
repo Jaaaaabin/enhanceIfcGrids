@@ -19,3 +19,4 @@ run `conda activate dev-ifc`
 - For plotting svgs, chromedriver-binary is needed `pip install chromedriver-binary-auto`(https://pypi.org/project/chromedriver-binary-auto/)
 - Change the working directory to the project path  `cd /D ... `
 - Inside the anaconda console and the activated env, run the command `pip install -r requirements.txt`
+- readme test.
