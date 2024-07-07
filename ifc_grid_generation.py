@@ -32,7 +32,7 @@ def preparation_of_grid_generation(
 
     return generator
 
-def building_grid_generation(basic_generator, new_parameters, set_visualization=True):
+def building_grid_generation(basic_generator, new_parameters, set_visualization=False):
     
     # update the parameters.
     new_generator = basic_generator.update_parameters(new_parameters)
@@ -52,7 +52,7 @@ def building_grid_generation(basic_generator, new_parameters, set_visualization=
     new_generator.analyze_grids()
 
     # calculate the losses for merged girds.
-    new_generator.calculate_merged_losses()  #[for the ga optimization.]
+    new_generator.calculate_losses()  #[for the ga optimization.]
 
 # # ----------
 # main.

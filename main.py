@@ -9,6 +9,7 @@ if sys.platform == "win32":
 import os
 import copy
 import array
+import argparse
 import random
 import logging
 import multiprocessing
@@ -24,7 +25,7 @@ from gaTools import ga_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 20 # number of iterations.
+NUM_GENERATIONS = 5 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
@@ -60,14 +61,14 @@ PARAMS = {
     'st_c_num': (2, 10), # [3,10)  # min = 3
     'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
     'ns_w_num': (2, 10), # [2,10)  # min = 2.
-    'st_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
-    'ns_w_accumuled_length_percent': (0.00001, 0.0100), # should be more "dependent" on the average length.
-    'st_st_merge': (0.2, 1.00), # ....god sick differentiate between merge
-    'ns_st_merge': (0.2, 1.00), # ....god sick differentiate between merge
-    'ns_ns_merge': (0.2, 1.00), # ....god sick differentiate between merge
-    # 'st_c_align_dist': (0.00001, 0.0001), # fixed?
-    # 'st_w_align_dist': (0.00001, 0.0001), # fixed?
-    # 'ns_w_align_dist': (0.00001, 0.0001), # fixed?
+    'st_w_accumuled_length_percent': (0.00001, 0.05), # should be more "dependent" on the average length.
+    'ns_w_accumuled_length_percent': (0.00001, 0.05), # should be more "dependent" on the average length.
+    'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'st_c_align_dist': (0.0001, 0.1), # fixed?
+    'st_w_align_dist': (0.0001, 0.1), # fixed?
+    'ns_w_align_dist': (0.0001, 0.1), # fixed?
 }
 
 # Get the additional Constant Values.
@@ -148,20 +149,25 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.create_grids()
     gridGenerator.merge_grids()
     gridGenerator.analyze_grids()
-    gridGenerator.calculate_merged_losses()
+    gridGenerator.calculate_losses()
     
     # for our problem, it might be a "dominated" problem.
-    individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_distance*0.5
-    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_distance*0.25
+    individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_adjacent*0.25
+
     return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
 
-    # return (gridGenerator.percent_unbound_elements, gridGenerator.avg_deviation_distance,)
 # ===================================================================================================
 # main.
-def main(random_seed=[], num_processes=1, set_visualization=True):
-
-    if random_seed:
-        random.seed(random_seed)
+def main():
+    
+    parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
+    parser.add_argument('--random_seed', type=int, default=20001, help='Random seed for creatomg initial individuals.')
+    parser.add_argument('--num_process', type=int, default=1, help='Number of processes for multi processing.')
+    parser.add_argument('--set_plot', type=bool, default=False, help='plot the the generated grids')
+    args = parser.parse_args()
+    
+    if args.random_seed:
+        random.seed(args.random_seed)
 
     creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
     creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMin) 
@@ -198,8 +204,8 @@ def main(random_seed=[], num_processes=1, set_visualization=True):
         os.remove(GENERATION_IND_FILE)
         
     # Process Pool of multi workers
-    if num_processes > 1:
-        pool = multiprocessing.Pool(processes=num_processes)
+    if args.num_process > 1:
+        pool = multiprocessing.Pool(processes=args.num_process)
         toolbox.register("map", pool.map)
     
     # history to track all the individuals produced in the evolution.
@@ -226,7 +232,7 @@ def main(random_seed=[], num_processes=1, set_visualization=True):
     final_pop, logbook = ga_eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
         ngen=NUM_GENERATIONS, fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True)
     
-    if num_processes > 1:
+    if args.num_process > 1:
         pool.close()
     
     # Analysis of the GA results.
@@ -248,14 +254,13 @@ def main(random_seed=[], num_processes=1, set_visualization=True):
     # Visualization of the generated grids.
     print("best ind decoded parameter values:", decoded_parameters)
 
-    if set_visualization:
+    if args.set_plot:
         gridGeneratorInit.visualization_2d_before_merge(visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
         gridGeneratorInit.visualization_2d_after_merge(visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
 
 if __name__ == "__main__":
 
-    main(random_seed=RANDOM_SEED, num_processes=NUM_PROCESS, set_visualization=True)
-
+    main()
 
 # ========================references===========================
 # https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
