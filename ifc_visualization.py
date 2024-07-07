@@ -1,5 +1,5 @@
 import os
-from ifcExtractor import IfcExtractor
+from ifcDataExtractor import IfcExtractor
 
 DATA_PATH = r'C:\dev\phd\enrichIFC\enrichIFC\paperfigures\multilayerwalls\data'
 DATA_RES_PATH = r'C:\dev\phd\enrichIFC\enrichIFC\paperfigures\multilayerwalls\res'

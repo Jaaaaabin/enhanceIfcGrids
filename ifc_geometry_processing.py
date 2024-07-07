@@ -1,5 +1,5 @@
 import os
-from ifcExtractor import IfcExtractor
+from ifcDataExtractor import IfcDataExtractor
 
 # import itertools
 # from infoAnalysis import JsonFileComparator
@@ -10,7 +10,7 @@ DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 def process_ifc_file(input_path, output_path):
 
-    extractor = IfcExtractor(input_path, output_path)
+    extractor = IfcDataExtractor(input_path, output_path)
 
     extractor.extract_all_floors()
     extractor.extract_all_columns()
