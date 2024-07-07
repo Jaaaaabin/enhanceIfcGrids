@@ -61,8 +61,8 @@ PARAMS = {
     'st_c_num': (2, 10), # [3,10)  # min = 3
     'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
     'ns_w_num': (2, 10), # [2,10)  # min = 2.
-    'st_w_accumuled_length_percent': (0.00001, 0.05), # should be more "dependent" on the average length.
-    'ns_w_accumuled_length_percent': (0.00001, 0.05), # should be more "dependent" on the average length.
+    'st_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+    'ns_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
     'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
     'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
     'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
