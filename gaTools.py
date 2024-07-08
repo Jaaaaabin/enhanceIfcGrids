@@ -230,13 +230,28 @@ def varAnd(population, toolbox, cxpb, mutpb):
 
 # DEAP - eaSimple [adjusted.]
 
+def has_converged(logbook, gen, threshold=10):
+    if len(logbook) < threshold:
+        return False
+    recent_fitnesses = [entry['min'] for entry in logbook[-threshold:]]
+    return all(fitness == recent_fitnesses[0] for fitness in recent_fitnesses)
+
 def has_converged(logbook, threshold=10, std_threshold=0.01):
     if len(logbook) < threshold:
         return False
-    recent_fitnesses = [entry['max'] for entry in logbook[-threshold:]]
-    mean_fitness = sum(recent_fitnesses) / len(recent_fitnesses)
-    std_fitness = (sum((x - mean_fitness) ** 2 for x in recent_fitnesses) / len(recent_fitnesses)) ** 0.5
-    return all(fitness == recent_fitnesses[0] for fitness in recent_fitnesses) or std_fitness < std_threshold
+    recent_entries = logbook[-threshold:]
+    
+    # Check if the min fitness has stayed unchanged
+    min_fitnesses = [entry['min'] for entry in recent_entries]
+    if len(set(min_fitnesses)) != 1:
+        return False
+    
+    # Check if all std values are less than std_threshold
+    std_fitnesses = [entry['std'] for entry in recent_entries]
+    if all(std < std_threshold for std in std_fitnesses):
+        return True
+    
+    return False
 
 def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=None,
              halloffame=None, verbose=__debug__):
