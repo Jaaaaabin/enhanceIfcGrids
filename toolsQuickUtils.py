@@ -138,6 +138,23 @@ def get_line_slope_by_points(point1, point2):
 
     return slope
 
+def slope_to_orientation_0_180(slope):
+
+    if slope == float('inf'):
+        degree = 90.0
+    elif slope == 0:
+        degree = 0.0
+    else:
+        degree = math.degrees(math.atan(slope))
+    
+    # Normalize the degree to be within 0 to 180
+    if degree < 0:
+        degree += 180
+    elif degree > 180:
+        degree -= 180
+        
+    return degree
+
 def point_to_line_distance(point, line, tol_distance=0.001):
             
     def point_get_coords(point):
@@ -256,14 +273,14 @@ def close_parallel_lines(p1, p2, p3, p4, offset, t=0.00001):
     
     return all_close, all_collinear
 
-def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.001):
+def is_close_to_known_orientations(new_orientation, known_orientations, threshold=0.001):
     """
     specific constraints that column-based gridlines must be located following the main directions of the building.
     """
-    if new_slope in known_slopes:
+    if new_orientation in known_orientations:
         return True
     else:
-        return any(abs(new_slope - s) <= threshold for s in known_slopes)
+        return any(abs(new_orientation - s) <= threshold for s in known_orientations)
 
 def are_lines_cross(line1_bounds, line2_bounds):
     """

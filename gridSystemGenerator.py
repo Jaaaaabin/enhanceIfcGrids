@@ -18,7 +18,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import cairosvg
 
-from toolsQuickUtils import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_slopes, perpendicular_distance
+from toolsQuickUtils import get_line_slope_by_points, remove_duplicate_points, close_parallel_lines, deep_merge_dictionaries, is_close_to_known_orientations, slope_to_orientation_0_180, perpendicular_distance
 from toolsQuickUtils import time_decorator, check_repeats_in_list, flatten_and_merge_lists, enrich_dict_with_another, calculate_line_crosses, a_is_subtuple_of_b
 
 class GridGenerator:
@@ -270,9 +270,10 @@ class GridGenerator:
                 related_element_ids = id_group_1+id_group_2  # Use a set to avoid duplicate indices
             
                 slope = get_line_slope_by_points(point1, point2)
-                
+
                 # for columns, ignore those pairs not located on the main directions.
-                if not is_close_to_known_slopes(slope, self.main_directions):
+                orientation  = slope_to_orientation_0_180(slope)
+                if not is_close_to_known_orientations(orientation, self.main_directions):
                     continue
                 else:
                 #|<- - - 
@@ -699,17 +700,28 @@ class GridGenerator:
     def get_main_directions(self, num_directions):
             
         def degree2slope(degree):
-            t_direction_degree = 0.0001
-            slope = float('inf') if abs(degree-90.0)<t_direction_degree else math.radians(degree) # static threshold.
+
+            t_direction_degree = 0.001
+            degree = degree % 360
+            # Handling near-vertical lines
+            if abs(degree - 90.0) < t_direction_degree or abs(degree - 270.0) < t_direction_degree:
+                slope = float('inf')
+            # Handling near-horizontal lines
+            elif abs(degree) < t_direction_degree or abs(degree - 180.0) < t_direction_degree:
+                slope = 0.0
+            else:
+                slope = math.tan(math.radians(degree))
+            
+            # slope = float('inf') if abs(degree-90.0)<t_direction_degree else math.radians(degree) # static threshold. # old
             return slope
         
         wall_orientations = [w['orientation'] for w in self.info_all_walls if 'orientation' in w]
-        wall_orientations = [(v-180) if v>=180 else v for v in wall_orientations]
+        wall_orientations = [(v-180) if v>=180 else v for v in wall_orientations] # to 0 - 180 degree.
         main_directions = Counter(wall_orientations)
         main_directions = main_directions.most_common(num_directions)
 
         self.main_directions = [main_direct[0] for main_direct in main_directions]
-        self.main_directions = [degree2slope(main_direct) for main_direct in self.main_directions]
+        # self.main_directions = [degree2slope(main_direct) for main_direct in self.main_directions]
     
     # no need of this function if we treat the columns for the whole building.
     def identify_columns_cross_storeys(self):

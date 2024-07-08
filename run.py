@@ -18,7 +18,7 @@ def main():
     project_directory = os.getcwd()
     source_directory = os.path.join(project_directory, "data/data_autocon_test")
     target_directory = os.path.join(project_directory, "data/data_autocon_ga")
-    ga_script = os.path.join(project_directory, "ifc_ga_optimization.py")
+    ga_script = os.path.join(project_directory, "ifc_ga_rr.py")
 
     # Ensure the target directory exists
     os.makedirs(target_directory, exist_ok=True)
