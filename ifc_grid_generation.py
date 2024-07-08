@@ -27,7 +27,7 @@ def preparation_of_grid_generation(
         )
      
     # preparation.
-    generator.get_main_directions_and_storeys(num_directions=2) # static.
+    generator.get_main_directions_and_storeys(num_directions=4) # static.
     generator.enrich_all_element_locations() # static.
 
     return generator
@@ -63,6 +63,8 @@ if __name__ == "__main__":
         model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
         for model_path in model_paths:
+
+            # if '8-AR' in model_path:
 
             # for each building model
             init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)

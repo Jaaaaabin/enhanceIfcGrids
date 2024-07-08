@@ -29,7 +29,7 @@ NUM_GENERATIONS = 20 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
-MUTAT_PROB = 0.1 # the probability for mutating an individual
+MUTAT_PROB = 0.3 # the probability for mutating an individual
 
 NUM_PROCESS = 8
 RANDOM_SEED = 20001
