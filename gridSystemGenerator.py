@@ -1496,12 +1496,7 @@ class GridGenerator:
     def calculate_losses(self):
         
         self.merged_loss_bounding_percent()
-        
-        # old
-        # self.merged_loss_maxmin_deviation()
-        # self.merged_loss_distance_deviation()
 
-        # new
         self.merged_loss_maxmin_distance_percent()
         self.merged_loss_adjacent_distance_percent()
 
@@ -1580,17 +1575,20 @@ class GridGenerator:
                 max_min_difference_per_storey = [1.0]
 
             return max_min_difference_per_storey
-    
-        # initialize the loss target.
-        self.avg_deviation_maxmin = []
-        for storey_key, storey_value in self.grids_merged.items():
-            if isinstance(storey_value, dict) and storey_value.get('grid_groups'):
-                grid_groups_per_storey = storey_value['grid_groups']
-                self.avg_deviation_maxmin.append(get_maxmin_difference_percent_per_storey(grid_groups_per_storey))
         
-        self.avg_deviation_maxmin = [item for sublist in self.avg_deviation_maxmin for item in sublist]
-        self.avg_deviation_maxmin = sum(self.avg_deviation_maxmin)/len(self.avg_deviation_maxmin)
+        # the loss target.
+        self.avg_deviation_maxmin = []
+        filtered_storeys = {k: v for k, v in self.grids_merged.items() if isinstance(k, float) and v.get('grid_groups')}
+        for storey_key, storey_value in filtered_storeys.items():
+            grid_groups_per_storey = storey_value['grid_groups']
+            self.avg_deviation_maxmin.append(get_maxmin_difference_percent_per_storey(grid_groups_per_storey))
 
+        if self.avg_deviation_maxmin:
+            self.avg_deviation_maxmin = [item for sublist in self.avg_deviation_maxmin for item in sublist]
+            self.avg_deviation_maxmin = sum(self.avg_deviation_maxmin)/len(self.avg_deviation_maxmin)
+        else:
+            self.avg_deviation_maxmin = 1.0
+    
     # # old
     # def merged_loss_maxmin_deviation(self):
     #     """
@@ -1678,15 +1676,18 @@ class GridGenerator:
 
             return adjacent_distance_difference_per_storey
     
-        # initialize the loss target.
+        # the loss target.
         self.avg_deviation_adjacent = []
-        for storey_key, storey_value in self.grids_merged.items():
-            if isinstance(storey_value, dict) and storey_value.get('grid_groups'):
-                grid_groups_per_storey = storey_value['grid_groups']
-                self.avg_deviation_adjacent += get_adjacent_distance_percent_per_storey(grid_groups_per_storey)
+        filtered_storeys = {k: v for k, v in self.grids_merged.items() if isinstance(k, float) and v.get('grid_groups')}
+        for storey_key, storey_value in filtered_storeys.items():
+            grid_groups_per_storey = storey_value['grid_groups']
+            self.avg_deviation_adjacent += get_adjacent_distance_percent_per_storey(grid_groups_per_storey)
 
-        self.avg_deviation_adjacent = sum(self.avg_deviation_adjacent)/len(self.avg_deviation_adjacent)
-    
+        if self.avg_deviation_adjacent:
+            self.avg_deviation_adjacent = sum(self.avg_deviation_adjacent)/len(self.avg_deviation_adjacent)
+        else:
+            self.avg_deviation_adjacent = 1.0
+
     # # old
     # def merged_loss_distance_deviation(self):
     #     """

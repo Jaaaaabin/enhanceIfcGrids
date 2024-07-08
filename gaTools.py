@@ -229,6 +229,13 @@ def varAnd(population, toolbox, cxpb, mutpb):
     return offspring
 
 # DEAP - eaSimple [adjusted.]
+
+def has_converged(logbook, gen, threshold=10):
+    if len(logbook) < threshold:
+        return False
+    recent_fitnesses = [entry['max'] for entry in logbook[-threshold:]]
+    return all(fitness == recent_fitnesses[0] for fitness in recent_fitnesses)
+
 def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=None,
              halloffame=None, verbose=__debug__):
     
@@ -266,6 +273,11 @@ def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=N
 
     # Begin the generational process
     for gen in range(1, ngen + 1):
+        
+        if has_converged(logbook, gen):
+            print(f"Converged at generation {gen}")
+            break
+
         # Select the next generation individuals
         offspring = toolbox.select(population, len(population))
         # offspring = toolbox.select(population)
