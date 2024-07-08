@@ -66,7 +66,7 @@ PARAMS = {
     'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
     'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
     'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
-    'st_c_align_dist': (0.0001, 0.1), # fixed?
+    # 'st_c_align_dist': (0.0001, 0.1), # fixed : 0.001
     'st_w_align_dist': (0.0001, 0.1), # fixed?
     'ns_w_align_dist': (0.0001, 0.1), # fixed?
 }
