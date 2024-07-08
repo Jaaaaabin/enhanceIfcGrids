@@ -256,7 +256,7 @@ def close_parallel_lines(p1, p2, p3, p4, offset, t=0.00001):
     
     return all_close, all_collinear
 
-def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.01):
+def is_close_to_known_slopes(new_slope, known_slopes, threshold=0.001):
     """
     specific constraints that column-based gridlines must be located following the main directions of the building.
     """

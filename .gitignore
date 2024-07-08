@@ -11,6 +11,7 @@ tempo*.py
 data/*
 !data/data_autocon_ga/
 !data/data_autocon_test/
+!paperfigrues/
 
 # Dynamo codes.
 dyn/
@@ -19,6 +20,7 @@ old_src/
 # Result
 *.html
 *.png
+*.pdf
 *.svg
 
 # Distribution / packaging
