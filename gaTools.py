@@ -138,33 +138,33 @@ def save_fitness_data(logbook, json_file):
     with open(json_file, 'w') as f:
         json.dump(data, f, indent=4)
 
-def visualizeGenFitness(logbook, fitness_file, show_max=True):
+# def visualizeGenFitness(logbook, fitness_file, show_max=True):
     
-    gen = logbook.select("gen")
-    min_fitness = logbook.select("min")
-    max_fitness = logbook.select("max")
-    avg_fitness = logbook.select("avg")
+#     gen = logbook.select("gen")
+#     min_fitness = logbook.select("min")
+#     max_fitness = logbook.select("max")
+#     avg_fitness = logbook.select("avg")
 
-    plt.figure(figsize=(12, 6), dpi=300)
-    plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
-    plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
+#     plt.figure(figsize=(12, 6), dpi=300)
+#     plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
+#     plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
 
-    if show_max:
-        max_fitness = logbook.select("max")
-        plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
+#     if show_max:
+#         max_fitness = logbook.select("max")
+#         plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
     
-    plt.xlabel("Generation")
-    plt.ylabel("Fitness")
-    plt.title("Fitness Over Generations")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
+#     plt.xlabel("Generation")
+#     plt.ylabel("Fitness")
+#     plt.title("Fitness Over Generations")
+#     plt.legend()
+#     plt.grid(True)
+#     plt.tight_layout()
 
-    plt.savefig(fitness_file, dpi=300)
-    plt.close()  # Close the figure to free up memory
+#     plt.savefig(fitness_file, dpi=300)
+#     plt.close()  # Close the figure to free up memory
 
-def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
-
+def visualizeGenFitness(output_file, logbook, ind_file, generation_size, set_violin_filter=True):
+    
     def read_floats_from_file(file_path):
         float_list = []
         try:
@@ -182,55 +182,80 @@ def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
             print(f"An unexpected error occurred: {e}")
 
         return float_list
-
-    # Create the violin plot
+    
+    # ------------------------------------ Create the violin plot ------------------------------------
     ind_data = read_floats_from_file(ind_file)
     violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
+    print ("len of violin_data is", len(violin_data))
 
-    viol_h = 4
+    viol_h = 3
     viol_w_per_gen = 2
     plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h), dpi=300)
     fig, ax = plt.subplots()
-    
-    prev_cmin = None
-    filtered_violin_data = []
-    filtered_indices = []
 
-    # Filter data based on cmins
-    for i, gen_data in enumerate(violin_data):
-        cmin = min(gen_data)
-        if prev_cmin is None or cmin != prev_cmin:
-            filtered_violin_data.append(gen_data)
-            filtered_indices.append(i + 1)  # Generation indices for x-ticks
-        prev_cmin = cmin
+    # plot the whole violin.
+    if not set_violin_filter:
 
-    # Customize the violin plot with filtered data
-    if filtered_violin_data:
-
-        parts = ax.violinplot(violin_data)
+        violin_data_positions = range(len(violin_data))
+        parts = ax.violinplot(violin_data, positions=violin_data_positions)
         for partname in ('cbars', 'cmins', 'cmaxes'):
             parts[partname].set_edgecolor('black')
             parts[partname].set_linestyle('--')
             parts[partname].set_linewidth(0.5)
             parts[partname].set_alpha(0.5)
-
-        # Adding titles and labels
-        ax.set_title('Generation Fitnesses')
-        ax.set_xlabel('Generations')
-        ax.set_ylabel('Fitness')
-
-        # Setting x-tick labels to show group numbers
-        ax.set_xticks(range(1, len(violin_data) + 1))
-        ax.set_xticklabels([f'{i}' for i in range(len(violin_data))])
-
-        # Show the plot
-        plt.grid(True)
-        plt.tight_layout()
-        plt.savefig(violin_file, dpi=300)
-        plt.close()
-
+    
+    # plot only the filtered violin parts.
     else:
-        print("No data to plot after filtering based on cmins.")
+
+        prev_cmin = None
+        filtered_violin_data = []
+        filtered_indices = []
+
+        # Filter data based on cmins
+        for i, gen_data in enumerate(violin_data):
+            cmin = min(gen_data)
+
+            # if it's the initial or the last population or, if it has changes compared to the previous "best" fitness.
+            if i == 0  or i == len(violin_data) - 1 or prev_cmin is None or cmin != prev_cmin: 
+                
+                filtered_violin_data.append(gen_data)
+                filtered_indices.append(i)
+                
+            prev_cmin = cmin
+
+        print("filtered_indices: ", filtered_indices)
+
+        # Customize the violin plot with filtered data
+        if filtered_violin_data:
+            parts = ax.violinplot(filtered_violin_data, positions=filtered_indices)
+            for partname in ('cbars', 'cmins', 'cmaxes'):
+                parts[partname].set_edgecolor('black')
+                parts[partname].set_linestyle('--')
+                parts[partname].set_linewidth(0.5)
+                parts[partname].set_alpha(0.5)
+
+            # Setting x-tick labels to show group numbers
+            ax.set_xticks(filtered_indices)
+            ax.set_xticklabels([f'{i}' for i in filtered_indices])
+    
+    # ------------------------------------ Create the fitness line plot ------------------------------------
+    gen = logbook.select("gen")
+    min_fitness = logbook.select("min")
+    avg_fitness = logbook.select("avg")
+
+    plt.plot(gen, min_fitness, 'b-', linewidth=0.75, label="Minimum Fitness")
+    plt.plot(gen, avg_fitness, 'g-', linewidth=0.75, label="Average Fitness")
+
+    
+    # ------------------------------------ Save the plot ------------------------------------
+    plt.xlabel("Generation")
+    plt.ylabel("Fitness")
+    plt.title("Fitness Over Generations")
+    plt.legend()
+    plt.grid(False)
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=300)
+    plt.close()
 
 #===================================================================================================
 # Visualization for GA population fitnesses.
@@ -292,24 +317,24 @@ def has_converged(logbook, ngen_converge):
 # Random restart function
 def random_restart(
     creator, toolbox, current_population,
-    restart_param_limits, restart_generation_file, restart_num_count, restart_ratio=0.5):
+    restart_param_limits, restart_generation_file, restart_round_count, pop_restart=None):
 
-    def random_partial_selection(input_list, ratio):
-        half_length = int(len(input_list) * ratio)
-        selected_items = random.sample(input_list, half_length)
+    def random_partial_selection(input_list, number):
+        selected_items = random.sample(input_list, number)
         return selected_items
     
     # Change random seed
-    new_seed = random.randint(0, 2**32 - 1) + restart_num_count
+    new_seed = random.randint(0, 2**32 - 1) + restart_round_count
     random.seed(new_seed)
     
     # Generate new individuals
     createInds(n=len(current_population), param_rangs=restart_param_limits, filename=restart_generation_file)
     toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(current_population), filename=restart_generation_file)
     restart_population = toolbox.restartpopulation()
-    half_population_from_random_restart = random_partial_selection(restart_population, restart_ratio)
-    half_population_from_current_population = random_partial_selection(current_population, (1-restart_ratio))
-    new_population = half_population_from_current_population + half_population_from_random_restart
+    
+    pop_random_restart = random_partial_selection(restart_population, pop_restart)  
+    pop_current_generation = random_partial_selection(current_population, len(current_population)-pop_restart)
+    new_population = pop_random_restart + pop_current_generation
     
     return new_population
 
@@ -398,8 +423,8 @@ def ga_rr_eaSimple(
     cxpb, mutpb, ngen,
     initial_generation_file=[], fitness_file=[], 
     stats=None, halloffame=None, verbose=__debug__, 
-    param_limits = None, ngen_no_improve=5, 
-    ngen_converge=10, std_converge=0.02):
+    param_limits = None, ngen_no_improve=5, pop_restart=None,
+    ngen_converge=10):
     
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     if fitness_file:
@@ -426,15 +451,28 @@ def ga_rr_eaSimple(
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     # Collect the fitness of per population.
     population_fitnesses = [ind.fitness.values[0] for ind in population]
-    savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
+    savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
-    restart_num_count = 0
-    no_improve_count = 0
-    best_fitness = min(population_fitnesses)
+    restart_round_count = 0 # count the num /round of random restart
+    no_improve_count = 0 # count the fitness stagnation
+    best_fitness = min(population_fitnesses) # initialization of the fitness for stagnation analysis.
+    set_random_start = False # trigger of random restart.
     
     # Begin the generational process
     for gen in range(1, ngen + 1):
+
+        if set_random_start:
+
+            restart_round_count += 1
+            print(f"{restart_round_count} random restart round at generation {gen}")
+            current_population = population
+            restart_file_name = initial_generation_file.replace(".txt", f"_{restart_round_count}_restart_at_generation_{gen}.txt")
+            population = random_restart(
+                creator, toolbox, current_population, 
+                param_limits, restart_file_name, restart_round_count, pop_restart)
+            no_improve_count = 0
+            set_random_start = False
 
         if has_converged(logbook, ngen_converge):
         # if has_converged(logbook, ngen_converge, std_converge):
@@ -479,15 +517,16 @@ def ga_rr_eaSimple(
             best_fitness = current_best_fitness
 
         if no_improve_count >= ngen_no_improve:
-            
-            restart_num_count += 1
-            print(f"Random restart at generation {gen}, Restart round {restart_num_count}")
-            current_population = population
-            restart_file_name = initial_generation_file.replace(".txt", f"_restart_{restart_num_count}.txt")
-            population = random_restart(
-                creator, toolbox, current_population, 
-                param_limits, restart_file_name, restart_num_count, restart_ratio=0.8)
-            no_improve_count = 0
+            set_random_start = True
+
+            # restart_round_count += 1
+            # print(f"Random restart at generation {gen}, Restart round {restart_round_count}")
+            # current_population = population
+            # restart_file_name = initial_generation_file.replace(".txt", f"_restart_{restart_round_count}.txt")
+            # population = random_restart(
+            #     creator, toolbox, current_population, 
+            #     param_limits, restart_file_name, restart_round_count, restart_ratio=0.8)
+            # no_improve_count = 0
         
         if verbose:
             print(logbook.stream)

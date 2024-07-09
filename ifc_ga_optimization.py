@@ -19,21 +19,21 @@ from deap import base, creator, tools, algorithms
 from ifc_grid_generation import preparation_of_grid_generation
 
 from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
-from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitnessViolin
+from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness
 from gaTools import ga_eaSimple, ga_rr_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 100 # number of iterations.
+NUM_GENERATIONS = 50 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.3 # the probability for mutating an individual
 
-NUM_GENERATIONS_NO_IMPROVEMENT = 15
-NUM_GENERATIONS_CONVERGE = 50
-STD_CONVERGE = 0.02 # not used.
+NUM_GENERATIONS_NO_IMPROVEMENT = 10
+RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
+NUM_GENERATIONS_CONVERGE = 25
 
 NUM_PROCESS = 8
 RANDOM_SEED = 20001
@@ -55,9 +55,10 @@ logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%
 
 INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
-GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness.png")
+GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness_all.png")
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
-GENERATION_IND_VIOLIN_FLE = os.path.join(MODEL_GA_RES_PATH, "ga_ind_violin.png")
+# GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness.png")
+# GENERATION_IND_VIOLIN_FLE = os.path.join(MODEL_GA_RES_PATH, "ga_ind_violin.png")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
@@ -217,16 +218,15 @@ def main():
         initial_generation_file = INI_GENERATION_FILE,
         fitness_file=GENERATION_IND_FILE,
         stats=stats, verbose=True,
-        param_limits = PARAMS_INTEGER, ngen_no_improve=NUM_GENERATIONS_NO_IMPROVEMENT,
-        ngen_converge=NUM_GENERATIONS_CONVERGE, std_converge=STD_CONVERGE)
+        param_limits = PARAMS_INTEGER, ngen_no_improve=NUM_GENERATIONS_NO_IMPROVEMENT, pop_restart=RANDOM_RESTART_POPULATION_SIZE,
+        ngen_converge=NUM_GENERATIONS_CONVERGE)
     
     if args.num_process > 1:
         pool.close()
     
     # Analysis of the GA results.
     saveLogbook(logbook=logbook, log_file=GENERATION_LOG_FILE)
-    visualizeGenFitness(logbook=logbook, fitness_file=GENERATION_FIT_FILE, show_max=False)
-    visualizeGenFitnessViolin(violin_file=GENERATION_IND_VIOLIN_FLE, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+    visualizeGenFitness(output_file=GENERATION_FIT_FILE, logbook=logbook, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
     # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
 
     # Pick the best individual
