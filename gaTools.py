@@ -312,7 +312,7 @@ def has_converged(logbook, ngen_converge):
     # if all(std < std_converge for std in std_fitnesses):
     #     return True
     
-    return False
+    return True
 
 # Customized convergence function.
 def is_local_optimal(logbook, ngen_no_improve):
@@ -325,7 +325,7 @@ def is_local_optimal(logbook, ngen_no_improve):
     if len(set(min_fitnesses)) != 1:
         return False
     
-    return False
+    return True
 
 # Random restart function
 def random_restart(
