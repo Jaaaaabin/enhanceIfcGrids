@@ -528,6 +528,7 @@ def ga_rr_eaSimple(
             best_fitness = current_best_fitness
 
         if no_improve_count >= ngen_no_improve:
+            print(f"In the generation {gen}, it is detected that a random restart is needed")
             set_random_start = True
 
             # restart_round_count += 1
