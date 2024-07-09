@@ -243,8 +243,8 @@ def main():
     print("best ind decoded parameter values:", decoded_parameters)
 
     if args.set_plot:
-        gridGeneratorInit.visualization_2d_before_merge(visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
-        gridGeneratorInit.visualization_2d_after_merge(visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+        gridGeneratorInit.visualization_2d_before_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+        gridGeneratorInit.visualization_2d_after_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
 
 if __name__ == "__main__":
 

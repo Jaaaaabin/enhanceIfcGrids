@@ -1777,7 +1777,7 @@ class GridGenerator:
         cairosvg.svg2pdf(url=svg_path, write_to=pdf_path)
         
     # @time_decorator
-    def visualization_2d_before_merge(self, visualization_storage_path=None, add_strs=''):
+    def visualization_2d_before_merge(self, visual_type='html', visualization_storage_path=None, add_strs=''):
 
         if visualization_storage_path is None:
             visualization_storage_path = self.out_fig_path
@@ -1869,17 +1869,18 @@ class GridGenerator:
             legend.label_text_font_size = "12pt"
 
             # Save the figure.
-            svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
-            pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
-
-            self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
-            self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
-        
-            # bokeh.plotting.output_file(filename=os.path.join(self.out_fig_path, fig_save_name + ".html"), title=fig_save_name)
-            # bokeh.plotting.save(fig)
+            if visual_type == 'pdf':
+                svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
+                pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
+                self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+                self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+            elif visual_type == 'html':
+                html_file_path = os.path.join(visualization_storage_path, fig_save_name + ".html")
+                bokeh.plotting.output_file(html_file_path)
+                bokeh.plotting.save(fig)
 
     # @time_decorator
-    def visualization_2d_after_merge(self, visualization_storage_path=None, add_strs=''):
+    def visualization_2d_after_merge(self, visual_type='html', visualization_storage_path=None, add_strs=''):
         
         if visualization_storage_path is None:
             visualization_storage_path = self.out_fig_path
@@ -1970,11 +1971,15 @@ class GridGenerator:
             legend.label_text_font_size = "12pt"
 
             # Save the figure.
-            svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
-            pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
-
-            self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
-            self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+            if visual_type == 'pdf':
+                svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
+                pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
+                self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+                self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+            elif visual_type == 'html':
+                html_file_path = os.path.join(visualization_storage_path, fig_save_name + ".html")
+                bokeh.plotting.output_file(html_file_path)
+                bokeh.plotting.save(fig)
             
 
 #Visualization ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
