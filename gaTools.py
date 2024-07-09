@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import logging
 import numpy as np
 from math import ceil, log10
 from deap import tools
@@ -86,7 +87,7 @@ def generateOneInd(param_ranges):
 
     return integer_individual
 
-def createInds(n, param_rangs,filename):
+def createInds(n, param_rangs, filename):
     
     int_lists = [generateOneInd(param_ranges=param_rangs) for _ in range(n)]
 
@@ -94,6 +95,28 @@ def createInds(n, param_rangs,filename):
         for int_list in int_lists:
             file.write(str(int_list) + '\n')
 
+def ga_loadInds(creator, n, filename):
+    individuals = []
+    try:
+        # Since the individual data is expected to be a list of integers:
+        with open(filename, 'r') as file:
+            for line in file:
+                individual = list(map(int, line.strip().strip('[]').split(',')))
+                individual = creator(individual)
+                individuals.append(individual)
+    except FileNotFoundError:
+        logging.error(f"The file {filename} was not found.")
+        return None
+    except Exception as e:
+        logging.error(f"An error occurred while loading individuals: {e}")
+        return None
+    
+    if len(individuals) == n:
+        return individuals
+    else:
+        logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
+        return None
+    
 # ===================================================================================================
 # Storage and Visualization.
 def saveLogbook(logbook, log_file):
@@ -229,34 +252,58 @@ def varAnd(population, toolbox, cxpb, mutpb):
 
     return offspring
 
-# customized convergence function
-def has_converged(logbook, threshold=10, std_threshold=0.01):
-    if len(logbook) < threshold:
+# Customized convergence function
+def has_converged(logbook, ngen_converge, std_converge):
+    if len(logbook) < ngen_converge:
         return False
-    recent_entries = logbook[-threshold:]
+    recent_entries = logbook[-ngen_converge:]
     
     # Check if the min fitness has stayed unchanged
     min_fitnesses = [entry['min'] for entry in recent_entries]
     if len(set(min_fitnesses)) != 1:
         return False
     
-    # Check if all std values are less than std_threshold
+    # Check if all std values are less than std_converge
     std_fitnesses = [entry['std'] for entry in recent_entries]
-    if all(std < std_threshold for std in std_fitnesses):
+    if all(std < std_converge for std in std_fitnesses):
         return True
     
     return False
 
-# DEAP - eaSimple [adjusted.]
-def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=None,
-             halloffame=None, verbose=__debug__):
+# Random restart function
+def random_restart(
+    creator, toolbox, current_population,
+    restart_param_limits, restart_generation_file, restart_num_count, restart_ratio=0.5):
+
+    def random_partial_selection(input_list, ratio):
+        half_length = int(len(input_list) * ratio)
+        selected_items = random.sample(input_list, half_length)
+        return selected_items
     
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
+    # Change random seed
+    new_seed = random.randint(0, 2**32 - 1) + restart_num_count
+    random.seed(new_seed)
+    
+    # Generate new individuals
+    createInds(n=len(current_population), param_rangs=restart_param_limits, filename=restart_generation_file)
+    toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(current_population), filename=restart_generation_file)
+    restart_population = toolbox.restartpopulation()
+    half_population_from_random_restart = random_partial_selection(restart_population, restart_ratio)
+    half_population_from_current_population = random_partial_selection(current_population (1-restart_ratio))
+    new_population = half_population_from_current_population + half_population_from_random_restart
+    
+    return new_population
+
+# DEAP - eaSimple [adjusted.]
+def ga_eaSimple(
+    population, toolbox,
+    cxpb, mutpb, ngen, fitness_file=[], 
+    stats=None, halloffame=None, verbose=__debug__):
+    
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     if fitness_file:
         clearPopulationFitnesses(file_path=fitness_file)
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     
     logbook = tools.Logbook()
     logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
@@ -276,11 +323,9 @@ def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=N
         print(logbook.stream)
 
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     # Collect the fitness of per population.
     population_fitnesses = [ind.fitness.values[0] for ind in population]
     savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
     # Begin the generational process
@@ -313,11 +358,9 @@ def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=N
         population[:] = offspring
         
         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
         # Collect the fitness of per population.
         population_fitnesses = [ind.fitness.values[0] for ind in population]
         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
         # Append the current generation statistics to the logbook
@@ -330,85 +373,103 @@ def ga_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=N
 
     return population, logbook
 
-
 # DEAP - eaSimple [adjusted.]
-def ga_rr_eaSimple(population, toolbox, cxpb, mutpb, ngen, fitness_file=[], stats=None,
-                halloffame=None, verbose=__debug__, num_restarts=5, no_improve_limit=5):
+def ga_rr_eaSimple(
+    population, creator, toolbox,
+    cxpb, mutpb, ngen,
+    initial_generation_file=[], fitness_file=[], 
+    stats=None, halloffame=None, verbose=__debug__, 
+    param_limits = None, ngen_no_improve=5, 
+    ngen_converge=10, std_converge=0.02):
     
-    best_fitness = np.inf
-    generations_without_improvement = 0
+    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+    if fitness_file:
+        clearPopulationFitnesses(file_path=fitness_file)
+    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+    
     logbook = tools.Logbook()
     logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
 
-    for restart in range(num_restarts):
+    # Evaluate the individuals with an invalid fitness
+    invalid_ind = [ind for ind in population if not ind.fitness.valid]
+    fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+    for ind, fit in zip(invalid_ind, fitnesses):
+        ind.fitness.values = fit
+
+    if halloffame is not None:
+        halloffame.update(population)
+
+    record = stats.compile(population) if stats else {}
+    logbook.record(gen=0, nevals=len(invalid_ind), **record)
+    if verbose:
+        print(logbook.stream)
+
+    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+    # Collect the fitness of per population.
+    population_fitnesses = [ind.fitness.values[0] for ind in population]
+    savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
+    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+
+    restart_num_count = 0
+    no_improve_count = 0
+    best_fitness = min(population_fitnesses)
+    
+    # Begin the generational process
+    for gen in range(1, ngen + 1):
+
+        if has_converged(logbook, ngen_converge, std_converge):
+            print(f"Converged at generation {gen}")
+            break
+
+        # Select the next generation individuals
+        offspring = toolbox.select(population, len(population))
+        offspring = varAnd(offspring, toolbox, cxpb, mutpb)
 
         # Evaluate the individuals with an invalid fitness
-        invalid_ind = [ind for ind in population if not ind.fitness.valid]
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
 
+        # Update the hall of fame with the generated individuals
         if halloffame is not None:
-            halloffame.update(population)
+            halloffame.update(offspring)
 
-        record = stats.compile(population) if stats else {}
-        logbook.record(gen=0, nevals=len(invalid_ind), **record)
-        if verbose:
-            print(logbook.stream)
-
+        # Replace the current population by the offspring
+        population[:] = offspring
+        
+        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
         # Collect the fitness of per population.
         population_fitnesses = [ind.fitness.values[0] for ind in population]
-        savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
+        savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
+        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
-        # Begin the generational process
-        for gen in range(1, ngen + 1):
+        # Append the current generation statistics to the logbook
+        record = stats.compile(population) if stats else {}
+        logbook.record(gen=gen, nevals=len(invalid_ind), **record)
+
+        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+        # Random Restart. [Fitness minimization problem]
+        current_best_fitness = min(population_fitnesses)
+        if current_best_fitness >= best_fitness:
+            no_improve_count += 1
+        else:
+            no_improve_count = 0
+            best_fitness = current_best_fitness
+
+        if no_improve_count >= ngen_no_improve:
             
-            if has_converged(logbook, gen):
-                print(f"Converged at generation {gen}")
-                break
-
-            # Select the next generation individuals
-            offspring = toolbox.select(population, len(population))
-
-            # Vary the pool of individuals
-            offspring = varAnd(offspring, toolbox, cxpb, mutpb)
-
-            # Evaluate the individuals with an invalid fitness
-            invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-            fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-            for ind, fit in zip(invalid_ind, fitnesses):
-                ind.fitness.values = fit
-
-            # Update the hall of fame with the generated individuals
-            if halloffame is not None:
-                halloffame.update(offspring)
-
-            # Replace the current population by the offspring
-            population[:] = offspring
-
-            # Collect the fitness of per population
-            population_fitnesses = [ind.fitness.values[0] for ind in population]
-            savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
-
-            # Append the current generation statistics to the logbook
-            record = stats.compile(population) if stats else {}
-            logbook.record(gen=gen, nevals=len(invalid_ind), **record)
-            if verbose:
-                print(logbook.stream)
-
-            # Check for improvement
-            current_best_fitness = min(population_fitnesses)
-            if current_best_fitness < best_fitness:
-                best_fitness = current_best_fitness
-                generations_without_improvement = 0
-            else:
-                generations_without_improvement += 1
-
-            if generations_without_improvement >= no_improve_limit:
-                print(f"Restarting due to no improvement for {no_improve_limit} generations")
-                population = toolbox.population()
-                generations_without_improvement = 0
-                
-                break
+            restart_num_count += 1
+            print(f"Random restart at generation {gen}, Restart round {restart_num_count}")
+            current_population = population
+            restart_file_name = initial_generation_file.replace(".txt", f"_restart_{restart_num_count}.txt")
+            population = random_restart(
+                creator, toolbox, current_population, 
+                param_limits, restart_file_name, restart_num_count, restart_ratio=0.8)
+            no_improve_count = 0
+        
+        if verbose:
+            print(logbook.stream)
 
     return population, logbook

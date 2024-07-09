@@ -19,8 +19,8 @@ from deap import base, creator, tools, algorithms
 from ifc_grid_generation import preparation_of_grid_generation
 
 from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
-from gaTools import createInds, saveLogbook, visualizeGenFitness, visualizeGenFitnessViolin
-from gaTools import ga_eaSimple
+from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitnessViolin
+from gaTools import ga_eaSimple, ga_rr_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
@@ -31,6 +31,10 @@ TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.3 # the probability for mutating an individual
 
+NUM_GENERATIONS_NO_IMPROVEMENT = 5
+NUM_GENERATIONS_CONVERGE = 10
+STD_CONVERGE = 0.02
+
 NUM_PROCESS = 8
 RANDOM_SEED = 20001
 
@@ -40,7 +44,7 @@ RANDOM_SEED = 20001
 PROJECT_PATH = os.getcwd()
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
-DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_test')
 MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
 
 MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
@@ -77,28 +81,7 @@ MinVals, MaxVals = getParameterVarLimits(param_ranges=PARAMS_INTEGER)
 
 # ===================================================================================================
 # Basic Functions of GA
-def ga_loadInds(creator, n=POPULATION_SIZE, filename=INI_GENERATION_FILE):
-    individuals = []
-    try:
-        # Since the individual data is expected to be a list of integers:
-        with open(filename, 'r') as file:
-            for line in file:
-                individual = list(map(int, line.strip().strip('[]').split(',')))
-                individual = creator(individual)
-                individuals.append(individual)
-    except FileNotFoundError:
-        logging.error(f"The file {filename} was not found.")
-        return None
-    except Exception as e:
-        logging.error(f"An error occurred while loading individuals: {e}")
-        return None
-    
-    if len(individuals) == n:
-        return individuals
-    else:
-        logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
-        return None
-    
+
 def ga_decodeInteger_x(individual: list) -> list:
 
     decoded_xs = []
@@ -162,7 +145,7 @@ def main():
     
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
     parser.add_argument('--random_seed', type=int, default=20001, help='Random seed for creatomg initial individuals.')
-    parser.add_argument('--num_process', type=int, default=1, help='Number of processes for multi processing.')
+    parser.add_argument('--num_process', type=int, default=12, help='Number of processes for multi processing.')
     parser.add_argument('--set_plot', type=bool, default=False, help='plot the the generated grids')
     args = parser.parse_args()
     
@@ -174,7 +157,7 @@ def main():
     toolbox = base.Toolbox()
 
     createInds(n=POPULATION_SIZE, param_rangs=PARAMS_INTEGER, filename=INI_GENERATION_FILE)
-    toolbox.register("population", ga_loadInds, creator.Individual)
+    toolbox.register("population", ga_loadInds, creator.Individual, n=POPULATION_SIZE, filename=INI_GENERATION_FILE)
 
     # Evaluator initializer
     toolbox.register("evaluate", ga_objective)
@@ -226,11 +209,16 @@ def main():
     stats.register("min", np.min)
     stats.register("max", np.max)
     
-    # final_pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
-    #     ngen=NUM_GENERATIONS, stats=stats, verbose=True)
-    
-    final_pop, logbook = ga_eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
-        ngen=NUM_GENERATIONS, fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True)
+    # final_pop, logbook = ga_eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
+    #     ngen=NUM_GENERATIONS, fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True)
+    final_pop, logbook = ga_rr_eaSimple(
+        pop, creator, toolbox, 
+        cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
+        initial_generation_file = INI_GENERATION_FILE,
+        fitness_file=GENERATION_IND_FILE,
+        stats=stats, verbose=True,
+        param_limits = PARAMS_INTEGER, ngen_no_improve=NUM_GENERATIONS_NO_IMPROVEMENT,
+        ngen_converge=NUM_GENERATIONS_CONVERGE, std_converge=STD_CONVERGE)
     
     if args.num_process > 1:
         pool.close()
