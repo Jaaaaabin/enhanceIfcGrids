@@ -9,9 +9,10 @@ tempo*.py
 
 # Data
 data/*
-!/data/data_autocon_ga
-!/data/data_autocon_test
-!paperfigrues
+!data/data_autocon_ga/
+!data/data_autocon_test/
+!paperfigrues/
+
 # Dynamo codes.
 dyn/
 old_src/

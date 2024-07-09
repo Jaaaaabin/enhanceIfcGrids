@@ -12,7 +12,9 @@ import matplotlib.pyplot as plt
 def getIfcModelPaths(folder_path: str, only_first: bool=False, path_nr: int=0) -> list:
     
     run_model_path = None
-    model_paths = [filename for filename in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, filename))]
+    model_paths = [
+        filename for filename in os.listdir(folder_path) if \
+            os.path.isfile(os.path.join(folder_path, filename)) and filename.endswith('.ifc')]
     
     if not model_paths:
         raise FileNotFoundError("No model files in the given path.")
