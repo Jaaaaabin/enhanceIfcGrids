@@ -521,7 +521,7 @@ def ga_rr_eaSimple(
         # Check if a "Random Restart" is needed ?
         # Starting the next generation via a Random Restart.
         current_best_fitness = min(population_fitnesses)
-        if current_best_fitness >= best_fitness:
+        if current_best_fitness == best_fitness:
             no_improve_count += 1
         else:
             no_improve_count = 0
