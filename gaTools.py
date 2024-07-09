@@ -462,18 +462,6 @@ def ga_rr_eaSimple(
     # Begin the generational process
     for gen in range(1, ngen + 1):
 
-        if set_random_start:
-
-            restart_round_count += 1
-            print(f"{restart_round_count} random restart round at generation {gen}")
-            current_population = population
-            restart_file_name = initial_generation_file.replace(".txt", f"_{restart_round_count}_restart_at_generation_{gen}.txt")
-            population = random_restart(
-                creator, toolbox, current_population, 
-                param_limits, restart_file_name, restart_round_count, pop_restart)
-            no_improve_count = 0
-            set_random_start = False
-
         if has_converged(logbook, ngen_converge):
         # if has_converged(logbook, ngen_converge, std_converge):
             print(f"Converged at generation {gen}")
@@ -527,6 +515,18 @@ def ga_rr_eaSimple(
             #     creator, toolbox, current_population, 
             #     param_limits, restart_file_name, restart_round_count, restart_ratio=0.8)
             # no_improve_count = 0
+
+        if set_random_start:
+
+            restart_round_count += 1
+            print(f"{restart_round_count} random restart round at generation {gen}")
+            current_population = population
+            restart_file_name = initial_generation_file.replace(".txt", f"_{restart_round_count}_restart_at_generation_{gen}.txt")
+            population = random_restart(
+                creator, toolbox, current_population, 
+                param_limits, restart_file_name, restart_round_count, pop_restart)
+            no_improve_count = 0
+            set_random_start = False
         
         if verbose:
             print(logbook.stream)
