@@ -314,6 +314,19 @@ def has_converged(logbook, ngen_converge):
     
     return False
 
+# Customized convergence function.
+def is_local_optimal(logbook, ngen_no_improve):
+    if len(logbook) < ngen_no_improve:
+        return False
+    recent_entries = logbook[-ngen_no_improve:]
+    
+    # Check if the min fitness has stayed unchanged
+    min_fitnesses = [entry['min'] for entry in recent_entries]
+    if len(set(min_fitnesses)) != 1:
+        return False
+    
+    return False
+
 # Random restart function
 def random_restart(
     creator, toolbox, current_population,
@@ -452,7 +465,6 @@ def ga_rr_eaSimple(
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
 
     restart_round_count = 0 # count the num /round of random restart
-    no_improve_count = 0 # count the fitness stagnation
     best_fitness = min(population_fitnesses) # initialization of the fitness for stagnation analysis.
     set_random_start = False # trigger of random restart.
     
@@ -480,7 +492,6 @@ def ga_rr_eaSimple(
             # ------------------------------------ Main part of Random Restat
 
             # After the random_restart: 1. refresh the "no_improve_count"; 2. triggle off random restart.
-            no_improve_count = 0
             set_random_start = False
 
         # --------------------------------------------------------------------
@@ -520,16 +531,21 @@ def ga_rr_eaSimple(
         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
         # Check if a "Random Restart" is needed ?
         # Starting the next generation via a Random Restart.
-        current_best_fitness = min(population_fitnesses)
-        if current_best_fitness == best_fitness:
-            no_improve_count += 1
-        else:
-            no_improve_count = 0
-            best_fitness = current_best_fitness
 
-        if no_improve_count >= ngen_no_improve:
+        if is_local_optimal(logbook, ngen_no_improve):
             print(f"In the generation {gen}, it is detected that a random restart is needed")
             set_random_start = True
+
+        # current_best_fitness = min(population_fitnesses)
+        # if current_best_fitness == best_fitness:
+        #     no_improve_count += 1
+        # else:
+        #     no_improve_count = 0
+        #     best_fitness = current_best_fitness
+
+        # if no_improve_count >= ngen_no_improve:
+        #     print(f"In the generation {gen}, it is detected that a random restart is needed")
+        #     set_random_start = True
 
             # restart_round_count += 1
             # print(f"Random restart at generation {gen}, Restart round {restart_round_count}")
@@ -540,6 +556,7 @@ def ga_rr_eaSimple(
             #     param_limits, restart_file_name, restart_round_count, restart_ratio=0.8)
             # no_improve_count = 0
             #         
+            
         if verbose:
             print(logbook.stream)
 
