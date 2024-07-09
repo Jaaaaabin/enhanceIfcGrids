@@ -465,7 +465,7 @@ def ga_rr_eaSimple(
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
 
     restart_round_count = 0 # count the num /round of random restart
-    best_fitness = min(population_fitnesses) # initialization of the fitness for stagnation analysis.
+    restart_history_count = 0
     set_random_start = False # trigger of random restart.
     
     # ---------------------------------- initial generation (generation 0) created ----------------------------------
@@ -528,14 +528,6 @@ def ga_rr_eaSimple(
         record = stats.compile(population) if stats else {}
         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
 
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-        # Check if a "Random Restart" is needed ?
-        # Starting the next generation via a Random Restart.
-
-        if is_local_optimal(logbook, ngen_no_improve):
-            print(f"In the generation {gen}, it is detected that a random restart is needed")
-            set_random_start = True
-
         # current_best_fitness = min(population_fitnesses)
         # if current_best_fitness == best_fitness:
         #     no_improve_count += 1
@@ -559,5 +551,18 @@ def ga_rr_eaSimple(
             
         if verbose:
             print(logbook.stream)
+
+        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+        # Check if a "Random Restart" is needed ?
+        # Starting the next generation via a Random Restart.
+
+        if is_local_optimal(logbook, ngen_no_improve):
+            
+            if restart_history_count <= 0:
+                print(f"In the generation {gen}, it is detected that a random restart is needed") 
+                restart_history_count = ngen_no_improve
+                set_random_start = True
+        
+        restart_history_count -=1
 
     return population, logbook
