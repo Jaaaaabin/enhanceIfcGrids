@@ -44,7 +44,7 @@ RANDOM_SEED = 20001
 PROJECT_PATH = os.getcwd()
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
-DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_test')
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
 MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
 
 MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
