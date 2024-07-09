@@ -291,7 +291,7 @@ def random_restart(
     toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(current_population), filename=restart_generation_file)
     restart_population = toolbox.restartpopulation()
     half_population_from_random_restart = random_partial_selection(restart_population, restart_ratio)
-    half_population_from_current_population = random_partial_selection(current_population (1-restart_ratio))
+    half_population_from_current_population = random_partial_selection(current_population, (1-restart_ratio))
     new_population = half_population_from_current_population + half_population_from_random_restart
     
     return new_population
