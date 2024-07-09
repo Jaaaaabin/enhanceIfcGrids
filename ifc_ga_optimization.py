@@ -25,15 +25,15 @@ from gaTools import ga_eaSimple, ga_rr_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 50 # number of iterations.
+NUM_GENERATIONS = 100 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.3 # the probability for mutating an individual
 
-NUM_GENERATIONS_NO_IMPROVEMENT = 5
-NUM_GENERATIONS_CONVERGE = 10
-STD_CONVERGE = 0.02
+NUM_GENERATIONS_NO_IMPROVEMENT = 15
+NUM_GENERATIONS_CONVERGE = 50
+STD_CONVERGE = 0.02 # not used.
 
 NUM_PROCESS = 8
 RANDOM_SEED = 20001

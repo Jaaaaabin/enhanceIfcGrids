@@ -185,36 +185,52 @@ def visualizeGenFitnessViolin(violin_file, ind_file, generation_size):
 
     # Create the violin plot
     ind_data = read_floats_from_file(ind_file)
-    
     violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
 
     viol_h = 4
     viol_w_per_gen = 2
-
     plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h), dpi=300)
     fig, ax = plt.subplots()
     
-    # Customize the violin plot
-    parts = ax.violinplot(violin_data)
-    for partname in ('cbars', 'cmins', 'cmaxes'):
-        parts[partname].set_edgecolor('black')
-        parts[partname].set_linestyle('--')
-        parts[partname].set_alpha(0.5)
+    prev_cmin = None
+    filtered_violin_data = []
+    filtered_indices = []
 
-    # Adding titles and labels
-    ax.set_title('Generation Fitnesses')
-    ax.set_xlabel('Generations')
-    ax.set_ylabel('Fitness')
+    # Filter data based on cmins
+    for i, gen_data in enumerate(violin_data):
+        cmin = min(gen_data)
+        if prev_cmin is None or cmin != prev_cmin:
+            filtered_violin_data.append(gen_data)
+            filtered_indices.append(i + 1)  # Generation indices for x-ticks
+        prev_cmin = cmin
 
-    # Setting x-tick labels to show group numbers
-    ax.set_xticks(range(1, len(violin_data) + 1))
-    ax.set_xticklabels([f'{i}' for i in range(len(violin_data))])
+    # Customize the violin plot with filtered data
+    if filtered_violin_data:
 
-    # Show the plot
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig(violin_file, dpi=300)
-    plt.close()
+        parts = ax.violinplot(violin_data)
+        for partname in ('cbars', 'cmins', 'cmaxes'):
+            parts[partname].set_edgecolor('black')
+            parts[partname].set_linestyle('--')
+            parts[partname].set_linewidth(0.5)
+            parts[partname].set_alpha(0.5)
+
+        # Adding titles and labels
+        ax.set_title('Generation Fitnesses')
+        ax.set_xlabel('Generations')
+        ax.set_ylabel('Fitness')
+
+        # Setting x-tick labels to show group numbers
+        ax.set_xticks(range(1, len(violin_data) + 1))
+        ax.set_xticklabels([f'{i}' for i in range(len(violin_data))])
+
+        # Show the plot
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(violin_file, dpi=300)
+        plt.close()
+
+    else:
+        print("No data to plot after filtering based on cmins.")
 
 #===================================================================================================
 # Visualization for GA population fitnesses.
@@ -254,8 +270,9 @@ def varAnd(population, toolbox, cxpb, mutpb):
 
     return offspring
 
-# Customized convergence function
-def has_converged(logbook, ngen_converge, std_converge):
+# Customized convergence function.
+def has_converged(logbook, ngen_converge):
+# def has_converged(logbook, ngen_converge, std_converge):
     if len(logbook) < ngen_converge:
         return False
     recent_entries = logbook[-ngen_converge:]
@@ -265,10 +282,10 @@ def has_converged(logbook, ngen_converge, std_converge):
     if len(set(min_fitnesses)) != 1:
         return False
     
-    # Check if all std values are less than std_converge
-    std_fitnesses = [entry['std'] for entry in recent_entries]
-    if all(std < std_converge for std in std_fitnesses):
-        return True
+    # # Check if all std values are less than std_converge
+    # std_fitnesses = [entry['std'] for entry in recent_entries]
+    # if all(std < std_converge for std in std_fitnesses):
+    #     return True
     
     return False
 
@@ -419,7 +436,8 @@ def ga_rr_eaSimple(
     # Begin the generational process
     for gen in range(1, ngen + 1):
 
-        if has_converged(logbook, ngen_converge, std_converge):
+        if has_converged(logbook, ngen_converge):
+        # if has_converged(logbook, ngen_converge, std_converge):
             print(f"Converged at generation {gen}")
             break
 
