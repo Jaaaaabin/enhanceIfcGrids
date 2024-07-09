@@ -189,7 +189,7 @@ def visualizeGenFitness(output_file, logbook, ind_file, generation_size, set_vio
     print ("len of violin_data is", len(violin_data))
 
     viol_h = 3
-    viol_w_per_gen = 2
+    viol_w_per_gen = 3
     plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h), dpi=300)
     fig, ax = plt.subplots()
 
@@ -426,10 +426,9 @@ def ga_rr_eaSimple(
     param_limits = None, ngen_no_improve=5, pop_restart=None,
     ngen_converge=10):
     
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+    # remove the fitness file it already exist in the target folder.
     if fitness_file:
         clearPopulationFitnesses(file_path=fitness_file)
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     
     logbook = tools.Logbook()
     logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
@@ -448,55 +447,79 @@ def ga_rr_eaSimple(
     if verbose:
         print(logbook.stream)
 
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
     # Collect the fitness of per population.
     population_fitnesses = [ind.fitness.values[0] for ind in population]
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
     restart_round_count = 0 # count the num /round of random restart
     no_improve_count = 0 # count the fitness stagnation
     best_fitness = min(population_fitnesses) # initialization of the fitness for stagnation analysis.
     set_random_start = False # trigger of random restart.
     
+    # ---------------------------------- initial generation (generation 0) created ----------------------------------
+
     # Begin the generational process
     for gen in range(1, ngen + 1):
 
+        # --------------------------------------------------------------------
+        # Check for convergence. if the past iteration reaches the convergence requirements, break the genetic process. 
         if has_converged(logbook, ngen_converge):
-        # if has_converged(logbook, ngen_converge, std_converge):
             print(f"Converged at generation {gen}")
             break
 
+        # Check for Random Restart.
+        if set_random_start:
+
+            # Start the Random Restart: count the random restart for one more round.
+            restart_round_count += 1
+            print(f"The generation {gen} starts with a random restart (round nr. {restart_round_count})")
+
+            # ------------------------------------ Main part of Random Restat
+            restart_ind_file = initial_generation_file.replace(".txt", f"_{restart_round_count}_restart_at_generation_{gen}.txt")
+            population = random_restart(creator, toolbox, population, param_limits, restart_ind_file, restart_round_count, pop_restart)
+            # ------------------------------------ Main part of Random Restat
+
+            # After the random_restart: 1. refresh the "no_improve_count"; 2. triggle off random restart.
+            no_improve_count = 0
+            set_random_start = False
+
+        # --------------------------------------------------------------------
         # Select the next generation individuals
         offspring = toolbox.select(population, len(population))
+
+        # --------------------------------------------------------------------
+        # Conduct the crossover and mutation processes
         offspring = varAnd(offspring, toolbox, cxpb, mutpb)
 
+        # --------------------------------------------------------------------
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
 
+        # --------------------------------------------------------------------
         # Update the hall of fame with the generated individuals
         if halloffame is not None:
             halloffame.update(offspring)
 
-        # Replace the current population by the offspring
+        # --------------------------------------------------------------------
+        # Replace the current population by the newly generated offspring (which is the population of the current generation)
         population[:] = offspring
         
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-        # Collect the fitness of per population.
+        # --------------------------------------------------------------------
+        # [current population] Collect and Store the fitness statistics.
         population_fitnesses = [ind.fitness.values[0] for ind in population]
         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
 
-        # Append the current generation statistics to the logbook
+        # --------------------------------------------------------------------
+        # [current population] Append the statistics to the logbook
         record = stats.compile(population) if stats else {}
         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
 
         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-        # Random Restart. [Fitness minimization problem]
+        # Check if a "Random Restart" is needed ?
+        # Starting the next generation via a Random Restart.
         current_best_fitness = min(population_fitnesses)
         if current_best_fitness >= best_fitness:
             no_improve_count += 1
@@ -515,19 +538,7 @@ def ga_rr_eaSimple(
             #     creator, toolbox, current_population, 
             #     param_limits, restart_file_name, restart_round_count, restart_ratio=0.8)
             # no_improve_count = 0
-
-        if set_random_start:
-
-            restart_round_count += 1
-            print(f"{restart_round_count} random restart round at generation {gen}")
-            current_population = population
-            restart_file_name = initial_generation_file.replace(".txt", f"_{restart_round_count}_restart_at_generation_{gen}.txt")
-            population = random_restart(
-                creator, toolbox, current_population, 
-                param_limits, restart_file_name, restart_round_count, pop_restart)
-            no_improve_count = 0
-            set_random_start = False
-        
+            #         
         if verbose:
             print(logbook.stream)
 
