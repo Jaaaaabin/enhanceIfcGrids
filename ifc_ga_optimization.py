@@ -20,24 +20,21 @@ from ifc_grid_generation import preparation_of_grid_generation
 
 from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
 from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness
-from gaTools import ga_eaSimple, ga_rr_eaSimple
+from gaTools import ga_rr_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 30 # number of iterations.
+NUM_GENERATIONS = 100 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.3 # the probability for mutating an individual
 
-NUM_GENERATIONS_NO_IMPROVEMENT = 10
-NUM_GENERATIONS_WORSE_BEST = 5 
-RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
-NUM_GENERATIONS_CONVERGE = 25
-
-NUM_PROCESS = 8
-RANDOM_SEED = 20001
+NUM_GENERATIONS_NO_IMPROVEMENT = 15
+NUM_GENERATIONS_WORSE_BEST = 5
+RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.6)
+NUM_GENERATIONS_CONVERGE = 30
 
 #===================================================================================================
 # Paths setup and Log registration.
@@ -144,11 +141,12 @@ def ga_objective(individual: list) -> tuple:
 def main():
     
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
-    parser.add_argument('--random_seed', type=int, default=20001, help='Random seed for creatomg initial individuals.')
-    parser.add_argument('--num_process', type=int, default=12, help='Number of processes for multi processing.')
+    parser.add_argument('--random_seed', type=int, default=2021, help='Random seed for creatomg initial individuals.')
+    parser.add_argument('--num_process', type=int, default=max(1, int(multiprocessing.cpu_count()*0.5)), help='Number of processes for multi processing.')
     parser.add_argument('--set_plot', type=bool, default=False, help='plot the the generated grids')
     args = parser.parse_args()
-    
+    print("------------ number of processes employed :", args.num_process, "------------")
+
     if args.random_seed:
         random.seed(args.random_seed)
 
@@ -163,25 +161,12 @@ def main():
     toolbox.register("evaluate", ga_objective)
     # <To check if there's other more sustanible Penalty methods>, for example: toolbox.decorate("evaluate", tools.DeltaPenalty(feasible_fxn, 1.0))
     
-    # registering basic processes using DEAP bulit-in functions
+    # Registerbasic processes using DEAP bulit-in functions
     toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB)
     toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
     toolbox.register("select", tools.selNSGA2)
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
 
-    # toolbox.register("select", tools.selNSGA2, k=int(POPULATION_SIZE/5), nd='log')
-
-    # NSGA-II: Non-dominated Sorting Genetic Algorithm.
-    # https://github.com/DEAP/deap/issues/505
-    # https://medium.com/@rossleecooloh/optimization-algorithm-nsga-ii-and-python-package-deap-fca0be6b2ffc
-    # A has higher height than B but lower salary. In the contrary, B confronts the same situation. We call the situation “non-dominated”.
-    # If we can find a set of solutions that they don’t dominate each other and not dominated by any other solutions, we call them “Pareto-optimal” solutions.
-    # In each iteration, we combine the parent and the offspring after GA operations.
-    # Through the Non-dominated Sorting, we classify all individuals to different Pareto-optimal front level
-    # We then select individuals as the next population from Pareto-optimal front in the order of different levels.
-    # As for "diversity" preservation, the “Crowding Distance” is also computed.
-    # The crowded distance comparison guides the selection process at the various stages of the algorithm toward a uniformly "spread-out" Pareto-optimal front.
-    
     # Clear the old generation individual file.
     if os.path.exists(GENERATION_IND_FILE):
         os.remove(GENERATION_IND_FILE)
@@ -191,11 +176,10 @@ def main():
         pool = multiprocessing.Pool(processes=args.num_process)
         toolbox.register("map", pool.map)
     
-    # history to track all the individuals produced in the evolution.
+    # History to track all the individuals produced in the evolution.
     history = tools.History()
     toolbox.decorate("mate", history.decorator)
     toolbox.decorate("mutate", history.decorator)
-
     # # toolbox.decorate("select", history.decorator)
 
     pop = toolbox.population()
@@ -209,8 +193,6 @@ def main():
     stats.register("min", np.min)
     stats.register("max", np.max)
     
-    # final_pop, logbook = ga_eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
-    #     ngen=NUM_GENERATIONS, fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True)
     final_pop, logbook, restart_rounds = ga_rr_eaSimple(
         pop, creator, toolbox, set_random_restart=True,
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,

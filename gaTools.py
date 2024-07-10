@@ -70,57 +70,25 @@ def getParameterVarLimits(param_ranges):
     
     return str_lowers, str_uppers
 
-#===================================================================================================
-# Generation related.
-def generateOneInd(param_ranges):
-
-    # convert the dict param_ranges.
-    integer_individual = []
-
-    for key, (lower, upper) in param_ranges.items():
-        # the upper value is excluded.
-        upper -= 1
-        size_max = len(str(abs(upper)))
-        integer_v = str(random.randint(lower, upper)).zfill(size_max)
-        integer_individual.append(integer_v)
-        
-    integer_individual = list(''.join(v for v in integer_individual))
-    integer_individual = list(map(int, integer_individual))
-
-    return integer_individual
-
-def createInds(n, param_rangs, filename):
-    
-    int_lists = [generateOneInd(param_ranges=param_rangs) for _ in range(n)]
-
-    with open(filename, 'w') as file:
-        for int_list in int_lists:
-            file.write(str(int_list) + '\n')
-
-def ga_loadInds(creator, n, filename):
-    individuals = []
-    try:
-        # Since the individual data is expected to be a list of integers:
-        with open(filename, 'r') as file:
-            for line in file:
-                individual = list(map(int, line.strip().strip('[]').split(',')))
-                individual = creator(individual)
-                individuals.append(individual)
-    except FileNotFoundError:
-        logging.error(f"The file {filename} was not found.")
-        return None
-    except Exception as e:
-        logging.error(f"An error occurred while loading individuals: {e}")
-        return None
-    
-    if len(individuals) == n:
-        return individuals
-    else:
-        logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
-        return None
-    
 # ===================================================================================================
 # Storage and Visualization.
+
+def clearPopulationFitnesses(file_path):
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+def savePopulationFitnesses(file_path, values):
+
+    try:
+        # Open the file in append mode
+        with open(file_path, 'a') as file:
+            for v in values:
+                file.write(f"{v}\n")
+
+    except Exception as e:
+        print(f"Failed to append to the file: {e}")
+
 def saveLogbook(logbook, log_file):
     logbook_json = {}
     logbook_json = logbook
@@ -138,32 +106,8 @@ def save_fitness_data(logbook, json_file):
     with open(json_file, 'w') as f:
         json.dump(data, f, indent=4)
 
-# def visualizeGenFitness(logbook, fitness_file, show_max=True):
-    
-#     gen = logbook.select("gen")
-#     min_fitness = logbook.select("min")
-#     max_fitness = logbook.select("max")
-#     avg_fitness = logbook.select("avg")
-
-#     plt.figure(figsize=(12, 6), dpi=300)
-#     plt.plot(gen, min_fitness, 'b-', label="Minimum Fitness")
-#     plt.plot(gen, avg_fitness, 'g-', label="Average Fitness")
-
-#     if show_max:
-#         max_fitness = logbook.select("max")
-#         plt.plot(gen, max_fitness, 'r-', label="Maximum Fitness")
-    
-#     plt.xlabel("Generation")
-#     plt.ylabel("Fitness")
-#     plt.title("Fitness Over Generations")
-#     plt.legend()
-#     plt.grid(True)
-#     plt.tight_layout()
-
-#     plt.savefig(fitness_file, dpi=300)
-#     plt.close()  # Close the figure to free up memory
-
-def visualizeGenFitness(output_file, logbook, restart_rounds, ind_file, generation_size, set_violin_filter=True):
+def visualizeGenFitness(
+    output_file, logbook, restart_rounds, ind_file, generation_size, set_violin_filter=True):
     
     def read_floats_from_file(file_path):
         float_list = []
@@ -242,9 +186,15 @@ def visualizeGenFitness(output_file, logbook, restart_rounds, ind_file, generati
     min_fitness = logbook.select("min")
     avg_fitness = logbook.select("avg")
 
+    # Plot the minimum and average fitness curves.
     plt.plot(gen, min_fitness, 'b-', linewidth=0.75, label="Minimum Fitness")
     plt.plot(gen, avg_fitness, 'g-', linewidth=0.75, label="Average Fitness")
-
+    
+    # Highlight the random restart generations. 
+    if restart_rounds:
+        rr_avg_fitness = [avg_fitness[gen.index(r_round)] for r_round in restart_rounds]
+        # Highlight points on Average Fitness
+        plt.scatter(restart_rounds, rr_avg_fitness, s=5, color='r', label="Average Fitness with Random Restart")
     
     # ------------------------------------ Save the plot ------------------------------------
     plt.xlabel("Generation")
@@ -257,23 +207,53 @@ def visualizeGenFitness(output_file, logbook, restart_rounds, ind_file, generati
     plt.close()
 
 #===================================================================================================
-# Visualization for GA population fitnesses.
+# Generation related functions.
+def generateOneInd(param_ranges):
 
-def clearPopulationFitnesses(file_path):
+    # convert the dict param_ranges.
+    integer_individual = []
 
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    for key, (lower, upper) in param_ranges.items():
+        # the upper value is excluded.
+        upper -= 1
+        size_max = len(str(abs(upper)))
+        integer_v = str(random.randint(lower, upper)).zfill(size_max)
+        integer_individual.append(integer_v)
+        
+    integer_individual = list(''.join(v for v in integer_individual))
+    integer_individual = list(map(int, integer_individual))
 
-def savePopulationFitnesses(file_path, values):
+    return integer_individual
 
+def createInds(n, param_rangs, filename):
+    
+    int_lists = [generateOneInd(param_ranges=param_rangs) for _ in range(n)]
+
+    with open(filename, 'w') as file:
+        for int_list in int_lists:
+            file.write(str(int_list) + '\n')
+
+def ga_loadInds(creator, n, filename):
+    individuals = []
     try:
-        # Open the file in append mode
-        with open(file_path, 'a') as file:
-            for v in values:
-                file.write(f"{v}\n")
-
+        # Since the individual data is expected to be a list of integers:
+        with open(filename, 'r') as file:
+            for line in file:
+                individual = list(map(int, line.strip().strip('[]').split(',')))
+                individual = creator(individual)
+                individuals.append(individual)
+    except FileNotFoundError:
+        logging.error(f"The file {filename} was not found.")
+        return None
     except Exception as e:
-        print(f"Failed to append to the file: {e}")
+        logging.error(f"An error occurred while loading individuals: {e}")
+        return None
+    
+    if len(individuals) == n:
+        return individuals
+    else:
+        logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
+        return None
 
 # DEAP - varAnd
 def varAnd(population, toolbox, cxpb, mutpb):
@@ -294,9 +274,10 @@ def varAnd(population, toolbox, cxpb, mutpb):
 
     return offspring
 
-# Customized convergence function.
+#===================================================================================================
+# Convergence related functions.
+
 def has_converged(logbook, ngen_converge):
-# def has_converged(logbook, ngen_converge, std_converge):
     if len(logbook) < ngen_converge:
         return False
     recent_entries = logbook[-ngen_converge:]
@@ -313,8 +294,10 @@ def has_converged(logbook, ngen_converge):
     
     return True
 
-# Customized convergence function.
+#===================================================================================================
+# Random Restart related functions.
 
+# conditon functions
 def condition_no_improvements(logbook, ngen_no_improve):
 
     if len(logbook) < ngen_no_improve:
@@ -323,6 +306,7 @@ def condition_no_improvements(logbook, ngen_no_improve):
     min_fitnesses = [entry['min'] for entry in logbook[-ngen_no_improve:]]
     return len(set(min_fitnesses)) == 1
 
+# conditon functions
 def condition_stay_worse_than_best(logbook, ngen_worse_best):
 
     if len(logbook) < ngen_worse_best:
@@ -333,113 +317,80 @@ def condition_stay_worse_than_best(logbook, ngen_worse_best):
     
     return len(set(recent_min_fitnesses)) == 1 and all(fitness > best_min_fitness for fitness in recent_min_fitnesses)
     
+# final conditons.
 def meet_random_restart_conditions(logbook, ngen_no_improve=10, ngen_worse_best=5):
     return condition_no_improvements(logbook, ngen_no_improve) or condition_stay_worse_than_best(logbook, ngen_worse_best)
-    
-# Random restart function
-def random_restart(
-    creator, toolbox, current_population,
-    restart_param_limits, restart_generation_file, restart_round_count, pop_restart=None):
 
-    def random_partial_selection(input_list, number):
-        selected_items = random.sample(input_list, number)
-        return selected_items
+# rr random selection functions.
+def rr_random_selection(input_population, selection_size):
+    """
+    randomly select the individuals from the input_population to create the selected_population.
+    """
+    selected_population = random.sample(input_population, selection_size)
+    return selected_population
+
+def rr_find_best_ind(population):
+    min_fitness = min(ind.fitness.values[0] for ind in population)
+    for ind in population:
+        if ind.fitness.values[0] == min_fitness:
+            # print("ind,", ind)
+            # print("fitness,", min_fitness)
+            return ind
+        
+# rr distance selection functions.
+def rr_distance_selection(input_population, selection_size, reference_ind=None):
+    """
+    select the individuals of (the input_population) that are most different from the reference_ind.
+    """
+
+    if reference_ind is None:
+        return None
+    
+    else:
+        euclidean_distances = []
+        for sublist in input_population:
+            distance = np.linalg.norm(np.array(sublist) - np.array(reference_ind))
+            euclidean_distances.append((distance, sublist))
+
+        euclidean_distances.sort(reverse=True, key=lambda x: x[0])
+        selected_population = [sublist for _, sublist in euclidean_distances[:selection_size]]
+    
+    return selected_population
+
+# the Euclidean distances are calculated between the presently available l_best solution and the previ‐ ously memorized locally best points
+
+def random_restart(
+    creator, toolbox, population,
+    restart_param_limits, restart_generation_file, restart_round_count, pop_restart=None):
     
     # Change random seed
     new_seed = random.randint(0, 2**32 - 1) + restart_round_count
     random.seed(new_seed)
+
+    # # ---------------------------------------- Generate the new population using random selection.
+    # createInds(n=len(population), param_rangs=restart_param_limits, filename=restart_generation_file)
+    # toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(population), filename=restart_generation_file)
+    # restart_population = toolbox.restartpopulation()
+    # pop_random_restart = rr_random_selection(restart_population, pop_restart)  
+    # pop_current_generation = rr_random_selection(population, len(population)-pop_restart)
+    # new_population = pop_random_restart + pop_current_generation
     
-    # Generate new individuals
-    createInds(n=len(current_population), param_rangs=restart_param_limits, filename=restart_generation_file)
-    toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(current_population), filename=restart_generation_file)
+    # ---------------------------------------- Generate the new population using distance selection.
+    createInds(n=len(population), param_rangs=restart_param_limits, filename=restart_generation_file)
+    toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(population), filename=restart_generation_file)
     restart_population = toolbox.restartpopulation()
     
-    pop_random_restart = random_partial_selection(restart_population, pop_restart)  
-    pop_current_generation = random_partial_selection(current_population, len(current_population)-pop_restart)
+    best_ind  = rr_find_best_ind(population)
+    pop_random_restart = rr_distance_selection(restart_population, pop_restart, reference_ind=best_ind)
+    # print (pop_random_restart)
+    pop_current_generation = rr_random_selection(population, len(population)-pop_restart)
     new_population = pop_random_restart + pop_current_generation
-    
+
     return new_population
 
-# DEAP - eaSimple [adjusted.]
-def ga_eaSimple(
-    population, toolbox,
-    cxpb, mutpb, ngen, fitness_file=[], 
-    stats=None, halloffame=None, verbose=__debug__):
-    
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-    if fitness_file:
-        clearPopulationFitnesses(file_path=fitness_file)
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
-    
-    logbook = tools.Logbook()
-    logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
+#===================================================================================================
+# The main GA functions : adjusted  DEAP-eaSimple.
 
-    # Evaluate the individuals with an invalid fitness
-    invalid_ind = [ind for ind in population if not ind.fitness.valid]
-    fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-    for ind, fit in zip(invalid_ind, fitnesses):
-        ind.fitness.values = fit
-
-    if halloffame is not None:
-        halloffame.update(population)
-
-    record = stats.compile(population) if stats else {}
-    logbook.record(gen=0, nevals=len(invalid_ind), **record)
-    if verbose:
-        print(logbook.stream)
-
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-    # Collect the fitness of per population.
-    population_fitnesses = [ind.fitness.values[0] for ind in population]
-    savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-    # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-
-    # Begin the generational process
-    for gen in range(1, ngen + 1):
-        
-        # 
-        if has_converged(logbook, gen):
-            print(f"Converged at generation {gen}")
-            break
-
-        # Select the next generation individuals
-        offspring = toolbox.select(population, len(population))
-        # offspring = toolbox.select(population)
-
-        # Vary the pool of individuals
-        offspring = varAnd(offspring, toolbox, cxpb, mutpb)
-
-        # Evaluate the individuals with an invalid fitness
-        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        
-        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-        for ind, fit in zip(invalid_ind, fitnesses):
-            ind.fitness.values = fit
-
-        # Update the hall of fame with the generated individuals
-        if halloffame is not None:
-            halloffame.update(offspring)
-
-        # Replace the current population by the offspring
-        population[:] = offspring
-        
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-        # Collect the fitness of per population.
-        population_fitnesses = [ind.fitness.values[0] for ind in population]
-        savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-
-        # Append the current generation statistics to the logbook
-        record = stats.compile(population) if stats else {}
-
-        logbook.record(gen=gen, nevals=len(invalid_ind), **record)
-
-        if verbose:
-            print(logbook.stream)
-
-    return population, logbook
-
-# DEAP - eaSimple [adjusted.]
 def ga_rr_eaSimple(
     population, creator, toolbox,
     cxpb, mutpb, ngen, set_random_restart=True,
@@ -500,7 +451,10 @@ def ga_rr_eaSimple(
 
                 # ------------------------------------ Main part of Random Restat
                 restart_ind_file = initial_generation_file.replace(".txt", f"_{restart_rounds}_restart_at_generation_{gen}.txt")
-                population = random_restart(creator, toolbox, population, param_limits, restart_ind_file, restart_rounds, pop_restart)
+                population = random_restart(
+                    creator, toolbox,
+                    population,
+                    param_limits, restart_ind_file, restart_rounds, pop_restart)
                 # ------------------------------------ Main part of Random Restat
 
                 # After the random_restart: 1. refresh the "no_improve_count"; 2. triggle off random restart.
@@ -516,6 +470,7 @@ def ga_rr_eaSimple(
 
         # --------------------------------------------------------------------
         # Evaluate the individuals with an invalid fitness
+        # [Important] "toolbox.evaluate" will run the whole grid generation step.
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
@@ -555,3 +510,84 @@ def ga_rr_eaSimple(
             restart_history_count-=1
 
     return population, logbook, all_restart_rounds
+
+#===================================================================================================
+# # save
+# # DEAP - eaSimple
+# def ga_eaSimple(
+#     population, toolbox,
+#     cxpb, mutpb, ngen, fitness_file=[], 
+#     stats=None, halloffame=None, verbose=__debug__):
+    
+#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+#     if fitness_file:
+#         clearPopulationFitnesses(file_path=fitness_file)
+#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
+    
+#     logbook = tools.Logbook()
+#     logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
+
+#     # Evaluate the individuals with an invalid fitness
+#     invalid_ind = [ind for ind in population if not ind.fitness.valid]
+#     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+#     for ind, fit in zip(invalid_ind, fitnesses):
+#         ind.fitness.values = fit
+
+#     if halloffame is not None:
+#         halloffame.update(population)
+
+#     record = stats.compile(population) if stats else {}
+#     logbook.record(gen=0, nevals=len(invalid_ind), **record)
+#     if verbose:
+#         print(logbook.stream)
+
+#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+#     # Collect the fitness of per population.
+#     population_fitnesses = [ind.fitness.values[0] for ind in population]
+#     savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
+#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+
+#     # Begin the generational process
+#     for gen in range(1, ngen + 1):
+        
+#         # 
+#         if has_converged(logbook, gen):
+#             print(f"Converged at generation {gen}")
+#             break
+
+#         # Select the next generation individuals
+#         offspring = toolbox.select(population, len(population))
+#         # offspring = toolbox.select(population)
+
+#         # Vary the pool of individuals
+#         offspring = varAnd(offspring, toolbox, cxpb, mutpb)
+
+#         # Evaluate the individuals with an invalid fitness
+#         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        
+#         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+#         for ind, fit in zip(invalid_ind, fitnesses):
+#             ind.fitness.values = fit
+
+#         # Update the hall of fame with the generated individuals
+#         if halloffame is not None:
+#             halloffame.update(offspring)
+
+#         # Replace the current population by the offspring
+#         population[:] = offspring
+        
+#         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+#         # Collect the fitness of per population.
+#         population_fitnesses = [ind.fitness.values[0] for ind in population]
+#         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
+#         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+
+#         # Append the current generation statistics to the logbook
+#         record = stats.compile(population) if stats else {}
+
+#         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
+
+#         if verbose:
+#             print(logbook.stream)
+
+#     return population, logbook

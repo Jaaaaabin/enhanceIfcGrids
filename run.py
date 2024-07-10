@@ -44,7 +44,7 @@ def main():
             print(f"\033[1m\033[94m{ifc_file.name}\033[0m is \033[1m\033[92mcopied\033[0m from TEST folder to GA folder")
             
             # Step 2: Run the main.py
-            subprocess.run(["python", ga_script, "--num_process", "24", "--set_plot", "True"], check=True)
+            subprocess.run(["python", ga_script, "--set_plot", "True"], check=True)
             print(f"\033[1m\033[94m{ifc_file.name}\033[0m has been analyzed with \033[1m\033[92mGA\033[0m.")
 
         except subprocess.CalledProcessError as e:
