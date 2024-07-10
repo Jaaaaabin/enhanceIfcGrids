@@ -141,9 +141,13 @@ def ga_objective(individual: list) -> tuple:
 def main():
     
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
+    
     parser.add_argument('--random_seed', type=int, default=2021, help='Random seed for creatomg initial individuals.')
     parser.add_argument('--num_process', type=int, default=max(1, int(multiprocessing.cpu_count()*0.5)), help='Number of processes for multi processing.')
-    parser.add_argument('--set_plot', type=bool, default=False, help='plot the the generated grids')
+    
+    parser.add_argument('--set_rr', type=bool, default=False, help='enable the random restart')
+    parser.add_argument('--set_plot', type=bool, default=True, help='plot the the generated grids')
+    
     args = parser.parse_args()
     print("------------ number of processes employed :", args.num_process, "------------")
 
@@ -194,7 +198,7 @@ def main():
     stats.register("max", np.max)
     
     final_pop, logbook, restart_rounds = ga_rr_eaSimple(
-        pop, creator, toolbox, set_random_restart=True,
+        pop, creator, toolbox, set_random_restart=args.set_rr,
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
         initial_generation_file = INI_GENERATION_FILE,
         fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True,
