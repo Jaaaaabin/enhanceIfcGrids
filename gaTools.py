@@ -163,7 +163,7 @@ def save_fitness_data(logbook, json_file):
 #     plt.savefig(fitness_file, dpi=300)
 #     plt.close()  # Close the figure to free up memory
 
-def visualizeGenFitness(output_file, logbook, ind_file, generation_size, set_violin_filter=True):
+def visualizeGenFitness(output_file, logbook, restart_rounds, ind_file, generation_size, set_violin_filter=True):
     
     def read_floats_from_file(file_path):
         float_list = []
@@ -223,8 +223,6 @@ def visualizeGenFitness(output_file, logbook, ind_file, generation_size, set_vio
                 
             prev_cmin = cmin
 
-        print("filtered_indices: ", filtered_indices)
-
         # Customize the violin plot with filtered data
         if filtered_violin_data:
             parts = ax.violinplot(filtered_violin_data, positions=filtered_indices)
@@ -234,10 +232,11 @@ def visualizeGenFitness(output_file, logbook, ind_file, generation_size, set_vio
                 parts[partname].set_linewidth(0.5)
                 parts[partname].set_alpha(0.5)
 
+            axis_x_ticks = filtered_indices + restart_rounds if restart_rounds else filtered_indices
             # Setting x-tick labels to show group numbers
-            ax.set_xticks(filtered_indices)
-            ax.set_xticklabels([f'{i}' for i in filtered_indices])
-    
+            ax.set_xticks(axis_x_ticks)
+            ax.set_xticklabels([f'{i}' for i in axis_x_ticks])
+
     # ------------------------------------ Create the fitness line plot ------------------------------------
     gen = logbook.select("gen")
     min_fitness = logbook.select("min")
@@ -315,18 +314,28 @@ def has_converged(logbook, ngen_converge):
     return True
 
 # Customized convergence function.
-def is_local_optimal(logbook, ngen_no_improve):
+
+def condition_no_improvements(logbook, ngen_no_improve):
+
     if len(logbook) < ngen_no_improve:
         return False
-    recent_entries = logbook[-ngen_no_improve:]
     
-    # Check if the min fitness has stayed unchanged
-    min_fitnesses = [entry['min'] for entry in recent_entries]
-    if len(set(min_fitnesses)) != 1:
-        return False
-    
-    return True
+    min_fitnesses = [entry['min'] for entry in logbook[-ngen_no_improve:]]
+    return len(set(min_fitnesses)) == 1
 
+def condition_stay_worse_than_best(logbook, ngen_worse_best):
+
+    if len(logbook) < ngen_worse_best:
+        return False
+
+    best_min_fitness = min(entry['min'] for entry in logbook)
+    recent_min_fitnesses = [entry['min'] for entry in logbook[-ngen_worse_best:]]
+    
+    return len(set(recent_min_fitnesses)) == 1 and all(fitness > best_min_fitness for fitness in recent_min_fitnesses)
+    
+def meet_random_restart_conditions(logbook, ngen_no_improve=10, ngen_worse_best=5):
+    return condition_no_improvements(logbook, ngen_no_improve) or condition_stay_worse_than_best(logbook, ngen_worse_best)
+    
 # Random restart function
 def random_restart(
     creator, toolbox, current_population,
@@ -433,11 +442,11 @@ def ga_eaSimple(
 # DEAP - eaSimple [adjusted.]
 def ga_rr_eaSimple(
     population, creator, toolbox,
-    cxpb, mutpb, ngen,
+    cxpb, mutpb, ngen, set_random_restart=True,
     initial_generation_file=[], fitness_file=[], 
-    stats=None, halloffame=None, verbose=__debug__, 
-    param_limits = None, ngen_no_improve=5, pop_restart=None,
-    ngen_converge=10):
+    stats=None, halloffame=None, verbose=__debug__,
+    param_limits=None, ngen_no_improve=10, ngen_worse_best=5,
+    pop_restart=None, ngen_converge=10):
     
     # remove the fitness file it already exist in the target folder.
     if fitness_file:
@@ -464,9 +473,10 @@ def ga_rr_eaSimple(
     population_fitnesses = [ind.fitness.values[0] for ind in population]
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
 
-    restart_round_count = 0 # count the num /round of random restart
-    restart_history_count = 0
-    set_random_start = False # trigger of random restart.
+    all_restart_rounds = []
+    restart_rounds = 0 # count the num /round of random restart
+    restart_history_count = 0 # count the random restart history to avoid "continuous random restart shots.".
+    random_start_in_generation = False # trigger of random restart.
     
     # ---------------------------------- initial generation (generation 0) created ----------------------------------
 
@@ -480,19 +490,21 @@ def ga_rr_eaSimple(
             break
 
         # Check for Random Restart.
-        if set_random_start:
+        if set_random_restart:
+            if random_start_in_generation:
 
-            # Start the Random Restart: count the random restart for one more round.
-            restart_round_count += 1
-            print(f"The generation {gen} starts with a random restart (round nr. {restart_round_count})")
+                # Start the Random Restart: count the random restart for one more round.
+                restart_rounds += 1
+                all_restart_rounds.append(gen)
+                print(f"The generation {gen} starts with a random restart (round nr. {restart_rounds})")
 
-            # ------------------------------------ Main part of Random Restat
-            restart_ind_file = initial_generation_file.replace(".txt", f"_{restart_round_count}_restart_at_generation_{gen}.txt")
-            population = random_restart(creator, toolbox, population, param_limits, restart_ind_file, restart_round_count, pop_restart)
-            # ------------------------------------ Main part of Random Restat
+                # ------------------------------------ Main part of Random Restat
+                restart_ind_file = initial_generation_file.replace(".txt", f"_{restart_rounds}_restart_at_generation_{gen}.txt")
+                population = random_restart(creator, toolbox, population, param_limits, restart_ind_file, restart_rounds, pop_restart)
+                # ------------------------------------ Main part of Random Restat
 
-            # After the random_restart: 1. refresh the "no_improve_count"; 2. triggle off random restart.
-            set_random_start = False
+                # After the random_restart: 1. refresh the "no_improve_count"; 2. triggle off random restart.
+                random_start_in_generation = False
 
         # --------------------------------------------------------------------
         # Select the next generation individuals
@@ -528,41 +540,18 @@ def ga_rr_eaSimple(
         record = stats.compile(population) if stats else {}
         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
 
-        # current_best_fitness = min(population_fitnesses)
-        # if current_best_fitness == best_fitness:
-        #     no_improve_count += 1
-        # else:
-        #     no_improve_count = 0
-        #     best_fitness = current_best_fitness
-
-        # if no_improve_count >= ngen_no_improve:
-        #     print(f"In the generation {gen}, it is detected that a random restart is needed")
-        #     set_random_start = True
-
-            # restart_round_count += 1
-            # print(f"Random restart at generation {gen}, Restart round {restart_round_count}")
-            # current_population = population
-            # restart_file_name = initial_generation_file.replace(".txt", f"_restart_{restart_round_count}.txt")
-            # population = random_restart(
-            #     creator, toolbox, current_population, 
-            #     param_limits, restart_file_name, restart_round_count, restart_ratio=0.8)
-            # no_improve_count = 0
-            #         
-            
         if verbose:
             print(logbook.stream)
 
-        # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-        # Check if a "Random Restart" is needed ?
-        # Starting the next generation via a Random Restart.
+        # Calculate for Random Restart.
+        if set_random_restart:
+            if meet_random_restart_conditions(logbook, ngen_no_improve, ngen_worse_best):
+                if restart_history_count <= 0:
 
-        if is_local_optimal(logbook, ngen_no_improve):
+                    # print(f"In the generation {gen}, it is detected that a random restart is needed") 
+                    restart_history_count = ngen_worse_best
+                    random_start_in_generation = True
             
-            if restart_history_count <= 0:
-                print(f"In the generation {gen}, it is detected that a random restart is needed") 
-                restart_history_count = ngen_no_improve
-                set_random_start = True
-        
-        restart_history_count -=1
+            restart_history_count-=1
 
-    return population, logbook
+    return population, logbook, all_restart_rounds

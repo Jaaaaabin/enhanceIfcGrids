@@ -25,13 +25,14 @@ from gaTools import ga_eaSimple, ga_rr_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 50 # number of iterations.
+NUM_GENERATIONS = 30 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.3 # the probability for mutating an individual
 
 NUM_GENERATIONS_NO_IMPROVEMENT = 10
+NUM_GENERATIONS_WORSE_BEST = 5 
 RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
 NUM_GENERATIONS_CONVERGE = 25
 
@@ -57,8 +58,6 @@ INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness_all.png")
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
-# GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness.png")
-# GENERATION_IND_VIOLIN_FLE = os.path.join(MODEL_GA_RES_PATH, "ga_ind_violin.png")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
@@ -212,21 +211,22 @@ def main():
     
     # final_pop, logbook = ga_eaSimple(pop, toolbox, cxpb=CROSS_PROB, mutpb=MUTAT_PROB, 
     #     ngen=NUM_GENERATIONS, fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True)
-    final_pop, logbook = ga_rr_eaSimple(
-        pop, creator, toolbox, 
+    final_pop, logbook, restart_rounds = ga_rr_eaSimple(
+        pop, creator, toolbox, set_random_restart=True,
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
         initial_generation_file = INI_GENERATION_FILE,
-        fitness_file=GENERATION_IND_FILE,
-        stats=stats, verbose=True,
-        param_limits = PARAMS_INTEGER, ngen_no_improve=NUM_GENERATIONS_NO_IMPROVEMENT, pop_restart=RANDOM_RESTART_POPULATION_SIZE,
-        ngen_converge=NUM_GENERATIONS_CONVERGE)
+        fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True,
+        param_limits = PARAMS_INTEGER, ngen_no_improve=NUM_GENERATIONS_NO_IMPROVEMENT, ngen_worse_best=NUM_GENERATIONS_WORSE_BEST,
+        pop_restart=RANDOM_RESTART_POPULATION_SIZE, ngen_converge=NUM_GENERATIONS_CONVERGE)
     
     if args.num_process > 1:
         pool.close()
     
     # Analysis of the GA results.
-    saveLogbook(logbook=logbook, log_file=GENERATION_LOG_FILE)
-    visualizeGenFitness(output_file=GENERATION_FIT_FILE, logbook=logbook, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+    saveLogbook(
+        logbook=logbook, log_file=GENERATION_LOG_FILE)
+    visualizeGenFitness(
+        output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
     # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
 
     # Pick the best individual
