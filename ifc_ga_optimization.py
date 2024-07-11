@@ -148,7 +148,7 @@ def main():
     parser.add_argument('--num_process', type=int, default=max(1, int(multiprocessing.cpu_count()*0.5)), help='Number of processes for multi processing.')
     parser.add_argument('--set_plot', type=bool, default=True, help='plot the the generated grids')
     parser.add_argument('--set_rr', type=bool, default=ENABLE_GA_RR, help='enable the random restart')
-    
+
     args = parser.parse_args()
     print("------------ number of processes employed :", args.num_process, "------------")
     print("------------ enable the random restart :", args.set_rr, "------------")

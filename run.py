@@ -11,6 +11,22 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+import threading
+import time
+import io
+
+# Global variable to keep track of the last output time
+last_output_time = time.time()
+
+# Wrapper to capture print statements
+class OutputMonitor(io.StringIO):
+    def write(self, msg):
+        global last_output_time
+        last_output_time = time.time()
+        super().write(msg)
+        sys.__stdout__.write(msg)
+        
+sys.stdout = OutputMonitor()
 
 def main():
 
@@ -55,7 +71,19 @@ def main():
             if os.path.exists(target_file):
                 os.remove(target_file)
             print(f"\033[1m\033[94m{ifc_file.name}\033[0m is \033[1m\033[92mremoved\033[0m from the GA folder")
+        
+def monitor_output():
+    global last_output_time
+    while True:
+        if time.time() - last_output_time > 300:  # 300 seconds = 5 minutes
+            sys.stdout.write('\n')  # Send Enter
+            sys.stdout.flush()
+            last_output_time = time.time()  # Reset the timer
+        time.sleep(5)  # Check every second
 
 if __name__ == "__main__":
 
+    monitor_thread = threading.Thread(target=monitor_output, daemon=True)
+    monitor_thread.start()
     main()
+    monitor_thread.join()
