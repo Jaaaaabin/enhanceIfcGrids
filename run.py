@@ -17,6 +17,8 @@ import io
 
 # Global variable to keep track of the last output time
 last_output_time = time.time()
+stop_event = threading.Event()  # Event to signal the monitoring thread to stop
+original_stdout = sys.stdout
 
 # Wrapper to capture print statements
 class OutputMonitor(io.StringIO):
@@ -24,8 +26,12 @@ class OutputMonitor(io.StringIO):
         global last_output_time
         last_output_time = time.time()
         super().write(msg)
-        sys.__stdout__.write(msg)
+        original_stdout.write(msg)
+
+    def flush(self):
+        original_stdout.flush()
         
+# Save the original stdout
 sys.stdout = OutputMonitor()
 
 def main():
@@ -74,16 +80,24 @@ def main():
         
 def monitor_output():
     global last_output_time
-    while True:
+    while not stop_event.is_set():  # Check the event state
         if time.time() - last_output_time > 300:  # 300 seconds = 5 minutes
             sys.stdout.write('\n')  # Send Enter
             sys.stdout.flush()
             last_output_time = time.time()  # Reset the timer
-        time.sleep(5)  # Check every second
+        time.sleep(30)  # Check every 30 seconds
 
 if __name__ == "__main__":
 
     monitor_thread = threading.Thread(target=monitor_output, daemon=True)
     monitor_thread.start()
+
+    # Run the main function 
     main()
-    monitor_thread.join()
+
+    stop_event.set()  # Signal the monitoring thread to stop
+    monitor_thread.join() # Ensure the monitor thread finishes
+
+    # Restore the original stdout
+    sys.stdout = original_stdout
+    sys.stdout.flush()
