@@ -9,6 +9,7 @@ if sys.platform == "win32":
 import os
 import copy
 import array
+import json
 import argparse
 import random
 import logging
@@ -29,11 +30,10 @@ NUM_GENERATIONS = 100 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
-MUTAT_PROB = 0.3 # the probability for mutating an individual
+MUTAT_PROB = 0.2 # the probability for mutating an individual
 
-NUM_GENERATIONS_NO_IMPROVEMENT = 15
-NUM_GENERATIONS_WORSE_BEST = 5
-RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.6)
+NUM_GENERATIONS_THRESHOLD_RESTART = 10
+RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.6) # 0.6 better than 0.8
 NUM_GENERATIONS_CONVERGE = 30
 
 #===================================================================================================
@@ -55,6 +55,7 @@ INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness_all.png")
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
+GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_best_inds.json")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
@@ -140,7 +141,7 @@ def ga_objective(individual: list) -> tuple:
 # main.
 def main():
     
-    ENABLE_GA_RR = False
+    ENABLE_GA_RR = True
 
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
     parser.add_argument('--random_seed', type=int, default=2021, help='Random seed for creatomg initial individuals.')
@@ -203,7 +204,7 @@ def main():
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
         initial_generation_file = INI_GENERATION_FILE,
         fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True,
-        param_limits = PARAMS_INTEGER, ngen_no_improve=NUM_GENERATIONS_NO_IMPROVEMENT, ngen_worse_best=NUM_GENERATIONS_WORSE_BEST,
+        param_limits = PARAMS_INTEGER, ngen_threshold_restart=NUM_GENERATIONS_THRESHOLD_RESTART,
         pop_restart=RANDOM_RESTART_POPULATION_SIZE, ngen_converge=NUM_GENERATIONS_CONVERGE)
     
     if args.num_process > 1:
@@ -227,7 +228,8 @@ def main():
     gridGeneratorInit.merge_grids()
 
     # Visualization of the generated grids.
-    print("best ind decoded parameter values:", decoded_parameters)
+    with open(GENERATION_BEST_IND_FILE, 'w') as json_file:
+        json.dump(decoded_parameters, json_file, indent=4)
 
     if args.set_plot:
         gridGeneratorInit.visualization_2d_before_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
@@ -236,6 +238,21 @@ def main():
 if __name__ == "__main__":
 
     main()
+
+
+# ========================save===========================
+# # Multiprocesssing Functions
+# def monitor_resources():
+#     """Function to log CPU and Memory usage of the current process."""
+#     process = psutil.Process()
+#     memory_info = process.memory_info()
+#     logging.info(f"Process {process.pid}: Memory usage: {memory_info.rss / 1024 ** 2:.2f} MB")
+#     # logging.info(f"Process {process.pid}: CPU usage: {process.cpu_percent(interval=1)}%") # always 0%...
+# def worker_init():
+#     """Initialize worker process to monitor its resources."""
+#     logging.info(f"Worker {multiprocessing.current_process().pid} started.")
+#     monitor_resources()  # Monitor the current worker
+
 
 # ========================references===========================
 # https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
@@ -286,28 +303,6 @@ if __name__ == "__main__":
 #         x.append(decoded)
 #         bound_index +=1
 #     return x
-
-# ========================save===========================
-# # Multiprocesssing Functions
-# def monitor_resources():
-#     """Function to log CPU and Memory usage of the current process."""
-#     process = psutil.Process()
-#     memory_info = process.memory_info()
-#     logging.info(f"Process {process.pid}: Memory usage: {memory_info.rss / 1024 ** 2:.2f} MB")
-#     # logging.info(f"Process {process.pid}: CPU usage: {process.cpu_percent(interval=1)}%") # always 0%...
-# def worker_init():
-#     """Initialize worker process to monitor its resources."""
-#     logging.info(f"Worker {multiprocessing.current_process().pid} started.")
-#     monitor_resources()  # Monitor the current worker
-
-# ========================save===========================
-# ncore = "1"
-# os.environ["OMP_NUM_THREADS"] = ncore
-# os.environ["OPENBLAS_NUM_THREADS"] = ncore
-# os.environ["MKL_NUM_THREADS"] = ncore
-# os.environ["VECLIB_MAXIMUM_THREADS"] = ncore
-# os.environ["NUMEXPR_NUM_THREADS"] = ncore
-# =======================================================
 
 # ========================save===========================
 # Individual initializer

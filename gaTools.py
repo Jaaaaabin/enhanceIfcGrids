@@ -6,6 +6,7 @@ import numpy as np
 from math import ceil, log10
 from deap import tools
 import matplotlib.pyplot as plt
+from toolsQuickUtils import time_decorator
 
 #===================================================================================================
 # IFC related.
@@ -130,7 +131,6 @@ def visualizeGenFitness(
     # ------------------------------------ Create the violin plot ------------------------------------
     ind_data = read_floats_from_file(ind_file)
     violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
-    print ("len of violin_data is", len(violin_data))
 
     viol_h = 3
     viol_w_per_gen = 3
@@ -298,28 +298,33 @@ def has_converged(logbook, ngen_converge):
 # Random Restart related functions.
 
 # conditon functions
-def condition_no_improvements(logbook, ngen_no_improve):
-
-    if len(logbook) < ngen_no_improve:
+def condition_no_improvements(logbook, ngen_threshold_restart):
+    """
+    ngen_threshold_restart: number of generation with no improvements to restart.
+    """
+    if len(logbook) < ngen_threshold_restart:
         return False
     
-    min_fitnesses = [entry['min'] for entry in logbook[-ngen_no_improve:]]
+    min_fitnesses = [entry['min'] for entry in logbook[-ngen_threshold_restart:]]
     return len(set(min_fitnesses)) == 1
 
 # conditon functions
-def condition_stay_worse_than_best(logbook, ngen_worse_best):
+def condition_stay_non_best(logbook, ngen_threshold_restart):
 
-    if len(logbook) < ngen_worse_best:
+    if len(logbook) < ngen_threshold_restart:
         return False
 
-    best_min_fitness = min(entry['min'] for entry in logbook)
-    recent_min_fitnesses = [entry['min'] for entry in logbook[-ngen_worse_best:]]
+    previous_best_min_fitness = min(entry['min'] for entry in logbook)
+    recent_min_fitnesses = min([entry['min'] for entry in logbook[-ngen_threshold_restart:]])
     
-    return len(set(recent_min_fitnesses)) == 1 and all(fitness > best_min_fitness for fitness in recent_min_fitnesses)
+    if recent_min_fitnesses > previous_best_min_fitness:
+        return True
+    else:
+        return False
     
 # final conditons.
-def meet_random_restart_conditions(logbook, ngen_no_improve=10, ngen_worse_best=5):
-    return condition_no_improvements(logbook, ngen_no_improve) or condition_stay_worse_than_best(logbook, ngen_worse_best)
+def meet_random_restart_conditions(logbook, ngen_threshold_restart):
+    return condition_no_improvements(logbook, ngen_threshold_restart) or condition_stay_non_best(logbook, ngen_threshold_restart)
 
 # rr random selection functions.
 def rr_random_selection(input_population, selection_size):
@@ -337,8 +342,8 @@ def rr_find_best_ind(population):
             # print("fitness,", min_fitness)
             return ind
         
-# rr distance selection functions.
-def rr_distance_selection(input_population, selection_size, reference_ind=None):
+# rr escape selection functions.
+def rr_escape_selection(input_population, selection_size, reference_ind=None):
     """
     select the individuals of (the input_population) that are most different from the reference_ind.
     """
@@ -367,7 +372,7 @@ def random_restart(
     new_seed = random.randint(0, 2**32 - 1) + restart_round_count
     random.seed(new_seed)
 
-    # # ---------------------------------------- Generate the new population using random selection.
+    # # ---------------------------------------- Generate the new population using fully random selections.
     # createInds(n=len(population), param_rangs=restart_param_limits, filename=restart_generation_file)
     # toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(population), filename=restart_generation_file)
     # restart_population = toolbox.restartpopulation()
@@ -375,14 +380,14 @@ def random_restart(
     # pop_current_generation = rr_random_selection(population, len(population)-pop_restart)
     # new_population = pop_random_restart + pop_current_generation
     
-    # ---------------------------------------- Generate the new population using distance selection.
-    createInds(n=len(population), param_rangs=restart_param_limits, filename=restart_generation_file)
-    toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(population), filename=restart_generation_file)
+    # ---------------------------------------- Generate the new population using distance escaping selection.
+    pop_restart_ini = len(population) * 2
+    createInds(n=pop_restart_ini, param_rangs=restart_param_limits, filename=restart_generation_file)
+    toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=pop_restart_ini, filename=restart_generation_file)
     restart_population = toolbox.restartpopulation()
     
     best_ind  = rr_find_best_ind(population)
-    pop_random_restart = rr_distance_selection(restart_population, pop_restart, reference_ind=best_ind)
-    # print (pop_random_restart)
+    pop_random_restart = rr_escape_selection(restart_population, pop_restart, reference_ind=best_ind)
     pop_current_generation = rr_random_selection(population, len(population)-pop_restart)
     new_population = pop_random_restart + pop_current_generation
 
@@ -390,13 +395,13 @@ def random_restart(
 
 #===================================================================================================
 # The main GA functions : adjusted  DEAP-eaSimple.
-
+@time_decorator
 def ga_rr_eaSimple(
     population, creator, toolbox,
     cxpb, mutpb, ngen, set_random_restart=True,
     initial_generation_file=[], fitness_file=[], 
     stats=None, halloffame=None, verbose=__debug__,
-    param_limits=None, ngen_no_improve=10, ngen_worse_best=5,
+    param_limits=None, ngen_threshold_restart=10,
     pop_restart=None, ngen_converge=10):
     
     # remove the fitness file it already exist in the target folder.
@@ -500,11 +505,11 @@ def ga_rr_eaSimple(
 
         # Calculate for Random Restart.
         if set_random_restart:
-            if meet_random_restart_conditions(logbook, ngen_no_improve, ngen_worse_best):
+            if meet_random_restart_conditions(logbook, ngen_threshold_restart):
                 if restart_history_count <= 0:
 
                     # print(f"In the generation {gen}, it is detected that a random restart is needed") 
-                    restart_history_count = ngen_worse_best
+                    restart_history_count = ngen_threshold_restart
                     random_start_in_generation = True
             
             restart_history_count-=1
