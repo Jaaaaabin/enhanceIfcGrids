@@ -34,8 +34,11 @@ MUTAT_PROB = 0.2 # the probability for mutating an individual
 
 NUM_GENERATIONS_THRESHOLD_RESTART = 10
 RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.6) # 0.6 better than 0.8
-NUM_GENERATIONS_CONVERGE = 30
+NUM_GENERATIONS_CONVERGE = 50
 
+ENABLE_GA_RR = True
+
+PLOT_KEYS = "_"  + str(ENABLE_GA_RR) + "_" + str(POPULATION_SIZE) + "_" + str(CROSS_PROB) + "_" + str(MUTAT_PROB)
 #===================================================================================================
 # Paths setup and Log registration.
 
@@ -53,7 +56,7 @@ logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%
 
 INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
-GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness_all.png")
+GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_best_inds.json")
 
@@ -140,8 +143,6 @@ def ga_objective(individual: list) -> tuple:
 # ===================================================================================================
 # main.
 def main():
-    
-    ENABLE_GA_RR = True
 
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
     parser.add_argument('--random_seed', type=int, default=2021, help='Random seed for creatomg initial individuals.')

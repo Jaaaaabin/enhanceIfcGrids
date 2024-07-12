@@ -1232,7 +1232,7 @@ class IfcDataExtractor:
         plt.close(fig)
 
     @time_decorator
-    def wall_column_floor_location_display(self):
+    def wall_column_floor_location_display(self, view_elev=None, view_azim=None):
 
         def get_file_prefix_code(filename):
             parts = filename.split('-')
@@ -1241,6 +1241,9 @@ class IfcDataExtractor:
         fig = plt.figure(figsize=(12, 6))
         ax = fig.add_subplot(111, projection='3d')
 
+        self.elev = view_elev if view_elev is not None else self.elev 
+        self.azim = view_azim if view_azim is not None else self.azim
+         
         ax.view_init(elev=self.elev, azim=self.azim)
         ax.set_xticks([])
         ax.set_yticks([])
@@ -1249,7 +1252,7 @@ class IfcDataExtractor:
         ax.axis('off')
         
         # Display Walls
-        display_walls = self.info_walls + self.info_curtainwalls
+        display_walls = self.info_st_walls + self.info_ns_walls + self.info_curtainwalls
         if display_walls:
             st_wall_values, ns_wall_values, ct_wall_values = [], [], []
             for w in display_walls:

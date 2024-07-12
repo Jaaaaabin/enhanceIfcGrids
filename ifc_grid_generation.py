@@ -32,7 +32,7 @@ def preparation_of_grid_generation(
 
     return generator
 
-def building_grid_generation(basic_generator, new_parameters, set_visualization=False):
+def building_grid_generation(basic_generator, new_parameters, set_visualization=True):
     
     # update the parameters.
     new_generator = basic_generator.update_parameters(new_parameters)
@@ -45,8 +45,8 @@ def building_grid_generation(basic_generator, new_parameters, set_visualization=
 
     # visualization
     if set_visualization:
-        new_generator.visualization_2d_before_merge()
-        new_generator.visualization_2d_after_merge()
+        new_generator.visualization_2d_before_merge() # visual_type='svg'
+        new_generator.visualization_2d_after_merge() # visual_type='svg'
     
     # extract the relationships from merged grids.
     new_generator.analyze_grids()
@@ -63,8 +63,6 @@ if __name__ == "__main__":
         model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
         for model_path in model_paths:
-
-            # if '8-AR' in model_path:
 
             # for each building model
             init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
