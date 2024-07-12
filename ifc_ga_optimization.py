@@ -38,7 +38,7 @@ NUM_GENERATIONS_CONVERGE = 50
 
 ENABLE_GA_RR = True
 
-PLOT_KEYS = "_"  + str(ENABLE_GA_RR) + "_" + str(POPULATION_SIZE) + "_" + str(CROSS_PROB) + "_" + str(MUTAT_PROB)
+PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + "_cross_" + str(CROSS_PROB) + "_mutate_" + str(MUTAT_PROB)
 #===================================================================================================
 # Paths setup and Log registration.
 
@@ -58,7 +58,7 @@ INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
-GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_best_inds.json")
+GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds.json")
 
 #===================================================================================================
 # Basic parameter & Customized Population setup:
