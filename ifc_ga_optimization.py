@@ -29,8 +29,8 @@ POPULATION_SIZE = 40 # population size or no of individuals or solutions being c
 NUM_GENERATIONS = 100 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
-CROSS_PROB = 0.5 # the probability with which two individuals are crossed or mated
-MUTAT_PROB = 0.2 # the probability for mutating an individual
+CROSS_PROB = 0.6 # the probability with which two individuals are crossed or mated
+MUTAT_PROB = 0.1 # the probability for mutating an individual
 
 NUM_GENERATIONS_THRESHOLD_RESTART = 10
 RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.6) # 0.6 better than 0.8
@@ -60,17 +60,32 @@ GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS +
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds.json")
 
+# todo.
+# Take the initial ranges from the extracted ifc information.
+# PARAMS = {
+#     'st_c_num': (2, 10), # [3,10)  # min = 3
+#     'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
+#     'ns_w_num': (2, 10), # [2,10)  # min = 2.
+#     'st_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+#     'ns_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+#     'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+#     'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+#     'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
+#     # 'st_c_align_dist': (0.0001, 0.1), # fixed : 0.001
+#     'st_w_align_dist': (0.0001, 0.1), # fixed?
+#     'ns_w_align_dist': (0.0001, 0.1), # fixed?
+# }
 #===================================================================================================
 # Basic parameter & Customized Population setup:
 PARAMS = {
-    'st_c_num': (2, 10), # [3,10)  # min = 3
-    'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
-    'ns_w_num': (2, 10), # [2,10)  # min = 2.
-    'st_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
-    'ns_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
-    'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
-    'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
-    'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'st_c_num': (2, 20), # [3,10)  # min = 3
+    'st_w_num': (2, 20), # [3,10)  # min = num_main_floors.
+    'ns_w_num': (2, 20), # [2,10)  # min = 2.
+    'st_w_accumuled_length_percent': (0.0001, 0.1), # should be more "dependent" on the average length.
+    'ns_w_accumuled_length_percent': (0.0001, 0.1), # should be more "dependent" on the average length.
+    'st_st_merge': (0.1, 2.00), # ....god sick differentiate between merge
+    'ns_st_merge': (0.1, 2.00), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.1, 2.00), # ....god sick differentiate between merge
     # 'st_c_align_dist': (0.0001, 0.1), # fixed : 0.001
     'st_w_align_dist': (0.0001, 0.1), # fixed?
     'ns_w_align_dist': (0.0001, 0.1), # fixed?
