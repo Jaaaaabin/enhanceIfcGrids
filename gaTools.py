@@ -180,7 +180,8 @@ def visualizeGenFitness(
             # Setting x-tick labels to show group numbers
             ax.set_xticks(axis_x_ticks)
             ax.set_xticklabels([f'{i}' for i in axis_x_ticks])
-
+            ax.set_ylim(0.0, 1.0)
+            
     # ------------------------------------ Create the fitness line plot ------------------------------------
     gen = logbook.select("gen")
     min_fitness = logbook.select("min")
