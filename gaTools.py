@@ -180,7 +180,7 @@ def visualizeGenFitness(
             # Setting x-tick labels to show group numbers
             ax.set_xticks(axis_x_ticks)
             ax.set_xticklabels([f'{i}' for i in axis_x_ticks])
-            ax.set_ylim(0.0, 1.0)
+
             
     # ------------------------------------ Create the fitness line plot ------------------------------------
     gen = logbook.select("gen")
@@ -198,6 +198,7 @@ def visualizeGenFitness(
         plt.scatter(restart_rounds, rr_avg_fitness, s=5, color='r', label="Average Fitness with Random Restart")
     
     # ------------------------------------ Save the plot ------------------------------------
+    ax.set_ylim(0.0, avg_fitness[0]+0.1)
     plt.xlabel("Generation")
     plt.ylabel("Fitness")
     plt.title("Fitness Over Generations")
@@ -261,13 +262,15 @@ def varAnd(population, toolbox, cxpb, mutpb):
 
     offspring = [toolbox.clone(ind) for ind in population]
 
-    # Apply crossover and mutation on the offspring
+    # Apply crossover.
+    # To combine building blocks of good solutions from diverse chromosomes.
     for i in range(1, len(offspring), 2):
         if random.random() < cxpb:
-            offspring[i - 1], offspring[i] = toolbox.mate(offspring[i - 1],
-                                                          offspring[i])
+            offspring[i - 1], offspring[i] = toolbox.mate(offspring[i - 1],offspring[i])
             del offspring[i - 1].fitness.values, offspring[i].fitness.values
-
+    
+    # Apply mutation.
+    # To introduces new members into the population that are impossible to create by crossover alone.
     for i in range(len(offspring)):
         if random.random() < mutpb:
             offspring[i], = toolbox.mutate(offspring[i])
@@ -344,26 +347,39 @@ def rr_find_best_ind(population):
             return ind
         
 # rr escape selection functions.
-def rr_escape_selection(input_population, selection_size, reference_ind=None):
+def rr_escape_selection(input_population, selection_size, reference_inds=None):
     """
-    select the individuals of (the input_population) that are most different from the reference_ind.
+    Select the individuals from the input_population that are most different from the reference_inds.
+    
     """
 
-    if reference_ind is None:
+    if reference_inds is None or not reference_inds:
         return None
     
-    else:
-        euclidean_distances = []
-        for sublist in input_population:
-            distance = np.linalg.norm(np.array(sublist) - np.array(reference_ind))
-            euclidean_distances.append((distance, sublist))
+    euclidean_distances = []
+    for sublist in input_population:
+        min_distance = float('inf')
+        for ref in reference_inds:
+            distance = np.linalg.norm(np.array(sublist) - np.array(ref))
+            if distance < min_distance:
+                min_distance = distance
+        euclidean_distances.append((min_distance, sublist))
 
-        euclidean_distances.sort(reverse=True, key=lambda x: x[0])
-        selected_population = [sublist for _, sublist in euclidean_distances[:selection_size]]
+    euclidean_distances.sort(reverse=True, key=lambda x: x[0])
+    selected_population = [sublist for _, sublist in euclidean_distances[:selection_size]]
     
     return selected_population
 
-# the Euclidean distances are calculated between the presently available l_best solution and the previ‐ ously memorized locally best points
+    # old way: compared to one single individual.
+    # the Euclidean distances are calculated between the presently available l_best solution and the previ‐ ously memorized locally best points
+    #     euclidean_distances = []
+    #     for sublist in input_population:
+    #         distance = np.linalg.norm(np.array(sublist) - np.array(reference_ind))
+    #         euclidean_distances.append((distance, sublist))
+    #     euclidean_distances.sort(reverse=True, key=lambda x: x[0])
+    #     selected_population = [sublist for _, sublist in euclidean_distances[:selection_size]]
+    # return selected_population
+
 
 def random_restart(
     creator, toolbox, population,
@@ -373,25 +389,15 @@ def random_restart(
     new_seed = random.randint(0, 2**32 - 1) + restart_round_count
     random.seed(new_seed)
 
-    # # ---------------------------------------- Generate the new population using fully random selections.
-    # createInds(n=len(population), param_rangs=restart_param_limits, filename=restart_generation_file)
-    # toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=len(population), filename=restart_generation_file)
-    # restart_population = toolbox.restartpopulation()
-    # pop_random_restart = rr_random_selection(restart_population, pop_restart)  
-    # pop_current_generation = rr_random_selection(population, len(population)-pop_restart)
-    # new_population = pop_random_restart + pop_current_generation
-    
     # ---------------------------------------- Generate the new population using distance escaping selection.
-    pop_restart_ini = len(population) * 2
+    pop_restart_ini = len(population)
     createInds(n=pop_restart_ini, param_rangs=restart_param_limits, filename=restart_generation_file)
     toolbox.register("restartpopulation", ga_loadInds, creator.Individual, n=pop_restart_ini, filename=restart_generation_file)
     restart_population = toolbox.restartpopulation()
-    
-    best_ind  = rr_find_best_ind(population)
-    pop_random_restart = rr_escape_selection(restart_population, pop_restart, reference_ind=best_ind)
+
+    pop_random_restart = rr_escape_selection(restart_population, pop_restart, reference_inds=population)
     pop_current_generation = rr_random_selection(population, len(population)-pop_restart)
     new_population = pop_random_restart + pop_current_generation
-
     return new_population
 
 #===================================================================================================
@@ -400,7 +406,7 @@ def random_restart(
 def ga_rr_eaSimple(
     population, creator, toolbox,
     cxpb, mutpb, ngen, set_random_restart=True,
-    initial_generation_file=[], fitness_file=[], 
+    initial_generation_file=[], fitness_file=[],
     stats=None, halloffame=None, verbose=__debug__,
     param_limits=None, ngen_threshold_restart=10,
     pop_restart=None, ngen_converge=10):
@@ -440,39 +446,43 @@ def ga_rr_eaSimple(
     # Begin the generational process
     for gen in range(1, ngen + 1):
 
-        # --------------------------------------------------------------------
-        # Check for convergence. if the past iteration reaches the convergence requirements, break the genetic process. 
-        if has_converged(logbook, ngen_converge):
-            print(f"Converged at generation {gen}")
-            break
-
-        # Check for Random Restart.
-        if set_random_restart:
-            if random_start_in_generation:
-
-                # Start the Random Restart: count the random restart for one more round.
-                restart_rounds += 1
-                all_restart_rounds.append(gen)
-                print(f"The generation {gen} starts with a random restart (round nr. {restart_rounds})")
-
-                # ------------------------------------ Main part of Random Restat
-                restart_ind_file = initial_generation_file.replace(".txt", f"_{restart_rounds}_restart_at_generation_{gen}.txt")
-                population = random_restart(
-                    creator, toolbox,
-                    population,
-                    param_limits, restart_ind_file, restart_rounds, pop_restart)
-                # ------------------------------------ Main part of Random Restat
-
-                # After the random_restart: 1. refresh the "no_improve_count"; 2. triggle off random restart.
-                random_start_in_generation = False
+        # # --------------------------------------------------------------------
+        # # Check for convergence. if the past iteration reaches the convergence requirements, break the genetic process. 
+        # # first to triggle off the convergence conditions.
+        # if has_converged(logbook, ngen_converge):
+        #     print(f"Converged at generation {gen}")
+        #     break
 
         # --------------------------------------------------------------------
-        # Select the next generation individuals
+        # Select the individuals for creating the next generation.
         offspring = toolbox.select(population, len(population))
 
-        # --------------------------------------------------------------------
-        # Conduct the crossover and mutation processes
-        offspring = varAnd(offspring, toolbox, cxpb, mutpb)
+        # Check for Random Restart.
+        if set_random_restart and random_start_in_generation:
+
+            # Use the Random Restart to replace the mutation. count the random restart for one more round.
+            restart_rounds += 1
+            all_restart_rounds.append(gen)
+            print(f"The generation {gen} starts with a random restart (round nr. {restart_rounds})")
+
+            offspring = varAnd(offspring, toolbox, cxpb, mutpb=0) # crossover.
+
+            # ------------------------------------ Main part of Random Restat
+            restart_ind_file = initial_generation_file.replace(".txt", f"_{restart_rounds}_restart_at_generation_{gen}.txt")
+            offspring = random_restart(
+                creator, toolbox,
+                offspring,
+                param_limits, restart_ind_file, restart_rounds, pop_restart)
+
+            random_start_in_generation = False # After the random_restart, triggle off random restart.
+            # ------------------------------------ Main part of Random Restat
+
+        else:
+            
+            # No Random Restart is needed for current generation.
+            # --------------------------------------------------------------------
+            # Conduct the crossover and mutation processes
+            offspring = varAnd(offspring, toolbox, cxpb, mutpb) # crossover and mutation.
 
         # --------------------------------------------------------------------
         # Evaluate the individuals with an invalid fitness
@@ -516,84 +526,3 @@ def ga_rr_eaSimple(
             restart_history_count-=1
 
     return population, logbook, all_restart_rounds
-
-#===================================================================================================
-# # save
-# # DEAP - eaSimple
-# def ga_eaSimple(
-#     population, toolbox,
-#     cxpb, mutpb, ngen, fitness_file=[], 
-#     stats=None, halloffame=None, verbose=__debug__):
-    
-#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-#     if fitness_file:
-#         clearPopulationFitnesses(file_path=fitness_file)
-#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
-    
-#     logbook = tools.Logbook()
-#     logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
-
-#     # Evaluate the individuals with an invalid fitness
-#     invalid_ind = [ind for ind in population if not ind.fitness.valid]
-#     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-#     for ind, fit in zip(invalid_ind, fitnesses):
-#         ind.fitness.values = fit
-
-#     if halloffame is not None:
-#         halloffame.update(population)
-
-#     record = stats.compile(population) if stats else {}
-#     logbook.record(gen=0, nevals=len(invalid_ind), **record)
-#     if verbose:
-#         print(logbook.stream)
-
-#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-#     # Collect the fitness of per population.
-#     population_fitnesses = [ind.fitness.values[0] for ind in population]
-#     savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-#     # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-
-#     # Begin the generational process
-#     for gen in range(1, ngen + 1):
-        
-#         # 
-#         if has_converged(logbook, gen):
-#             print(f"Converged at generation {gen}")
-#             break
-
-#         # Select the next generation individuals
-#         offspring = toolbox.select(population, len(population))
-#         # offspring = toolbox.select(population)
-
-#         # Vary the pool of individuals
-#         offspring = varAnd(offspring, toolbox, cxpb, mutpb)
-
-#         # Evaluate the individuals with an invalid fitness
-#         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        
-#         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-#         for ind, fit in zip(invalid_ind, fitnesses):
-#             ind.fitness.values = fit
-
-#         # Update the hall of fame with the generated individuals
-#         if halloffame is not None:
-#             halloffame.update(offspring)
-
-#         # Replace the current population by the offspring
-#         population[:] = offspring
-        
-#         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-#         # Collect the fitness of per population.
-#         population_fitnesses = [ind.fitness.values[0] for ind in population]
-#         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-#         # *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-
-#         # Append the current generation statistics to the logbook
-#         record = stats.compile(population) if stats else {}
-
-#         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
-
-#         if verbose:
-#             print(logbook.stream)
-
-#     return population, logbook

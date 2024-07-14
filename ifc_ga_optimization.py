@@ -25,6 +25,9 @@ from gaTools import ga_rr_eaSimple
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
+
+ENABLE_GA_RR = True
+
 POPULATION_SIZE = 40 # population size or no of individuals or solutions being considered in each generation.
 NUM_GENERATIONS = 100 # number of iterations.
 
@@ -33,10 +36,8 @@ CROSS_PROB = 0.6 # the probability with which two individuals are crossed or mat
 MUTAT_PROB = 0.1 # the probability for mutating an individual
 
 NUM_GENERATIONS_THRESHOLD_RESTART = 10
-RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.6) # 0.6 better than 0.8
-NUM_GENERATIONS_CONVERGE = 50
-
-ENABLE_GA_RR = True
+RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
+NUM_GENERATIONS_CONVERGE = 30
 
 PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + "_cross_" + str(CROSS_PROB) + "_mutate_" + str(MUTAT_PROB)
 #===================================================================================================
@@ -55,10 +56,10 @@ gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
 logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
 
 INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
-GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log.json")
+GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
 GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
-GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds.json")
+GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
 
 # todo.
 # Take the initial ranges from the extracted ifc information.
@@ -78,14 +79,14 @@ GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds.jso
 #===================================================================================================
 # Basic parameter & Customized Population setup:
 PARAMS = {
-    'st_c_num': (2, 20), # [3,10)  # min = 3
-    'st_w_num': (2, 20), # [3,10)  # min = num_main_floors.
-    'ns_w_num': (2, 20), # [2,10)  # min = 2.
-    'st_w_accumuled_length_percent': (0.0001, 0.1), # should be more "dependent" on the average length.
-    'ns_w_accumuled_length_percent': (0.0001, 0.1), # should be more "dependent" on the average length.
-    'st_st_merge': (0.1, 2.00), # ....god sick differentiate between merge
-    'ns_st_merge': (0.1, 2.00), # ....god sick differentiate between merge
-    'ns_ns_merge': (0.1, 2.00), # ....god sick differentiate between merge
+    'st_c_num': (2, 10), # [3,10)  # min = 3
+    'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
+    'ns_w_num': (2, 10), # [2,10)  # min = 2.
+    'st_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+    'ns_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+    'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
     # 'st_c_align_dist': (0.0001, 0.1), # fixed : 0.001
     'st_w_align_dist': (0.0001, 0.1), # fixed?
     'ns_w_align_dist': (0.0001, 0.1), # fixed?
@@ -186,7 +187,7 @@ def main():
     # Registerbasic processes using DEAP bulit-in functions
     toolbox.register("mate", tools.cxUniform, indpb=CROSS_PROB)
     toolbox.register("mutate", tools.mutUniformInt, low=MinVals, up=MaxVals, indpb=MUTAT_PROB)
-    toolbox.register("select", tools.selNSGA2)
+    # toolbox.register("select", tools.selNSGA2)
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
 
     # Clear the old generation individual file.
@@ -218,8 +219,8 @@ def main():
     final_pop, logbook, restart_rounds = ga_rr_eaSimple(
         pop, creator, toolbox, set_random_restart=args.set_rr,
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
-        initial_generation_file = INI_GENERATION_FILE,
-        fitness_file=GENERATION_IND_FILE, stats=stats, verbose=True,
+        initial_generation_file=INI_GENERATION_FILE, fitness_file=GENERATION_IND_FILE,
+        stats=stats, verbose=True,
         param_limits = PARAMS_INTEGER, ngen_threshold_restart=NUM_GENERATIONS_THRESHOLD_RESTART,
         pop_restart=RANDOM_RESTART_POPULATION_SIZE, ngen_converge=NUM_GENERATIONS_CONVERGE)
     
@@ -254,99 +255,3 @@ def main():
 if __name__ == "__main__":
 
     main()
-
-
-# ========================save===========================
-# # Multiprocesssing Functions
-# def monitor_resources():
-#     """Function to log CPU and Memory usage of the current process."""
-#     process = psutil.Process()
-#     memory_info = process.memory_info()
-#     logging.info(f"Process {process.pid}: Memory usage: {memory_info.rss / 1024 ** 2:.2f} MB")
-#     # logging.info(f"Process {process.pid}: CPU usage: {process.cpu_percent(interval=1)}%") # always 0%...
-# def worker_init():
-#     """Initialize worker process to monitor its resources."""
-#     logging.info(f"Worker {multiprocessing.current_process().pid} started.")
-#     monitor_resources()  # Monitor the current worker
-
-
-# ========================references===========================
-# https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py
-# https://deap.readthedocs.io/en/master/tutorials/basic/part4.html
-# https://intellij-support.jetbrains.com/hc/en-us/community/posts/115000384464-Problem-using-multiprocess-with-IPython
-# Check papers:
-# Automated optimization of steel reinforcement in RC building frames using building information modeling and hybrid genetic algorithm
-# check real-valued link. + the existing method of correcting non-integer to integer.
-# https://www.researchgate.net/post/How_can_I_encode_and_decode_a_real-valued_problem-variable_in_Genetic_Algorithms
-# # have to take care that the numbers do not go outside your range
-# https://gitlab.com/santiagoandre/deap-customize-population-example/-/blob/master/AGbasic.py?ref_type=heads
-# links for constraint handling:
-# https://stackoverflow.com/questions/20301206/enforce-constraints-in-genetic-algorithm-with-deap
-# https://github.com/deap/deap/issues/30
-# save all individuals of all generations.
-# https://groups.google.com/g/deap-users/c/9IHsKGR9Daw
-# networkx.graphviz_layout for printing history, the source code:
-# https://gist.github.com/fmder/5505431
-# importance of invalid fitness in DEAP.
-# https://stackoverflow.com/questions/44708050/whats-the-importance-of-invalid-fitness-in-deap 
-
-# ========================default_initialization===========================
-# save for default initialization.
-# PARAM_BOUNDS = [value for value in PARAMS.values()]
-# NUM_PARAMS = len(PARAM_BOUNDS)
-# CHROMOSOME_LENGTH = 20 # length of the chromosome (individual),  which should be divisible by no. of variables (in bit form). when this length gets smaller, it only returns integers..
-# if CHROMOSOME_LENGTH % NUM_PARAMS != 0:
-#     raise ValueError(f"The value {CHROMOSOME_LENGTH} should be divisible by no. of variables")
-# logging.info("CHROMOSOME_LENGTH: %s", CHROMOSOME_LENGTH)
-
-# ========================save===========================
-# def decode_binary_x(individual: list) -> list:
-#     """Decode binary list to parameter values based on defined bounds."""
-#     len_chromosome = len(individual)
-#     len_chromosome_one_var = int(len_chromosome/NUM_PARAMS)
-#     bound_index = 0
-#     x = []
-#     for i in range(0,len_chromosome,len_chromosome_one_var):
-#         # converts binary to decimial using 2**place_value
-#         chromosome_string = ''.join((str(xi) for xi in  individual[i:i+len_chromosome_one_var]))
-#         binary_to_decimal = int(chromosome_string,2)
-#         # the decoding method that 
-#         # a. can implement lower and upper bounds for each variable
-#         # b. can choose chromosome of any length (more the no. of bits, more precise the decoded value).
-#         lb, ub= PARAM_BOUNDS[bound_index]
-#         precision = (ub-lb)/((2**len_chromosome_one_var)-1)
-#         decoded = (binary_to_decimal*precision)+lb
-#         x.append(decoded)
-#         bound_index +=1
-#     return x
-
-# ========================save===========================
-# Individual initializer
-    # <default>
-    # creator.create("Individual", list, fitness=creator.FitnessMulti)
-    # Attribute initializer
-    # <default>
-    # toolbox.register("attr_bool", random.randint, 0, 1) # attribute generator with toolbox.attr_bool() drawing a random integer between 0 and 1
-    # toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, CHROMOSOME_LENGTH)  # depending upon decoding strategy, which uses precision
-    # toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-
-# ========================save===========================
-# def save_genealogy(toolbox, history, genealogy_file):
-#     print ("history.genealogy_history:", history.genealogy_history)
-#     print ("history.genealogy_tree:", history.genealogy_tree)
-    # # log = history.genealogy_tree
-    # # genealogy_history 
-
-    # with open(GENERATION_LOG_GENEALOGY_FILE, "w") as output_file:
-    #     json.dump(log, output_file)
-
-    # # # visualization.
-    # graph = nx.DiGraph(history.genealogy_tree)
-    # graph = graph.reverse()  # Make the graph top-down
-    # plt.figure(figsize=(10, 15)) 
-    # colors = [toolbox.evaluate(history.genealogy_history[i])[0] for i in graph]
-
-    # positions = graphviz_layout(graph, prog="dot")
-    # nx.draw(graph, positions, node_color=colors)
-    # plt.savefig(genealogy_file)
-    # plt.close() # Close the figure to free up memory
