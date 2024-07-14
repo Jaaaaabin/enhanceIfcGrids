@@ -198,6 +198,7 @@ def visualizeGenFitness(
         plt.scatter(restart_rounds, rr_avg_fitness, s=5, color='r', label="Average Fitness with Random Restart")
     
     # ------------------------------------ Save the plot ------------------------------------
+    ax.set_xlim(-5, 105)
     ax.set_ylim(0.0, avg_fitness[0]+0.1)
     plt.xlabel("Generation")
     plt.ylabel("Fitness")
@@ -446,12 +447,12 @@ def ga_rr_eaSimple(
     # Begin the generational process
     for gen in range(1, ngen + 1):
 
-        # # --------------------------------------------------------------------
-        # # Check for convergence. if the past iteration reaches the convergence requirements, break the genetic process. 
-        # # first to triggle off the convergence conditions.
-        # if has_converged(logbook, ngen_converge):
-        #     print(f"Converged at generation {gen}")
-        #     break
+        # --------------------------------------------------------------------
+        # Check for convergence. if the past iteration reaches the convergence requirements, break the genetic process. 
+        # first to triggle off the convergence conditions.
+        if has_converged(logbook, ngen_converge):
+            print(f"Converged at generation {gen}")
+            break
 
         # --------------------------------------------------------------------
         # Select the individuals for creating the next generation.
