@@ -24,6 +24,7 @@ from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness
 from gaTools import ga_rr_eaSimple
 
 # # ====save
+# # ====save
 # POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
 # NUM_GENERATIONS = 200 # number of iterations.
 # TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
@@ -32,6 +33,7 @@ from gaTools import ga_rr_eaSimple
 # NUM_GENERATIONS_THRESHOLD_RESTART = 25
 # RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
 # NUM_GENERATIONS_CONVERGE = 50 
+# # ====save
 # # ====save
 
 #===================================================================================================
