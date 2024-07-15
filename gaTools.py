@@ -198,7 +198,7 @@ def visualizeGenFitness(
         plt.scatter(restart_rounds, rr_avg_fitness, s=5, color='r', label="Average Fitness with Random Restart")
     
     # ------------------------------------ Save the plot ------------------------------------
-    ax.set_xlim(-5, 105)
+    ax.set_xlim(-5, 205)
     ax.set_ylim(0.0, avg_fitness[0]+0.1)
     plt.xlabel("Generation")
     plt.ylabel("Fitness")
