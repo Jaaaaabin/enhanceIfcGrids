@@ -3,7 +3,7 @@ from gridSystemGenerator import GridGenerator
 from toolsQuickUtils import time_decorator
 
 PROJECT_PATH = os.getcwd()
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 # @time_decorator
@@ -67,21 +67,21 @@ if __name__ == "__main__":
             # for each building model
             init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
 
-            best_thresholds = {
-                'st_c_num': 6,
-                'st_w_num': 2,
-                'ns_w_num': 3,
-                'st_w_accumuled_length_percent': 0.005,
-                'ns_w_accumuled_length_percent': 0.0005,
-                'st_st_merge': 0.5,
-                'ns_st_merge': 0.5,
-                'ns_ns_merge': 0.5,
-                'st_c_align_dist': 0.001,     # fixed value,
-                'st_w_align_dist': 0.1,       # fixed value, to be decided per project
-                'ns_w_align_dist': 0.1,       # fixed value, to be decided per project.
-            }
+            # best_thresholds = {
+            #     'st_c_num': 6,
+            #     'st_w_num': 2,
+            #     'ns_w_num': 3,
+            #     'st_w_accumuled_length_percent': 0.005,
+            #     'ns_w_accumuled_length_percent': 0.0005,
+            #     'st_st_merge': 0.5,
+            #     'ns_st_merge': 0.5,
+            #     'ns_ns_merge': 0.5,
+            #     'st_c_align_dist': 0.001,     # fixed value,
+            #     'st_w_align_dist': 0.1,       # fixed value, to be decided per project
+            #     'ns_w_align_dist': 0.1,       # fixed value, to be decided per project.
+            # }
             
-            building_grid_generation(init_grid_generator, best_thresholds)
+            # building_grid_generation(init_grid_generator, best_thresholds)
 
     except Exception as e:
         print(f"Error accessing directory {DATA_RES_PATH}: {e}")

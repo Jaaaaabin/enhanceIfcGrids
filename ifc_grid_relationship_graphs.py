@@ -2,10 +2,10 @@ import os
 from hierGraph import HierarchicalGraph
 
 PROJECT_PATH = os.getcwd()
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_rela'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
-NUM_VISUALIZATION_GRIDS = 4
+NUM_VISUALIZATION_GRIDS = 3
 
 def get_hierarchical_data(
     work_path,

@@ -156,13 +156,13 @@ def slope_to_orientation_0_180(slope):
     return degree
 
 def point_to_line_distance(point, line, tol_distance=0.001):
-            
+    # todo: cannot deal with inclined lines. for models 4 5 6 8.
     def point_get_coords(point):
         return point[0], point[1], point[2]
     
     # line Ax+ By + C = 0 (x1,y1), (x2,y2), point (x0, y0).
-    x1, y1, z0 = point_get_coords(line[0])
-    x2, y2, z0 = point_get_coords(line[1])
+    x1, y1, _ = point_get_coords(line[0])
+    x2, y2, _ = point_get_coords(line[1])
     x0, y0, _ = point_get_coords(point)
     
     A = y1 - y2
@@ -173,20 +173,57 @@ def point_to_line_distance(point, line, tol_distance=0.001):
     if distance < tol_distance:
         relative_distance = 0.
     else:
-        # x1=x2
-        if abs(x1-x2) <tol_distance:
-            if x0>=x1:
-                direction = 1.0
-            elif x0<x1:
-                direction = -1.0
-        elif abs(y1-y2) <tol_distance:
-            if y0>=y1:
-                direction = 1.0
-            elif y0<y1:
-                direction = -1.0
+        # Calculate the direction by projecting the point onto the line segment
+        dot_product = (x0 - x1) * (x2 - x1) + (y0 - y1) * (y2 - y1)
+        length_squared = (x2 - x1)**2 + (y2 - y1)**2
+        
+        # Calculate the projection parameter t
+        t = dot_product / length_squared
+        
+        if t < 0:
+            closest_point = (x1, y1)
+        elif t > 1:
+            closest_point = (x2, y2)
+        else:
+            closest_point = (x1 + t * (x2 - x1), y1 + t * (y2 - y1))
+        
+        direction = 1.0 if (x0 - closest_point[0]) * (x2 - x1) + (y0 - closest_point[1]) * (y2 - y1) > 0 else -1.0
         relative_distance = distance * direction
 
     return relative_distance
+
+# def point_to_line_distance(point, line, tol_distance=0.001):
+#     # todo: cannot deal with inclined lines. for models 4 5 6 8.
+#     def point_get_coords(point):
+#         return point[0], point[1], point[2]
+    
+#     # line Ax+ By + C = 0 (x1,y1), (x2,y2), point (x0, y0).
+#     x1, y1, _ = point_get_coords(line[0])
+#     x2, y2, _ = point_get_coords(line[1])
+#     x0, y0, _ = point_get_coords(point)
+    
+#     A = y1 - y2
+#     B = -(x1 - x2)
+#     C = x1 * y2 - x2 * y1
+#     distance = abs(A * x0 + B * y0 + C) / (A**2 + B**2)**0.5
+
+#     if distance < tol_distance:
+#         relative_distance = 0.
+#     else:
+#         # x1=x2
+#         if abs(x1-x2) <tol_distance:
+#             if x0>=x1:
+#                 direction = 1.0
+#             elif x0<x1:
+#                 direction = -1.0
+#         elif abs(y1-y2) <tol_distance:
+#             if y0>=y1:
+#                 direction = 1.0
+#             elif y0<y1:
+#                 direction = -1.0
+#         relative_distance = distance * direction
+
+#     return relative_distance
 
 def perpendicular_distance(point1, point2):
 

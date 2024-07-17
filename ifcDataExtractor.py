@@ -7,6 +7,8 @@ import os
 import math
 import json
 import numpy as np
+
+from collections import Counter
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -80,6 +82,9 @@ class IfcDataExtractor:
                 '2$TzztUz_nI9DzZezaA0Uf',
                 '19S$35tbDXGBvHnQP5VyE9',
             ],
+            "11103186":[
+                '1gQ_y3GLj6yQZm$NpWfoHW'
+            ],
             "11103035":[
                 '3Nvn$pqh7mHx_H$clYhRTH',
                 '3_uFSRcG9_IvnATDmaTf65',
@@ -113,7 +118,8 @@ class IfcDataExtractor:
             else:
                 continue
         
-        slab_type_outliers = {"11103186": "Footing"}
+        slab_type_outliers = {
+            "11103186": "Footing"}
         
         # filter out non-relevant slabs with specific slab types "string".
         for key, type_name_string in slab_type_outliers.items():
@@ -122,7 +128,11 @@ class IfcDataExtractor:
                 break
             else:
                 continue
-            
+    
+    def _remove_wall_outliers(self, min_height=1.0):
+
+        self.info_walls = [w for w in self.info_walls if w['height'] > min_height]
+
     def _read_view_settings(self):
 
         view_settings = {
@@ -617,6 +627,23 @@ class IfcDataExtractor:
         self.info_ns_walls = new_info_ns_walls
         self.info_curtainwalls = new_info_curtainwalls
 
+    def _get_main_directions_from_walls(self, num_directions=4):
+        
+        info_all_walls = self.info_ns_walls + self.info_st_walls + self.info_curtainwalls
+
+        wall_orientations = [w['orientation'] for w in info_all_walls if 'orientation' in w]
+        wall_orientations = [(v-180) if v>=180 else v for v in wall_orientations] # to 0 - 180 degree.
+        main_directions = Counter(wall_orientations)
+        main_directions = main_directions.most_common(num_directions)
+        self.main_directions = [main_direct[0] for main_direct in main_directions]
+
+        wall_x_values = [w['location'][0][0] for w in info_all_walls if 'location' in w]
+        wall_y_values = [w['location'][0][1] for w in info_all_walls if 'location' in w]
+
+        self.corner_x_value = (max(wall_x_values) + min(wall_x_values)) * 0.5
+        self.corner_y_value = (max(wall_y_values) + min(wall_y_values)) * 0.5
+        self.corner_z_value = max([w['location'][0][-1] for w in info_all_walls if 'location' in w]) * 1.1
+
     @time_decorator
     def extract_all_walls(self):
         
@@ -636,11 +663,13 @@ class IfcDataExtractor:
         self.get_curtainwall_information()
 
     def post_processing_walls(self):
-
+        
+        self._remove_wall_outliers()
         self.split_st_ns_ct_wall_information()
         self.glue_wall_connections()
         self.write_dict_walls()
-        
+        self._get_main_directions_from_walls()
+
 #wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
@@ -1189,50 +1218,9 @@ class IfcDataExtractor:
 #===================================================================================================
 # displayandexport ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
 
-    def test_debug_display(self):
-
-        fig = plt.figure(figsize=(12, 6))
-        ax = fig.add_subplot(111, projection='3d')
-
-        ax.view_init(elev=30, azim=0)
-        ax.set_xticks([])
-        ax.set_yticks([])
-        ax.set_zticks([])
-        ax.grid(True)
-        ax.axis('on')
-        
-        # Display Columns
-        display_columns = self.info_st_columns
-        if display_columns:
-            column_values = [c['location'] for c in display_columns if 'location' in c]
-            for v in column_values:
-                start_point, end_point = v
-                xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='o', color='black', linewidth=1, markersize=2, label="IfcColumn(S)")
-        
-        # Display Floors
-        values = [w['location'] for w in self.info_floors if 'location' in w]
-        values = [x for xs in values for x in xs]
-        
-        # Use a set to track plotted lines
-        plotted_lines = set()
-        
-        for v in values:
-            start_point, end_point = tuple(v[0]), tuple(v[1])  # Convert to tuples
-            # Create a sorted tuple of the points to avoid duplicating lines
-            line = tuple(sorted((start_point, end_point)))
-            if line not in plotted_lines:
-                plotted_lines.add(line)
-                xs, ys, zs = zip(start_point, end_point)
-                ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.5, alpha=0.33, label="IfcSlab")
-        
-        # Ensure tight layout
-        plt.tight_layout()
-        plt.savefig(os.path.join(self.out_fig_path, 'test_debug.png'), dpi=200)
-        plt.close(fig)
-
     @time_decorator
-    def wall_column_floor_location_display(self, view_elev=None, view_azim=None):
+    def wall_column_floor_location_display(
+        self, view_elev=None, view_azim=None, plot_main_plane_directions=False, plane_vector_length=1):
 
         def get_file_prefix_code(filename):
             parts = filename.split('-')
@@ -1304,6 +1292,31 @@ class IfcDataExtractor:
                 xs, ys, zs = zip(start_point, end_point)
                 ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.25, alpha=0.35, label="IfcSlab")
         
+        # Display Main Plane Directions
+        if plot_main_plane_directions:
+
+            ax.quiver(
+                self.corner_x_value,
+                self.corner_y_value,
+                self.corner_z_value,
+                0,
+                0,
+                plane_vector_length*0.5,
+                color='tomato', arrow_length_ratio=0.3)
+            if self.main_directions:
+                for degree in self.main_directions:
+                    radian = np.deg2rad(degree)
+                    x = np.cos(radian)
+                    y = np.sin(radian)
+                    ax.quiver(
+                        self.corner_x_value, 
+                        self.corner_y_value,
+                        self.corner_z_value, 
+                        plane_vector_length*x, 
+                        plane_vector_length*y,
+                        0,
+                        color='navy', arrow_length_ratio=0.3)
+
         # Ensure tight layout
         plt.tight_layout()
         

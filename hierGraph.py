@@ -110,6 +110,7 @@ class HierarchicalGraph:
                     information_grids_per_storey.append([grid_key, grid_location_storey])
             
             # find the closest grid (index_grid_min_distance) to the element location point
+            # here's a todo to be fixed.
             for element_id in non_value:
                 
                 point_location = self.hierarchical_data[element_id]['location'][0]
@@ -294,6 +295,10 @@ class HierarchicalGraph:
 
     def visualize_hierarchical_graph(self, nodes_of_interest=None):
 
+        def get_file_prefix_code(filename):
+            parts = filename.split('-')
+            return '-'.join(parts[:2])
+        
         figx, figy, x_per_grid = 40, 15, 6
         all_connected_nodes = set(nodes_of_interest)
         figx = max(figx, len(all_connected_nodes)*x_per_grid)
@@ -346,7 +351,9 @@ class HierarchicalGraph:
 
         plt.title("Hierarchical Graph")
         plt.legend(handles=legend_handles, loc='upper right', fontsize='large', handletextpad=0.5, markerscale=1.5)
-        plt.savefig(os.path.join(self.output_figure_path, 'hierarchical_graph.png'), dpi=100)
+        
+        prefix_code_based = get_file_prefix_code(self.output_figure_path).split('\\')[-1]
+        plt.savefig(os.path.join(self.output_figure_path, prefix_code_based + '_hierarchical_graph.png'), dpi=100)
         
 # visualization of graph  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #=========================================================================================
