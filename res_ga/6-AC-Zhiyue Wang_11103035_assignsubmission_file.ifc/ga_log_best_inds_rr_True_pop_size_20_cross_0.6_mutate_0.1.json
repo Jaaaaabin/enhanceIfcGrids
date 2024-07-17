@@ -1,0 +1,12 @@
+{
+    "st_c_num": 2,
+    "st_w_num": 4,
+    "ns_w_num": 2,
+    "st_w_accumuled_length_percent": 0.0022,
+    "ns_w_accumuled_length_percent": 0.0008,
+    "st_st_merge": 0.6,
+    "ns_st_merge": 0.3,
+    "ns_ns_merge": 0.7,
+    "st_w_align_dist": 0.0647,
+    "ns_w_align_dist": 0.0912
+}
