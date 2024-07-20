@@ -17,7 +17,8 @@
         "orientation": 126.8604,
         "length": 8.3515,
         "width": 0.3025,
-        "height": 3.4037
+        "height": 3.4037,
+        "external": 1
     },
     {
         "id": "2kCUke6M5VJRb4S92EQa9f",
@@ -37,6 +38,7 @@
         "orientation": 126.8604,
         "length": 8.3515,
         "width": 0.3025,
-        "height": 3.4037
+        "height": 3.4037,
+        "external": 1
     }
 ]

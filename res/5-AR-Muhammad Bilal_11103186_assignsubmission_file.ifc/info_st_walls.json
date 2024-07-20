@@ -10,14 +10,36 @@
             ],
             [
                 19.89612588770272,
-                1.2477107311851086,
+                1.247710731185112,
                 0.0
             ]
         ],
         "length": 23.0,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "0YD_ZCQRvBHx8pGcUVFGwf",
+        "elevation": 0.0,
+        "location": [
+            [
+                19.89612588770272,
+                1.247710731185112,
+                0.0
+            ],
+            [
+                -0.10387413323128972,
+                1.247710731185115,
+                0.0
+            ]
+        ],
+        "length": 20.3283,
+        "width": 0.264,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcUVFGzQ",
@@ -37,47 +59,8 @@
         "length": 52.264,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
-    },
-    {
-        "id": "0YD_ZCQRvBHx8pGcUVFGwf",
-        "elevation": 0.0,
-        "location": [
-            [
-                19.89612588770272,
-                1.2477107311851086,
-                0.0
-            ],
-            [
-                -0.10387413323129006,
-                1.2477107311851148,
-                0.0
-            ]
-        ],
-        "length": 20.3283,
-        "width": 0.264,
-        "height": 3.9,
-        "orientation": 0.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yky4",
-        "elevation": 0.0,
-        "location": [
-            [
-                -32.10387411229734,
-                1.2477107311849664,
-                0.0
-            ],
-            [
-                -26.484874112297284,
-                1.2477107311849662,
-                0.0
-            ]
-        ],
-        "length": 4.978,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YkaU",
@@ -89,7 +72,7 @@
                 0.0
             ],
             [
-                -0.10387413323166593,
+                -0.10387413323166594,
                 1.2477107311848799,
                 0.0
             ]
@@ -97,7 +80,8 @@
         "length": 4.4819,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YgSy",
@@ -117,7 +101,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_Yg14",
@@ -137,147 +122,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
-        "id": "2zFQTiy7rFAAe2Ndj_YeoN",
+        "id": "2zFQTiy7rFAAe2Ndj_Yky4",
         "elevation": 0.0,
         "location": [
             [
-                -15.103874112297277,
-                18.86671073118492,
+                -32.10387411229734,
+                1.2477107311849664,
                 0.0
             ],
             [
-                -15.103874112297277,
-                14.62871073118492,
+                -26.484874112297284,
+                1.2477107311849662,
                 0.0
             ]
         ],
-        "length": 4.238,
+        "length": 4.978,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_YkXd",
-        "elevation": 0.0,
-        "location": [
-            [
-                -25.7228741122973,
-                1.2477107311849478,
-                0.0
-            ],
-            [
-                -20.4848741122973,
-                1.2477107311849478,
-                0.0
-            ]
-        ],
-        "length": 5.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yem7",
-        "elevation": 0.0,
-        "location": [
-            [
-                -14.722874112297285,
-                14.24771073118491,
-                0.0
-            ],
-            [
-                -10.484874112297284,
-                14.24771073118491,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_YgVF",
-        "elevation": 0.0,
-        "location": [
-            [
-                -20.103874112297266,
-                24.247710731185286,
-                0.0
-            ],
-            [
-                -20.103874112297266,
-                19.628710731185283,
-                0.0
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yet0",
-        "elevation": 0.0,
-        "location": [
-            [
-                -9.722874112297283,
-                14.247710731184892,
-                0.0
-            ],
-            [
-                -5.484874112297283,
-                14.247710731184892,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yewm",
-        "elevation": 0.0,
-        "location": [
-            [
-                -15.103874112297284,
-                13.86671073118491,
-                0.0
-            ],
-            [
-                -15.103874112297284,
-                9.62871073118491,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yeq_",
-        "elevation": 0.0,
-        "location": [
-            [
-                -5.103874112297271,
-                19.62871073118489,
-                0.0
-            ],
-            [
-                -5.103874112297266,
-                24.247710731185286,
-                0.0
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YkW_",
@@ -297,7 +164,113 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_YkXd",
+        "elevation": 0.0,
+        "location": [
+            [
+                -25.7228741122973,
+                1.2477107311849478,
+                0.0
+            ],
+            [
+                -20.4848741122973,
+                1.2477107311849478,
+                0.0
+            ]
+        ],
+        "length": 5.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_YeoN",
+        "elevation": 0.0,
+        "location": [
+            [
+                -15.103874112297277,
+                18.86671073118492,
+                0.0
+            ],
+            [
+                -15.103874112297277,
+                14.62871073118492,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Yet0",
+        "elevation": 0.0,
+        "location": [
+            [
+                -9.722874112297283,
+                14.247710731184892,
+                0.0
+            ],
+            [
+                -5.484874112297283,
+                14.247710731184892,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_YgVF",
+        "elevation": 0.0,
+        "location": [
+            [
+                -20.103874112297266,
+                24.247710731185286,
+                0.0
+            ],
+            [
+                -20.103874112297266,
+                19.628710731185283,
+                0.0
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Yem7",
+        "elevation": 0.0,
+        "location": [
+            [
+                -14.722874112297285,
+                14.24771073118491,
+                0.0
+            ],
+            [
+                -10.484874112297284,
+                14.24771073118491,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_Yerd",
@@ -317,27 +290,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
-        "id": "2zFQTiy7rFAAe2Ndj_YeZk",
+        "id": "2zFQTiy7rFAAe2Ndj_Yewm",
         "elevation": 0.0,
         "location": [
             [
-                -5.10387411229728,
-                13.866710731184877,
+                -15.103874112297284,
+                13.86671073118491,
                 0.0
             ],
             [
-                -5.103874112297281,
-                9.628710731184878,
+                -15.103874112297284,
+                9.62871073118491,
                 0.0
             ]
         ],
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Yeq_",
+        "elevation": 0.0,
+        "location": [
+            [
+                -5.103874112297271,
+                19.62871073118489,
+                0.0
+            ],
+            [
+                -5.103874112297266,
+                24.247710731185286,
+                0.0
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_Ye$K",
@@ -357,7 +353,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_YeZk",
+        "elevation": 0.0,
+        "location": [
+            [
+                -5.10387411229728,
+                13.866710731184877,
+                0.0
+            ],
+            [
+                -5.103874112297281,
+                9.628710731184878,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YhEg",
@@ -377,27 +395,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yel2",
-        "elevation": 0.0,
-        "location": [
-            [
-                15.277125887702727,
-                14.247710731184812,
-                0.0
-            ],
-            [
-                19.896125887702723,
-                14.247710731184812,
-                0.0
-            ]
-        ],
-        "length": 4.0,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YefQ",
@@ -417,47 +416,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "2zFQTiy7rFAAe2Ndj_Yejc",
+        "id": "2zFQTiy7rFAAe2Ndj_Yel2",
         "elevation": 0.0,
         "location": [
             [
-                19.89612588770272,
-                4.2477107311847995,
+                15.277125887702727,
+                14.247710731184812,
                 0.0
             ],
             [
-                14.896125887702727,
-                4.2477107311848,
+                19.896125887702723,
+                14.247710731184812,
                 0.0
             ]
         ],
-        "length": 4.367,
+        "length": 4.0,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yev5",
-        "elevation": 0.0,
-        "location": [
-            [
-                -15.10387411229729,
-                8.866710731184915,
-                0.0
-            ],
-            [
-                -15.10387411229729,
-                4.628710731184914,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_Yeiq",
@@ -477,7 +458,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Yejc",
+        "elevation": 0.0,
+        "location": [
+            [
+                19.89612588770272,
+                4.247710731184796,
+                0.0
+            ],
+            [
+                14.896125887702727,
+                4.2477107311848,
+                0.0
+            ]
+        ],
+        "length": 4.367,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YeP4",
@@ -497,7 +500,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Yev5",
+        "elevation": 0.0,
+        "location": [
+            [
+                -15.10387411229729,
+                8.866710731184915,
+                0.0
+            ],
+            [
+                -15.10387411229729,
+                4.628710731184914,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_Yeb$",
@@ -517,47 +542,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Ye2j",
-        "elevation": 0.0,
-        "location": [
-            [
-                -4.722874112297293,
-                9.247710731184881,
-                0.0
-            ],
-            [
-                -0.4848741122972928,
-                9.247710731184881,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "2zFQTiy7rFAAe2Ndj_Yf_4",
-        "elevation": 0.0,
-        "location": [
-            [
-                -25.722874112297283,
-                14.247710731184943,
-                0.0
-            ],
-            [
-                -20.484874112297284,
-                14.247710731184943,
-                0.0
-            ]
-        ],
-        "length": 5.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YeV3",
@@ -577,7 +563,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Ye2j",
+        "elevation": 0.0,
+        "location": [
+            [
+                -4.722874112297293,
+                9.247710731184881,
+                0.0
+            ],
+            [
+                -0.4848741122972928,
+                9.247710731184881,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2zFQTiy7rFAAe2Ndj_Yf_4",
+        "elevation": 0.0,
+        "location": [
+            [
+                -25.722874112297283,
+                14.247710731184943,
+                0.0
+            ],
+            [
+                -20.484874112297284,
+                14.247710731184943,
+                0.0
+            ]
+        ],
+        "length": 5.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YeHA",
@@ -597,7 +626,8 @@
         "length": 4.487,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_YeR8",
@@ -617,7 +647,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2zFQTiy7rFAAe2Ndj_Ye1y",
@@ -637,7 +668,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "1yUtk4LVLEiw0i$UPsn6c6",
@@ -657,47 +689,8 @@
         "length": 2.681,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "0YD_ZCQRvBHx8pGcUVFGur",
-        "elevation": 0.0,
-        "location": [
-            [
-                -0.10387413323163977,
-                1.247710731184896,
-                0.0
-            ],
-            [
-                -32.10387411229734,
-                -18.75230229753683,
-                0.0
-            ]
-        ],
-        "length": 37.9362,
-        "width": 0.264,
-        "height": 3.9,
-        "orientation": 32.0054
-    },
-    {
-        "id": "1yUtk4LVLEiw0i$UPsn6gl",
-        "elevation": 0.0,
-        "location": [
-            [
-                -10.103874112297278,
-                17.247710731184892,
-                0.0
-            ],
-            [
-                -10.103874112297278,
-                14.628710731184892,
-                0.0
-            ]
-        ],
-        "length": 2.549,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "1yUtk4LVLEiw0i$UPsn6es",
@@ -717,7 +710,29 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "1yUtk4LVLEiw0i$UPsn6gl",
+        "elevation": 0.0,
+        "location": [
+            [
+                -10.103874112297278,
+                17.247710731184892,
+                0.0
+            ],
+            [
+                -10.103874112297278,
+                14.628710731184892,
+                0.0
+            ]
+        ],
+        "length": 2.549,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "1yUtk4LVLEiw0i$UPsn6j5",
@@ -737,67 +752,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "1yUtk4LVLEiw0i$UPsn5M9",
-        "elevation": 0.0,
-        "location": [
-            [
-                -32.10387411229734,
-                14.247710731184966,
-                0.0
-            ],
-            [
-                -26.484874112297284,
-                14.247710731184963,
-                0.0
-            ]
-        ],
-        "length": 4.978,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "1yUtk4LVLEiw0i$UPsn6JE",
-        "elevation": 0.0,
-        "location": [
-            [
-                9.896125887702736,
-                18.866710731184842,
-                0.0
-            ],
-            [
-                9.896125887702736,
-                14.628710731184842,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "1yUtk4LVLEiw0i$UPsn6Na",
-        "elevation": 0.0,
-        "location": [
-            [
-                9.896125887702729,
-                13.86671073118483,
-                0.0
-            ],
-            [
-                9.896125887702729,
-                9.628710731184828,
-                0.0
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "1yUtk4LVLEiw0i$UPsn6l0",
@@ -817,7 +773,71 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "1yUtk4LVLEiw0i$UPsn6JE",
+        "elevation": 0.0,
+        "location": [
+            [
+                9.896125887702736,
+                18.866710731184842,
+                0.0
+            ],
+            [
+                9.896125887702736,
+                14.628710731184842,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "1yUtk4LVLEiw0i$UPsn6Na",
+        "elevation": 0.0,
+        "location": [
+            [
+                9.896125887702729,
+                13.86671073118483,
+                0.0
+            ],
+            [
+                9.896125887702729,
+                9.628710731184828,
+                0.0
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "1yUtk4LVLEiw0i$UPsn5M9",
+        "elevation": 0.0,
+        "location": [
+            [
+                -32.10387411229734,
+                14.247710731184966,
+                0.0
+            ],
+            [
+                -26.484874112297284,
+                14.247710731184963,
+                0.0
+            ]
+        ],
+        "length": 4.978,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "3mmcj5MMz6MQWKg2sHSNZw",
@@ -837,7 +857,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "0YD_ZCQRvBHx8pGcUVFGur",
+        "elevation": 0.0,
+        "location": [
+            [
+                -0.10387411229729163,
+                1.2477107442688724,
+                0.0
+            ],
+            [
+                -32.10387411229734,
+                -18.75230229753683,
+                0.0
+            ]
+        ],
+        "length": 37.9362,
+        "width": 0.264,
+        "height": 3.9,
+        "orientation": 32.0054,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcUVFGt3",
@@ -857,7 +899,8 @@
         "length": 43.1479,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcIVFGxy",
@@ -877,7 +920,8 @@
         "length": 23.0,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcIVFGzQ",
@@ -897,7 +941,8 @@
         "length": 52.264,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcIVFGur",
@@ -917,27 +962,8 @@
         "length": 37.9362,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 32.0054
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0w1",
-        "elevation": 3.9,
-        "location": [
-            [
-                -20.103874112297284,
-                13.866710731184925,
-                3.9
-            ],
-            [
-                -20.103874112297284,
-                9.628710731184924,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 32.0054,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0w$",
@@ -957,7 +983,8 @@
         "length": 4.4819,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0w2",
@@ -977,7 +1004,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0w1",
+        "elevation": 3.9,
+        "location": [
+            [
+                -20.103874112297284,
+                13.866710731184925,
+                3.9
+            ],
+            [
+                -20.103874112297284,
+                9.628710731184924,
+                3.9
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0w7",
@@ -997,47 +1046,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0w4",
-        "elevation": 3.9,
-        "location": [
-            [
-                -5.10387411229728,
-                14.628710731184878,
-                3.9
-            ],
-            [
-                -5.10387411229728,
-                18.866710731184877,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0w6",
-        "elevation": 3.9,
-        "location": [
-            [
-                -14.722874112297285,
-                14.24771073118491,
-                3.9
-            ],
-            [
-                -10.484874112297284,
-                14.24771073118491,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0w5",
@@ -1057,67 +1067,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0wB",
+        "id": "31Up7frhfCS9bXrmKvk0w6",
         "elevation": 3.9,
         "location": [
             [
-                -5.103874112297271,
-                19.62871073118489,
+                -14.722874112297285,
+                14.24771073118491,
                 3.9
             ],
             [
-                -5.103874112297266,
-                24.247710731185286,
+                -10.484874112297284,
+                14.24771073118491,
                 3.9
             ]
         ],
-        "length": 3.986,
+        "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0ww",
+        "id": "31Up7frhfCS9bXrmKvk0w4",
         "elevation": 3.9,
         "location": [
             [
-                -32.10387411229734,
-                1.2477107311849664,
+                -5.10387411229728,
+                14.628710731184878,
                 3.9
             ],
             [
-                -26.484874112297284,
-                1.2477107311849662,
+                -5.10387411229728,
+                18.866710731184877,
                 3.9
             ]
         ],
-        "length": 4.978,
+        "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0w3",
-        "elevation": 3.9,
-        "location": [
-            [
-                -20.103874112297266,
-                24.247710731185286,
-                3.9
-            ],
-            [
-                -20.103874112297266,
-                19.628710731185283,
-                3.9
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wv",
@@ -1137,7 +1130,8 @@
         "length": 5.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wu",
@@ -1157,7 +1151,71 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ww",
+        "elevation": 3.9,
+        "location": [
+            [
+                -32.10387411229734,
+                1.2477107311849664,
+                3.9
+            ],
+            [
+                -26.484874112297284,
+                1.2477107311849662,
+                3.9
+            ]
+        ],
+        "length": 4.978,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0w3",
+        "elevation": 3.9,
+        "location": [
+            [
+                -20.103874112297266,
+                24.247710731185286,
+                3.9
+            ],
+            [
+                -20.103874112297266,
+                19.628710731185283,
+                3.9
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0wB",
+        "elevation": 3.9,
+        "location": [
+            [
+                -5.103874112297271,
+                19.62871073118489,
+                3.9
+            ],
+            [
+                -5.103874112297266,
+                24.247710731185286,
+                3.9
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wA",
@@ -1177,47 +1235,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0w8",
-        "elevation": 3.9,
-        "location": [
-            [
-                -14.722874112297298,
-                4.247710731184912,
-                3.9
-            ],
-            [
-                -10.484874112297298,
-                4.247710731184912,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0wF",
-        "elevation": 3.9,
-        "location": [
-            [
-                -5.10387411229728,
-                13.866710731184877,
-                3.9
-            ],
-            [
-                -5.103874112297281,
-                9.628710731184878,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0w0",
@@ -1237,7 +1256,50 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0w8",
+        "elevation": 3.9,
+        "location": [
+            [
+                -14.722874112297298,
+                4.247710731184912,
+                3.9
+            ],
+            [
+                -10.484874112297298,
+                4.247710731184912,
+                3.9
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0wF",
+        "elevation": 3.9,
+        "location": [
+            [
+                -5.10387411229728,
+                13.866710731184877,
+                3.9
+            ],
+            [
+                -5.103874112297281,
+                9.628710731184878,
+                3.9
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wD",
@@ -1257,27 +1319,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0wJ",
-        "elevation": 3.9,
-        "location": [
-            [
-                19.89612588770272,
-                4.2477107311847995,
-                3.9
-            ],
-            [
-                14.896125887702727,
-                4.2477107311848,
-                3.9
-            ]
-        ],
-        "length": 4.367,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wC",
@@ -1297,7 +1340,8 @@
         "length": 4.0,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wI",
@@ -1317,7 +1361,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0wJ",
+        "elevation": 3.9,
+        "location": [
+            [
+                19.89612588770272,
+                4.2477107311847995,
+                3.9
+            ],
+            [
+                14.896125887702727,
+                4.2477107311848,
+                3.9
+            ]
+        ],
+        "length": 4.367,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wN",
@@ -1337,7 +1403,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wM",
@@ -1357,27 +1424,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0w9",
-        "elevation": 3.9,
-        "location": [
-            [
-                -15.10387411229729,
-                8.866710731184915,
-                3.9
-            ],
-            [
-                -15.10387411229729,
-                4.628710731184914,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wL",
@@ -1397,7 +1445,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0w9",
+        "elevation": 3.9,
+        "location": [
+            [
+                -15.10387411229729,
+                8.866710731184915,
+                3.9
+            ],
+            [
+                -15.10387411229729,
+                4.628710731184914,
+                3.9
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wQ",
@@ -1417,7 +1487,8 @@
         "length": 5.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wE",
@@ -1437,7 +1508,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wH",
@@ -1457,7 +1529,8 @@
         "length": 4.487,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wG",
@@ -1477,7 +1550,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0wK",
@@ -1497,27 +1571,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0vt",
-        "elevation": 3.9,
-        "location": [
-            [
-                -26.103874112297284,
-                14.628710731184944,
-                3.9
-            ],
-            [
-                -26.103874112297284,
-                17.37971073118492,
-                3.9
-            ]
-        ],
-        "length": 2.681,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0vs",
@@ -1537,47 +1592,29 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0vr",
+        "id": "31Up7frhfCS9bXrmKvk0vt",
         "elevation": 3.9,
         "location": [
             [
-                -10.103874112297278,
-                17.247710731184892,
+                -26.103874112297284,
+                14.628710731184944,
                 3.9
             ],
             [
-                -10.103874112297278,
-                14.628710731184892,
+                -26.103874112297284,
+                17.37971073118492,
                 3.9
             ]
         ],
-        "length": 2.549,
+        "length": 2.681,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0vq",
-        "elevation": 3.9,
-        "location": [
-            [
-                -10.103874112297285,
-                11.247710731184894,
-                3.9
-            ],
-            [
-                -10.103874112297285,
-                13.866710731184895,
-                3.9
-            ]
-        ],
-        "length": 2.549,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0vx",
@@ -1597,7 +1634,50 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0vr",
+        "elevation": 3.9,
+        "location": [
+            [
+                -10.103874112297278,
+                17.247710731184892,
+                3.9
+            ],
+            [
+                -10.103874112297278,
+                14.628710731184892,
+                3.9
+            ]
+        ],
+        "length": 2.549,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0vq",
+        "elevation": 3.9,
+        "location": [
+            [
+                -10.103874112297285,
+                11.247710731184894,
+                3.9
+            ],
+            [
+                -10.103874112297285,
+                13.866710731184895,
+                3.9
+            ]
+        ],
+        "length": 2.549,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0vw",
@@ -1617,7 +1697,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0vv",
@@ -1637,7 +1718,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0vu",
@@ -1657,7 +1739,8 @@
         "length": 4.978,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcIVFGt3",
@@ -1677,27 +1760,8 @@
         "length": 43.1479,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0v6",
-        "elevation": 3.9,
-        "location": [
-            [
-                0.27712588770271834,
-                14.247710731184862,
-                3.9
-            ],
-            [
-                4.515125887702719,
-                14.247710731184862,
-                3.9
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcIVFGwf",
@@ -1717,7 +1781,29 @@
         "length": 20.3283,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0v6",
+        "elevation": 3.9,
+        "location": [
+            [
+                0.27712588770271834,
+                14.247710731184862,
+                3.9
+            ],
+            [
+                4.515125887702719,
+                14.247710731184862,
+                3.9
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcMVFGxy",
@@ -1737,7 +1823,8 @@
         "length": 23.0,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcMVFGzQ",
@@ -1757,7 +1844,8 @@
         "length": 52.264,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0jT",
@@ -1777,7 +1865,8 @@
         "length": 4.4819,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iW",
@@ -1797,67 +1886,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0jO",
-        "elevation": 7.8,
-        "location": [
-            [
-                -32.10387411229734,
-                1.2477107311849664,
-                7.8
-            ],
-            [
-                -26.484874112297284,
-                1.2477107311849662,
-                7.8
-            ]
-        ],
-        "length": 4.978,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0jV",
-        "elevation": 7.8,
-        "location": [
-            [
-                -25.7228741122973,
-                1.2477107311849478,
-                7.8
-            ],
-            [
-                -20.4848741122973,
-                1.2477107311849478,
-                7.8
-            ]
-        ],
-        "length": 5.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0ib",
-        "elevation": 7.8,
-        "location": [
-            [
-                -15.103874112297277,
-                18.86671073118492,
-                7.8
-            ],
-            [
-                -15.103874112297277,
-                14.62871073118492,
-                7.8
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0id",
@@ -1877,107 +1907,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0ia",
+        "id": "31Up7frhfCS9bXrmKvk0jO",
         "elevation": 7.8,
         "location": [
             [
-                -14.722874112297285,
-                14.24771073118491,
+                -32.10387411229734,
+                1.2477107311849664,
                 7.8
             ],
             [
-                -10.484874112297284,
-                14.24771073118491,
+                -26.484874112297284,
+                1.2477107311849662,
                 7.8
             ]
         ],
-        "length": 4.238,
+        "length": 4.978,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0ig",
+        "id": "31Up7frhfCS9bXrmKvk0jV",
         "elevation": 7.8,
         "location": [
             [
-                -5.10387411229728,
-                14.628710731184878,
+                -25.7228741122973,
+                1.2477107311849478,
                 7.8
             ],
             [
-                -5.10387411229728,
-                18.866710731184877,
+                -20.4848741122973,
+                1.2477107311849478,
                 7.8
             ]
         ],
-        "length": 4.238,
+        "length": 5.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0iX",
-        "elevation": 7.8,
-        "location": [
-            [
-                -20.103874112297266,
-                24.247710731185286,
-                7.8
-            ],
-            [
-                -20.103874112297266,
-                19.628710731185283,
-                7.8
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0ih",
-        "elevation": 7.8,
-        "location": [
-            [
-                -9.722874112297283,
-                14.247710731184892,
-                7.8
-            ],
-            [
-                -5.484874112297283,
-                14.247710731184892,
-                7.8
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0if",
-        "elevation": 7.8,
-        "location": [
-            [
-                -5.103874112297271,
-                19.62871073118489,
-                7.8
-            ],
-            [
-                -5.103874112297266,
-                24.247710731185286,
-                7.8
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0jU",
@@ -1997,7 +1970,134 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ib",
+        "elevation": 7.8,
+        "location": [
+            [
+                -15.103874112297277,
+                18.86671073118492,
+                7.8
+            ],
+            [
+                -15.103874112297277,
+                14.62871073118492,
+                7.8
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ia",
+        "elevation": 7.8,
+        "location": [
+            [
+                -14.722874112297285,
+                14.24771073118491,
+                7.8
+            ],
+            [
+                -10.484874112297284,
+                14.24771073118491,
+                7.8
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ih",
+        "elevation": 7.8,
+        "location": [
+            [
+                -9.722874112297283,
+                14.247710731184892,
+                7.8
+            ],
+            [
+                -5.484874112297283,
+                14.247710731184892,
+                7.8
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0iX",
+        "elevation": 7.8,
+        "location": [
+            [
+                -20.103874112297266,
+                24.247710731185286,
+                7.8
+            ],
+            [
+                -20.103874112297266,
+                19.628710731185283,
+                7.8
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ig",
+        "elevation": 7.8,
+        "location": [
+            [
+                -5.10387411229728,
+                14.628710731184878,
+                7.8
+            ],
+            [
+                -5.10387411229728,
+                18.866710731184877,
+                7.8
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0if",
+        "elevation": 7.8,
+        "location": [
+            [
+                -5.103874112297271,
+                19.62871073118489,
+                7.8
+            ],
+            [
+                -5.103874112297266,
+                24.247710731185286,
+                7.8
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ie",
@@ -2017,7 +2117,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ik",
@@ -2037,7 +2138,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ij",
@@ -2057,27 +2159,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0ip",
-        "elevation": 7.8,
-        "location": [
-            [
-                10.277125887702729,
-                14.24771073118483,
-                7.8
-            ],
-            [
-                14.51512588770273,
-                14.24771073118483,
-                7.8
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ic",
@@ -2097,47 +2180,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0im",
-        "elevation": 7.8,
-        "location": [
-            [
-                14.515125887702705,
-                4.247710731184815,
-                7.8
-            ],
-            [
-                10.277125887702706,
-                4.2477107311848155,
-                7.8
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0in",
-        "elevation": 7.8,
-        "location": [
-            [
-                19.89612588770272,
-                4.2477107311847995,
-                7.8
-            ],
-            [
-                14.896125887702727,
-                4.2477107311848,
-                7.8
-            ]
-        ],
-        "length": 4.367,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0io",
@@ -2157,47 +2201,71 @@
         "length": 4.0,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0iq",
+        "id": "31Up7frhfCS9bXrmKvk0ip",
         "elevation": 7.8,
         "location": [
             [
-                -4.722874112297281,
-                14.247710731184878,
+                10.277125887702729,
+                14.24771073118483,
                 7.8
             ],
             [
-                -0.4848741122972804,
-                14.247710731184878,
+                14.51512588770273,
+                14.24771073118483,
                 7.8
             ]
         ],
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0ir",
+        "id": "31Up7frhfCS9bXrmKvk0in",
         "elevation": 7.8,
         "location": [
             [
-                4.896125887702717,
-                9.62871073118485,
+                19.89612588770272,
+                4.2477107311847995,
                 7.8
             ],
             [
-                4.896125887702717,
-                13.866710731184849,
+                14.896125887702727,
+                4.2477107311848,
+                7.8
+            ]
+        ],
+        "length": 4.367,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0im",
+        "elevation": 7.8,
+        "location": [
+            [
+                14.515125887702705,
+                4.247710731184815,
+                7.8
+            ],
+            [
+                10.277125887702706,
+                4.2477107311848155,
                 7.8
             ]
         ],
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0il",
@@ -2217,7 +2285,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ir",
+        "elevation": 7.8,
+        "location": [
+            [
+                4.896125887702717,
+                9.62871073118485,
+                7.8
+            ],
+            [
+                4.896125887702717,
+                13.866710731184849,
+                7.8
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0iq",
+        "elevation": 7.8,
+        "location": [
+            [
+                -4.722874112297281,
+                14.247710731184878,
+                7.8
+            ],
+            [
+                -0.4848741122972804,
+                14.247710731184878,
+                7.8
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ix",
@@ -2237,7 +2348,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iu",
@@ -2257,7 +2369,8 @@
         "length": 5.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ii",
@@ -2277,27 +2390,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0it",
-        "elevation": 7.8,
-        "location": [
-            [
-                9.896125887702715,
-                8.866710731184833,
-                7.8
-            ],
-            [
-                9.896125887702715,
-                4.379710731184833,
-                7.8
-            ]
-        ],
-        "length": 4.487,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0is",
@@ -2317,7 +2411,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0it",
+        "elevation": 7.8,
+        "location": [
+            [
+                9.896125887702715,
+                8.866710731184833,
+                7.8
+            ],
+            [
+                9.896125887702715,
+                4.379710731184833,
+                7.8
+            ]
+        ],
+        "length": 4.487,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iw",
@@ -2337,27 +2453,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0iK",
-        "elevation": 7.8,
-        "location": [
-            [
-                -26.103874112297287,
-                11.247710731184947,
-                7.8
-            ],
-            [
-                -26.103874112297287,
-                13.866710731184945,
-                7.8
-            ]
-        ],
-        "length": 2.549,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iL",
@@ -2377,27 +2474,29 @@
         "length": 2.681,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0iR",
+        "id": "31Up7frhfCS9bXrmKvk0iK",
         "elevation": 7.8,
         "location": [
             [
-                -10.103874112297278,
-                17.247710731184892,
+                -26.103874112297287,
+                11.247710731184947,
                 7.8
             ],
             [
-                -10.103874112297278,
-                14.628710731184892,
+                -26.103874112297287,
+                13.866710731184945,
                 7.8
             ]
         ],
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iQ",
@@ -2417,7 +2516,29 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0iR",
+        "elevation": 7.8,
+        "location": [
+            [
+                -10.103874112297278,
+                17.247710731184892,
+                7.8
+            ],
+            [
+                -10.103874112297278,
+                14.628710731184892,
+                7.8
+            ]
+        ],
+        "length": 2.549,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iP",
@@ -2437,7 +2558,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iO",
@@ -2457,27 +2579,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0iU",
-        "elevation": 7.8,
-        "location": [
-            [
-                -32.10387411229734,
-                14.247710731184966,
-                7.8
-            ],
-            [
-                -26.484874112297284,
-                14.247710731184963,
-                7.8
-            ]
-        ],
-        "length": 4.978,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0iV",
@@ -2497,7 +2600,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0iU",
+        "elevation": 7.8,
+        "location": [
+            [
+                -32.10387411229734,
+                14.247710731184966,
+                7.8
+            ],
+            [
+                -26.484874112297284,
+                14.247710731184963,
+                7.8
+            ]
+        ],
+        "length": 4.978,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ha",
@@ -2517,7 +2642,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcMVFGur",
@@ -2537,7 +2663,8 @@
         "length": 37.9362,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 32.0054
+        "orientation": 32.0054,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcMVFGwf",
@@ -2549,7 +2676,7 @@
                 7.8
             ],
             [
-                -0.10387411229728727,
+                -0.10387411229729437,
                 1.247710731185115,
                 7.8
             ]
@@ -2557,7 +2684,8 @@
         "length": 20.3283,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcMVFGt3",
@@ -2577,7 +2705,8 @@
         "length": 43.1479,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcAVFGxy",
@@ -2590,34 +2719,15 @@
             ],
             [
                 19.89612588770272,
-                1.247710731185112,
+                1.2477107311851086,
                 11.700000000000001
             ]
         ],
         "length": 23.0,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
-    },
-    {
-        "id": "0YD_ZCQRvBHx8pGcAVFGwf",
-        "elevation": 11.7,
-        "location": [
-            [
-                19.89612588770272,
-                1.247710731185112,
-                11.700000000000001
-            ],
-            [
-                -0.10387413323128972,
-                1.247710731185115,
-                11.700000000000001
-            ]
-        ],
-        "length": 20.3283,
-        "width": 0.264,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcAVFGzQ",
@@ -2637,27 +2747,29 @@
         "length": 52.264,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0hn",
+        "id": "0YD_ZCQRvBHx8pGcAVFGwf",
         "elevation": 11.7,
         "location": [
             [
-                -20.103874112297277,
-                18.86671073118494,
+                19.89612588770272,
+                1.2477107311851086,
                 11.700000000000001
             ],
             [
-                -20.103874112297277,
-                14.628710731184942,
+                -0.10387413323129006,
+                1.2477107311851148,
                 11.700000000000001
             ]
         ],
-        "length": 4.238,
-        "width": 0.14,
+        "length": 20.3283,
+        "width": 0.264,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hk",
@@ -2677,7 +2789,29 @@
         "length": 4.4819,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0hn",
+        "elevation": 11.7,
+        "location": [
+            [
+                -20.103874112297277,
+                18.86671073118494,
+                11.700000000000001
+            ],
+            [
+                -20.103874112297277,
+                14.628710731184942,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hm",
@@ -2697,27 +2831,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0hf",
-        "elevation": 11.7,
-        "location": [
-            [
-                -32.10387411229734,
-                1.2477107311849664,
-                11.700000000000001
-            ],
-            [
-                -26.484874112297284,
-                1.2477107311849662,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.978,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hs",
@@ -2737,27 +2852,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0hl",
-        "elevation": 11.7,
-        "location": [
-            [
-                -19.722874112297305,
-                1.2477107311849283,
-                11.700000000000001
-            ],
-            [
-                -15.484874112297305,
-                1.2477107311849283,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hr",
@@ -2777,47 +2873,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0he",
+        "id": "31Up7frhfCS9bXrmKvk0hf",
         "elevation": 11.7,
         "location": [
             [
-                -25.7228741122973,
-                1.2477107311849478,
+                -32.10387411229734,
+                1.2477107311849664,
                 11.700000000000001
             ],
             [
-                -20.4848741122973,
-                1.2477107311849478,
+                -26.484874112297284,
+                1.2477107311849662,
                 11.700000000000001
             ]
         ],
-        "length": 5.238,
+        "length": 4.978,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0hq",
-        "elevation": 11.7,
-        "location": [
-            [
-                -9.722874112297283,
-                14.247710731184892,
-                11.700000000000001
-            ],
-            [
-                -5.484874112297283,
-                14.247710731184892,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hx",
@@ -2837,7 +2915,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0he",
+        "elevation": 11.7,
+        "location": [
+            [
+                -25.7228741122973,
+                1.2477107311849478,
+                11.700000000000001
+            ],
+            [
+                -20.4848741122973,
+                1.2477107311849478,
+                11.700000000000001
+            ]
+        ],
+        "length": 5.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0hq",
+        "elevation": 11.7,
+        "location": [
+            [
+                -9.722874112297283,
+                14.247710731184892,
+                11.700000000000001
+            ],
+            [
+                -5.484874112297283,
+                14.247710731184892,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ho",
@@ -2857,7 +2978,29 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0hl",
+        "elevation": 11.7,
+        "location": [
+            [
+                -19.722874112297305,
+                1.2477107311849283,
+                11.700000000000001
+            ],
+            [
+                -15.484874112297305,
+                1.2477107311849283,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hw",
@@ -2877,7 +3020,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hv",
@@ -2897,47 +3041,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0ht",
-        "elevation": 11.7,
-        "location": [
-            [
-                -15.103874112297273,
-                24.247710731185286,
-                11.700000000000001
-            ],
-            [
-                -15.103874112297268,
-                19.628710731185283,
-                11.700000000000001
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0h_",
-        "elevation": 11.7,
-        "location": [
-            [
-                -5.10387411229728,
-                13.866710731184877,
-                11.700000000000001
-            ],
-            [
-                -5.103874112297281,
-                9.628710731184878,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h$",
@@ -2957,7 +3062,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0h_",
+        "elevation": 11.7,
+        "location": [
+            [
+                -5.10387411229728,
+                13.866710731184877,
+                11.700000000000001
+            ],
+            [
+                -5.103874112297281,
+                9.628710731184878,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0ht",
+        "elevation": 11.7,
+        "location": [
+            [
+                -15.103874112297273,
+                24.247710731185286,
+                11.700000000000001
+            ],
+            [
+                -15.103874112297268,
+                19.628710731185283,
+                11.700000000000001
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hy",
@@ -2977,7 +3125,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0h2",
+        "elevation": 11.7,
+        "location": [
+            [
+                19.89612588770272,
+                4.2477107311847995,
+                11.700000000000001
+            ],
+            [
+                14.896125887702727,
+                4.2477107311848,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.367,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h3",
@@ -2997,27 +3167,8 @@
         "length": 4.0,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0h2",
-        "elevation": 11.7,
-        "location": [
-            [
-                19.89612588770272,
-                4.247710731184796,
-                11.700000000000001
-            ],
-            [
-                14.896125887702727,
-                4.2477107311848,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.367,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h1",
@@ -3037,7 +3188,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h6",
@@ -3057,47 +3209,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0hu",
-        "elevation": 11.7,
-        "location": [
-            [
-                -15.10387411229729,
-                8.866710731184915,
-                11.700000000000001
-            ],
-            [
-                -15.10387411229729,
-                4.628710731184914,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0h4",
-        "elevation": 11.7,
-        "location": [
-            [
-                -4.722874112297293,
-                9.247710731184881,
-                11.700000000000001
-            ],
-            [
-                -0.4848741122972928,
-                9.247710731184881,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h5",
@@ -3117,7 +3230,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0h4",
+        "elevation": 11.7,
+        "location": [
+            [
+                -4.722874112297293,
+                9.247710731184881,
+                11.700000000000001
+            ],
+            [
+                -0.4848741122972928,
+                9.247710731184881,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0hu",
+        "elevation": 11.7,
+        "location": [
+            [
+                -15.10387411229729,
+                8.866710731184915,
+                11.700000000000001
+            ],
+            [
+                -15.10387411229729,
+                4.628710731184914,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h9",
@@ -3137,47 +3293,8 @@
         "length": 5.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0hz",
-        "elevation": 11.7,
-        "location": [
-            [
-                9.896125887702738,
-                24.247710731185286,
-                11.700000000000001
-            ],
-            [
-                9.896125887702736,
-                19.628710731185283,
-                11.700000000000001
-            ]
-        ],
-        "length": 3.986,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0h0",
-        "elevation": 11.7,
-        "location": [
-            [
-                9.896125887702715,
-                8.866710731184833,
-                11.700000000000001
-            ],
-            [
-                9.896125887702715,
-                4.379710731184833,
-                11.700000000000001
-            ]
-        ],
-        "length": 4.487,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0h7",
@@ -3197,7 +3314,50 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0hz",
+        "elevation": 11.7,
+        "location": [
+            [
+                9.896125887702738,
+                24.247710731185286,
+                11.700000000000001
+            ],
+            [
+                9.896125887702736,
+                19.628710731185283,
+                11.700000000000001
+            ]
+        ],
+        "length": 3.986,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0h0",
+        "elevation": 11.7,
+        "location": [
+            [
+                9.896125887702715,
+                8.866710731184833,
+                11.700000000000001
+            ],
+            [
+                9.896125887702715,
+                4.379710731184833,
+                11.700000000000001
+            ]
+        ],
+        "length": 4.487,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0hB",
@@ -3217,27 +3377,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "0YD_ZCQRvBHx8pGcAVFGur",
-        "elevation": 11.7,
-        "location": [
-            [
-                -0.31667399446656946,
-                1.114710731185114,
-                11.700000000000001
-            ],
-            [
-                -32.10387411229734,
-                -18.75230229753683,
-                11.700000000000001
-            ]
-        ],
-        "length": 37.9362,
-        "width": 0.264,
-        "height": 3.75,
-        "orientation": 32.0054
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gc",
@@ -3257,7 +3398,8 @@
         "length": 2.681,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gb",
@@ -3277,27 +3419,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0gh",
-        "elevation": 11.7,
-        "location": [
-            [
-                -10.103874112297285,
-                11.247710731184894,
-                11.700000000000001
-            ],
-            [
-                -10.103874112297285,
-                13.866710731184895,
-                11.700000000000001
-            ]
-        ],
-        "length": 2.549,
-        "width": 0.14,
-        "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ga",
@@ -3317,7 +3440,29 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0gh",
+        "elevation": 11.7,
+        "location": [
+            [
+                -10.103874112297285,
+                11.247710731184894,
+                11.700000000000001
+            ],
+            [
+                -10.103874112297285,
+                13.866710731184895,
+                11.700000000000001
+            ]
+        ],
+        "length": 2.549,
+        "width": 0.14,
+        "height": 3.75,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gg",
@@ -3337,7 +3482,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gf",
@@ -3357,7 +3503,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ge",
@@ -3377,7 +3524,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gl",
@@ -3397,7 +3545,8 @@
         "length": 4.978,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gr",
@@ -3417,7 +3566,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.75,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "0YD_ZCQRvBHx8pGcAVFGur",
+        "elevation": 11.7,
+        "location": [
+            [
+                -0.31667399446656946,
+                1.114710731185114,
+                11.700000000000001
+            ],
+            [
+                -32.10387411229734,
+                -18.75230229753683,
+                11.700000000000001
+            ]
+        ],
+        "length": 37.9362,
+        "width": 0.264,
+        "height": 3.75,
+        "orientation": 32.0054,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcAVFGt3",
@@ -3437,7 +3608,8 @@
         "length": 43.1479,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcEVFGxy",
@@ -3450,14 +3622,15 @@
             ],
             [
                 19.89612588770272,
-                1.2477107311849132,
+                1.2477107311848954,
                 15.6
             ]
         ],
         "length": 23.0,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcEVFGzQ",
@@ -3477,27 +3650,8 @@
         "length": 52.264,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0g1",
-        "elevation": 15.6,
-        "location": [
-            [
-                -20.103874112297284,
-                13.866710731184925,
-                15.6
-            ],
-            [
-                -20.103874112297284,
-                9.628710731184924,
-                15.6
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g2",
@@ -3517,7 +3671,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g$",
@@ -3537,27 +3692,29 @@
         "length": 4.619,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0g5",
+        "id": "31Up7frhfCS9bXrmKvk0g1",
         "elevation": 15.6,
         "location": [
             [
-                -9.722874112297283,
-                14.247710731184892,
+                -20.103874112297284,
+                13.866710731184925,
                 15.6
             ],
             [
-                -5.484874112297283,
-                14.247710731184892,
+                -20.103874112297284,
+                9.628710731184924,
                 15.6
             ]
         ],
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g7",
@@ -3577,7 +3734,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g6",
@@ -3597,7 +3755,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0g5",
+        "elevation": 15.6,
+        "location": [
+            [
+                -9.722874112297283,
+                14.247710731184892,
+                15.6
+            ],
+            [
+                -5.484874112297283,
+                14.247710731184892,
+                15.6
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g4",
@@ -3617,7 +3797,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gB",
@@ -3637,27 +3818,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0gA",
-        "elevation": 15.6,
-        "location": [
-            [
-                -15.103874112297284,
-                13.86671073118491,
-                15.6
-            ],
-            [
-                -15.103874112297284,
-                9.62871073118491,
-                15.6
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gw",
@@ -3677,47 +3839,8 @@
         "length": 4.978,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0gv",
-        "elevation": 15.6,
-        "location": [
-            [
-                -25.7228741122973,
-                1.2477107311849478,
-                15.6
-            ],
-            [
-                -20.4848741122973,
-                1.2477107311849478,
-                15.6
-            ]
-        ],
-        "length": 5.238,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0g8",
-        "elevation": 15.6,
-        "location": [
-            [
-                -14.722874112297298,
-                4.247710731184912,
-                15.6
-            ],
-            [
-                -10.484874112297298,
-                4.247710731184912,
-                15.6
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gu",
@@ -3737,27 +3860,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0gF",
+        "id": "31Up7frhfCS9bXrmKvk0gv",
         "elevation": 15.6,
         "location": [
             [
-                -5.10387411229728,
-                13.866710731184877,
+                -25.7228741122973,
+                1.2477107311849478,
                 15.6
             ],
             [
-                -5.103874112297281,
-                9.628710731184878,
+                -20.4848741122973,
+                1.2477107311849478,
                 15.6
             ]
         ],
-        "length": 4.238,
+        "length": 5.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g3",
@@ -3777,27 +3902,29 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0gD",
+        "id": "31Up7frhfCS9bXrmKvk0gA",
         "elevation": 15.6,
         "location": [
             [
-                10.277125887702729,
-                14.24771073118483,
+                -15.103874112297284,
+                13.86671073118491,
                 15.6
             ],
             [
-                14.51512588770273,
-                14.24771073118483,
+                -15.103874112297284,
+                9.62871073118491,
                 15.6
             ]
         ],
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0g0",
@@ -3817,7 +3944,71 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0gF",
+        "elevation": 15.6,
+        "location": [
+            [
+                -5.10387411229728,
+                13.866710731184877,
+                15.6
+            ],
+            [
+                -5.103874112297281,
+                9.628710731184878,
+                15.6
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0g8",
+        "elevation": 15.6,
+        "location": [
+            [
+                -14.722874112297298,
+                4.247710731184912,
+                15.6
+            ],
+            [
+                -10.484874112297298,
+                4.247710731184912,
+                15.6
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0gD",
+        "elevation": 15.6,
+        "location": [
+            [
+                10.277125887702729,
+                14.24771073118483,
+                15.6
+            ],
+            [
+                14.51512588770273,
+                14.24771073118483,
+                15.6
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gC",
@@ -3837,27 +4028,8 @@
         "length": 4.0,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0gJ",
-        "elevation": 15.6,
-        "location": [
-            [
-                19.89612588770272,
-                4.2477107311847995,
-                15.6
-            ],
-            [
-                14.896125887702727,
-                4.2477107311848,
-                15.6
-            ]
-        ],
-        "length": 4.367,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gI",
@@ -3877,7 +4049,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0gJ",
+        "elevation": 15.6,
+        "location": [
+            [
+                19.89612588770272,
+                4.247710731184796,
+                15.6
+            ],
+            [
+                14.896125887702727,
+                4.2477107311848,
+                15.6
+            ]
+        ],
+        "length": 4.367,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gN",
@@ -3897,27 +4091,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0gL",
-        "elevation": 15.6,
-        "location": [
-            [
-                -4.722874112297293,
-                9.247710731184881,
-                15.6
-            ],
-            [
-                -0.4848741122972928,
-                9.247710731184881,
-                15.6
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 0.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gM",
@@ -3937,27 +4112,29 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
-        "id": "31Up7frhfCS9bXrmKvk0g9",
+        "id": "31Up7frhfCS9bXrmKvk0gL",
         "elevation": 15.6,
         "location": [
             [
-                -15.10387411229729,
-                8.866710731184915,
+                -4.722874112297293,
+                9.247710731184881,
                 15.6
             ],
             [
-                -15.10387411229729,
-                4.628710731184914,
+                -0.4848741122972928,
+                9.247710731184881,
                 15.6
             ]
         ],
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gQ",
@@ -3977,7 +4154,29 @@
         "length": 5.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0g9",
+        "elevation": 15.6,
+        "location": [
+            [
+                -15.10387411229729,
+                8.866710731184915,
+                15.6
+            ],
+            [
+                -15.10387411229729,
+                4.628710731184914,
+                15.6
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gE",
@@ -3997,7 +4196,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gH",
@@ -4017,7 +4217,8 @@
         "length": 4.487,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gG",
@@ -4037,7 +4238,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0gK",
@@ -4057,7 +4259,8 @@
         "length": 3.986,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0ft",
@@ -4077,7 +4280,8 @@
         "length": 2.681,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0fr",
@@ -4097,7 +4301,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0fs",
@@ -4117,7 +4322,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0fq",
@@ -4137,7 +4343,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0fx",
@@ -4157,27 +4364,8 @@
         "length": 2.549,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
-    },
-    {
-        "id": "31Up7frhfCS9bXrmKvk0fv",
-        "elevation": 15.6,
-        "location": [
-            [
-                9.896125887702729,
-                13.86671073118483,
-                15.6
-            ],
-            [
-                9.896125887702729,
-                9.628710731184828,
-                15.6
-            ]
-        ],
-        "length": 4.238,
-        "width": 0.14,
-        "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0fw",
@@ -4197,7 +4385,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0fu",
@@ -4217,7 +4406,29 @@
         "length": 4.978,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "31Up7frhfCS9bXrmKvk0fv",
+        "elevation": 15.6,
+        "location": [
+            [
+                9.896125887702729,
+                13.86671073118483,
+                15.6
+            ],
+            [
+                9.896125887702729,
+                9.628710731184828,
+                15.6
+            ]
+        ],
+        "length": 4.238,
+        "width": 0.14,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "31Up7frhfCS9bXrmKvk0f6",
@@ -4237,7 +4448,8 @@
         "length": 4.238,
         "width": 0.14,
         "height": 3.9,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "0YD_ZCQRvBHx8pGcEVFGt3",
@@ -4257,6 +4469,7 @@
         "length": 42.9568,
         "width": 0.264,
         "height": 3.9,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     }
 ]

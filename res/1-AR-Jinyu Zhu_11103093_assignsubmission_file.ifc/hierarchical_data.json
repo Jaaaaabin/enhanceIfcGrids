@@ -1,510 +1,4 @@
 {
-    "205do4mkr2Df2cxE4ThQEA": {
-        "id": "205do4mkr2Df2cxE4ThQEA",
-        "location": [
-            [
-                -2.313260318460257,
-                -11.966547077320294,
-                0.0
-            ],
-            [
-                -2.313260318460257,
-                -11.966547077320294,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "12_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQE9": {
-        "id": "205do4mkr2Df2cxE4ThQE9",
-        "location": [
-            [
-                -2.3132603184602702,
-                -19.966547077320286,
-                0.0
-            ],
-            [
-                -2.3132603184602702,
-                -19.966547077320286,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "12_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDn": {
-        "id": "205do4mkr2Df2cxE4ThQDn",
-        "location": [
-            [
-                3.686739681539743,
-                -11.966547077320312,
-                0.0
-            ],
-            [
-                3.686739681539743,
-                -11.966547077320312,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "13_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDm": {
-        "id": "205do4mkr2Df2cxE4ThQDm",
-        "location": [
-            [
-                3.6867396815397298,
-                -19.966547077320303,
-                0.0
-            ],
-            [
-                3.6867396815397298,
-                -19.966547077320303,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "13_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDu": {
-        "id": "205do4mkr2Df2cxE4ThQDu",
-        "location": [
-            [
-                9.686739681539743,
-                -11.966547077320328,
-                0.0
-            ],
-            [
-                9.686739681539743,
-                -11.966547077320328,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "14_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQD$": {
-        "id": "205do4mkr2Df2cxE4ThQD$",
-        "location": [
-            [
-                9.686739681539729,
-                -19.966547077320328,
-                0.0
-            ],
-            [
-                9.686739681539729,
-                -19.966547077320328,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "14_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDd": {
-        "id": "205do4mkr2Df2cxE4ThQDd",
-        "location": [
-            [
-                27.686739681539773,
-                4.033452922679612,
-                0.0
-            ],
-            [
-                27.686739681539773,
-                4.033452922679612,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "7_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDc": {
-        "id": "205do4mkr2Df2cxE4ThQDc",
-        "location": [
-            [
-                33.68673968153977,
-                4.033452922679594,
-                0.0
-            ],
-            [
-                33.68673968153977,
-                4.033452922679594,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "7_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDb": {
-        "id": "205do4mkr2Df2cxE4ThQDb",
-        "location": [
-            [
-                39.68673968153978,
-                4.033452922679574,
-                0.0
-            ],
-            [
-                39.68673968153978,
-                4.033452922679574,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "7_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDj": {
-        "id": "205do4mkr2Df2cxE4ThQDj",
-        "location": [
-            [
-                15.686739681539743,
-                -11.966547077320351,
-                0.0
-            ],
-            [
-                15.686739681539743,
-                -11.966547077320351,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "15_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDi": {
-        "id": "205do4mkr2Df2cxE4ThQDi",
-        "location": [
-            [
-                21.686739681539752,
-                -11.966547077320369,
-                0.0
-            ],
-            [
-                21.686739681539752,
-                -11.966547077320369,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "8_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDN": {
-        "id": "205do4mkr2Df2cxE4ThQDN",
-        "location": [
-            [
-                15.686739681539732,
-                -19.966547077320346,
-                0.0
-            ],
-            [
-                15.686739681539732,
-                -19.966547077320346,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "15_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDM": {
-        "id": "205do4mkr2Df2cxE4ThQDM",
-        "location": [
-            [
-                21.686739681539724,
-                -19.966547077320364,
-                0.0
-            ],
-            [
-                21.686739681539724,
-                -19.966547077320364,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "8_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDB": {
-        "id": "205do4mkr2Df2cxE4ThQDB",
-        "location": [
-            [
-                27.68673968153978,
-                12.033452922679613,
-                0.0
-            ],
-            [
-                27.68673968153978,
-                12.033452922679613,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "10_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDA": {
-        "id": "205do4mkr2Df2cxE4ThQDA",
-        "location": [
-            [
-                33.68673968153978,
-                12.033452922679594,
-                0.0
-            ],
-            [
-                33.68673968153978,
-                12.033452922679594,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "10_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQD9": {
-        "id": "205do4mkr2Df2cxE4ThQD9",
-        "location": [
-            [
-                39.68673968153979,
-                12.033452922679574,
-                0.0
-            ],
-            [
-                39.68673968153979,
-                12.033452922679574,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "10_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDF": {
-        "id": "205do4mkr2Df2cxE4ThQDF",
-        "location": [
-            [
-                27.686739681539795,
-                20.03345292267962,
-                0.0
-            ],
-            [
-                27.686739681539795,
-                20.03345292267962,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "11_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDE": {
-        "id": "205do4mkr2Df2cxE4ThQDE",
-        "location": [
-            [
-                27.68673968153981,
-                28.03345292267962,
-                0.0
-            ],
-            [
-                27.68673968153981,
-                28.03345292267962,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "9_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQDC": {
-        "id": "205do4mkr2Df2cxE4ThQDC",
-        "location": [
-            [
-                33.6867396815398,
-                20.033452922679597,
-                0.0
-            ],
-            [
-                33.6867396815398,
-                20.033452922679597,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "11_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQCp": {
-        "id": "205do4mkr2Df2cxE4ThQCp",
-        "location": [
-            [
-                33.686739681539805,
-                28.033452922679597,
-                0.0
-            ],
-            [
-                33.686739681539805,
-                28.033452922679597,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "9_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQCn": {
-        "id": "205do4mkr2Df2cxE4ThQCn",
-        "location": [
-            [
-                39.686739681539805,
-                20.03345292267958,
-                0.0
-            ],
-            [
-                39.686739681539805,
-                20.03345292267958,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "11_0.0",
-        "relative_distance": 0.0
-    },
-    "205do4mkr2Df2cxE4ThQCm": {
-        "id": "205do4mkr2Df2cxE4ThQCm",
-        "location": [
-            [
-                39.68673968153982,
-                28.03345292267958,
-                0.0
-            ],
-            [
-                39.68673968153982,
-                28.03345292267958,
-                3.75
-            ]
-        ],
-        "length": 0.25,
-        "width": 0.25,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "9_0.0",
-        "relative_distance": 0.0
-    },
     "205do4mkr2Df2cxE4ThQDf": {
         "id": "205do4mkr2Df2cxE4ThQDf",
         "location": [
@@ -516,6 +10,29 @@
             [
                 27.686739681539756,
                 -3.966547077320388,
+                3.75
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "6_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDl": {
+        "id": "205do4mkr2Df2cxE4ThQDl",
+        "location": [
+            [
+                39.63673968153976,
+                -3.9665470773204263,
+                0.0
+            ],
+            [
+                39.63673968153976,
+                -3.9665470773204263,
                 3.75
             ]
         ],
@@ -643,17 +160,17 @@
         "host": "6_3.9",
         "relative_distance": 0.0
     },
-    "205do4mkr2Df2cxE4ThQDl": {
-        "id": "205do4mkr2Df2cxE4ThQDl",
+    "205do4mkr2Df2cxE4ThQDL": {
+        "id": "205do4mkr2Df2cxE4ThQDL",
         "location": [
             [
-                39.63673968153976,
-                -3.9665470773204263,
+                27.686739681539724,
+                -19.916547077320384,
                 0.0
             ],
             [
-                39.63673968153976,
-                -3.9665470773204263,
+                27.686739681539724,
+                -19.916547077320384,
                 3.75
             ]
         ],
@@ -663,30 +180,30 @@
         "elevation": 0.0,
         "type": "st_column",
         "status": "children",
-        "host": "6_0.0",
+        "host": "4_0.0",
         "relative_distance": 0.0
     },
-    "1gTPqUFFL7LhFal$3qGssX": {
-        "id": "1gTPqUFFL7LhFal$3qGssX",
+    "1gTPqUFFL7LhFal$3qGssz": {
+        "id": "1gTPqUFFL7LhFal$3qGssz",
         "location": [
             [
-                39.68673968153976,
-                -3.9665470773204263,
-                7.799999999999998
+                27.686739681539756,
+                -3.966547077320388,
+                3.9
             ],
             [
-                39.68673968153976,
-                -3.9665470773204263,
-                11.549999999999997
+                27.686739681539756,
+                -3.966547077320388,
+                7.65
             ]
         ],
         "length": 0.3,
         "width": 0.3,
         "height": 3.75,
-        "elevation": 7.8,
+        "elevation": 3.9,
         "type": "st_column",
         "status": "children",
-        "host": "6_7.8",
+        "host": "6_3.9",
         "relative_distance": 0.0
     },
     "205do4mkr2Df2cxE4ThQDR": {
@@ -711,29 +228,6 @@
         "status": "children",
         "host": "3_0.0",
         "relative_distance": -0.04996031846026558
-    },
-    "1gTPqUFFL7LhFal$3qGssz": {
-        "id": "1gTPqUFFL7LhFal$3qGssz",
-        "location": [
-            [
-                27.686739681539756,
-                -3.966547077320388,
-                3.9
-            ],
-            [
-                27.686739681539756,
-                -3.966547077320388,
-                7.65
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 3.9,
-        "type": "st_column",
-        "status": "children",
-        "host": "6_3.9",
-        "relative_distance": 0.0
     },
     "1gTPqUFFL7LhFal$3qGss$": {
         "id": "1gTPqUFFL7LhFal$3qGss$",
@@ -804,63 +298,17 @@
         "host": "6_7.8",
         "relative_distance": 0.0
     },
-    "205do4mkr2Df2cxE4ThQDL": {
-        "id": "205do4mkr2Df2cxE4ThQDL",
+    "1gTPqUFFL7LhFal$3qGssX": {
+        "id": "1gTPqUFFL7LhFal$3qGssX",
         "location": [
             [
-                27.686739681539724,
-                -19.916547077320384,
-                0.0
-            ],
-            [
-                27.686739681539724,
-                -19.916547077320384,
-                3.75
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 0.0,
-        "type": "st_column",
-        "status": "children",
-        "host": "4_0.0",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGssh": {
-        "id": "1gTPqUFFL7LhFal$3qGssh",
-        "location": [
-            [
-                27.686739681539756,
-                -3.966547077320388,
-                11.699999999999998
-            ],
-            [
-                27.686739681539756,
-                -3.966547077320388,
-                15.449999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "6_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGssY": {
-        "id": "1gTPqUFFL7LhFal$3qGssY",
-        "location": [
-            [
-                27.68673968153973,
-                -19.966547077320385,
+                39.68673968153976,
+                -3.9665470773204263,
                 7.799999999999998
             ],
             [
-                27.68673968153973,
-                -19.966547077320385,
+                39.68673968153976,
+                -3.9665470773204263,
                 11.549999999999997
             ]
         ],
@@ -870,260 +318,7 @@
         "elevation": 7.8,
         "type": "st_column",
         "status": "children",
-        "host": "4_7.8",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrL": {
-        "id": "1gTPqUFFL7LhFal$3qGsrL",
-        "location": [
-            [
-                27.68673968153973,
-                -19.966547077320385,
-                11.699999999999998
-            ],
-            [
-                27.68673968153973,
-                -19.966547077320385,
-                15.449999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "4_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsqS": {
-        "id": "1gTPqUFFL7LhFal$3qGsqS",
-        "location": [
-            [
-                39.68673968153975,
-                -11.966547077320428,
-                11.699999999999998
-            ],
-            [
-                39.68673968153975,
-                -11.966547077320428,
-                15.599999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "3_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsqT": {
-        "id": "1gTPqUFFL7LhFal$3qGsqT",
-        "location": [
-            [
-                27.68673968153975,
-                -11.966547077320389,
-                11.699999999999998
-            ],
-            [
-                27.68673968153975,
-                -11.966547077320389,
-                15.599999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "4_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsqU": {
-        "id": "1gTPqUFFL7LhFal$3qGsqU",
-        "location": [
-            [
-                33.68673968153976,
-                -3.9665470773204072,
-                11.699999999999998
-            ],
-            [
-                33.68673968153976,
-                -3.9665470773204072,
-                15.599999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "6_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsqV": {
-        "id": "1gTPqUFFL7LhFal$3qGsqV",
-        "location": [
-            [
-                33.686739681539734,
-                -19.966547077320403,
-                11.699999999999998
-            ],
-            [
-                33.686739681539734,
-                -19.966547077320403,
-                15.599999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "5_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrK": {
-        "id": "1gTPqUFFL7LhFal$3qGsrK",
-        "location": [
-            [
-                39.68673968153976,
-                -3.9665470773204263,
-                11.699999999999998
-            ],
-            [
-                39.68673968153976,
-                -3.9665470773204263,
-                15.449999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "6_11.7",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsri": {
-        "id": "1gTPqUFFL7LhFal$3qGsri",
-        "location": [
-            [
-                39.68673968153975,
-                -11.966547077320428,
-                3.9
-            ],
-            [
-                39.68673968153975,
-                -11.966547077320428,
-                7.8
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 3.9,
-        "type": "st_column",
-        "status": "children",
-        "host": "3_3.9",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrj": {
-        "id": "1gTPqUFFL7LhFal$3qGsrj",
-        "location": [
-            [
-                27.68673968153975,
-                -11.966547077320389,
-                3.9
-            ],
-            [
-                27.68673968153975,
-                -11.966547077320389,
-                7.8
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 3.9,
-        "type": "st_column",
-        "status": "children",
-        "host": "4_3.9",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrk": {
-        "id": "1gTPqUFFL7LhFal$3qGsrk",
-        "location": [
-            [
-                33.68673968153976,
-                -3.9665470773204072,
-                3.9
-            ],
-            [
-                33.68673968153976,
-                -3.9665470773204072,
-                7.8
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 3.9,
-        "type": "st_column",
-        "status": "children",
-        "host": "6_3.9",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrl": {
-        "id": "1gTPqUFFL7LhFal$3qGsrl",
-        "location": [
-            [
-                33.686739681539734,
-                -19.966547077320403,
-                3.9
-            ],
-            [
-                33.686739681539734,
-                -19.966547077320403,
-                7.8
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.9,
-        "elevation": 3.9,
-        "type": "st_column",
-        "status": "children",
-        "host": "5_3.9",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrM": {
-        "id": "1gTPqUFFL7LhFal$3qGsrM",
-        "location": [
-            [
-                39.68673968153974,
-                -19.96654707732042,
-                11.699999999999998
-            ],
-            [
-                39.68673968153974,
-                -19.96654707732042,
-                15.449999999999998
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 11.7,
-        "type": "st_column",
-        "status": "children",
-        "host": "3_11.7",
+        "host": "6_7.8",
         "relative_distance": 0.0
     },
     "1gTPqUFFL7LhFal$3qGssZ": {
@@ -1147,6 +342,29 @@
         "type": "st_column",
         "status": "children",
         "host": "3_7.8",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGssh": {
+        "id": "1gTPqUFFL7LhFal$3qGssh",
+        "location": [
+            [
+                27.686739681539756,
+                -3.966547077320388,
+                11.699999999999998
+            ],
+            [
+                27.686739681539756,
+                -3.966547077320388,
+                15.449999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "6_11.7",
         "relative_distance": 0.0
     },
     "1gTPqUFFL7LhFal$3qGs8K": {
@@ -1699,6 +917,788 @@
         "type": "st_column",
         "status": "children",
         "host": "19_3.9",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQEA": {
+        "id": "205do4mkr2Df2cxE4ThQEA",
+        "location": [
+            [
+                -2.313260318460257,
+                -11.966547077320294,
+                0.0
+            ],
+            [
+                -2.313260318460257,
+                -11.966547077320294,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "12_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQE9": {
+        "id": "205do4mkr2Df2cxE4ThQE9",
+        "location": [
+            [
+                -2.3132603184602702,
+                -19.966547077320286,
+                0.0
+            ],
+            [
+                -2.3132603184602702,
+                -19.966547077320286,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "12_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDn": {
+        "id": "205do4mkr2Df2cxE4ThQDn",
+        "location": [
+            [
+                3.686739681539743,
+                -11.966547077320312,
+                0.0
+            ],
+            [
+                3.686739681539743,
+                -11.966547077320312,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "13_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDm": {
+        "id": "205do4mkr2Df2cxE4ThQDm",
+        "location": [
+            [
+                3.6867396815397298,
+                -19.966547077320303,
+                0.0
+            ],
+            [
+                3.6867396815397298,
+                -19.966547077320303,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "13_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDu": {
+        "id": "205do4mkr2Df2cxE4ThQDu",
+        "location": [
+            [
+                9.686739681539743,
+                -11.966547077320328,
+                0.0
+            ],
+            [
+                9.686739681539743,
+                -11.966547077320328,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "14_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQD$": {
+        "id": "205do4mkr2Df2cxE4ThQD$",
+        "location": [
+            [
+                9.686739681539729,
+                -19.966547077320328,
+                0.0
+            ],
+            [
+                9.686739681539729,
+                -19.966547077320328,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "14_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDd": {
+        "id": "205do4mkr2Df2cxE4ThQDd",
+        "location": [
+            [
+                27.686739681539773,
+                4.033452922679612,
+                0.0
+            ],
+            [
+                27.686739681539773,
+                4.033452922679612,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "7_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDc": {
+        "id": "205do4mkr2Df2cxE4ThQDc",
+        "location": [
+            [
+                33.68673968153977,
+                4.033452922679594,
+                0.0
+            ],
+            [
+                33.68673968153977,
+                4.033452922679594,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "7_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDb": {
+        "id": "205do4mkr2Df2cxE4ThQDb",
+        "location": [
+            [
+                39.68673968153978,
+                4.033452922679574,
+                0.0
+            ],
+            [
+                39.68673968153978,
+                4.033452922679574,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "7_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDj": {
+        "id": "205do4mkr2Df2cxE4ThQDj",
+        "location": [
+            [
+                15.686739681539743,
+                -11.966547077320351,
+                0.0
+            ],
+            [
+                15.686739681539743,
+                -11.966547077320351,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "15_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDi": {
+        "id": "205do4mkr2Df2cxE4ThQDi",
+        "location": [
+            [
+                21.686739681539752,
+                -11.966547077320369,
+                0.0
+            ],
+            [
+                21.686739681539752,
+                -11.966547077320369,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "8_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDN": {
+        "id": "205do4mkr2Df2cxE4ThQDN",
+        "location": [
+            [
+                15.686739681539732,
+                -19.966547077320346,
+                0.0
+            ],
+            [
+                15.686739681539732,
+                -19.966547077320346,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "15_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDM": {
+        "id": "205do4mkr2Df2cxE4ThQDM",
+        "location": [
+            [
+                21.686739681539724,
+                -19.966547077320364,
+                0.0
+            ],
+            [
+                21.686739681539724,
+                -19.966547077320364,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "8_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDB": {
+        "id": "205do4mkr2Df2cxE4ThQDB",
+        "location": [
+            [
+                27.68673968153978,
+                12.033452922679613,
+                0.0
+            ],
+            [
+                27.68673968153978,
+                12.033452922679613,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "10_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDA": {
+        "id": "205do4mkr2Df2cxE4ThQDA",
+        "location": [
+            [
+                33.68673968153978,
+                12.033452922679594,
+                0.0
+            ],
+            [
+                33.68673968153978,
+                12.033452922679594,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "10_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQD9": {
+        "id": "205do4mkr2Df2cxE4ThQD9",
+        "location": [
+            [
+                39.68673968153979,
+                12.033452922679574,
+                0.0
+            ],
+            [
+                39.68673968153979,
+                12.033452922679574,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "10_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDF": {
+        "id": "205do4mkr2Df2cxE4ThQDF",
+        "location": [
+            [
+                27.686739681539795,
+                20.03345292267962,
+                0.0
+            ],
+            [
+                27.686739681539795,
+                20.03345292267962,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "11_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDE": {
+        "id": "205do4mkr2Df2cxE4ThQDE",
+        "location": [
+            [
+                27.68673968153981,
+                28.03345292267962,
+                0.0
+            ],
+            [
+                27.68673968153981,
+                28.03345292267962,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "9_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQDC": {
+        "id": "205do4mkr2Df2cxE4ThQDC",
+        "location": [
+            [
+                33.6867396815398,
+                20.033452922679597,
+                0.0
+            ],
+            [
+                33.6867396815398,
+                20.033452922679597,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "11_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQCp": {
+        "id": "205do4mkr2Df2cxE4ThQCp",
+        "location": [
+            [
+                33.686739681539805,
+                28.033452922679597,
+                0.0
+            ],
+            [
+                33.686739681539805,
+                28.033452922679597,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "9_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQCn": {
+        "id": "205do4mkr2Df2cxE4ThQCn",
+        "location": [
+            [
+                39.686739681539805,
+                20.03345292267958,
+                0.0
+            ],
+            [
+                39.686739681539805,
+                20.03345292267958,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "11_0.0",
+        "relative_distance": 0.0
+    },
+    "205do4mkr2Df2cxE4ThQCm": {
+        "id": "205do4mkr2Df2cxE4ThQCm",
+        "location": [
+            [
+                39.68673968153982,
+                28.03345292267958,
+                0.0
+            ],
+            [
+                39.68673968153982,
+                28.03345292267958,
+                3.75
+            ]
+        ],
+        "length": 0.25,
+        "width": 0.25,
+        "height": 3.75,
+        "elevation": 0.0,
+        "type": "st_column",
+        "status": "children",
+        "host": "9_0.0",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsrP": {
+        "id": "1gTPqUFFL7LhFal$3qGsrP",
+        "location": [
+            [
+                39.68673968153974,
+                -19.96654707732042,
+                15.599999999999996
+            ],
+            [
+                39.68673968153974,
+                -19.96654707732042,
+                19.349999999999994
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 15.6,
+        "type": "st_column",
+        "status": "children",
+        "host": "3_15.6",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGssY": {
+        "id": "1gTPqUFFL7LhFal$3qGssY",
+        "location": [
+            [
+                27.68673968153973,
+                -19.966547077320385,
+                7.799999999999998
+            ],
+            [
+                27.68673968153973,
+                -19.966547077320385,
+                11.549999999999997
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 7.8,
+        "type": "st_column",
+        "status": "children",
+        "host": "4_7.8",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsrK": {
+        "id": "1gTPqUFFL7LhFal$3qGsrK",
+        "location": [
+            [
+                39.68673968153976,
+                -3.9665470773204263,
+                11.699999999999998
+            ],
+            [
+                39.68673968153976,
+                -3.9665470773204263,
+                15.449999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "6_11.7",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsrM": {
+        "id": "1gTPqUFFL7LhFal$3qGsrM",
+        "location": [
+            [
+                39.68673968153974,
+                -19.96654707732042,
+                11.699999999999998
+            ],
+            [
+                39.68673968153974,
+                -19.96654707732042,
+                15.449999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "3_11.7",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsri": {
+        "id": "1gTPqUFFL7LhFal$3qGsri",
+        "location": [
+            [
+                39.68673968153975,
+                -11.966547077320428,
+                3.9
+            ],
+            [
+                39.68673968153975,
+                -11.966547077320428,
+                7.8
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 3.9,
+        "type": "st_column",
+        "status": "children",
+        "host": "3_3.9",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsrj": {
+        "id": "1gTPqUFFL7LhFal$3qGsrj",
+        "location": [
+            [
+                27.68673968153975,
+                -11.966547077320389,
+                3.9
+            ],
+            [
+                27.68673968153975,
+                -11.966547077320389,
+                7.8
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 3.9,
+        "type": "st_column",
+        "status": "children",
+        "host": "4_3.9",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsrk": {
+        "id": "1gTPqUFFL7LhFal$3qGsrk",
+        "location": [
+            [
+                33.68673968153976,
+                -3.9665470773204072,
+                3.9
+            ],
+            [
+                33.68673968153976,
+                -3.9665470773204072,
+                7.8
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 3.9,
+        "type": "st_column",
+        "status": "children",
+        "host": "6_3.9",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsrl": {
+        "id": "1gTPqUFFL7LhFal$3qGsrl",
+        "location": [
+            [
+                33.686739681539734,
+                -19.966547077320403,
+                3.9
+            ],
+            [
+                33.686739681539734,
+                -19.966547077320403,
+                7.8
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 3.9,
+        "type": "st_column",
+        "status": "children",
+        "host": "5_3.9",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsqS": {
+        "id": "1gTPqUFFL7LhFal$3qGsqS",
+        "location": [
+            [
+                39.68673968153975,
+                -11.966547077320428,
+                11.699999999999998
+            ],
+            [
+                39.68673968153975,
+                -11.966547077320428,
+                15.599999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "3_11.7",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsqT": {
+        "id": "1gTPqUFFL7LhFal$3qGsqT",
+        "location": [
+            [
+                27.68673968153975,
+                -11.966547077320389,
+                11.699999999999998
+            ],
+            [
+                27.68673968153975,
+                -11.966547077320389,
+                15.599999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "4_11.7",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsqU": {
+        "id": "1gTPqUFFL7LhFal$3qGsqU",
+        "location": [
+            [
+                33.68673968153976,
+                -3.9665470773204072,
+                11.699999999999998
+            ],
+            [
+                33.68673968153976,
+                -3.9665470773204072,
+                15.599999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "6_11.7",
+        "relative_distance": 0.0
+    },
+    "1gTPqUFFL7LhFal$3qGsqV": {
+        "id": "1gTPqUFFL7LhFal$3qGsqV",
+        "location": [
+            [
+                33.686739681539734,
+                -19.966547077320403,
+                11.699999999999998
+            ],
+            [
+                33.686739681539734,
+                -19.966547077320403,
+                15.599999999999998
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.9,
+        "elevation": 11.7,
+        "type": "st_column",
+        "status": "children",
+        "host": "5_11.7",
         "relative_distance": 0.0
     },
     "1gTPqUFFL7LhFal$3qGs8E": {
@@ -3219,27 +3219,27 @@
         "host": "9_15.6",
         "relative_distance": 0.0
     },
-    "1gTPqUFFL7LhFal$3qGsrU": {
-        "id": "1gTPqUFFL7LhFal$3qGsrU",
+    "1gTPqUFFL7LhFal$3qGsrL": {
+        "id": "1gTPqUFFL7LhFal$3qGsrL",
         "location": [
             [
-                27.686739681539756,
-                -3.966547077320388,
-                15.599999999999996
+                27.68673968153973,
+                -19.966547077320385,
+                11.699999999999998
             ],
             [
-                27.686739681539756,
-                -3.966547077320388,
-                19.349999999999994
+                27.68673968153973,
+                -19.966547077320385,
+                15.449999999999998
             ]
         ],
         "length": 0.3,
         "width": 0.3,
         "height": 3.75,
-        "elevation": 15.6,
+        "elevation": 11.7,
         "type": "st_column",
         "status": "children",
-        "host": "6_15.6",
+        "host": "4_11.7",
         "relative_distance": 0.0
     },
     "1gTPqUFFL7LhFal$3qGsqK": {
@@ -3334,6 +3334,29 @@
         "host": "5_7.8",
         "relative_distance": 0.0
     },
+    "1gTPqUFFL7LhFal$3qGsrU": {
+        "id": "1gTPqUFFL7LhFal$3qGsrU",
+        "location": [
+            [
+                27.686739681539756,
+                -3.966547077320388,
+                15.599999999999996
+            ],
+            [
+                27.686739681539756,
+                -3.966547077320388,
+                19.349999999999994
+            ]
+        ],
+        "length": 0.3,
+        "width": 0.3,
+        "height": 3.75,
+        "elevation": 15.6,
+        "type": "st_column",
+        "status": "children",
+        "host": "6_15.6",
+        "relative_distance": 0.0
+    },
     "1gTPqUFFL7LhFal$3qGsrV": {
         "id": "1gTPqUFFL7LhFal$3qGsrV",
         "location": [
@@ -3378,29 +3401,6 @@
         "type": "st_column",
         "status": "children",
         "host": "4_15.6",
-        "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsrP": {
-        "id": "1gTPqUFFL7LhFal$3qGsrP",
-        "location": [
-            [
-                39.68673968153974,
-                -19.96654707732042,
-                15.599999999999996
-            ],
-            [
-                39.68673968153974,
-                -19.96654707732042,
-                19.349999999999994
-            ]
-        ],
-        "length": 0.3,
-        "width": 0.3,
-        "height": 3.75,
-        "elevation": 15.6,
-        "type": "st_column",
-        "status": "children",
-        "host": "3_15.6",
         "relative_distance": 0.0
     },
     "1gTPqUFFL7LhFal$3qGsq4": {
@@ -3514,6 +3514,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall"
     },
     "2EVXv4SCjBcxfag4LCR8YN": {
@@ -3535,31 +3536,8 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall"
-    },
-    "2EVXv4SCjBcxfag4LCR8ka": {
-        "id": "2EVXv4SCjBcxfag4LCR8ka",
-        "elevation": 0.0,
-        "location": [
-            [
-                21.686739681539763,
-                -3.9665470773202505,
-                0.0
-            ],
-            [
-                21.686739681539763,
-                39.033452922679636,
-                0.0
-            ]
-        ],
-        "length": 42.7,
-        "width": 0.3,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "st_wall",
-        "status": "children",
-        "host": "8_0.0",
-        "relative_distance": 0.0
     },
     "2EVXv4SCjBcxfag4LCR8iP": {
         "id": "2EVXv4SCjBcxfag4LCR8iP",
@@ -3580,9 +3558,35 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "6_0.0",
+        "relative_distance": 0.0
+    },
+    "2EVXv4SCjBcxfag4LCR8ka": {
+        "id": "2EVXv4SCjBcxfag4LCR8ka",
+        "elevation": 0.0,
+        "location": [
+            [
+                21.686739681539763,
+                -3.9665470773203895,
+                0.0
+            ],
+            [
+                21.686739681539763,
+                39.033452922679636,
+                0.0
+            ]
+        ],
+        "length": 42.7,
+        "width": 0.3,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "st_wall",
+        "status": "children",
+        "host": "8_0.0",
         "relative_distance": 0.0
     },
     "2EVXv4SCjBcxfag4LCR8aJ": {
@@ -3604,6 +3608,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "16_0.0",
@@ -3628,31 +3633,11 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "17_0.0",
         "relative_distance": 0.0
-    },
-    "1gTPqUFFL7LhFal$3qGsBl": {
-        "id": "1gTPqUFFL7LhFal$3qGsBl",
-        "elevation": 3.9,
-        "location": [
-            [
-                -14.313260318460266,
-                -26.966547077320428,
-                3.9
-            ],
-            [
-                -14.313260318460268,
-                -3.96654707732025,
-                3.9
-            ]
-        ],
-        "length": 23.0,
-        "width": 0.3,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "st_wall"
     },
     "1gTPqUFFL7LhFal$3qGsBi": {
         "id": "1gTPqUFFL7LhFal$3qGsBi",
@@ -3673,6 +3658,29 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
+        "type": "st_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGsBl": {
+        "id": "1gTPqUFFL7LhFal$3qGsBl",
+        "elevation": 3.9,
+        "location": [
+            [
+                -14.313260318460266,
+                -26.966547077320428,
+                3.9
+            ],
+            [
+                -14.313260318460268,
+                -3.96654707732025,
+                3.9
+            ]
+        ],
+        "length": 23.0,
+        "width": 0.3,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 1,
         "type": "st_wall"
     },
     "1gTPqUFFL7LhFal$3qGsBe": {
@@ -3694,6 +3702,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "6_3.9",
@@ -3718,6 +3727,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "8_3.9",
@@ -3742,6 +3752,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "16_3.9",
@@ -3766,6 +3777,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "17_3.9",
@@ -3790,6 +3802,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall"
     },
     "0xQJTbhNbEOQnij2C8z8Ur": {
@@ -3811,31 +3824,8 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall"
-    },
-    "0xQJTbhNbEOQnij2C8z8Ut": {
-        "id": "0xQJTbhNbEOQnij2C8z8Ut",
-        "elevation": 7.8,
-        "location": [
-            [
-                21.686739681539763,
-                -3.9665470773202505,
-                7.799999999999998
-            ],
-            [
-                21.686739681539763,
-                39.033452922679636,
-                7.799999999999998
-            ]
-        ],
-        "length": 42.7,
-        "width": 0.3,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "st_wall",
-        "status": "children",
-        "host": "8_7.8",
-        "relative_distance": 0.0
     },
     "0xQJTbhNbEOQnij2C8z8Uq": {
         "id": "0xQJTbhNbEOQnij2C8z8Uq",
@@ -3856,9 +3846,35 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "6_7.8",
+        "relative_distance": 0.0
+    },
+    "0xQJTbhNbEOQnij2C8z8Ut": {
+        "id": "0xQJTbhNbEOQnij2C8z8Ut",
+        "elevation": 7.8,
+        "location": [
+            [
+                21.686739681539763,
+                -3.9665470773203895,
+                7.799999999999998
+            ],
+            [
+                21.686739681539763,
+                39.033452922679636,
+                7.799999999999998
+            ]
+        ],
+        "length": 42.7,
+        "width": 0.3,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "st_wall",
+        "status": "children",
+        "host": "8_7.8",
         "relative_distance": 0.0
     },
     "0xQJTbhNbEOQnij2C8z8Uo": {
@@ -3880,6 +3896,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "17_7.8",
@@ -3904,6 +3921,7 @@
         "width": 0.3,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "16_7.8",
@@ -3928,6 +3946,7 @@
         "width": 0.3,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall"
     },
     "0xQJTbhNbEOQnij2C8z8Vp": {
@@ -3949,30 +3968,32 @@
         "width": 0.3,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall"
     },
-    "0xQJTbhNbEOQnij2C8z8Vn": {
-        "id": "0xQJTbhNbEOQnij2C8z8Vn",
+    "0xQJTbhNbEOQnij2C8z8Vr": {
+        "id": "0xQJTbhNbEOQnij2C8z8Vr",
         "elevation": 11.7,
         "location": [
             [
-                45.686739681539834,
-                39.033452922679636,
+                21.686739681539763,
+                -3.9665470773202505,
                 11.699999999999998
             ],
             [
-                45.68673968153982,
-                -26.966547077320435,
+                21.686739681539763,
+                39.033452922679636,
                 11.699999999999998
             ]
         ],
-        "length": 66.0,
+        "length": 42.7,
         "width": 0.3,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
-        "host": "16_11.7",
+        "host": "8_11.7",
         "relative_distance": 0.0
     },
     "0xQJTbhNbEOQnij2C8z8Vo": {
@@ -3994,9 +4015,35 @@
         "width": 0.3,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "6_11.7",
+        "relative_distance": 0.0
+    },
+    "0xQJTbhNbEOQnij2C8z8Vn": {
+        "id": "0xQJTbhNbEOQnij2C8z8Vn",
+        "elevation": 11.7,
+        "location": [
+            [
+                45.686739681539834,
+                39.033452922679636,
+                11.699999999999998
+            ],
+            [
+                45.68673968153982,
+                -26.966547077320435,
+                11.699999999999998
+            ]
+        ],
+        "length": 66.0,
+        "width": 0.3,
+        "height": 3.7,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "st_wall",
+        "status": "children",
+        "host": "16_11.7",
         "relative_distance": 0.0
     },
     "0xQJTbhNbEOQnij2C8z8Vm": {
@@ -4018,33 +4065,35 @@
         "width": 0.3,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "17_11.7",
         "relative_distance": 0.0
     },
-    "0xQJTbhNbEOQnij2C8z8Vr": {
-        "id": "0xQJTbhNbEOQnij2C8z8Vr",
-        "elevation": 11.7,
+    "1syTwdRdb5$f$hW8QqAzQN": {
+        "id": "1syTwdRdb5$f$hW8QqAzQN",
+        "elevation": 15.6,
         "location": [
             [
                 21.686739681539763,
-                -3.9665470773203895,
-                11.699999999999998
+                -3.9665470773202505,
+                15.599999999999996
             ],
             [
                 21.686739681539763,
                 39.033452922679636,
-                11.699999999999998
+                15.599999999999996
             ]
         ],
         "length": 42.7,
         "width": 0.3,
-        "height": 3.7,
+        "height": 3.9,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
-        "host": "8_11.7",
+        "host": "8_15.6",
         "relative_distance": 0.0
     },
     "1syTwdRdb5$f$hW8QqAzAn": {
@@ -4066,30 +4115,54 @@
         "width": 0.3,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall"
     },
-    "1syTwdRdb5$f$hW8QqAzAp": {
-        "id": "1syTwdRdb5$f$hW8QqAzAp",
+    "1syTwdRdb5$f$hW8QqAzAo": {
+        "id": "1syTwdRdb5$f$hW8QqAzAo",
         "elevation": 15.6,
         "location": [
-            [
-                45.68673968153982,
-                -26.966547077320435,
-                15.599999999999996
-            ],
             [
                 -14.313260318460266,
                 -26.966547077320428,
                 15.599999999999996
+            ],
+            [
+                -14.313260318460268,
+                -3.9665470773202465,
+                15.599999999999996
             ]
         ],
-        "length": 60.0,
+        "length": 23.0,
+        "width": 0.3,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "st_wall"
+    },
+    "1syTwdRdb5$f$hW8QqAzQK": {
+        "id": "1syTwdRdb5$f$hW8QqAzQK",
+        "elevation": 15.6,
+        "location": [
+            [
+                -14.313260318460268,
+                -3.9665470773202465,
+                15.599999999999996
+            ],
+            [
+                21.686739681539763,
+                -3.9665470773202505,
+                15.599999999999996
+            ]
+        ],
+        "length": 36.0,
         "width": 0.3,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
-        "host": "17_15.6",
+        "host": "6_15.6",
         "relative_distance": 0.0
     },
     "1syTwdRdb5$f$hW8QqAzAm": {
@@ -4111,142 +4184,36 @@
         "width": 0.3,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 1,
         "type": "st_wall",
         "status": "children",
         "host": "16_15.6",
         "relative_distance": 0.0
     },
-    "1syTwdRdb5$f$hW8QqAzQK": {
-        "id": "1syTwdRdb5$f$hW8QqAzQK",
+    "1syTwdRdb5$f$hW8QqAzAp": {
+        "id": "1syTwdRdb5$f$hW8QqAzAp",
         "elevation": 15.6,
         "location": [
             [
-                -14.313260318460268,
-                -3.96654707732025,
+                45.68673968153982,
+                -26.966547077320435,
                 15.599999999999996
             ],
-            [
-                21.686739681539763,
-                -3.9665470773202505,
-                15.599999999999996
-            ]
-        ],
-        "length": 36.0,
-        "width": 0.3,
-        "height": 3.9,
-        "orientation": 0.0,
-        "type": "st_wall",
-        "status": "children",
-        "host": "6_15.6",
-        "relative_distance": 0.0
-    },
-    "1syTwdRdb5$f$hW8QqAzQN": {
-        "id": "1syTwdRdb5$f$hW8QqAzQN",
-        "elevation": 15.6,
-        "location": [
-            [
-                21.686739681539763,
-                -3.9665470773203895,
-                15.599999999999996
-            ],
-            [
-                21.686739681539763,
-                39.033452922679636,
-                15.599999999999996
-            ]
-        ],
-        "length": 42.7,
-        "width": 0.3,
-        "height": 3.9,
-        "orientation": 90.0,
-        "type": "st_wall",
-        "status": "children",
-        "host": "8_15.6",
-        "relative_distance": 0.0
-    },
-    "1syTwdRdb5$f$hW8QqAzAo": {
-        "id": "1syTwdRdb5$f$hW8QqAzAo",
-        "elevation": 15.6,
-        "location": [
             [
                 -14.313260318460266,
                 -26.966547077320428,
                 15.599999999999996
-            ],
-            [
-                -14.313260318460268,
-                -3.9665470773203886,
-                15.599999999999996
             ]
         ],
-        "length": 23.0,
+        "length": 60.0,
         "width": 0.3,
         "height": 3.9,
-        "orientation": 90.0,
-        "type": "st_wall"
-    },
-    "3JaYZ$dVT2leVdA72Jn2aF": {
-        "id": "3JaYZ$dVT2leVdA72Jn2aF",
-        "elevation": 0.0,
-        "location": [
-            [
-                21.686739681539745,
-                4.033452922679631,
-                0.0
-            ],
-            [
-                33.68673968153978,
-                4.033452922679632,
-                0.0
-            ]
-        ],
-        "length": 11.97,
-        "width": 0.24,
-        "height": 3.6,
         "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "3YkyhMiA95M9Su0XKJ5JJ9": {
-        "id": "3YkyhMiA95M9Su0XKJ5JJ9",
-        "elevation": 0.0,
-        "location": [
-            [
-                37.42673968153977,
-                12.033452922679587,
-                0.0
-            ],
-            [
-                45.68673968153983,
-                12.033452922679587,
-                0.0
-            ]
-        ],
-        "length": 7.99,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "3YkyhMiA95M9Su0XKJ5IgO": {
-        "id": "3YkyhMiA95M9Su0XKJ5IgO",
-        "elevation": 0.0,
-        "location": [
-            [
-                45.68673968153983,
-                4.033452922679558,
-                0.0
-            ],
-            [
-                37.42673968153977,
-                4.033452922679556,
-                0.0
-            ]
-        ],
-        "length": 7.99,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall"
+        "external": 1,
+        "type": "st_wall",
+        "status": "children",
+        "host": "17_15.6",
+        "relative_distance": 0.0
     },
     "3JaYZ$dVT2leVdA72Jn2cf": {
         "id": "3JaYZ$dVT2leVdA72Jn2cf",
@@ -4259,7 +4226,7 @@
             ],
             [
                 33.68673968153978,
-                12.033452922679636,
+                12.033452922679633,
                 0.0
             ]
         ],
@@ -4267,48 +4234,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "3YkyhMiA95M9Su0XKJ5JTl": {
-        "id": "3YkyhMiA95M9Su0XKJ5JTl",
-        "elevation": 0.0,
-        "location": [
-            [
-                15.686739681539716,
-                -26.96654707732043,
-                0.0
-            ],
-            [
-                15.68673968153972,
-                -15.706547077320314,
-                0.0
-            ]
-        ],
-        "length": 10.99,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "ns_wall"
-    },
-    "3YkyhMiA95M9Su0XKJ5JCd": {
-        "id": "3YkyhMiA95M9Su0XKJ5JCd",
-        "elevation": 0.0,
-        "location": [
-            [
-                15.68673968153975,
-                -3.9665470773203895,
-                0.0
-            ],
-            [
-                15.68673968153975,
-                -11.966547077320367,
-                0.0
-            ]
-        ],
-        "length": 7.73,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "3JaYZ$dVT2leVdA72Jn2do": {
@@ -4330,20 +4256,87 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
-    "3YkyhMiA95M9Su0XKJ5Jyt": {
-        "id": "3YkyhMiA95M9Su0XKJ5Jyt",
+    "3JaYZ$dVT2leVdA72Jn2aF": {
+        "id": "3JaYZ$dVT2leVdA72Jn2aF",
         "elevation": 0.0,
         "location": [
             [
-                9.686739681539734,
-                -15.706547077320314,
+                21.686739681539745,
+                4.033452922679631,
                 0.0
             ],
             [
-                9.686739681539734,
+                33.68673968153978,
+                4.033452922679632,
+                0.0
+            ]
+        ],
+        "length": 11.97,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "3YkyhMiA95M9Su0XKJ5IgO": {
+        "id": "3YkyhMiA95M9Su0XKJ5IgO",
+        "elevation": 0.0,
+        "location": [
+            [
+                45.68673968153983,
+                4.033452922679558,
+                0.0
+            ],
+            [
+                37.42673968153977,
+                4.033452922679556,
+                0.0
+            ]
+        ],
+        "length": 7.99,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "3YkyhMiA95M9Su0XKJ5JJ9": {
+        "id": "3YkyhMiA95M9Su0XKJ5JJ9",
+        "elevation": 0.0,
+        "location": [
+            [
+                37.42673968153977,
+                12.033452922679585,
+                0.0
+            ],
+            [
+                45.68673968153983,
+                12.033452922679587,
+                0.0
+            ]
+        ],
+        "length": 7.99,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "3YkyhMiA95M9Su0XKJ5JTl": {
+        "id": "3YkyhMiA95M9Su0XKJ5JTl",
+        "elevation": 0.0,
+        "location": [
+            [
+                15.686739681539716,
                 -26.96654707732043,
+                0.0
+            ],
+            [
+                15.686739681539716,
+                -15.706547077320314,
                 0.0
             ]
         ],
@@ -4351,10 +4344,30 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_0.0",
-        "relative_distance": 11.259952922679688
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "3YkyhMiA95M9Su0XKJ5JCd": {
+        "id": "3YkyhMiA95M9Su0XKJ5JCd",
+        "elevation": 0.0,
+        "location": [
+            [
+                15.68673968153975,
+                -3.9665470773203895,
+                0.0
+            ],
+            [
+                15.68673968153975,
+                -11.966547077320367,
+                0.0
+            ]
+        ],
+        "length": 7.73,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall"
     },
     "3YkyhMiA95M9Su0XKJ5JH6": {
         "id": "3YkyhMiA95M9Su0XKJ5JH6",
@@ -4375,10 +4388,36 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": -65.99995292267964
+    },
+    "3YkyhMiA95M9Su0XKJ5Jyt": {
+        "id": "3YkyhMiA95M9Su0XKJ5Jyt",
+        "elevation": 0.0,
+        "location": [
+            [
+                9.686739681539734,
+                -15.706547077320314,
+                0.0
+            ],
+            [
+                9.686739681539734,
+                -26.96654707732043,
+                0.0
+            ]
+        ],
+        "length": 10.99,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_0.0",
+        "relative_distance": 11.259952922679688
     },
     "3YkyhMiA95M9Su0XKJ5JuC": {
         "id": "3YkyhMiA95M9Su0XKJ5JuC",
@@ -4399,6 +4438,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "3YkyhMiA95M9Su0XKJ5JmV": {
@@ -4420,31 +4460,11 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": -3.73995292267977
-    },
-    "3YkyhMiA95M9Su0XKJ5Ie7": {
-        "id": "3YkyhMiA95M9Su0XKJ5Ie7",
-        "elevation": 0.0,
-        "location": [
-            [
-                37.42673968153977,
-                4.033452922679556,
-                0.0
-            ],
-            [
-                37.42673968153977,
-                20.033452922679587,
-                0.0
-            ]
-        ],
-        "length": 16.0,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "ns_wall"
     },
     "3JaYZ$dVT2leVdA72Jn2DX": {
         "id": "3JaYZ$dVT2leVdA72Jn2DX",
@@ -4465,34 +4485,33 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": -54.99995292267956
     },
-    "3YkyhMiA95M9Su0XKJ5Jp1": {
-        "id": "3YkyhMiA95M9Su0XKJ5Jp1",
+    "3YkyhMiA95M9Su0XKJ5Ie7": {
+        "id": "3YkyhMiA95M9Su0XKJ5Ie7",
         "elevation": 0.0,
         "location": [
             [
-                0.7467396815397369,
-                -15.706547077320314,
+                37.42673968153977,
+                4.033452922679556,
                 0.0
             ],
             [
-                0.7467396815397294,
-                -26.966547077320428,
+                37.42673968153977,
+                20.033452922679587,
                 0.0
             ]
         ],
-        "length": 10.99,
+        "length": 16.0,
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_0.0",
-        "relative_distance": -11.259952922679688
+        "external": 0,
+        "type": "ns_wall"
     },
     "3YkyhMiA95M9Su0XKJ5J3C": {
         "id": "3YkyhMiA95M9Su0XKJ5J3C",
@@ -4513,6 +4532,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
@@ -4537,51 +4557,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "3JaYZ$dVT2leVdA72Jn2_g": {
-        "id": "3JaYZ$dVT2leVdA72Jn2_g",
-        "elevation": 0.0,
-        "location": [
-            [
-                33.68673968153978,
-                4.0334529226795555,
-                0.0
-            ],
-            [
-                33.68673968153978,
-                28.033452922679572,
-                0.0
-            ]
-        ],
-        "length": 23.76,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_0.0",
-        "relative_distance": -30.999952922679558
-    },
-    "3YkyhMiA95M9Su0XKJ5G2N": {
-        "id": "3YkyhMiA95M9Su0XKJ5G2N",
-        "elevation": 0.0,
-        "location": [
-            [
-                21.686739681539738,
-                -15.706547077320314,
-                0.0
-            ],
-            [
-                21.686739681539734,
-                -26.966547077320428,
-                0.0
-            ]
-        ],
-        "length": 10.99,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "3YkyhMiA95M9Su0XKJ5G4Y": {
@@ -4603,6 +4579,79 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_0.0",
+        "relative_distance": -11.259952922679688
+    },
+    "3YkyhMiA95M9Su0XKJ5G2N": {
+        "id": "3YkyhMiA95M9Su0XKJ5G2N",
+        "elevation": 0.0,
+        "location": [
+            [
+                21.686739681539738,
+                -15.706547077320314,
+                0.0
+            ],
+            [
+                21.686739681539734,
+                -26.966547077320428,
+                0.0
+            ]
+        ],
+        "length": 10.99,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "3JaYZ$dVT2leVdA72Jn2_g": {
+        "id": "3JaYZ$dVT2leVdA72Jn2_g",
+        "elevation": 0.0,
+        "location": [
+            [
+                33.68673968153978,
+                4.0334529226795555,
+                0.0
+            ],
+            [
+                33.68673968153978,
+                28.033452922679572,
+                0.0
+            ]
+        ],
+        "length": 23.76,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_0.0",
+        "relative_distance": -30.999952922679558
+    },
+    "3YkyhMiA95M9Su0XKJ5Jp1": {
+        "id": "3YkyhMiA95M9Su0XKJ5Jp1",
+        "elevation": 0.0,
+        "location": [
+            [
+                0.7467396815397369,
+                -15.706547077320314,
+                0.0
+            ],
+            [
+                0.7467396815397294,
+                -26.966547077320428,
+                0.0
+            ]
+        ],
+        "length": 10.99,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
@@ -4627,34 +4676,11 @@
         "width": 0.115,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": 51.2399529226796
-    },
-    "3YkyhMiA95M9Su0XKJ5GI$": {
-        "id": "3YkyhMiA95M9Su0XKJ5GI$",
-        "elevation": 0.0,
-        "location": [
-            [
-                39.68673968153976,
-                -19.96654707732042,
-                0.0
-            ],
-            [
-                27.68673968153973,
-                -19.96654707732042,
-                0.0
-            ]
-        ],
-        "length": 11.95,
-        "width": 0.2,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_0.0",
-        "relative_distance": -6.999952922679583
     },
     "0wGgnUnln04AFIwdvpxnVc": {
         "id": "0wGgnUnln04AFIwdvpxnVc",
@@ -4675,55 +4701,11 @@
         "width": 0.115,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": 5.519952922679697
-    },
-    "3YkyhMiA95M9Su0XKJ5JqK": {
-        "id": "3YkyhMiA95M9Su0XKJ5JqK",
-        "elevation": 0.0,
-        "location": [
-            [
-                3.686739681539737,
-                -15.706547077320314,
-                0.0
-            ],
-            [
-                21.686739681539738,
-                -15.706547077320314,
-                0.0
-            ]
-        ],
-        "length": 18.0,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "3YkyhMiA95M9Su0XKJ5GGp": {
-        "id": "3YkyhMiA95M9Su0XKJ5GGp",
-        "elevation": 0.0,
-        "location": [
-            [
-                27.68673968153973,
-                -19.96654707732042,
-                0.0
-            ],
-            [
-                27.68673968153973,
-                -3.9665470773203886,
-                0.0
-            ]
-        ],
-        "length": 15.95,
-        "width": 0.2,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_0.0",
-        "relative_distance": -6.999952922679583
     },
     "3YkyhMiA95M9Su0XKJ5JDv": {
         "id": "3YkyhMiA95M9Su0XKJ5JDv",
@@ -4744,10 +4726,58 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": -14.999952922679638
+    },
+    "3YkyhMiA95M9Su0XKJ5JqK": {
+        "id": "3YkyhMiA95M9Su0XKJ5JqK",
+        "elevation": 0.0,
+        "location": [
+            [
+                3.686739681539737,
+                -15.706547077320314,
+                0.0
+            ],
+            [
+                21.686739681539738,
+                -15.706547077320314,
+                0.0
+            ]
+        ],
+        "length": 18.0,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "3YkyhMiA95M9Su0XKJ5GI$": {
+        "id": "3YkyhMiA95M9Su0XKJ5GI$",
+        "elevation": 0.0,
+        "location": [
+            [
+                39.68673968153976,
+                -19.96654707732042,
+                0.0
+            ],
+            [
+                27.68673968153973,
+                -19.96654707732042,
+                0.0
+            ]
+        ],
+        "length": 11.95,
+        "width": 0.2,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_0.0",
+        "relative_distance": -6.999952922679583
     },
     "3YkyhMiA95M9Su0XKJ5GUA": {
         "id": "3YkyhMiA95M9Su0XKJ5GUA",
@@ -4768,31 +4798,36 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": -22.999952922679615
     },
-    "1gTPqUFFL7LhFal$3qGsyX": {
-        "id": "1gTPqUFFL7LhFal$3qGsyX",
+    "3YkyhMiA95M9Su0XKJ5GGp": {
+        "id": "3YkyhMiA95M9Su0XKJ5GGp",
         "elevation": 0.0,
         "location": [
             [
-                37.42673968153979,
-                20.033452922679587,
+                27.68673968153973,
+                -19.96654707732042,
                 0.0
             ],
             [
-                37.42673968153979,
-                24.273452922679592,
+                27.68673968153973,
+                -3.9665470773203886,
                 0.0
             ]
         ],
-        "length": 4.24,
-        "width": 0.24,
-        "height": 3.9,
+        "length": 15.95,
+        "width": 0.2,
+        "height": 3.6,
         "orientation": 90.0,
-        "type": "ns_wall"
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_0.0",
+        "relative_distance": -6.999952922679583
     },
     "3YkyhMiA95M9Su0XKJ5GSU": {
         "id": "3YkyhMiA95M9Su0XKJ5GSU",
@@ -4813,10 +4848,33 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
         "relative_distance": -22.99995292267961
+    },
+    "1gTPqUFFL7LhFal$3qGsyX": {
+        "id": "1gTPqUFFL7LhFal$3qGsyX",
+        "elevation": 0.0,
+        "location": [
+            [
+                37.42673968153979,
+                20.033452922679587,
+                0.0
+            ],
+            [
+                37.42673968153979,
+                24.273452922679592,
+                0.0
+            ]
+        ],
+        "length": 4.24,
+        "width": 0.24,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsvV": {
         "id": "1gTPqUFFL7LhFal$3qGsvV",
@@ -4837,6 +4895,7 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "2hE94Mgaj1XPXgcf4bhNRP": {
@@ -4858,6 +4917,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_0.0",
@@ -4882,34 +4942,11 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -1.6100396815398224
-    },
-    "1gTPqUFFL7LhFal$3qGsWs": {
-        "id": "1gTPqUFFL7LhFal$3qGsWs",
-        "elevation": 3.9,
-        "location": [
-            [
-                45.686739681539834,
-                28.03345292267956,
-                3.9
-            ],
-            [
-                21.68673968153975,
-                28.03345292267957,
-                3.9
-            ]
-        ],
-        "length": 23.7,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "19_3.9",
-        "relative_distance": -4.620039681539837
     },
     "1gTPqUFFL7LhFal$3qGsWm": {
         "id": "1gTPqUFFL7LhFal$3qGsWm",
@@ -4930,34 +4967,11 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -43.37996031846024
-    },
-    "1gTPqUFFL7LhFal$3qGsWo": {
-        "id": "1gTPqUFFL7LhFal$3qGsWo",
-        "elevation": 3.9,
-        "location": [
-            [
-                -14.313260318460266,
-                -23.226547077320234,
-                3.9
-            ],
-            [
-                -2.3132603184602445,
-                -23.226547077320234,
-                3.9
-            ]
-        ],
-        "length": 11.73,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "19_3.9",
-        "relative_distance": -55.379960318460256
     },
     "1gTPqUFFL7LhFal$3qGsWp": {
         "id": "1gTPqUFFL7LhFal$3qGsWp",
@@ -4978,34 +4992,61 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": 3.6399603184602256
     },
-    "1gTPqUFFL7LhFal$3qGsWn": {
-        "id": "1gTPqUFFL7LhFal$3qGsWn",
+    "1gTPqUFFL7LhFal$3qGsWs": {
+        "id": "1gTPqUFFL7LhFal$3qGsWs",
         "elevation": 3.9,
         "location": [
             [
-                0.7467396815397369,
-                -15.706547077320314,
+                45.686739681539834,
+                28.03345292267956,
                 3.9
             ],
             [
-                0.7467396815397294,
-                -26.966547077320428,
+                21.68673968153975,
+                28.03345292267957,
                 3.9
             ]
         ],
-        "length": 10.99,
+        "length": 23.7,
         "width": 0.24,
         "height": 3.6,
-        "orientation": 90.0,
+        "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
-        "relative_distance": -40.31996031846026
+        "relative_distance": -4.620039681539837
+    },
+    "1gTPqUFFL7LhFal$3qGsWo": {
+        "id": "1gTPqUFFL7LhFal$3qGsWo",
+        "elevation": 3.9,
+        "location": [
+            [
+                -14.313260318460266,
+                -23.226547077320234,
+                3.9
+            ],
+            [
+                -2.3132603184602445,
+                -23.226547077320234,
+                3.9
+            ]
+        ],
+        "length": 11.73,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "19_3.9",
+        "relative_distance": -55.379960318460256
     },
     "1gTPqUFFL7LhFal$3qGsWy": {
         "id": "1gTPqUFFL7LhFal$3qGsWy",
@@ -5026,34 +5067,36 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -37.379960318460256
     },
-    "1gTPqUFFL7LhFal$3qGsW_": {
-        "id": "1gTPqUFFL7LhFal$3qGsW_",
+    "1gTPqUFFL7LhFal$3qGsWn": {
+        "id": "1gTPqUFFL7LhFal$3qGsWn",
         "elevation": 3.9,
         "location": [
             [
-                41.5567396815398,
-                24.273452922679592,
+                0.7467396815397369,
+                -15.706547077320314,
                 3.9
             ],
             [
-                41.5567396815398,
-                20.033452922679587,
+                0.7467396815397294,
+                -26.966547077320428,
                 3.9
             ]
         ],
-        "length": 4.0,
-        "width": 0.115,
+        "length": 10.99,
+        "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
-        "relative_distance": -0.49003968153980576
+        "relative_distance": -40.31996031846026
     },
     "1gTPqUFFL7LhFal$3qGslO": {
         "id": "1gTPqUFFL7LhFal$3qGslO",
@@ -5074,7 +5117,33 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGsW_": {
+        "id": "1gTPqUFFL7LhFal$3qGsW_",
+        "elevation": 3.9,
+        "location": [
+            [
+                41.5567396815398,
+                24.273452922679592,
+                3.9
+            ],
+            [
+                41.5567396815398,
+                20.033452922679587,
+                3.9
+            ]
+        ],
+        "length": 4.0,
+        "width": 0.115,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "19_3.9",
+        "relative_distance": -0.49003968153980576
     },
     "1gTPqUFFL7LhFal$3qGslP": {
         "id": "1gTPqUFFL7LhFal$3qGslP",
@@ -5095,6 +5164,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsWz": {
@@ -5116,31 +5186,11 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -3.6399603184602256
-    },
-    "1gTPqUFFL7LhFal$3qGsga": {
-        "id": "1gTPqUFFL7LhFal$3qGsga",
-        "elevation": 3.9,
-        "location": [
-            [
-                45.68673968153983,
-                4.033452922679558,
-                3.9
-            ],
-            [
-                37.42673968153977,
-                4.033452922679556,
-                3.9
-            ]
-        ],
-        "length": 7.99,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsgx": {
         "id": "1gTPqUFFL7LhFal$3qGsgx",
@@ -5161,6 +5211,29 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGsga": {
+        "id": "1gTPqUFFL7LhFal$3qGsga",
+        "elevation": 3.9,
+        "location": [
+            [
+                45.68673968153983,
+                4.033452922679558,
+                3.9
+            ],
+            [
+                37.42673968153977,
+                4.033452922679556,
+                3.9
+            ]
+        ],
+        "length": 7.99,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsgW": {
@@ -5182,6 +5255,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsgX": {
@@ -5203,6 +5277,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsgw": {
@@ -5211,7 +5286,7 @@
         "location": [
             [
                 33.68673968153978,
-                4.033452922679632,
+                4.0334529226795555,
                 3.9
             ],
             [
@@ -5224,10 +5299,33 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
-        "relative_distance": -7.379960318460223
+        "relative_distance": 7.379960318460223
+    },
+    "1gTPqUFFL7LhFal$3qGsgb": {
+        "id": "1gTPqUFFL7LhFal$3qGsgb",
+        "elevation": 3.9,
+        "location": [
+            [
+                37.42673968153977,
+                4.033452922679556,
+                3.9
+            ],
+            [
+                37.42673968153977,
+                20.033452922679587,
+                3.9
+            ]
+        ],
+        "length": 16.0,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsgc": {
         "id": "1gTPqUFFL7LhFal$3qGsgc",
@@ -5248,31 +5346,11 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -19.379960318460263
-    },
-    "1gTPqUFFL7LhFal$3qGsgb": {
-        "id": "1gTPqUFFL7LhFal$3qGsgb",
-        "elevation": 3.9,
-        "location": [
-            [
-                37.42673968153977,
-                4.033452922679632,
-                3.9
-            ],
-            [
-                37.42673968153977,
-                20.033452922679587,
-                3.9
-            ]
-        ],
-        "length": 16.0,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
-        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsgd": {
         "id": "1gTPqUFFL7LhFal$3qGsgd",
@@ -5293,6 +5371,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "0xQJTbhNbEOQnij2C8z9wp": {
@@ -5306,7 +5385,7 @@
             ],
             [
                 27.68673968153973,
-                -3.9665470773203886,
+                -3.9665470773203904,
                 3.9
             ]
         ],
@@ -5314,34 +5393,11 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -13.37996031846027
-    },
-    "0xQJTbhNbEOQnij2C8z9wm": {
-        "id": "0xQJTbhNbEOQnij2C8z9wm",
-        "elevation": 3.9,
-        "location": [
-            [
-                39.68673968153976,
-                -19.96654707732042,
-                3.9
-            ],
-            [
-                27.68673968153973,
-                -19.96654707732042,
-                3.9
-            ]
-        ],
-        "length": 12.2,
-        "width": 0.2,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "19_3.9",
-        "relative_distance": -1.3799603184602347
     },
     "0xQJTbhNbEOQnij2C8z9wr": {
         "id": "0xQJTbhNbEOQnij2C8z9wr",
@@ -5354,7 +5410,7 @@
             ],
             [
                 39.68673968153976,
-                -19.96654707732042,
+                -19.966547077320424,
                 3.9
             ]
         ],
@@ -5362,6 +5418,7 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
@@ -5373,7 +5430,7 @@
         "location": [
             [
                 27.68673968153973,
-                -3.9665470773203886,
+                -3.9665470773203904,
                 3.9
             ],
             [
@@ -5386,10 +5443,36 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
         "relative_distance": -13.37996031846027
+    },
+    "0xQJTbhNbEOQnij2C8z9wm": {
+        "id": "0xQJTbhNbEOQnij2C8z9wm",
+        "elevation": 3.9,
+        "location": [
+            [
+                39.68673968153976,
+                -19.966547077320424,
+                3.9
+            ],
+            [
+                27.68673968153973,
+                -19.96654707732042,
+                3.9
+            ]
+        ],
+        "length": 12.2,
+        "width": 0.2,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "19_3.9",
+        "relative_distance": -1.3799603184602347
     },
     "1syTwdRdb5$f$hW8QqAz8b": {
         "id": "1syTwdRdb5$f$hW8QqAz8b",
@@ -5410,6 +5493,7 @@
         "width": 0.115,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "19_3.9",
@@ -5434,6 +5518,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5458,6 +5543,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5482,34 +5568,11 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
         "relative_distance": -11.259952922679688
-    },
-    "1gTPqUFFL7LhFal$3qGslq": {
-        "id": "1gTPqUFFL7LhFal$3qGslq",
-        "elevation": 7.8,
-        "location": [
-            [
-                -14.313260318460266,
-                -23.226547077320234,
-                7.799999999999998
-            ],
-            [
-                -2.3132603184602445,
-                -23.226547077320234,
-                7.799999999999998
-            ]
-        ],
-        "length": 11.73,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_7.8",
-        "relative_distance": -3.73995292267977
     },
     "1gTPqUFFL7LhFal$3qGslm": {
         "id": "1gTPqUFFL7LhFal$3qGslm",
@@ -5530,10 +5593,36 @@
         "width": 0.115,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
         "relative_distance": 51.23995292267959
+    },
+    "1gTPqUFFL7LhFal$3qGslq": {
+        "id": "1gTPqUFFL7LhFal$3qGslq",
+        "elevation": 7.8,
+        "location": [
+            [
+                -14.313260318460266,
+                -23.226547077320234,
+                7.799999999999998
+            ],
+            [
+                -2.3132603184602445,
+                -23.226547077320234,
+                7.799999999999998
+            ]
+        ],
+        "length": 11.73,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_7.8",
+        "relative_distance": -3.73995292267977
     },
     "1gTPqUFFL7LhFal$3qGskI": {
         "id": "1gTPqUFFL7LhFal$3qGskI",
@@ -5554,7 +5643,33 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGsl8": {
+        "id": "1gTPqUFFL7LhFal$3qGsl8",
+        "elevation": 7.8,
+        "location": [
+            [
+                45.686739681539834,
+                28.03345292267956,
+                7.799999999999998
+            ],
+            [
+                21.686739681539777,
+                28.03345292267957,
+                7.799999999999998
+            ]
+        ],
+        "length": 23.7,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_7.8",
+        "relative_distance": -54.99995292267956
     },
     "1gTPqUFFL7LhFal$3qGslA": {
         "id": "1gTPqUFFL7LhFal$3qGslA",
@@ -5575,38 +5690,18 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
         "relative_distance": -22.99995292267961
-    },
-    "1gTPqUFFL7LhFal$3qGskJ": {
-        "id": "1gTPqUFFL7LhFal$3qGskJ",
-        "elevation": 7.8,
-        "location": [
-            [
-                3.686739681539737,
-                -15.706547077320314,
-                7.799999999999998
-            ],
-            [
-                0.746739681539736,
-                -15.706547077320314,
-                7.799999999999998
-            ]
-        ],
-        "length": 3.18,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGslB": {
         "id": "1gTPqUFFL7LhFal$3qGslB",
         "elevation": 7.8,
         "location": [
             [
-                0.746739681539736,
+                0.7467396815397369,
                 -15.706547077320314,
                 7.799999999999998
             ],
@@ -5620,34 +5715,33 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
         "relative_distance": -11.259952922679688
     },
-    "1gTPqUFFL7LhFal$3qGsl8": {
-        "id": "1gTPqUFFL7LhFal$3qGsl8",
+    "1gTPqUFFL7LhFal$3qGskJ": {
+        "id": "1gTPqUFFL7LhFal$3qGskJ",
         "elevation": 7.8,
         "location": [
             [
-                45.686739681539834,
-                28.03345292267956,
+                3.686739681539737,
+                -15.706547077320314,
                 7.799999999999998
             ],
             [
-                21.68673968153975,
-                28.03345292267957,
+                0.7467396815397369,
+                -15.706547077320314,
                 7.799999999999998
             ]
         ],
-        "length": 23.7,
+        "length": 3.18,
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_7.8",
-        "relative_distance": -54.99995292267956
+        "external": 0,
+        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGslt": {
         "id": "1gTPqUFFL7LhFal$3qGslt",
@@ -5668,6 +5762,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5678,7 +5773,7 @@
         "elevation": 7.8,
         "location": [
             [
-                21.686739681539745,
+                21.686739681539766,
                 4.033452922679631,
                 7.799999999999998
             ],
@@ -5692,6 +5787,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtMv": {
@@ -5713,27 +5809,7 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "1gTPqUFFL7LhFal$3qGtMb": {
-        "id": "1gTPqUFFL7LhFal$3qGtMb",
-        "elevation": 7.8,
-        "location": [
-            [
-                21.686739681539763,
-                -3.9665470773203895,
-                7.799999999999998
-            ],
-            [
-                21.68673968153976,
-                -11.966547077320369,
-                7.799999999999998
-            ]
-        ],
-        "length": 7.97,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtMc": {
@@ -5755,6 +5831,29 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGtMb": {
+        "id": "1gTPqUFFL7LhFal$3qGtMb",
+        "elevation": 7.8,
+        "location": [
+            [
+                21.686739681539763,
+                -3.9665470773203895,
+                7.799999999999998
+            ],
+            [
+                21.68673968153976,
+                -11.966547077320369,
+                7.799999999999998
+            ]
+        ],
+        "length": 7.97,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtM$": {
@@ -5776,10 +5875,58 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
         "relative_distance": -30.999952922679558
+    },
+    "1gTPqUFFL7LhFal$3qGtMx": {
+        "id": "1gTPqUFFL7LhFal$3qGtMx",
+        "elevation": 7.8,
+        "location": [
+            [
+                21.68673968153976,
+                -11.966547077320369,
+                7.799999999999998
+            ],
+            [
+                -2.3132603184602445,
+                -11.966547077320364,
+                7.799999999999998
+            ]
+        ],
+        "length": 23.76,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_7.8",
+        "relative_distance": -14.999952922679634
+    },
+    "1gTPqUFFL7LhFal$3qGtMa": {
+        "id": "1gTPqUFFL7LhFal$3qGtMa",
+        "elevation": 7.8,
+        "location": [
+            [
+                3.686739681539737,
+                -15.706547077320314,
+                7.799999999999998
+            ],
+            [
+                21.68673968153976,
+                -15.706547077320314,
+                7.799999999999998
+            ]
+        ],
+        "length": 18.0,
+        "width": 0.24,
+        "height": 3.6,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtMw": {
         "id": "1gTPqUFFL7LhFal$3qGtMw",
@@ -5800,52 +5947,8 @@
         "width": 0.24,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
-    },
-    "1gTPqUFFL7LhFal$3qGtMa": {
-        "id": "1gTPqUFFL7LhFal$3qGtMa",
-        "elevation": 7.8,
-        "location": [
-            [
-                3.686739681539737,
-                -15.706547077320314,
-                7.799999999999998
-            ],
-            [
-                21.686739681539738,
-                -15.706547077320314,
-                7.799999999999998
-            ]
-        ],
-        "length": 18.0,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall"
-    },
-    "1gTPqUFFL7LhFal$3qGtMx": {
-        "id": "1gTPqUFFL7LhFal$3qGtMx",
-        "elevation": 7.8,
-        "location": [
-            [
-                21.686739681539738,
-                -11.966547077320369,
-                7.799999999999998
-            ],
-            [
-                -2.3132603184602445,
-                -11.966547077320364,
-                7.799999999999998
-            ]
-        ],
-        "length": 23.76,
-        "width": 0.24,
-        "height": 3.6,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_7.8",
-        "relative_distance": -14.999952922679634
     },
     "0xQJTbhNbEOQnij2C8z87J": {
         "id": "0xQJTbhNbEOQnij2C8z87J",
@@ -5866,6 +5969,7 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5890,6 +5994,7 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5914,6 +6019,7 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5938,6 +6044,7 @@
         "width": 0.2,
         "height": 3.6,
         "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
@@ -5948,7 +6055,7 @@
         "elevation": 7.8,
         "location": [
             [
-                0.7467396815397326,
+                0.746739681539733,
                 -21.446547077320304,
                 7.799999999999998
             ],
@@ -5962,10 +6069,11 @@
         "width": 0.115,
         "height": 3.6,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_7.8",
-        "relative_distance": -5.519952922679697
+        "relative_distance": 5.519952922679697
     },
     "1gTPqUFFL7LhFal$3qGskF": {
         "id": "1gTPqUFFL7LhFal$3qGskF",
@@ -5986,6 +6094,7 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
@@ -6010,58 +6119,11 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
         "relative_distance": -11.259952922679688
-    },
-    "1gTPqUFFL7LhFal$3qGsk3": {
-        "id": "1gTPqUFFL7LhFal$3qGsk3",
-        "elevation": 11.7,
-        "location": [
-            [
-                42.67673968153982,
-                39.033452922679636,
-                11.699999999999998
-            ],
-            [
-                42.67673968153982,
-                28.033452922679565,
-                11.699999999999998
-            ]
-        ],
-        "length": 10.73,
-        "width": 0.24,
-        "height": 3.7,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_11.7",
-        "relative_distance": -65.99995292267964
-    },
-    "1gTPqUFFL7LhFal$3qGskE": {
-        "id": "1gTPqUFFL7LhFal$3qGskE",
-        "elevation": 11.7,
-        "location": [
-            [
-                -14.313260318460266,
-                -23.226547077320234,
-                11.699999999999998
-            ],
-            [
-                -2.3132603184602445,
-                -23.226547077320234,
-                11.699999999999998
-            ]
-        ],
-        "length": 11.73,
-        "width": 0.24,
-        "height": 3.7,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_11.7",
-        "relative_distance": -3.73995292267977
     },
     "1gTPqUFFL7LhFal$3qGskA": {
         "id": "1gTPqUFFL7LhFal$3qGskA",
@@ -6082,6 +6144,7 @@
         "width": 0.115,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
@@ -6106,6 +6169,7 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGsjL": {
@@ -6127,7 +6191,58 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGsk3": {
+        "id": "1gTPqUFFL7LhFal$3qGsk3",
+        "elevation": 11.7,
+        "location": [
+            [
+                42.67673968153982,
+                39.033452922679636,
+                11.699999999999998
+            ],
+            [
+                42.67673968153982,
+                28.03345292267956,
+                11.699999999999998
+            ]
+        ],
+        "length": 10.73,
+        "width": 0.24,
+        "height": 3.7,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_11.7",
+        "relative_distance": -65.99995292267964
+    },
+    "1gTPqUFFL7LhFal$3qGskE": {
+        "id": "1gTPqUFFL7LhFal$3qGskE",
+        "elevation": 11.7,
+        "location": [
+            [
+                -14.313260318460266,
+                -23.226547077320234,
+                11.699999999999998
+            ],
+            [
+                -2.3132603184602445,
+                -23.226547077320234,
+                11.699999999999998
+            ]
+        ],
+        "length": 11.73,
+        "width": 0.24,
+        "height": 3.7,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_11.7",
+        "relative_distance": -3.73995292267977
     },
     "1gTPqUFFL7LhFal$3qGsk2": {
         "id": "1gTPqUFFL7LhFal$3qGsk2",
@@ -6135,12 +6250,12 @@
         "location": [
             [
                 45.686739681539834,
-                28.033452922679565,
+                28.03345292267956,
                 11.699999999999998
             ],
             [
-                21.68673968153975,
-                28.033452922679565,
+                21.686739681539777,
+                28.03345292267957,
                 11.699999999999998
             ]
         ],
@@ -6148,10 +6263,11 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
-        "relative_distance": -54.999952922679576
+        "relative_distance": -54.99995292267956
     },
     "1gTPqUFFL7LhFal$3qGskC": {
         "id": "1gTPqUFFL7LhFal$3qGskC",
@@ -6172,6 +6288,7 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
@@ -6196,6 +6313,7 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
@@ -6220,31 +6338,11 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
         "relative_distance": -51.23995292267959
-    },
-    "1gTPqUFFL7LhFal$3qGtMg": {
-        "id": "1gTPqUFFL7LhFal$3qGtMg",
-        "elevation": 11.7,
-        "location": [
-            [
-                21.686739681539745,
-                4.033452922679631,
-                11.699999999999998
-            ],
-            [
-                33.68673968153978,
-                4.033452922679632,
-                11.699999999999998
-            ]
-        ],
-        "length": 11.97,
-        "width": 0.24,
-        "height": 3.7,
-        "orientation": 0.0,
-        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtMh": {
         "id": "1gTPqUFFL7LhFal$3qGtMh",
@@ -6265,6 +6363,51 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGtLG": {
+        "id": "1gTPqUFFL7LhFal$3qGtLG",
+        "elevation": 11.7,
+        "location": [
+            [
+                21.68673968153974,
+                -15.706547077320314,
+                11.699999999999998
+            ],
+            [
+                21.686739681539734,
+                -26.966547077320428,
+                11.699999999999998
+            ]
+        ],
+        "length": 10.99,
+        "width": 0.24,
+        "height": 3.7,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall"
+    },
+    "1gTPqUFFL7LhFal$3qGtMg": {
+        "id": "1gTPqUFFL7LhFal$3qGtMg",
+        "elevation": 11.7,
+        "location": [
+            [
+                21.686739681539766,
+                4.033452922679631,
+                11.699999999999998
+            ],
+            [
+                33.68673968153978,
+                4.033452922679632,
+                11.699999999999998
+            ]
+        ],
+        "length": 11.97,
+        "width": 0.24,
+        "height": 3.7,
+        "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtLN": {
@@ -6286,27 +6429,7 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
-        "type": "ns_wall"
-    },
-    "1gTPqUFFL7LhFal$3qGtLG": {
-        "id": "1gTPqUFFL7LhFal$3qGtLG",
-        "elevation": 11.7,
-        "location": [
-            [
-                21.686739681539738,
-                -15.706547077320314,
-                11.699999999999998
-            ],
-            [
-                21.686739681539734,
-                -26.966547077320428,
-                11.699999999999998
-            ]
-        ],
-        "length": 10.99,
-        "width": 0.24,
-        "height": 3.7,
-        "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtMf": {
@@ -6315,7 +6438,7 @@
         "location": [
             [
                 33.68673968153978,
-                4.0334529226795555,
+                4.033452922679632,
                 11.699999999999998
             ],
             [
@@ -6328,17 +6451,18 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
-        "relative_distance": -30.999952922679558
+        "relative_distance": -30.999952922679636
     },
     "1gTPqUFFL7LhFal$3qGtLL": {
         "id": "1gTPqUFFL7LhFal$3qGtLL",
         "elevation": 11.7,
         "location": [
             [
-                21.686739681539738,
+                21.68673968153976,
                 -11.966547077320369,
                 11.699999999999998
             ],
@@ -6352,10 +6476,33 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
         "relative_distance": -14.999952922679634
+    },
+    "1gTPqUFFL7LhFal$3qGtLM": {
+        "id": "1gTPqUFFL7LhFal$3qGtLM",
+        "elevation": 11.7,
+        "location": [
+            [
+                3.686739681539737,
+                -15.706547077320314,
+                11.699999999999998
+            ],
+            [
+                21.68673968153976,
+                -15.706547077320314,
+                11.699999999999998
+            ]
+        ],
+        "length": 18.0,
+        "width": 0.24,
+        "height": 3.7,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall"
     },
     "1gTPqUFFL7LhFal$3qGtLK": {
         "id": "1gTPqUFFL7LhFal$3qGtLK",
@@ -6363,7 +6510,7 @@
         "location": [
             [
                 37.42673968153977,
-                4.033452922679556,
+                4.033452922679632,
                 11.699999999999998
             ],
             [
@@ -6376,27 +6523,7 @@
         "width": 0.24,
         "height": 3.7,
         "orientation": 90.0,
-        "type": "ns_wall"
-    },
-    "1gTPqUFFL7LhFal$3qGtLM": {
-        "id": "1gTPqUFFL7LhFal$3qGtLM",
-        "elevation": 11.7,
-        "location": [
-            [
-                3.686739681539737,
-                -15.706547077320314,
-                11.699999999999998
-            ],
-            [
-                21.686739681539738,
-                -15.706547077320314,
-                11.699999999999998
-            ]
-        ],
-        "length": 18.0,
-        "width": 0.24,
-        "height": 3.7,
-        "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall"
     },
     "0xQJTbhNbEOQnij2C8z8Ak": {
@@ -6418,54 +6545,7 @@
         "width": 0.2,
         "height": 3.7,
         "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_11.7",
-        "relative_distance": -6.999952922679583
-    },
-    "0xQJTbhNbEOQnij2C8z8AJ": {
-        "id": "0xQJTbhNbEOQnij2C8z8AJ",
-        "elevation": 11.7,
-        "location": [
-            [
-                39.68673968153976,
-                -3.9665470773203895,
-                11.699999999999998
-            ],
-            [
-                39.68673968153976,
-                -19.96654707732042,
-                11.699999999999998
-            ]
-        ],
-        "length": 15.8,
-        "width": 0.2,
-        "height": 3.7,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_11.7",
-        "relative_distance": -22.99995292267961
-    },
-    "0xQJTbhNbEOQnij2C8z8AH": {
-        "id": "0xQJTbhNbEOQnij2C8z8AH",
-        "elevation": 11.7,
-        "location": [
-            [
-                27.68673968153973,
-                -19.96654707732042,
-                11.699999999999998
-            ],
-            [
-                27.68673968153973,
-                -3.9665470773203886,
-                11.699999999999998
-            ]
-        ],
-        "length": 16.0,
-        "width": 0.2,
-        "height": 3.7,
-        "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
@@ -6490,10 +6570,61 @@
         "width": 0.2,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
         "relative_distance": -22.999952922679615
+    },
+    "0xQJTbhNbEOQnij2C8z8AH": {
+        "id": "0xQJTbhNbEOQnij2C8z8AH",
+        "elevation": 11.7,
+        "location": [
+            [
+                27.68673968153973,
+                -19.96654707732042,
+                11.699999999999998
+            ],
+            [
+                27.68673968153973,
+                -3.9665470773203886,
+                11.699999999999998
+            ]
+        ],
+        "length": 16.0,
+        "width": 0.2,
+        "height": 3.7,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_11.7",
+        "relative_distance": -6.999952922679583
+    },
+    "0xQJTbhNbEOQnij2C8z8AJ": {
+        "id": "0xQJTbhNbEOQnij2C8z8AJ",
+        "elevation": 11.7,
+        "location": [
+            [
+                39.68673968153976,
+                -3.9665470773203895,
+                11.699999999999998
+            ],
+            [
+                39.68673968153976,
+                -19.96654707732042,
+                11.699999999999998
+            ]
+        ],
+        "length": 15.8,
+        "width": 0.2,
+        "height": 3.7,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_11.7",
+        "relative_distance": -22.99995292267961
     },
     "1syTwdRdb5$f$hW8QqAz8Z": {
         "id": "1syTwdRdb5$f$hW8QqAz8Z",
@@ -6514,6 +6645,7 @@
         "width": 0.115,
         "height": 3.7,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_11.7",
@@ -6538,6 +6670,7 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
@@ -6562,58 +6695,11 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
         "relative_distance": -11.259952922679688
-    },
-    "1gTPqUFFL7LhFal$3qGsjl": {
-        "id": "1gTPqUFFL7LhFal$3qGsjl",
-        "elevation": 15.6,
-        "location": [
-            [
-                3.686739681539737,
-                -15.706547077320314,
-                15.599999999999996
-            ],
-            [
-                0.746739681539736,
-                -15.706547077320314,
-                15.599999999999996
-            ]
-        ],
-        "length": 3.18,
-        "width": 0.24,
-        "height": 3.9,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_15.6",
-        "relative_distance": -11.259952922679688
-    },
-    "1gTPqUFFL7LhFal$3qGsjk": {
-        "id": "1gTPqUFFL7LhFal$3qGsjk",
-        "elevation": 15.6,
-        "location": [
-            [
-                37.42673968153979,
-                20.033452922679583,
-                15.599999999999996
-            ],
-            [
-                37.42673968153979,
-                24.273452922679592,
-                15.599999999999996
-            ]
-        ],
-        "length": 4.24,
-        "width": 0.24,
-        "height": 3.9,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_15.6",
-        "relative_distance": -46.99995292267958
     },
     "1gTPqUFFL7LhFal$3qGsjC": {
         "id": "1gTPqUFFL7LhFal$3qGsjC",
@@ -6634,10 +6720,61 @@
         "width": 0.115,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
         "relative_distance": 51.23995292267959
+    },
+    "1gTPqUFFL7LhFal$3qGsjk": {
+        "id": "1gTPqUFFL7LhFal$3qGsjk",
+        "elevation": 15.6,
+        "location": [
+            [
+                37.42673968153979,
+                20.033452922679583,
+                15.599999999999996
+            ],
+            [
+                37.42673968153979,
+                24.273452922679592,
+                15.599999999999996
+            ]
+        ],
+        "length": 4.24,
+        "width": 0.24,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_15.6",
+        "relative_distance": -46.99995292267958
+    },
+    "1gTPqUFFL7LhFal$3qGsjl": {
+        "id": "1gTPqUFFL7LhFal$3qGsjl",
+        "elevation": 15.6,
+        "location": [
+            [
+                3.686739681539737,
+                -15.706547077320314,
+                15.599999999999996
+            ],
+            [
+                0.746739681539736,
+                -15.706547077320314,
+                15.599999999999996
+            ]
+        ],
+        "length": 3.18,
+        "width": 0.24,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_15.6",
+        "relative_distance": -11.259952922679688
     },
     "1gTPqUFFL7LhFal$3qGsj5": {
         "id": "1gTPqUFFL7LhFal$3qGsj5",
@@ -6650,7 +6787,7 @@
             ],
             [
                 42.67673968153982,
-                28.033452922679565,
+                28.03345292267956,
                 15.599999999999996
             ]
         ],
@@ -6658,6 +6795,7 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
@@ -6673,7 +6811,7 @@
                 15.599999999999996
             ],
             [
-                -2.3132603184602503,
+                -2.3132603184602445,
                 -23.226547077320234,
                 15.599999999999996
             ]
@@ -6682,58 +6820,11 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
         "relative_distance": -3.73995292267977
-    },
-    "1gTPqUFFL7LhFal$3qGsj4": {
-        "id": "1gTPqUFFL7LhFal$3qGsj4",
-        "elevation": 15.6,
-        "location": [
-            [
-                45.686739681539834,
-                28.033452922679565,
-                15.599999999999996
-            ],
-            [
-                21.686739681539763,
-                28.033452922679565,
-                15.599999999999996
-            ]
-        ],
-        "length": 23.7,
-        "width": 0.24,
-        "height": 3.9,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_15.6",
-        "relative_distance": -54.999952922679576
-    },
-    "1gTPqUFFL7LhFal$3qGsj6": {
-        "id": "1gTPqUFFL7LhFal$3qGsj6",
-        "elevation": 15.6,
-        "location": [
-            [
-                -2.3132603184602445,
-                -3.9665470773203895,
-                15.599999999999996
-            ],
-            [
-                -2.3132603184602516,
-                -26.966547077320424,
-                15.599999999999996
-            ]
-        ],
-        "length": 22.7,
-        "width": 0.24,
-        "height": 3.9,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_15.6",
-        "relative_distance": -22.99995292267961
     },
     "1gTPqUFFL7LhFal$3qGsj7": {
         "id": "1gTPqUFFL7LhFal$3qGsj7",
@@ -6754,10 +6845,61 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
         "relative_distance": -11.259952922679688
+    },
+    "1gTPqUFFL7LhFal$3qGsj6": {
+        "id": "1gTPqUFFL7LhFal$3qGsj6",
+        "elevation": 15.6,
+        "location": [
+            [
+                -2.3132603184602445,
+                -3.9665470773203895,
+                15.599999999999996
+            ],
+            [
+                -2.3132603184602445,
+                -26.966547077320428,
+                15.599999999999996
+            ]
+        ],
+        "length": 22.7,
+        "width": 0.24,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_15.6",
+        "relative_distance": -22.99995292267961
+    },
+    "1gTPqUFFL7LhFal$3qGsj4": {
+        "id": "1gTPqUFFL7LhFal$3qGsj4",
+        "elevation": 15.6,
+        "location": [
+            [
+                45.686739681539834,
+                28.03345292267956,
+                15.599999999999996
+            ],
+            [
+                21.686739681539763,
+                28.03345292267957,
+                15.599999999999996
+            ]
+        ],
+        "length": 23.7,
+        "width": 0.24,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 0,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_15.6",
+        "relative_distance": -54.99995292267956
     },
     "1gTPqUFFL7LhFal$3qGsj3": {
         "id": "1gTPqUFFL7LhFal$3qGsj3",
@@ -6778,6 +6920,7 @@
         "width": 0.24,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
@@ -6802,58 +6945,11 @@
         "width": 0.115,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 0,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
         "relative_distance": -5.519952922679697
-    },
-    "1syTwdRdb5$f$hW8QqAzKG": {
-        "id": "1syTwdRdb5$f$hW8QqAzKG",
-        "elevation": 15.6,
-        "location": [
-            [
-                27.68673968153973,
-                -3.9665470773203886,
-                15.599999999999996
-            ],
-            [
-                39.68673968153976,
-                -3.9665470773203895,
-                15.599999999999996
-            ]
-        ],
-        "length": 12.0,
-        "width": 0.2,
-        "height": 3.9,
-        "orientation": 0.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_15.6",
-        "relative_distance": -22.999952922679615
-    },
-    "1syTwdRdb5$f$hW8QqAzKH": {
-        "id": "1syTwdRdb5$f$hW8QqAzKH",
-        "elevation": 15.6,
-        "location": [
-            [
-                27.68673968153973,
-                -19.96654707732042,
-                15.599999999999996
-            ],
-            [
-                27.68673968153973,
-                -3.9665470773203886,
-                15.599999999999996
-            ]
-        ],
-        "length": 16.0,
-        "width": 0.2,
-        "height": 3.9,
-        "orientation": 90.0,
-        "type": "ns_wall",
-        "status": "nephew",
-        "host": "17_15.6",
-        "relative_distance": -6.999952922679583
     },
     "1syTwdRdb5$f$hW8QqAzKM": {
         "id": "1syTwdRdb5$f$hW8QqAzKM",
@@ -6874,10 +6970,61 @@
         "width": 0.2,
         "height": 3.9,
         "orientation": 0.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
         "relative_distance": -6.999952922679583
+    },
+    "1syTwdRdb5$f$hW8QqAzKH": {
+        "id": "1syTwdRdb5$f$hW8QqAzKH",
+        "elevation": 15.6,
+        "location": [
+            [
+                27.68673968153973,
+                -19.96654707732042,
+                15.599999999999996
+            ],
+            [
+                27.68673968153973,
+                -3.9665470773203886,
+                15.599999999999996
+            ]
+        ],
+        "length": 16.0,
+        "width": 0.2,
+        "height": 3.9,
+        "orientation": 90.0,
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_15.6",
+        "relative_distance": -6.999952922679583
+    },
+    "1syTwdRdb5$f$hW8QqAzKG": {
+        "id": "1syTwdRdb5$f$hW8QqAzKG",
+        "elevation": 15.6,
+        "location": [
+            [
+                27.68673968153973,
+                -3.9665470773203886,
+                15.599999999999996
+            ],
+            [
+                39.68673968153976,
+                -3.9665470773203895,
+                15.599999999999996
+            ]
+        ],
+        "length": 12.0,
+        "width": 0.2,
+        "height": 3.9,
+        "orientation": 0.0,
+        "external": 1,
+        "type": "ns_wall",
+        "status": "nephew",
+        "host": "17_15.6",
+        "relative_distance": -22.999952922679615
     },
     "1syTwdRdb5$f$hW8QqAzKJ": {
         "id": "1syTwdRdb5$f$hW8QqAzKJ",
@@ -6898,6 +7045,7 @@
         "width": 0.2,
         "height": 3.9,
         "orientation": 90.0,
+        "external": 1,
         "type": "ns_wall",
         "status": "nephew",
         "host": "17_15.6",
@@ -6922,6 +7070,7 @@
         "length": 5.497200000000003,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8zAq5": {
@@ -6943,6 +7092,7 @@
         "length": 5.484399999999994,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9PB": {
@@ -6964,6 +7114,7 @@
         "length": 7.403299999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z94y": {
@@ -6985,6 +7136,7 @@
         "length": 5.430500000000002,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z99$": {
@@ -7006,6 +7158,7 @@
         "length": 5.480000000000004,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9Yt": {
@@ -7027,6 +7180,7 @@
         "length": 7.5,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9hf": {
@@ -7048,6 +7202,7 @@
         "length": 7.499999999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9jS": {
@@ -7069,6 +7224,7 @@
         "length": 7.415100000000001,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9vA": {
@@ -7090,6 +7246,7 @@
         "length": 5.497200000000003,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9vC": {
@@ -7111,6 +7268,7 @@
         "length": 5.484399999999994,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9_9": {
@@ -7132,6 +7290,7 @@
         "length": 7.403300000000001,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9_h": {
@@ -7153,6 +7312,7 @@
         "length": 5.4304999999999986,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9_j": {
@@ -7174,6 +7334,7 @@
         "length": 5.480000000000004,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9_B": {
@@ -7195,6 +7356,7 @@
         "length": 7.499999999999998,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9$d": {
@@ -7216,6 +7378,7 @@
         "length": 7.5,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9$f": {
@@ -7237,6 +7400,7 @@
         "length": 7.415099999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9yN": {
@@ -7258,6 +7422,7 @@
         "length": 5.497200000000003,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9yP": {
@@ -7279,6 +7444,7 @@
         "length": 5.484399999999994,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9zI": {
@@ -7300,6 +7466,7 @@
         "length": 7.403300000000001,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9zq": {
@@ -7321,6 +7488,7 @@
         "length": 5.4304999999999986,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9zs": {
@@ -7342,6 +7510,7 @@
         "length": 5.480000000000004,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z9zK": {
@@ -7363,6 +7532,7 @@
         "length": 7.499999999999998,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z82m": {
@@ -7384,6 +7554,7 @@
         "length": 7.5,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z82o": {
@@ -7405,6 +7576,7 @@
         "length": 7.415099999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z83W": {
@@ -7426,6 +7598,7 @@
         "length": 5.497200000000003,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z83Y": {
@@ -7447,6 +7620,7 @@
         "length": 5.484399999999994,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z80$": {
@@ -7468,6 +7642,7 @@
         "length": 7.403300000000001,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z831": {
@@ -7489,6 +7664,7 @@
         "length": 5.4304999999999986,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z833": {
@@ -7510,6 +7686,7 @@
         "length": 5.480000000000004,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z80X": {
@@ -7531,6 +7708,7 @@
         "length": 7.499999999999998,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z80T": {
@@ -7552,6 +7730,7 @@
         "length": 7.5,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "0xQJTbhNbEOQnij2C8z80V": {
@@ -7573,6 +7752,7 @@
         "length": 7.415099999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzJ_": {
@@ -7594,6 +7774,7 @@
         "length": 5.497200000000003,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzJu": {
@@ -7615,6 +7796,7 @@
         "length": 5.484399999999994,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzGW": {
@@ -7636,6 +7818,7 @@
         "length": 7.403300000000001,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzGS": {
@@ -7657,6 +7840,7 @@
         "length": 5.4304999999999986,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzGU": {
@@ -7678,6 +7862,7 @@
         "length": 5.480000000000004,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzGY": {
@@ -7699,6 +7884,7 @@
         "length": 7.499999999999998,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzH4": {
@@ -7720,6 +7906,7 @@
         "length": 7.5,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8QqAzH6": {
@@ -7741,6 +7928,7 @@
         "length": 7.415099999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8Qq92ad": {
@@ -7762,6 +7950,7 @@
         "length": 14.6897,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8Qq92ZU": {
@@ -7783,6 +7972,7 @@
         "length": 13.399999999999999,
         "width": 0.03,
         "orientation": 90.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8Qq92xO": {
@@ -7804,6 +7994,7 @@
         "length": 11.0,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1syTwdRdb5$f$hW8Qq92st": {
@@ -7825,6 +8016,7 @@
         "length": 10.159999999999997,
         "width": 0.03,
         "orientation": 0.0,
+        "external": 1,
         "type": "ct_wall"
     },
     "1": {
@@ -7855,17 +8047,18 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "1_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDR",
-            "205do4mkr2Df2cxE4ThQD$",
-            "205do4mkr2Df2cxE4ThQDm",
-            "205do4mkr2Df2cxE4ThQE9",
             "36AbZx3gv8twVYrus4x1FZ",
+            "205do4mkr2Df2cxE4ThQDR",
+            "205do4mkr2Df2cxE4ThQDM",
+            "205do4mkr2Df2cxE4ThQE9",
+            "205do4mkr2Df2cxE4ThQDm",
             "205do4mkr2Df2cxE4ThQDN",
-            "205do4mkr2Df2cxE4ThQDM"
+            "205do4mkr2Df2cxE4ThQD$"
         ],
         "type": "storey",
         "location": [
@@ -7880,6 +8073,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "2_0.0": -8.000000000000002,
@@ -7888,14 +8082,14 @@
     },
     "1_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8N",
-            "1gTPqUFFL7LhFal$3qGs8H",
-            "1gTPqUFFL7LhFal$3qGss$",
             "1gTPqUFFL7LhFal$3qGs8L",
+            "1gTPqUFFL7LhFal$3qGs8H",
             "1gTPqUFFL7LhFal$3qGsrl",
+            "1gTPqUFFL7LhFal$3qGss$",
+            "1gTPqUFFL7LhFal$3qGs8N",
+            "1gTPqUFFL7LhFal$3qGs8O",
             "1gTPqUFFL7LhFal$3qGssu",
-            "1gTPqUFFL7LhFal$3qGs8V",
-            "1gTPqUFFL7LhFal$3qGs8O"
+            "1gTPqUFFL7LhFal$3qGs8V"
         ],
         "type": "storey",
         "location": [
@@ -7910,6 +8104,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "2_3.9": -8.000000000000002,
@@ -7919,13 +8114,13 @@
     "1_7.8": {
         "children": [
             "1gTPqUFFL7LhFal$3qGsqN",
-            "1gTPqUFFL7LhFal$3qGs8B",
-            "1gTPqUFFL7LhFal$3qGs89",
             "1gTPqUFFL7LhFal$3qGs8F",
-            "1gTPqUFFL7LhFal$3qGssY",
             "1gTPqUFFL7LhFal$3qGssZ",
+            "1gTPqUFFL7LhFal$3qGssY",
+            "1gTPqUFFL7LhFal$3qGs89",
+            "1gTPqUFFL7LhFal$3qGs8o",
             "1gTPqUFFL7LhFal$3qGs8n",
-            "1gTPqUFFL7LhFal$3qGs8o"
+            "1gTPqUFFL7LhFal$3qGs8B"
         ],
         "type": "storey",
         "location": [
@@ -7940,6 +8135,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "2_7.8": -8.000000000000002,
@@ -7949,13 +8145,13 @@
     "1_11.7": {
         "children": [
             "1gTPqUFFL7LhFal$3qGsrL",
-            "1gTPqUFFL7LhFal$3qGs8h",
-            "1gTPqUFFL7LhFal$3qGstK",
-            "1gTPqUFFL7LhFal$3qGs8X",
             "1gTPqUFFL7LhFal$3qGsqV",
+            "1gTPqUFFL7LhFal$3qGsrM",
+            "1gTPqUFFL7LhFal$3qGs8X",
             "1gTPqUFFL7LhFal$3qGs8Z",
-            "1gTPqUFFL7LhFal$3qGs8j",
-            "1gTPqUFFL7LhFal$3qGsrM"
+            "1gTPqUFFL7LhFal$3qGstK",
+            "1gTPqUFFL7LhFal$3qGs8h",
+            "1gTPqUFFL7LhFal$3qGs8j"
         ],
         "type": "storey",
         "location": [
@@ -7970,6 +8166,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "2_11.7": -8.000000000000002,
@@ -7978,14 +8175,14 @@
     },
     "1_15.6": {
         "children": [
+            "1gTPqUFFL7LhFal$3qGsrP",
+            "1gTPqUFFL7LhFal$3qGsq7",
             "1gTPqUFFL7LhFal$3qGsrO",
             "1gTPqUFFL7LhFal$3qGstR",
             "1gTPqUFFL7LhFal$3qGst5",
-            "1gTPqUFFL7LhFal$3qGstE",
-            "1gTPqUFFL7LhFal$3qGsq7",
-            "1gTPqUFFL7LhFal$3qGst7",
             "1gTPqUFFL7LhFal$3qGstD",
-            "1gTPqUFFL7LhFal$3qGsrP"
+            "1gTPqUFFL7LhFal$3qGst7",
+            "1gTPqUFFL7LhFal$3qGstE"
         ],
         "type": "storey",
         "location": [
@@ -8000,6 +8197,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "2_15.6": -8.000000000000002,
@@ -8034,17 +8232,18 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "2_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDi",
-            "36AbZx3gv8twVYrus4x1Oa",
-            "205do4mkr2Df2cxE4ThQEA",
-            "205do4mkr2Df2cxE4ThQDj",
-            "205do4mkr2Df2cxE4ThQDu",
             "36AbZx3gv8twVYrus4x1RO",
-            "205do4mkr2Df2cxE4ThQDn"
+            "205do4mkr2Df2cxE4ThQEA",
+            "36AbZx3gv8twVYrus4x1Oa",
+            "205do4mkr2Df2cxE4ThQDj",
+            "205do4mkr2Df2cxE4ThQDn",
+            "205do4mkr2Df2cxE4ThQDi",
+            "205do4mkr2Df2cxE4ThQDu"
         ],
         "type": "storey",
         "location": [
@@ -8059,6 +8258,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "6_0.0": -8.000000000000002,
@@ -8067,13 +8267,13 @@
     },
     "2_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8M",
-            "1gTPqUFFL7LhFal$3qGsri",
             "1gTPqUFFL7LhFal$3qGsrj",
-            "1gTPqUFFL7LhFal$3qGs8U",
-            "1gTPqUFFL7LhFal$3qGs8G",
+            "1gTPqUFFL7LhFal$3qGsri",
+            "1gTPqUFFL7LhFal$3qGs8T",
             "1gTPqUFFL7LhFal$3qGs8K",
-            "1gTPqUFFL7LhFal$3qGs8T"
+            "1gTPqUFFL7LhFal$3qGs8M",
+            "1gTPqUFFL7LhFal$3qGs8U",
+            "1gTPqUFFL7LhFal$3qGs8G"
         ],
         "type": "storey",
         "location": [
@@ -8088,6 +8288,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "6_3.9": -8.000000000000002,
@@ -8096,13 +8297,13 @@
     },
     "2_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs88",
-            "1gTPqUFFL7LhFal$3qGs8m",
             "1gTPqUFFL7LhFal$3qGs8E",
-            "1gTPqUFFL7LhFal$3qGs8A",
+            "1gTPqUFFL7LhFal$3qGsqL",
+            "1gTPqUFFL7LhFal$3qGs8m",
+            "1gTPqUFFL7LhFal$3qGs88",
             "1gTPqUFFL7LhFal$3qGsqK",
-            "1gTPqUFFL7LhFal$3qGs8t",
-            "1gTPqUFFL7LhFal$3qGsqL"
+            "1gTPqUFFL7LhFal$3qGs8A",
+            "1gTPqUFFL7LhFal$3qGs8t"
         ],
         "type": "storey",
         "location": [
@@ -8117,6 +8318,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "6_7.8": -8.000000000000002,
@@ -8125,13 +8327,13 @@
     },
     "2_11.7": {
         "children": [
+            "1gTPqUFFL7LhFal$3qGs8f",
+            "1gTPqUFFL7LhFal$3qGsqS",
+            "1gTPqUFFL7LhFal$3qGs8g",
+            "1gTPqUFFL7LhFal$3qGs8W",
             "1gTPqUFFL7LhFal$3qGsqT",
             "1gTPqUFFL7LhFal$3qGs8i",
-            "1gTPqUFFL7LhFal$3qGs8W",
-            "1gTPqUFFL7LhFal$3qGs8f",
-            "1gTPqUFFL7LhFal$3qGs8g",
-            "1gTPqUFFL7LhFal$3qGs8Y",
-            "1gTPqUFFL7LhFal$3qGsqS"
+            "1gTPqUFFL7LhFal$3qGs8Y"
         ],
         "type": "storey",
         "location": [
@@ -8146,6 +8348,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "6_11.7": -8.000000000000002,
@@ -8154,13 +8357,13 @@
     },
     "2_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsq4",
-            "1gTPqUFFL7LhFal$3qGst6",
-            "1gTPqUFFL7LhFal$3qGst4",
-            "1gTPqUFFL7LhFal$3qGsq5",
             "1gTPqUFFL7LhFal$3qGstC",
+            "1gTPqUFFL7LhFal$3qGst4",
+            "1gTPqUFFL7LhFal$3qGsq4",
             "1gTPqUFFL7LhFal$3qGstQ",
-            "1gTPqUFFL7LhFal$3qGst3"
+            "1gTPqUFFL7LhFal$3qGst3",
+            "1gTPqUFFL7LhFal$3qGsq5",
+            "1gTPqUFFL7LhFal$3qGst6"
         ],
         "type": "storey",
         "location": [
@@ -8175,6 +8378,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "6_15.6": -8.000000000000002,
@@ -8209,17 +8413,18 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "3_0.0": {
         "children": [
             "205do4mkr2Df2cxE4ThQDR",
-            "205do4mkr2Df2cxE4ThQDl",
-            "36AbZx3gv8twVYrus4x1Oa",
+            "205do4mkr2Df2cxE4ThQCn",
             "205do4mkr2Df2cxE4ThQD9",
             "205do4mkr2Df2cxE4ThQCm",
-            "205do4mkr2Df2cxE4ThQDb",
-            "205do4mkr2Df2cxE4ThQCn"
+            "205do4mkr2Df2cxE4ThQDl",
+            "36AbZx3gv8twVYrus4x1Oa",
+            "205do4mkr2Df2cxE4ThQDb"
         ],
         "type": "storey",
         "location": [
@@ -8234,6 +8439,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "5_0.0": -6.0,
@@ -8244,8 +8450,8 @@
         "children": [
             "1gTPqUFFL7LhFal$3qGsri",
             "1gTPqUFFL7LhFal$3qGs81",
-            "1gTPqUFFL7LhFal$3qGs8S",
             "1gTPqUFFL7LhFal$3qGss_",
+            "1gTPqUFFL7LhFal$3qGs8S",
             "1gTPqUFFL7LhFal$3qGs80",
             "1gTPqUFFL7LhFal$3qGssu",
             "1gTPqUFFL7LhFal$3qGs8R"
@@ -8263,6 +8469,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "5_3.9": -6.0,
@@ -8271,12 +8478,12 @@
     },
     "3_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGssX",
-            "1gTPqUFFL7LhFal$3qGs8s",
             "1gTPqUFFL7LhFal$3qGssZ",
+            "1gTPqUFFL7LhFal$3qGs8w",
+            "1gTPqUFFL7LhFal$3qGs8s",
+            "1gTPqUFFL7LhFal$3qGssX",
             "1gTPqUFFL7LhFal$3qGsqK",
             "1gTPqUFFL7LhFal$3qGs8x",
-            "1gTPqUFFL7LhFal$3qGs8w",
             "1gTPqUFFL7LhFal$3qGs8z"
         ],
         "type": "storey",
@@ -8292,6 +8499,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "5_7.8": -6.0,
@@ -8300,13 +8508,13 @@
     },
     "3_11.7": {
         "children": [
+            "1gTPqUFFL7LhFal$3qGsqS",
+            "1gTPqUFFL7LhFal$3qGsrM",
+            "1gTPqUFFL7LhFal$3qGsrK",
             "1gTPqUFFL7LhFal$3qGstT",
             "1gTPqUFFL7LhFal$3qGstN",
-            "1gTPqUFFL7LhFal$3qGstS",
             "1gTPqUFFL7LhFal$3qGs8e",
-            "1gTPqUFFL7LhFal$3qGsrK",
-            "1gTPqUFFL7LhFal$3qGsqS",
-            "1gTPqUFFL7LhFal$3qGsrM"
+            "1gTPqUFFL7LhFal$3qGstS"
         ],
         "type": "storey",
         "location": [
@@ -8321,6 +8529,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "5_11.7": -6.0,
@@ -8329,13 +8538,13 @@
     },
     "3_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGst9",
             "1gTPqUFFL7LhFal$3qGsq4",
-            "1gTPqUFFL7LhFal$3qGst2",
-            "1gTPqUFFL7LhFal$3qGsrV",
-            "1gTPqUFFL7LhFal$3qGstt",
             "1gTPqUFFL7LhFal$3qGsrP",
-            "1gTPqUFFL7LhFal$3qGsts"
+            "1gTPqUFFL7LhFal$3qGsrV",
+            "1gTPqUFFL7LhFal$3qGst2",
+            "1gTPqUFFL7LhFal$3qGstt",
+            "1gTPqUFFL7LhFal$3qGsts",
+            "1gTPqUFFL7LhFal$3qGst9"
         ],
         "type": "storey",
         "location": [
@@ -8350,6 +8559,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "5_15.6": -6.0,
@@ -8384,17 +8594,18 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "4_0.0": {
         "children": [
             "205do4mkr2Df2cxE4ThQDd",
+            "36AbZx3gv8twVYrus4x1RO",
             "205do4mkr2Df2cxE4ThQDL",
             "205do4mkr2Df2cxE4ThQDf",
             "205do4mkr2Df2cxE4ThQDB",
-            "36AbZx3gv8twVYrus4x1RO",
-            "205do4mkr2Df2cxE4ThQDE",
-            "205do4mkr2Df2cxE4ThQDF"
+            "205do4mkr2Df2cxE4ThQDF",
+            "205do4mkr2Df2cxE4ThQDE"
         ],
         "type": "storey",
         "location": [
@@ -8409,6 +8620,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "8_0.0": -6.0,
@@ -8417,10 +8629,10 @@
     },
     "4_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsrj",
             "1gTPqUFFL7LhFal$3qGs8I",
-            "1gTPqUFFL7LhFal$3qGss$",
+            "1gTPqUFFL7LhFal$3qGsrj",
             "1gTPqUFFL7LhFal$3qGssz",
+            "1gTPqUFFL7LhFal$3qGss$",
             "1gTPqUFFL7LhFal$3qGs85"
         ],
         "type": "storey",
@@ -8436,6 +8648,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "18_3.9": -1.2999999999999972,
@@ -8444,13 +8657,13 @@
     },
     "4_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8q",
-            "1gTPqUFFL7LhFal$3qGs8_",
-            "1gTPqUFFL7LhFal$3qGs8p",
-            "1gTPqUFFL7LhFal$3qGs8$",
             "1gTPqUFFL7LhFal$3qGssY",
+            "1gTPqUFFL7LhFal$3qGsqL",
+            "1gTPqUFFL7LhFal$3qGs8q",
             "1gTPqUFFL7LhFal$3qGssW",
-            "1gTPqUFFL7LhFal$3qGsqL"
+            "1gTPqUFFL7LhFal$3qGs8$",
+            "1gTPqUFFL7LhFal$3qGs8p",
+            "1gTPqUFFL7LhFal$3qGs8_"
         ],
         "type": "storey",
         "location": [
@@ -8465,6 +8678,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "8_7.8": -6.0,
@@ -8473,13 +8687,13 @@
     },
     "4_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsqT",
-            "1gTPqUFFL7LhFal$3qGstH",
-            "1gTPqUFFL7LhFal$3qGsrL",
             "1gTPqUFFL7LhFal$3qGssh",
-            "1gTPqUFFL7LhFal$3qGs8k",
+            "1gTPqUFFL7LhFal$3qGstG",
+            "1gTPqUFFL7LhFal$3qGsrL",
             "1gTPqUFFL7LhFal$3qGstL",
-            "1gTPqUFFL7LhFal$3qGstG"
+            "1gTPqUFFL7LhFal$3qGs8k",
+            "1gTPqUFFL7LhFal$3qGstH",
+            "1gTPqUFFL7LhFal$3qGsqT"
         ],
         "type": "storey",
         "location": [
@@ -8494,6 +8708,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "8_11.7": -6.0,
@@ -8502,13 +8717,13 @@
     },
     "4_15.6": {
         "children": [
+            "1gTPqUFFL7LhFal$3qGsrU",
             "1gTPqUFFL7LhFal$3qGst0",
             "1gTPqUFFL7LhFal$3qGsrO",
-            "1gTPqUFFL7LhFal$3qGsrU",
-            "1gTPqUFFL7LhFal$3qGstB",
-            "1gTPqUFFL7LhFal$3qGstA",
             "1gTPqUFFL7LhFal$3qGstF",
-            "1gTPqUFFL7LhFal$3qGsq5"
+            "1gTPqUFFL7LhFal$3qGsq5",
+            "1gTPqUFFL7LhFal$3qGstB",
+            "1gTPqUFFL7LhFal$3qGstA"
         ],
         "type": "storey",
         "location": [
@@ -8523,6 +8738,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "8_15.6": -6.0,
@@ -8557,16 +8773,17 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "5_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDC",
             "36AbZx3gv8twVYrus4x1FZ",
-            "205do4mkr2Df2cxE4ThQDc",
-            "36AbZx3gv8twVYrus4x1Dk",
             "205do4mkr2Df2cxE4ThQDA",
-            "205do4mkr2Df2cxE4ThQCp"
+            "205do4mkr2Df2cxE4ThQDC",
+            "205do4mkr2Df2cxE4ThQDc",
+            "205do4mkr2Df2cxE4ThQCp",
+            "36AbZx3gv8twVYrus4x1Dk"
         ],
         "type": "storey",
         "location": [
@@ -8581,6 +8798,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "4_0.0": -5.9999999999999964,
@@ -8589,12 +8807,12 @@
     },
     "5_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8Q",
-            "1gTPqUFFL7LhFal$3qGs87",
-            "1gTPqUFFL7LhFal$3qGs86",
             "1gTPqUFFL7LhFal$3qGsrk",
             "1gTPqUFFL7LhFal$3qGsrl",
-            "1gTPqUFFL7LhFal$3qGs8J"
+            "1gTPqUFFL7LhFal$3qGs8J",
+            "1gTPqUFFL7LhFal$3qGs86",
+            "1gTPqUFFL7LhFal$3qGs87",
+            "1gTPqUFFL7LhFal$3qGs8Q"
         ],
         "type": "storey",
         "location": [
@@ -8609,6 +8827,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "4_3.9": -5.9999999999999964,
@@ -8637,6 +8856,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "4_7.8": -5.9999999999999964,
@@ -8645,12 +8865,12 @@
     },
     "5_11.7": {
         "children": [
+            "1gTPqUFFL7LhFal$3qGsqV",
+            "1gTPqUFFL7LhFal$3qGstJ",
+            "1gTPqUFFL7LhFal$3qGstI",
             "1gTPqUFFL7LhFal$3qGsqU",
             "1gTPqUFFL7LhFal$3qGs8l",
-            "1gTPqUFFL7LhFal$3qGstM",
-            "1gTPqUFFL7LhFal$3qGstI",
-            "1gTPqUFFL7LhFal$3qGstJ",
-            "1gTPqUFFL7LhFal$3qGsqV"
+            "1gTPqUFFL7LhFal$3qGstM"
         ],
         "type": "storey",
         "location": [
@@ -8665,6 +8885,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "4_11.7": -5.9999999999999964,
@@ -8673,12 +8894,12 @@
     },
     "5_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsq6",
+            "1gTPqUFFL7LhFal$3qGst8",
             "1gTPqUFFL7LhFal$3qGstr",
             "1gTPqUFFL7LhFal$3qGsq7",
-            "1gTPqUFFL7LhFal$3qGst8",
-            "1gTPqUFFL7LhFal$3qGstq",
-            "1gTPqUFFL7LhFal$3qGst1"
+            "1gTPqUFFL7LhFal$3qGsq6",
+            "1gTPqUFFL7LhFal$3qGst1",
+            "1gTPqUFFL7LhFal$3qGstq"
         ],
         "type": "storey",
         "location": [
@@ -8693,6 +8914,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "4_15.6": -5.9999999999999964,
@@ -8727,14 +8949,15 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "6_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDf",
-            "36AbZx3gv8twVYrus4x1Dk",
             "205do4mkr2Df2cxE4ThQDl",
-            "2EVXv4SCjBcxfag4LCR8iP"
+            "205do4mkr2Df2cxE4ThQDf",
+            "2EVXv4SCjBcxfag4LCR8iP",
+            "36AbZx3gv8twVYrus4x1Dk"
         ],
         "type": "storey",
         "location": [
@@ -8749,6 +8972,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "7_0.0": -8.0,
@@ -8757,9 +8981,9 @@
     },
     "6_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsrk",
-            "1gTPqUFFL7LhFal$3qGssz",
             "1gTPqUFFL7LhFal$3qGss_",
+            "1gTPqUFFL7LhFal$3qGssz",
+            "1gTPqUFFL7LhFal$3qGsrk",
             "1gTPqUFFL7LhFal$3qGsBe"
         ],
         "type": "storey",
@@ -8775,6 +8999,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "7_3.9": -8.0,
@@ -8783,10 +9008,10 @@
     },
     "6_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGssX",
+            "0xQJTbhNbEOQnij2C8z8Uq",
             "1gTPqUFFL7LhFal$3qGssW",
-            "1gTPqUFFL7LhFal$3qGsqM",
-            "0xQJTbhNbEOQnij2C8z8Uq"
+            "1gTPqUFFL7LhFal$3qGssX",
+            "1gTPqUFFL7LhFal$3qGsqM"
         ],
         "type": "storey",
         "location": [
@@ -8801,6 +9026,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "7_7.8": -8.0,
@@ -8809,10 +9035,10 @@
     },
     "6_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsqU",
-            "0xQJTbhNbEOQnij2C8z8Vo",
             "1gTPqUFFL7LhFal$3qGssh",
-            "1gTPqUFFL7LhFal$3qGsrK"
+            "1gTPqUFFL7LhFal$3qGsqU",
+            "1gTPqUFFL7LhFal$3qGsrK",
+            "0xQJTbhNbEOQnij2C8z8Vo"
         ],
         "type": "storey",
         "location": [
@@ -8827,6 +9053,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "7_11.7": -8.0,
@@ -8853,6 +9080,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "7_15.6": -8.0,
@@ -8887,13 +9115,14 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "7_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDc",
             "205do4mkr2Df2cxE4ThQDd",
-            "205do4mkr2Df2cxE4ThQDb"
+            "205do4mkr2Df2cxE4ThQDb",
+            "205do4mkr2Df2cxE4ThQDc"
         ],
         "type": "storey",
         "location": [
@@ -8908,6 +9137,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "10_0.0": -8.0,
@@ -8917,8 +9147,8 @@
     "7_3.9": {
         "children": [
             "1gTPqUFFL7LhFal$3qGs8I",
-            "1gTPqUFFL7LhFal$3qGs8J",
-            "1gTPqUFFL7LhFal$3qGs8S"
+            "1gTPqUFFL7LhFal$3qGs8S",
+            "1gTPqUFFL7LhFal$3qGs8J"
         ],
         "type": "storey",
         "location": [
@@ -8933,6 +9163,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "10_3.9": -8.0,
@@ -8958,6 +9189,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "10_7.8": -8.0,
@@ -8966,9 +9198,9 @@
     },
     "7_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8k",
             "1gTPqUFFL7LhFal$3qGs8e",
-            "1gTPqUFFL7LhFal$3qGs8l"
+            "1gTPqUFFL7LhFal$3qGs8l",
+            "1gTPqUFFL7LhFal$3qGs8k"
         ],
         "type": "storey",
         "location": [
@@ -8983,6 +9215,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "10_11.7": -8.0,
@@ -8991,9 +9224,9 @@
     },
     "7_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGst2",
             "1gTPqUFFL7LhFal$3qGst1",
-            "1gTPqUFFL7LhFal$3qGst0"
+            "1gTPqUFFL7LhFal$3qGst0",
+            "1gTPqUFFL7LhFal$3qGst2"
         ],
         "type": "storey",
         "location": [
@@ -9008,6 +9241,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "10_15.6": -8.0,
@@ -9042,13 +9276,14 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "8_0.0": {
         "children": [
             "205do4mkr2Df2cxE4ThQDi",
-            "2EVXv4SCjBcxfag4LCR8ka",
-            "205do4mkr2Df2cxE4ThQDM"
+            "205do4mkr2Df2cxE4ThQDM",
+            "2EVXv4SCjBcxfag4LCR8ka"
         ],
         "type": "storey",
         "location": [
@@ -9063,6 +9298,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "15_0.0": -6.000000000000002,
@@ -9071,9 +9307,9 @@
     },
     "8_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGsBf",
             "1gTPqUFFL7LhFal$3qGs8O",
-            "1gTPqUFFL7LhFal$3qGs8U"
+            "1gTPqUFFL7LhFal$3qGs8U",
+            "1gTPqUFFL7LhFal$3qGsBf"
         ],
         "type": "storey",
         "location": [
@@ -9088,6 +9324,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "15_3.9": -6.000000000000002,
@@ -9096,9 +9333,9 @@
     },
     "8_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8m",
+            "0xQJTbhNbEOQnij2C8z8Ut",
             "1gTPqUFFL7LhFal$3qGs8o",
-            "0xQJTbhNbEOQnij2C8z8Ut"
+            "1gTPqUFFL7LhFal$3qGs8m"
         ],
         "type": "storey",
         "location": [
@@ -9113,6 +9350,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "15_7.8": -6.000000000000002,
@@ -9121,9 +9359,9 @@
     },
     "8_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8g",
+            "0xQJTbhNbEOQnij2C8z8Vr",
             "1gTPqUFFL7LhFal$3qGstK",
-            "0xQJTbhNbEOQnij2C8z8Vr"
+            "1gTPqUFFL7LhFal$3qGs8g"
         ],
         "type": "storey",
         "location": [
@@ -9138,6 +9376,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "15_11.7": -6.000000000000002,
@@ -9146,9 +9385,9 @@
     },
     "8_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGstE",
             "1gTPqUFFL7LhFal$3qGstC",
-            "1syTwdRdb5$f$hW8QqAzQN"
+            "1syTwdRdb5$f$hW8QqAzQN",
+            "1gTPqUFFL7LhFal$3qGstE"
         ],
         "type": "storey",
         "location": [
@@ -9163,6 +9402,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "15_15.6": -6.000000000000002,
@@ -9197,13 +9437,14 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "9_0.0": {
         "children": [
+            "205do4mkr2Df2cxE4ThQCp",
             "205do4mkr2Df2cxE4ThQDE",
-            "205do4mkr2Df2cxE4ThQCm",
-            "205do4mkr2Df2cxE4ThQCp"
+            "205do4mkr2Df2cxE4ThQCm"
         ],
         "type": "storey",
         "location": [
@@ -9218,6 +9459,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_0.0": 8.000000000000004
@@ -9226,8 +9468,8 @@
     "9_3.9": {
         "children": [
             "1gTPqUFFL7LhFal$3qGs87",
-            "1gTPqUFFL7LhFal$3qGs81",
-            "1gTPqUFFL7LhFal$3qGs85"
+            "1gTPqUFFL7LhFal$3qGs85",
+            "1gTPqUFFL7LhFal$3qGs81"
         ],
         "type": "storey",
         "location": [
@@ -9242,6 +9484,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_3.9": 8.000000000000004
@@ -9249,9 +9492,9 @@
     },
     "9_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8x",
             "1gTPqUFFL7LhFal$3qGs8v",
-            "1gTPqUFFL7LhFal$3qGs8$"
+            "1gTPqUFFL7LhFal$3qGs8$",
+            "1gTPqUFFL7LhFal$3qGs8x"
         ],
         "type": "storey",
         "location": [
@@ -9266,6 +9509,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_7.8": 8.000000000000004
@@ -9273,9 +9517,9 @@
     },
     "9_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGstT",
             "1gTPqUFFL7LhFal$3qGstH",
-            "1gTPqUFFL7LhFal$3qGstJ"
+            "1gTPqUFFL7LhFal$3qGstJ",
+            "1gTPqUFFL7LhFal$3qGstT"
         ],
         "type": "storey",
         "location": [
@@ -9290,6 +9534,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_11.7": 8.000000000000004
@@ -9314,6 +9559,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_15.6": 8.000000000000004
@@ -9347,12 +9593,13 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "10_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQD9",
             "205do4mkr2Df2cxE4ThQDB",
+            "205do4mkr2Df2cxE4ThQD9",
             "205do4mkr2Df2cxE4ThQDA"
         ],
         "type": "storey",
@@ -9368,6 +9615,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_0.0": -8.0,
@@ -9376,8 +9624,8 @@
     },
     "10_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8Q",
-            "1gTPqUFFL7LhFal$3qGs8R"
+            "1gTPqUFFL7LhFal$3qGs8R",
+            "1gTPqUFFL7LhFal$3qGs8Q"
         ],
         "type": "storey",
         "location": [
@@ -9392,6 +9640,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_3.9": -8.0,
@@ -9400,9 +9649,9 @@
     },
     "10_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8z",
             "1gTPqUFFL7LhFal$3qGs8y",
-            "1gTPqUFFL7LhFal$3qGs8p"
+            "1gTPqUFFL7LhFal$3qGs8p",
+            "1gTPqUFFL7LhFal$3qGs8z"
         ],
         "type": "storey",
         "location": [
@@ -9417,6 +9666,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_7.8": -8.0,
@@ -9425,9 +9675,9 @@
     },
     "10_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGstL",
+            "1gTPqUFFL7LhFal$3qGstM",
             "1gTPqUFFL7LhFal$3qGstN",
-            "1gTPqUFFL7LhFal$3qGstM"
+            "1gTPqUFFL7LhFal$3qGstL"
         ],
         "type": "storey",
         "location": [
@@ -9442,6 +9692,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_11.7": -8.0,
@@ -9450,9 +9701,9 @@
     },
     "10_15.6": {
         "children": [
+            "1gTPqUFFL7LhFal$3qGst8",
             "1gTPqUFFL7LhFal$3qGst9",
-            "1gTPqUFFL7LhFal$3qGstF",
-            "1gTPqUFFL7LhFal$3qGst8"
+            "1gTPqUFFL7LhFal$3qGstF"
         ],
         "type": "storey",
         "location": [
@@ -9467,6 +9718,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "11_15.6": -8.0,
@@ -9501,13 +9753,14 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "11_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDC",
             "205do4mkr2Df2cxE4ThQCn",
-            "205do4mkr2Df2cxE4ThQDF"
+            "205do4mkr2Df2cxE4ThQDF",
+            "205do4mkr2Df2cxE4ThQDC"
         ],
         "type": "storey",
         "location": [
@@ -9522,6 +9775,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "9_0.0": -8.000000000000004,
@@ -9546,6 +9800,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "9_3.9": -8.000000000000004,
@@ -9554,9 +9809,9 @@
     },
     "11_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8u",
+            "1gTPqUFFL7LhFal$3qGs8_",
             "1gTPqUFFL7LhFal$3qGs8w",
-            "1gTPqUFFL7LhFal$3qGs8_"
+            "1gTPqUFFL7LhFal$3qGs8u"
         ],
         "type": "storey",
         "location": [
@@ -9571,6 +9826,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "9_7.8": -8.000000000000004,
@@ -9579,9 +9835,9 @@
     },
     "11_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGstS",
+            "1gTPqUFFL7LhFal$3qGstI",
             "1gTPqUFFL7LhFal$3qGstG",
-            "1gTPqUFFL7LhFal$3qGstI"
+            "1gTPqUFFL7LhFal$3qGstS"
         ],
         "type": "storey",
         "location": [
@@ -9596,6 +9852,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "9_11.7": -8.000000000000004,
@@ -9621,6 +9878,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "9_15.6": -8.000000000000004,
@@ -9655,7 +9913,8 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "12_0.0": {
         "children": [
@@ -9675,6 +9934,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_0.0": 5.999999999999999
@@ -9682,8 +9942,8 @@
     },
     "12_3.9": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8K",
-            "1gTPqUFFL7LhFal$3qGs8L"
+            "1gTPqUFFL7LhFal$3qGs8L",
+            "1gTPqUFFL7LhFal$3qGs8K"
         ],
         "type": "storey",
         "location": [
@@ -9698,6 +9958,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_3.9": 5.999999999999999
@@ -9705,8 +9966,8 @@
     },
     "12_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8E",
-            "1gTPqUFFL7LhFal$3qGs8F"
+            "1gTPqUFFL7LhFal$3qGs8F",
+            "1gTPqUFFL7LhFal$3qGs8E"
         ],
         "type": "storey",
         "location": [
@@ -9721,6 +9982,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_7.8": 5.999999999999999
@@ -9728,8 +9990,8 @@
     },
     "12_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8W",
-            "1gTPqUFFL7LhFal$3qGs8X"
+            "1gTPqUFFL7LhFal$3qGs8X",
+            "1gTPqUFFL7LhFal$3qGs8W"
         ],
         "type": "storey",
         "location": [
@@ -9744,6 +10006,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_11.7": 5.999999999999999
@@ -9767,6 +10030,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_15.6": 5.999999999999999
@@ -9800,12 +10064,13 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "13_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQDm",
-            "205do4mkr2Df2cxE4ThQDn"
+            "205do4mkr2Df2cxE4ThQDn",
+            "205do4mkr2Df2cxE4ThQDm"
         ],
         "type": "storey",
         "location": [
@@ -9820,6 +10085,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "12_0.0": -5.999999999999999,
@@ -9844,6 +10110,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "12_3.9": -5.999999999999999,
@@ -9868,6 +10135,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "12_7.8": -5.999999999999999,
@@ -9876,8 +10144,8 @@
     },
     "13_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8Y",
-            "1gTPqUFFL7LhFal$3qGs8Z"
+            "1gTPqUFFL7LhFal$3qGs8Z",
+            "1gTPqUFFL7LhFal$3qGs8Y"
         ],
         "type": "storey",
         "location": [
@@ -9892,6 +10160,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "12_11.7": -5.999999999999999,
@@ -9900,8 +10169,8 @@
     },
     "13_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGst5",
-            "1gTPqUFFL7LhFal$3qGst4"
+            "1gTPqUFFL7LhFal$3qGst4",
+            "1gTPqUFFL7LhFal$3qGst5"
         ],
         "type": "storey",
         "location": [
@@ -9916,6 +10185,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "12_15.6": -5.999999999999999,
@@ -9950,12 +10220,13 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "14_0.0": {
         "children": [
-            "205do4mkr2Df2cxE4ThQD$",
-            "205do4mkr2Df2cxE4ThQDu"
+            "205do4mkr2Df2cxE4ThQDu",
+            "205do4mkr2Df2cxE4ThQD$"
         ],
         "type": "storey",
         "location": [
@@ -9970,6 +10241,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_0.0": -6.0,
@@ -9994,6 +10266,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_3.9": -6.0,
@@ -10018,6 +10291,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_7.8": -6.0,
@@ -10042,6 +10316,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_11.7": -6.0,
@@ -10050,8 +10325,8 @@
     },
     "14_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGst7",
-            "1gTPqUFFL7LhFal$3qGst6"
+            "1gTPqUFFL7LhFal$3qGst6",
+            "1gTPqUFFL7LhFal$3qGst7"
         ],
         "type": "storey",
         "location": [
@@ -10066,6 +10341,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "13_15.6": -6.0,
@@ -10100,7 +10376,8 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "15_0.0": {
         "children": [
@@ -10120,6 +10397,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "14_0.0": -5.9999999999999964,
@@ -10144,6 +10422,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "14_3.9": -5.9999999999999964,
@@ -10152,8 +10431,8 @@
     },
     "15_7.8": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8n",
-            "1gTPqUFFL7LhFal$3qGs8t"
+            "1gTPqUFFL7LhFal$3qGs8t",
+            "1gTPqUFFL7LhFal$3qGs8n"
         ],
         "type": "storey",
         "location": [
@@ -10168,6 +10447,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "14_7.8": -5.9999999999999964,
@@ -10176,8 +10456,8 @@
     },
     "15_11.7": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGs8h",
-            "1gTPqUFFL7LhFal$3qGs8f"
+            "1gTPqUFFL7LhFal$3qGs8f",
+            "1gTPqUFFL7LhFal$3qGs8h"
         ],
         "type": "storey",
         "location": [
@@ -10192,6 +10472,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "14_11.7": -5.9999999999999964,
@@ -10200,8 +10481,8 @@
     },
     "15_15.6": {
         "children": [
-            "1gTPqUFFL7LhFal$3qGstD",
-            "1gTPqUFFL7LhFal$3qGst3"
+            "1gTPqUFFL7LhFal$3qGst3",
+            "1gTPqUFFL7LhFal$3qGstD"
         ],
         "type": "storey",
         "location": [
@@ -10216,6 +10497,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "14_15.6": -5.9999999999999964,
@@ -10250,7 +10532,8 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "16_0.0": {
         "children": [
@@ -10269,6 +10552,7 @@
                 0.0
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "3_0.0": -6.0
@@ -10291,6 +10575,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "19_3.9": -4.619999999999997
@@ -10313,6 +10598,7 @@
                 7.8
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "3_7.8": -6.0
@@ -10335,6 +10621,7 @@
                 11.7
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "3_11.7": -6.0
@@ -10357,6 +10644,7 @@
                 15.6
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "3_15.6": -6.0
@@ -10390,7 +10678,8 @@
                 11.7,
                 15.6
             ]
-        ]
+        ],
+        "plane_direction": 0.0
     },
     "17_0.0": {
         "children": [
@@ -10409,23 +10698,24 @@
                 0.0
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [
-            "3YkyhMiA95M9Su0XKJ5JmV",
-            "3YkyhMiA95M9Su0XKJ5Jyt",
-            "3YkyhMiA95M9Su0XKJ5GGp",
-            "3YkyhMiA95M9Su0XKJ5JH6",
-            "3YkyhMiA95M9Su0XKJ5GUA",
-            "3YkyhMiA95M9Su0XKJ5J3C",
-            "2hE94Mgaj1XPXgcf4bhNRP",
-            "3YkyhMiA95M9Su0XKJ5GI$",
             "3YkyhMiA95M9Su0XKJ5JDv",
             "0wGgnUnln04AFIwdvpxnVc",
-            "3YkyhMiA95M9Su0XKJ5G4Y",
-            "3JaYZ$dVT2leVdA72Jn2_g",
+            "3YkyhMiA95M9Su0XKJ5JH6",
             "3YkyhMiA95M9Su0XKJ5Jp1",
+            "3YkyhMiA95M9Su0XKJ5GUA",
             "0wGgnUnln04AFIwdvpxnPu",
             "3YkyhMiA95M9Su0XKJ5GSU",
-            "3JaYZ$dVT2leVdA72Jn2DX"
+            "3JaYZ$dVT2leVdA72Jn2DX",
+            "3YkyhMiA95M9Su0XKJ5Jyt",
+            "3YkyhMiA95M9Su0XKJ5GI$",
+            "3YkyhMiA95M9Su0XKJ5GGp",
+            "3YkyhMiA95M9Su0XKJ5JmV",
+            "3JaYZ$dVT2leVdA72Jn2_g",
+            "3YkyhMiA95M9Su0XKJ5G4Y",
+            "2hE94Mgaj1XPXgcf4bhNRP",
+            "3YkyhMiA95M9Su0XKJ5J3C"
         ],
         "neighbor": {
             "1_0.0": -7.0
@@ -10448,6 +10738,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [],
         "neighbor": {
             "1_3.9": -7.0
@@ -10470,23 +10761,24 @@
                 7.8
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [
-            "1gTPqUFFL7LhFal$3qGslr",
-            "1gTPqUFFL7LhFal$3qGsl9",
-            "1syTwdRdb5$f$hW8QqAz8c",
-            "1gTPqUFFL7LhFal$3qGslm",
             "0xQJTbhNbEOQnij2C8z87L",
-            "1gTPqUFFL7LhFal$3qGsls",
-            "1gTPqUFFL7LhFal$3qGtMx",
-            "1gTPqUFFL7LhFal$3qGslq",
-            "0xQJTbhNbEOQnij2C8z87J",
-            "1gTPqUFFL7LhFal$3qGslA",
-            "1gTPqUFFL7LhFal$3qGslB",
-            "0xQJTbhNbEOQnij2C8z87I",
-            "1gTPqUFFL7LhFal$3qGsl8",
             "1gTPqUFFL7LhFal$3qGslt",
+            "1gTPqUFFL7LhFal$3qGsl8",
+            "1gTPqUFFL7LhFal$3qGslm",
+            "1gTPqUFFL7LhFal$3qGslA",
+            "1gTPqUFFL7LhFal$3qGslr",
+            "1gTPqUFFL7LhFal$3qGsls",
             "0xQJTbhNbEOQnij2C8z87G",
-            "1gTPqUFFL7LhFal$3qGtM$"
+            "1gTPqUFFL7LhFal$3qGtMx",
+            "1gTPqUFFL7LhFal$3qGsl9",
+            "1gTPqUFFL7LhFal$3qGtM$",
+            "1syTwdRdb5$f$hW8QqAz8c",
+            "0xQJTbhNbEOQnij2C8z87I",
+            "1gTPqUFFL7LhFal$3qGslB",
+            "1gTPqUFFL7LhFal$3qGslq",
+            "0xQJTbhNbEOQnij2C8z87J"
         ],
         "neighbor": {
             "1_7.8": -7.0
@@ -10509,22 +10801,23 @@
                 11.7
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [
-            "1gTPqUFFL7LhFal$3qGskE",
-            "0xQJTbhNbEOQnij2C8z8AH",
-            "0xQJTbhNbEOQnij2C8z8Ak",
-            "1gTPqUFFL7LhFal$3qGskF",
-            "1gTPqUFFL7LhFal$3qGskC",
-            "1gTPqUFFL7LhFal$3qGskA",
             "1gTPqUFFL7LhFal$3qGsk3",
+            "0xQJTbhNbEOQnij2C8z8Ak",
             "1gTPqUFFL7LhFal$3qGtMf",
             "1gTPqUFFL7LhFal$3qGsk8",
-            "1gTPqUFFL7LhFal$3qGtLL",
+            "1gTPqUFFL7LhFal$3qGsk2",
+            "0xQJTbhNbEOQnij2C8z8AH",
+            "0xQJTbhNbEOQnij2C8z8AJ",
             "1gTPqUFFL7LhFal$3qGskD",
             "0xQJTbhNbEOQnij2C8z8AG",
+            "1gTPqUFFL7LhFal$3qGskA",
             "1syTwdRdb5$f$hW8QqAz8Z",
-            "0xQJTbhNbEOQnij2C8z8AJ",
-            "1gTPqUFFL7LhFal$3qGsk2",
+            "1gTPqUFFL7LhFal$3qGskF",
+            "1gTPqUFFL7LhFal$3qGtLL",
+            "1gTPqUFFL7LhFal$3qGskC",
+            "1gTPqUFFL7LhFal$3qGskE",
             "1gTPqUFFL7LhFal$3qGsk9"
         ],
         "neighbor": {
@@ -10548,23 +10841,24 @@
                 15.6
             ]
         ],
+        "plane_direction": 0.0,
         "nephew": [
-            "1gTPqUFFL7LhFal$3qGsjl",
             "1gTPqUFFL7LhFal$3qGsjC",
-            "1syTwdRdb5$f$hW8QqAzKJ",
-            "1syTwdRdb5$f$hW8QqAzKH",
-            "1gTPqUFFL7LhFal$3qGsj1",
-            "1gTPqUFFL7LhFal$3qGsj6",
-            "1gTPqUFFL7LhFal$3qGsj2",
-            "1syTwdRdb5$f$hW8QqAzKG",
-            "1gTPqUFFL7LhFal$3qGsjk",
-            "1syTwdRdb5$f$hW8QqAzKM",
-            "1gTPqUFFL7LhFal$3qGsj0",
-            "1gTPqUFFL7LhFal$3qGsj3",
-            "1gTPqUFFL7LhFal$3qGsj5",
+            "1gTPqUFFL7LhFal$3qGsjl",
             "1gTPqUFFL7LhFal$3qGsj4",
+            "1syTwdRdb5$f$hW8QqAzKM",
             "1gTPqUFFL7LhFal$3qGsj7",
-            "1syTwdRdb5$f$hW8QqAz8y"
+            "1gTPqUFFL7LhFal$3qGsj5",
+            "1syTwdRdb5$f$hW8QqAzKH",
+            "1gTPqUFFL7LhFal$3qGsj0",
+            "1gTPqUFFL7LhFal$3qGsj1",
+            "1gTPqUFFL7LhFal$3qGsjk",
+            "1syTwdRdb5$f$hW8QqAzKJ",
+            "1gTPqUFFL7LhFal$3qGsj3",
+            "1gTPqUFFL7LhFal$3qGsj6",
+            "1syTwdRdb5$f$hW8QqAz8y",
+            "1gTPqUFFL7LhFal$3qGsj2",
+            "1syTwdRdb5$f$hW8QqAzKG"
         ],
         "neighbor": {
             "1_15.6": -7.0
@@ -10586,7 +10880,8 @@
                 44.0335,
                 3.9
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "18_3.9": {
         "children": [
@@ -10606,6 +10901,7 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [],
         "neighbor": {
             "8_3.9": -4.700000000000003,
@@ -10628,7 +10924,8 @@
                 44.0335,
                 3.9
             ]
-        ]
+        ],
+        "plane_direction": 90.0
     },
     "19_3.9": {
         "children": [
@@ -10648,23 +10945,24 @@
                 3.9
             ]
         ],
+        "plane_direction": 90.0,
         "nephew": [
-            "0xQJTbhNbEOQnij2C8z9wo",
-            "1gTPqUFFL7LhFal$3qGsWn",
+            "1syTwdRdb5$f$hW8QqAz8b",
+            "0xQJTbhNbEOQnij2C8z9wm",
+            "0xQJTbhNbEOQnij2C8z9wr",
+            "1gTPqUFFL7LhFal$3qGsWo",
+            "1gTPqUFFL7LhFal$3qGsWt",
             "1gTPqUFFL7LhFal$3qGsW_",
+            "1gTPqUFFL7LhFal$3qGsWp",
+            "1gTPqUFFL7LhFal$3qGsWn",
             "1gTPqUFFL7LhFal$3qGsWz",
-            "1gTPqUFFL7LhFal$3qGsgw",
-            "1gTPqUFFL7LhFal$3qGsWs",
             "1gTPqUFFL7LhFal$3qGsWy",
             "0xQJTbhNbEOQnij2C8z9wp",
-            "0xQJTbhNbEOQnij2C8z9wm",
-            "1syTwdRdb5$f$hW8QqAz8b",
-            "1gTPqUFFL7LhFal$3qGsgc",
-            "0xQJTbhNbEOQnij2C8z9wr",
-            "1gTPqUFFL7LhFal$3qGsWt",
-            "1gTPqUFFL7LhFal$3qGsWo",
+            "1gTPqUFFL7LhFal$3qGsWs",
             "1gTPqUFFL7LhFal$3qGsWm",
-            "1gTPqUFFL7LhFal$3qGsWp"
+            "1gTPqUFFL7LhFal$3qGsgw",
+            "1gTPqUFFL7LhFal$3qGsgc",
+            "0xQJTbhNbEOQnij2C8z9wo"
         ],
         "neighbor": {
             "3_3.9": -1.3800000000000026,

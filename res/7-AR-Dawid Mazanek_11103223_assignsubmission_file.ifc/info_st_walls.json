@@ -17,7 +17,8 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "1Aj2DJvx5AGuSzsvKVBNcG",
@@ -37,7 +38,8 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "1Aj2DJvx5AGuSzsvKVBNeq",
@@ -57,7 +59,8 @@
         "length": 24.25,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "3rmIUJNlbB18JIqvcE8gJ0",
@@ -77,7 +80,8 @@
         "length": 65.345,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "3rmIUJNlbB18JIqvcE8gkg",
@@ -97,7 +101,8 @@
         "length": 55.45,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2_CC3svzHFe9uF7WVMUcWK",
@@ -117,7 +122,8 @@
         "length": 65.4975,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKBAi2",
@@ -137,7 +143,8 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKBAhd",
@@ -157,7 +164,8 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKBAha",
@@ -177,7 +185,8 @@
         "length": 24.25,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKBAZz",
@@ -197,7 +206,8 @@
         "length": 65.4975,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKBAec",
@@ -217,7 +227,8 @@
         "length": 55.4,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKBAlo",
@@ -237,107 +248,8 @@
         "length": 65.395,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 90.0
-    },
-    {
-        "id": "2to_VA1zP6HQ6YRQEKB4RT",
-        "elevation": 11.4,
-        "location": [
-            [
-                37.35295177515495,
-                -78.22364506259343,
-                11.399999999999999
-            ],
-            [
-                21.977951775154946,
-                -78.22364506259343,
-                11.399999999999999
-            ]
-        ],
-        "length": 15.6,
-        "width": 0.2975,
-        "height": 3.8,
-        "orientation": 0.0
-    },
-    {
-        "id": "2to_VA1zP6HQ6YRQEKB4SV",
-        "elevation": 11.4,
-        "location": [
-            [
-                21.977951775154946,
-                -78.22364506259343,
-                11.399999999999999
-            ],
-            [
-                21.977951775154956,
-                -13.049895062593649,
-                11.399999999999999
-            ]
-        ],
-        "length": 65.4975,
-        "width": 0.35,
-        "height": 3.8,
-        "orientation": 90.0
-    },
-    {
-        "id": "2to_VA1zP6HQ6YRQEKB4P0",
-        "elevation": 11.4,
-        "location": [
-            [
-                77.12795177515493,
-                -13.049895062593663,
-                11.399999999999999
-            ],
-            [
-                21.977951775154956,
-                -13.049895062593649,
-                11.399999999999999
-            ]
-        ],
-        "length": 55.4,
-        "width": 0.35,
-        "height": 3.8,
-        "orientation": 0.0
-    },
-    {
-        "id": "2to_VA1zP6HQ6YRQEKB4RY",
-        "elevation": 11.4,
-        "location": [
-            [
-                62.052951775155385,
-                -78.22364506259343,
-                11.399999999999999
-            ],
-            [
-                37.45295177515492,
-                -78.22364506259343,
-                11.399999999999999
-            ]
-        ],
-        "length": 24.25,
-        "width": 0.2975,
-        "height": 3.8,
-        "orientation": 0.0
-    },
-    {
-        "id": "2to_VA1zP6HQ6YRQEKB4OC",
-        "elevation": 11.4,
-        "location": [
-            [
-                77.12795177515493,
-                -78.22364506259343,
-                11.399999999999999
-            ],
-            [
-                77.12795177515493,
-                -13.049895062593663,
-                11.399999999999999
-            ]
-        ],
-        "length": 65.395,
-        "width": 0.35,
-        "height": 3.8,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKB4SS",
@@ -357,7 +269,113 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2to_VA1zP6HQ6YRQEKB4SV",
+        "elevation": 11.4,
+        "location": [
+            [
+                21.977951775154946,
+                -78.22364506259343,
+                11.399999999999999
+            ],
+            [
+                21.977951775154956,
+                -13.049895062593649,
+                11.399999999999999
+            ]
+        ],
+        "length": 65.4975,
+        "width": 0.35,
+        "height": 3.8,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2to_VA1zP6HQ6YRQEKB4OC",
+        "elevation": 11.4,
+        "location": [
+            [
+                77.12795177515493,
+                -78.22364506259343,
+                11.399999999999999
+            ],
+            [
+                77.12795177515493,
+                -13.049895062593663,
+                11.399999999999999
+            ]
+        ],
+        "length": 65.395,
+        "width": 0.35,
+        "height": 3.8,
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2to_VA1zP6HQ6YRQEKB4RY",
+        "elevation": 11.4,
+        "location": [
+            [
+                62.052951775155385,
+                -78.22364506259343,
+                11.399999999999999
+            ],
+            [
+                37.45295177515492,
+                -78.22364506259343,
+                11.399999999999999
+            ]
+        ],
+        "length": 24.25,
+        "width": 0.2975,
+        "height": 3.8,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2to_VA1zP6HQ6YRQEKB4RT",
+        "elevation": 11.4,
+        "location": [
+            [
+                37.35295177515495,
+                -78.22364506259343,
+                11.399999999999999
+            ],
+            [
+                21.977951775154946,
+                -78.22364506259343,
+                11.399999999999999
+            ]
+        ],
+        "length": 15.6,
+        "width": 0.2975,
+        "height": 3.8,
+        "orientation": 0.0,
+        "external": 1
+    },
+    {
+        "id": "2to_VA1zP6HQ6YRQEKB4P0",
+        "elevation": 11.4,
+        "location": [
+            [
+                77.12795177515493,
+                -13.049895062593663,
+                11.399999999999999
+            ],
+            [
+                21.977951775154956,
+                -13.049895062593649,
+                11.399999999999999
+            ]
+        ],
+        "length": 55.4,
+        "width": 0.35,
+        "height": 3.8,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKB4CX",
@@ -377,7 +395,8 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKB4Bc",
@@ -397,27 +416,8 @@
         "length": 15.6,
         "width": 0.2975,
         "height": 3.8,
-        "orientation": 0.0
-    },
-    {
-        "id": "2to_VA1zP6HQ6YRQEKB4Bd",
-        "elevation": 7.6,
-        "location": [
-            [
-                62.052951775155385,
-                -78.22364506259343,
-                7.599999999999999
-            ],
-            [
-                37.45295177515492,
-                -78.22364506259343,
-                7.599999999999999
-            ]
-        ],
-        "length": 24.25,
-        "width": 0.2975,
-        "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKB4CW",
@@ -437,7 +437,29 @@
         "length": 65.4975,
         "width": 0.35,
         "height": 3.33,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
+    },
+    {
+        "id": "2to_VA1zP6HQ6YRQEKB4Bd",
+        "elevation": 7.6,
+        "location": [
+            [
+                62.052951775155385,
+                -78.22364506259343,
+                7.599999999999999
+            ],
+            [
+                37.45295177515492,
+                -78.22364506259343,
+                7.599999999999999
+            ]
+        ],
+        "length": 24.25,
+        "width": 0.2975,
+        "height": 3.8,
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKB495",
@@ -457,7 +479,8 @@
         "length": 55.4,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 0.0
+        "orientation": 0.0,
+        "external": 1
     },
     {
         "id": "2to_VA1zP6HQ6YRQEKB48H",
@@ -477,6 +500,7 @@
         "length": 65.395,
         "width": 0.35,
         "height": 3.8,
-        "orientation": 90.0
+        "orientation": 90.0,
+        "external": 1
     }
 ]

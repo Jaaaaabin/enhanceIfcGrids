@@ -7,7 +7,7 @@ from networkx.drawing.nx_agraph import graphviz_layout
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
-from toolsQuickUtils import point_to_line_distance
+from toolsQuickUtils import point_to_line_distance, get_line_slope_by_points, slope_to_orientation_0_180
 
 class HierarchicalGraph:
 
@@ -27,6 +27,7 @@ class HierarchicalGraph:
         self.output_figure_path = figure_path
         
         self.read_data_files(json_grid_relationships, json_non_relationships, json_st_columns, json_st_walls, json_ns_walls, json_ct_walls)
+        self._get_reference_plane_directions()
         self.init_visualization_settings()
 
     def read_data_files(self, json_grid_relationships, json_non_relationships, json_st_columns, json_st_walls, json_ns_walls, json_ct_walls):
@@ -52,6 +53,16 @@ class HierarchicalGraph:
         self.info_ns_walls = read_json_file(json_ns_walls)
         self.info_ct_walls = read_json_file(json_ct_walls)
     
+    def _get_reference_plane_directions(self):
+
+        for key, value in self.info_grid_relationships.items():
+
+            slope = get_line_slope_by_points(value['location'][0], value['location'][1])
+            orientation  = round(slope_to_orientation_0_180(slope),1)
+            value.update({
+                'plane_direction': orientation}
+            )
+
     def init_visualization_settings(self):
         """
         Initializes visualization settings for various building components.
@@ -177,6 +188,7 @@ class HierarchicalGraph:
                     'children': [],
                     'type': grid_info['type'] + '_grid',
                     'location': grid_loc_global,
+                    'plane_direction': grid_info['plane_direction']
                 }
 
             # Level 1: Grid per storey
@@ -197,6 +209,7 @@ class HierarchicalGraph:
                             'children': [],
                             'type': 'storey',
                             'location': grid_loc_storey,
+                            'plane_direction': grid_info['plane_direction'],
                             'nephew': [],
                         }
                     self.hierarchical_data[grid_node]['children'].append(storey_node)

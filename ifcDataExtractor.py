@@ -10,14 +10,17 @@ import numpy as np
 
 from collections import Counter
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 from matplotlib.ticker import PercentFormatter
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
+from collections import defaultdict
+from shapely.geometry import Polygon
 from sklearn.decomposition import PCA
 
 from toolsQuickUtils import time_decorator
 from toolsQuickUtils import remove_duplicate_dicts, find_most_common_value
-from toolsQuickUtils import get_rectangle_corners, distance_between_points
+from toolsQuickUtils import get_rectangle_corners, distance_between_points, find_closed_loops
 from toolsSpatialGlue import spatial_process_lines
 
 #===================================================================================================
@@ -70,6 +73,10 @@ class IfcDataExtractor:
         except Exception as e:
             print(f"An error occurred: {e}")
 
+    def _get_file_prefix_code(self, filename):
+        parts = filename.split('-')
+        return '-'.join(parts[:2])
+    
     def _remove_slab_outliers(self):
 
         slab_outliers ={
@@ -81,6 +88,12 @@ class IfcDataExtractor:
                 '2dgQT7c8heJAthKIf57922',
                 '2$TzztUz_nI9DzZezaA0Uf',
                 '19S$35tbDXGBvHnQP5VyE9',
+                '1cM2g9vEKfIuKkoOh4wzLq',
+                '3B4yd04k$TGAbpDhg7t6cm',
+                '216BSagR2mHRRWNp1ebRcl',
+                '0Qo2NFvaCRJOHrKtNiM2UJ',
+                '3j$3sa8m0eIAMLU9FdP81l',
+                '2qKTvaLYmZHOA8KyeHuD1p'
             ],
             "11103186":[
                 '1gQ_y3GLj6yQZm$NpWfoHW'
@@ -119,7 +132,8 @@ class IfcDataExtractor:
                 continue
         
         slab_type_outliers = {
-            "11103186": "Footing"}
+            "11103186": "Footing",
+            "11103438": "Landing",}
         
         # filter out non-relevant slabs with specific slab types "string".
         for key, type_name_string in slab_type_outliers.items():
@@ -501,16 +515,131 @@ class IfcDataExtractor:
             # case of Autodesk Revit as the initial authoring tools.
             self.get_floor_dimensions_ar()
             self.enrich_floor_information()
-        
-        #------
-        # todo/
-        #------
-        # here should be another function that handles the merge of connecting floors.
-        # merge / correlate two floors if they're vertically close and locational separated.
-        # To determine main storeys. considering that the IfcCurtainWall has vertical shifts.
-
+    
         # save data and display
         self.write_dict_floors()
+
+    def _refine_slab_shapes_per_storey(self, thin_slab_limit=0.05):
+        
+        self.info_floor_slabs = []
+        
+        floor_slabs_data = self.info_floors
+        storey_values = list(set(item['elevation'] for item in floor_slabs_data))
+        slab_z_groups = defaultdict(list)
+        segment_z_groups = defaultdict(list)
+        
+        # Iterate over each slab definition in the data
+        for st_z in storey_values:
+            slab_per_st_z = []
+            for slab in floor_slabs_data:
+                if slab['elevation'] == st_z and slab['width']>thin_slab_limit:
+                    slab_per_st_z.append(slab)
+                else:
+                    continue
+            slab_z_groups[st_z] = slab_per_st_z
+
+        for st_z, values in slab_z_groups.items():
+            
+            if len(values)>1:
+                segment_z_groups[st_z] = [value['location'] for value in values]
+                segment_z_groups[st_z] = [item for sublist in segment_z_groups[st_z] for item in sublist]
+
+            elif len(values)==1:
+                segment_z_groups[st_z] = values[0]['location']
+
+            else:
+                return None
+        
+        # Create a new 3D figure
+        max_area = 0
+        floor_slab_closed_loops = []
+        
+        # Calculate areas of loops and find the maximum area
+        for st_z, segments in segment_z_groups.items():
+            loops = find_closed_loops(segments)
+            for loop in loops:
+                polygon = Polygon(loop)
+                area = polygon.area
+                floor_slab_closed_loops.append((st_z, loop, area))
+                if area > max_area:
+                    max_area = area
+        
+        # Sort loops by area
+        floor_slab_closed_loops.sort(key=lambda x: x[2], reverse=True)
+        self.info_floor_slabs = [(st_z, loop, area / max_area) for st_z, loop, area in floor_slab_closed_loops]
+
+    def _update_floor_with_refined_slabs(self, splitter_percent=0.8):
+
+        def generate_point_pairs(points):
+            point_pairs = []
+            num_points = len(points)
+            if num_points < 2:
+                return point_pairs
+            for i in range(num_points - 1):
+                point_pairs.append((points[i], points[i+1]))
+            
+            # Note: no need to get the -1 to 0 since it's a closed loop, and the first point is the same as the last point.
+            # point_pairs.append((points[-1], points[0]))
+            
+            return point_pairs
+        
+        tempo_dict = defaultdict(dict)
+        unique_slab_width = max(fl['width'] for fl in self.info_floors)
+
+        for (v, segments, ratio) in self.info_floor_slabs:
+
+            if ratio > splitter_percent:
+                tempo_dict[v] = {
+                    'points': generate_point_pairs(segments),
+                    'area_ratio': ratio,
+                    'width':unique_slab_width,
+                }
+
+        self.info_unique_floor_slabs = tempo_dict
+        
+    def post_processing_floors_to_slabs(self):
+        
+        self._refine_slab_shapes_per_storey()
+        self._update_floor_with_refined_slabs()
+        self.write_dict_floor_slabs()
+        self.refined_floor_slabs_dispaly()
+        
+    def refined_floor_slabs_dispaly(self):
+
+        fig = plt.figure(figsize=(10, 8))
+        ax = fig.add_subplot(111, projection='3d')
+
+        # Normalize loop areas to get the color values
+        norm = plt.Normalize(vmin=0, vmax=1)
+        cmap = cm.get_cmap('coolwarm')
+
+        # Plot loops with colors based on their area percentage
+        for st_z, loop, area in self.info_floor_slabs:
+            color = cmap(norm(area))
+            loop.append(loop[0])  # To close the loop
+            loop_array = np.array(loop)
+            ax.plot(loop_array[:, 0], loop_array[:, 1], loop_array[:, 2], color=color, alpha=0.5)
+        
+        # Create a color bar
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+        sm.set_array([])
+        cbar = plt.colorbar(sm, ax=ax)
+        cbar.set_label('Closed area of slab geometries (as % of the maximum closed area)', fontsize=14)
+        cbar.set_ticks([0, 0.5, 1])
+        cbar.set_ticklabels(['0%', '50%', '100%'])
+        
+        # Set labels and title
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+        ax.grid(False)
+        ax.axis('off')
+
+        # Save the plot
+        plt.tight_layout()
+        plt.savefig(os.path.join(
+            self.out_fig_path, self._get_file_prefix_code(self.ifc_file_name)+ '_refined_floor_slabs.png'), dpi=200)
+        plt.close()
 
 #slab ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
@@ -525,6 +654,11 @@ class IfcDataExtractor:
 #===================================================================================================
 #wall ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
+    # function notes.
+    def calc_wall_is_int_ext(self, wall):
+        psets = ifcopenshell.util.element.get_psets(wall)
+        return psets.get('Pset_WallCommon', {}).get('IsExternal')
+    
     # function notes.
     def calc_wall_loadbearing(self, wall):
         psets = ifcopenshell.util.element.get_psets(wall)
@@ -586,7 +720,7 @@ class IfcDataExtractor:
 
         return info_w
     
-    def split_st_ns_ct_wall_information(self):
+    def _split_st_ns_ct_wall_information(self):
         
         self.id_st_walls  = [w.GlobalId for w in self.walls if self.calc_wall_loadbearing(w)]
         self.id_ns_walls  = [w.GlobalId for w in self.walls if not self.calc_wall_loadbearing(w)]
@@ -599,7 +733,7 @@ class IfcDataExtractor:
             elif value_to_check in self.id_ns_walls:
                 self.info_ns_walls.append(info_w)
 
-    def glue_wall_connections(self):
+    def _glue_wall_connections(self):
         
         all_wall_data = self.info_st_walls + self.info_ns_walls + self.info_curtainwalls
         glued_wall_data = spatial_process_lines(
@@ -643,6 +777,22 @@ class IfcDataExtractor:
         self.corner_x_value = (max(wall_x_values) + min(wall_x_values)) * 0.5
         self.corner_y_value = (max(wall_y_values) + min(wall_y_values)) * 0.5
         self.corner_z_value = max([w['location'][0][-1] for w in info_all_walls if 'location' in w]) * 1.1
+    
+    def _get_all_wall_int_ext(self):
+        
+        # for IfcWalls
+        # in the scope of internal / external, we only consider the walls and curtain walls.
+        for info in self.info_walls:
+            element = self.model.by_guid(info['id'])
+            if self.calc_wall_is_int_ext(element):
+                info.update({'external': 1})
+            else:
+                info.update({'external': 0})
+
+        # for IfcCurtainWalls
+        # we assume that all IfcCurtainWall will be placed as external building elements.
+        for info in self.info_curtainwalls:
+            info.update({'external': 1})
 
     @time_decorator
     def extract_all_walls(self):
@@ -663,13 +813,14 @@ class IfcDataExtractor:
         self.get_curtainwall_information()
 
     def post_processing_walls(self):
-        
-        self._remove_wall_outliers()
-        self.split_st_ns_ct_wall_information()
-        self.glue_wall_connections()
-        self.write_dict_walls()
-        self._get_main_directions_from_walls()
 
+        self._get_all_wall_int_ext()
+        self._remove_wall_outliers()
+        self._split_st_ns_ct_wall_information()
+        self._glue_wall_connections()
+        self._get_main_directions_from_walls()
+        self.write_dict_walls()
+    
 #wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
@@ -1105,7 +1256,16 @@ class IfcDataExtractor:
                 json.dump(dict_info_floors, json_file, indent=4)
         except IOError as e:
             raise IOError(f"Failed to write to {self.out_fig_path + 'floors.json'}: {e}")
-        
+    
+    # function notes.
+    def write_dict_floor_slabs(self):
+
+        try:
+            with open(os.path.join(self.out_fig_path, 'info_floor_slabs.json'), 'w') as json_file:
+                json.dump(self.info_unique_floor_slabs, json_file, indent=4)
+        except IOError as e:
+            raise IOError(f"Failed to write to {self.out_fig_path + 'floor_slabs.json'}: {e}")
+
     # function notes.
     def write_dict_columns(self):
 
@@ -1222,9 +1382,6 @@ class IfcDataExtractor:
     def wall_column_floor_location_display(
         self, view_elev=None, view_azim=None, plot_main_plane_directions=False, plane_vector_length=1):
 
-        def get_file_prefix_code(filename):
-            parts = filename.split('-')
-            return '-'.join(parts[:2])
         
         fig = plt.figure(figsize=(12, 6))
         ax = fig.add_subplot(111, projection='3d')
@@ -1322,7 +1479,7 @@ class IfcDataExtractor:
         
         # Save the figure
         plt.savefig(os.path.join(
-            self.out_fig_path, get_file_prefix_code(self.ifc_file_name)+'_wall_column_floor_location_map.png'), dpi=200)
+            self.out_fig_path, self._get_file_prefix_code(self.ifc_file_name)+'_wall_column_floor_location_map.png'), dpi=200)
         plt.close(fig)
         
 # displayandexport ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑

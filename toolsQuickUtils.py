@@ -4,6 +4,7 @@ import math
 import json
 import numpy as np
 from collections import Counter
+import networkx as nx
 
 def time_decorator(func):
 
@@ -156,7 +157,7 @@ def slope_to_orientation_0_180(slope):
     return degree
 
 def point_to_line_distance(point, line, tol_distance=0.001):
-    # todo: cannot deal with inclined lines. for models 4 5 6 8.
+
     def point_get_coords(point):
         return point[0], point[1], point[2]
     
@@ -191,39 +192,6 @@ def point_to_line_distance(point, line, tol_distance=0.001):
         relative_distance = distance * direction
 
     return relative_distance
-
-# def point_to_line_distance(point, line, tol_distance=0.001):
-#     # todo: cannot deal with inclined lines. for models 4 5 6 8.
-#     def point_get_coords(point):
-#         return point[0], point[1], point[2]
-    
-#     # line Ax+ By + C = 0 (x1,y1), (x2,y2), point (x0, y0).
-#     x1, y1, _ = point_get_coords(line[0])
-#     x2, y2, _ = point_get_coords(line[1])
-#     x0, y0, _ = point_get_coords(point)
-    
-#     A = y1 - y2
-#     B = -(x1 - x2)
-#     C = x1 * y2 - x2 * y1
-#     distance = abs(A * x0 + B * y0 + C) / (A**2 + B**2)**0.5
-
-#     if distance < tol_distance:
-#         relative_distance = 0.
-#     else:
-#         # x1=x2
-#         if abs(x1-x2) <tol_distance:
-#             if x0>=x1:
-#                 direction = 1.0
-#             elif x0<x1:
-#                 direction = -1.0
-#         elif abs(y1-y2) <tol_distance:
-#             if y0>=y1:
-#                 direction = 1.0
-#             elif y0<y1:
-#                 direction = -1.0
-#         relative_distance = distance * direction
-
-#     return relative_distance
 
 def perpendicular_distance(point1, point2):
 
@@ -412,3 +380,39 @@ def a_is_subtuple_of_b(a, b):
    
     return set(a).issubset(set(b))
 
+
+def find_closed_loops(segments, tolerance=1e-4):
+    G = nx.Graph()
+    
+    def add_point(point):
+        # Round the coordinates to avoid floating point issues
+        return tuple(round(coord, 8) for coord in point)
+    
+    for segment in segments:
+        start, end = map(add_point, segment)
+        
+        # Add both directions of the segment
+        G.add_edge(start, end)
+        G.add_edge(end, start)
+    
+    # Find all simple cycles in the graph
+    cycles = list(nx.simple_cycles(G))
+    
+    # Filter and clean up the cycles
+    cleaned_cycles = []
+    for cycle in cycles:
+        # Remove duplicate points (can happen due to bidirectional edges)
+        cleaned_cycle = []
+        for point in cycle:
+            if not cleaned_cycle or not np.allclose(point, cleaned_cycle[-1], atol=tolerance):
+                cleaned_cycle.append(point)
+        
+        # Ensure the cycle is closed
+        if not np.allclose(cleaned_cycle[0], cleaned_cycle[-1], atol=tolerance):
+            cleaned_cycle.append(cleaned_cycle[0])
+        
+        # Only keep cycles with at least 3 unique points
+        if len(cleaned_cycle) > 3:
+            cleaned_cycles.append(cleaned_cycle)
+    
+    return cleaned_cycles

@@ -2,7 +2,7 @@ import os
 from hierGraph import HierarchicalGraph
 
 PROJECT_PATH = os.getcwd()
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_rela'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 NUM_VISUALIZATION_GRIDS = 3
@@ -36,12 +36,14 @@ try:
     
     for model_path in model_paths:
 
-        # for each building model
+        # for each building model.
         hierarchical_graph = get_hierarchical_data(DATA_RES_PATH, model_path)
         hierarchical_graph.process_relationships()
         hierarchical_graph.build_hierarchical_data()
         hierarchical_graph.save_hierarchical_data()
         hierarchical_graph.create_hierarchical_graph()
+        
+        # visualize the dependency graph.
         selected_grids = [str(i) for i in range(1, NUM_VISUALIZATION_GRIDS + 1)]
         hierarchical_graph.visualize_hierarchical_graph(nodes_of_interest=selected_grids)
 
