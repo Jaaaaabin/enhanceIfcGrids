@@ -262,8 +262,8 @@ def main():
         json.dump(decoded_parameters, json_file, indent=4)
 
     if args.set_plot:
-        gridGeneratorInit.visualization_2d_before_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
-        gridGeneratorInit.visualization_2d_after_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+        gridGeneratorInit.visualization_2d_before_merge(visual_type='pdf', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+        gridGeneratorInit.visualization_2d_after_merge(visual_type='pdf', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
 
 if __name__ == "__main__":
 

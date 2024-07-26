@@ -16,16 +16,16 @@ def process_ifc_file(input_path, output_path):
     extractor.extract_all_floors()
     extractor.post_processing_floors_to_slabs()
 
-    # extractor.extract_all_columns()
-    # extractor.extract_all_walls()
-    # extractor.extract_all_curtainwalls()
-    # extractor.post_processing_walls()
+    extractor.extract_all_columns()
+    extractor.extract_all_walls()
+    extractor.extract_all_curtainwalls()
+    extractor.post_processing_walls()
     
     # extractor.wall_column_floor_location_display(plot_main_plane_directions=True, plane_vector_length=10)
 
     # # ==================
-    # # for the layout example.
-    # extractor.wall_column_floor_location_display(view_elev=40, view_azim=105, plot_main_plane_directions=True, plane_vector_length=1)
+    # for the layout example.
+    # extractor.wall_column_floor_location_display(view_elev=40, view_azim=-130, plot_main_plane_directions=True, plane_vector_length=1)
 
 # def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 

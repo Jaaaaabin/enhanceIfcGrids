@@ -319,27 +319,38 @@ class HierarchicalGraph:
         if nodes_of_interest:
             for node in nodes_of_interest:
                 all_connected_nodes.update(nx.bfs_tree(self.graph, source=node).nodes)
+
+        dict_node_labels = {}
+        for key in  all_connected_nodes:
+            node_dict = self.hierarchical_data[key]
+            lb = node_dict['mark'] if 'mark' in node_dict.keys() else key
+            dict_node_labels.update({
+                key: lb
+            })
+
         self.subgraph = self.graph.subgraph(all_connected_nodes)
         self.visualized_graph = self.subgraph if self.subgraph else self.graph
         
         plt.figure(figsize=(figx, figy))
         pos = graphviz_layout(self.visualized_graph, prog='dot')
         
-        # Assign colors to nodes based on element type
+        # Assign colors to nodes based on element type 
         node_colors = [self.visualization_settings.get(self.visualized_graph.nodes[node]['type'], 'gray') for node in self.visualized_graph.nodes]
         edge_labels_by_weights = nx.get_edge_attributes(self.visualized_graph, "weight")
 
         nx.draw(
             self.visualized_graph,
             pos,
-            with_labels=False,
+            with_labels=True,
+            labels = dict_node_labels,
             node_size=1500,
             node_color=node_colors,
-            font_size=10,
+            font_size=20,
             font_weight="normal",
             edge_color="gray",
             arrows=True
         )
+
         nx.draw_networkx_edge_labels(
             self.visualized_graph,
             pos,
@@ -349,12 +360,12 @@ class HierarchicalGraph:
 
         node_label_mapping = {
             'storey': 'Storey Grid',
-            'st_column': 'Structural Column',
-            'st_wall': 'Structural Wall',
-            'ns_wall': 'Non-Structural Wall',
-            'ct_wall': 'Curtain Wall',
-            'st_grid': 'Structural Grid',
-            'ns_grid': 'Non-Structural Grid'
+            'st_column': 'Column(S)',
+            'st_wall': 'Wall(S)',
+            'ns_wall': 'Wall(N)',
+            'ct_wall': 'Curtain Wall(N)',
+            'st_grid': 'Grid(S)',
+            'ns_grid': 'Grid(N)'
         }
         
         involved_types = {self.visualized_graph.nodes[node]['type'] for node in self.visualized_graph.nodes}

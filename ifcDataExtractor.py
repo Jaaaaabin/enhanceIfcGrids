@@ -349,6 +349,22 @@ class IfcDataExtractor:
             else:
                 continue
         return loc
+    
+    def _add_marks(self, existing_info_list):
+    
+       for element in existing_info_list:
+        ifc_element = self.model.by_guid(element['id'])
+        
+        if ifc_element:
+            # Get the 'Identity Data' property set directly
+            identity_data = ifcopenshell.util.element.get_pset(ifc_element, 'Identity Data')
+            
+            # Get the 'Mark' property if it exists, otherwise set to empty string
+            element['mark'] = identity_data.get('Mark', '') if identity_data else ''
+        else:
+            element['mark'] = ''
+
+
 #IfcGeneral ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #===================================================================================================
 
@@ -819,6 +835,11 @@ class IfcDataExtractor:
         self._split_st_ns_ct_wall_information()
         self._glue_wall_connections()
         self._get_main_directions_from_walls()
+
+        # ----------------tempo--------------------
+        self._add_marks(self.info_st_walls)
+        self._add_marks(self.info_ns_walls)
+        # ----------------tempo--------------------
         self.write_dict_walls()
     
 #wall ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
@@ -1238,6 +1259,10 @@ class IfcDataExtractor:
         # update hte elevation and location ends of IfcColumns
         self.enrich_column_information()
 
+        # ----------------tempo--------------------
+        self._add_marks(self.info_st_columns)
+        # ----------------tempo--------------------
+        
         # save data and display
         self.write_dict_columns()
         
