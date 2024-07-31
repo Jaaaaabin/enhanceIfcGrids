@@ -10,6 +10,12 @@ def enrich_ifc_file(input_path, output_path):
 
     enricher = IfcSpatialGridEnrichment(input_path, output_path)
 
+    enricher.enrich_ifc_with_grids()
+    
+    enricher.enrich_reference_relationships()
+    
+    enricher.save_the_enriched_ifc()
+
 # ----------
 try:
 
@@ -19,6 +25,6 @@ try:
         enrich_ifc_file(
             os.path.join(DATA_FOLDER_PATH, model_path),
             os.path.join(DATA_RES_PATH, model_path))
-        
+
 except Exception as e:
     print(f"Error accessing directory {DATA_FOLDER_PATH}: {e}")

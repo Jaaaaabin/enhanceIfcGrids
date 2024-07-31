@@ -1,132 +1,174 @@
 import ifcopenshell
+from ifcopenshell.api import run
+import math
+import json
 import os
+import numpy as np
+from collections import defaultdict
+from toolsQuickUtils import time_decorator
 
 class IfcSpatialGridEnrichment:
 
     def __init__(self, model_path, figure_path):
 
         self.model = ifcopenshell.open(model_path)
-
         self.ifc_file_name = os.path.basename(model_path)
-
         self.output_figure_path = figure_path
 
-    def create_grid(self, name, u_axes, v_axes, w_axes=None, levels=None):
-        """
-        Create an IfcGrid.
+        # Initial setup.
+        self.mode_unit = 1.0 # unit = 0.001 * meter
+        self.initialize_ifc_structure()
         
-        :param name: Name of the grid
-        :param u_axes: List of U axis labels (e.g., ['A', 'B', 'C'])
-        :param v_axes: List of V axis labels (e.g., ['1', '2', '3'])
-        :param w_axes: Optional list of W axis labels
-        :param levels: List of level elevations this grid appears on. If None, grid exists on all levels.
-        :return: Created IfcGrid
-        """
-        # Create IfcGridAxis entities for each axis
-        u_grid_axes = [self._create_grid_axis(label, 'U') for label in u_axes]
-        v_grid_axes = [self._create_grid_axis(label, 'V') for label in v_axes]
-        w_grid_axes = [self._create_grid_axis(label, 'W') for label in w_axes] if w_axes else None
+    def initialize_ifc_structure(self):
 
-        # Create the IfcGrid
-        grid = self.model.create_entity(
-            'IfcGrid',
-            GlobalId=ifcopenshell.guid.new(),
-            Name=name,
-            UAxes=u_grid_axes,
-            VAxes=v_grid_axes,
-            WAxes=w_grid_axes
-        )
+        self.project = self.model.by_type('IfcProject')[0]
+        self.building = self.model.by_type('IfcBuilding')[0]
+        self.storeys = self.model.by_type('IfcBuildingStorey')
 
-        # If levels are specified, create containment relationship
-        if levels:
-            for level in levels:
-                self._relate_grid_to_level(grid, level)
+        max_z_values = max(st.Elevation for st in self.storeys)
+        if max_z_values > 1000:
+            self.mode_unit = 0.001  # unit = 0.001 * meter
+        self.elev_storeys = {round(st.Elevation * self.mode_unit, 1): st for st in self.storeys}
 
-        return grid
-    
-    def write_to_new_ifc_file(self, new_file_name):
+    def enrich_grid_placement_information(self):
+         
+        def read_json_file(file_path):
+            if os.path.isfile(file_path):
+                try:
+                    with open(file_path, 'r') as file:
+                        return json.load(file)
+                except FileNotFoundError:
+                    print(f"File {file_path} not found.")
+                    return None
+                except json.JSONDecodeError:
+                    print(f"Error decoding JSON from {file_path}.")
+                    return None
+            else:
+                return []
+            
+        def map_grid_direction_groups(degree,t_degree=0.01):
+            if abs(degree)<t_degree:
+                return 'U'
+            elif abs(degree-90)<t_degree:
+                return 'V'
+            else:
+                return 'W'
+            
+        self.all_grid_data = read_json_file(os.path.join(self.output_figure_path, 'hierarchical_data.json'))
+        self.grid_placements = defaultdict(list)
+        for grid_label, grid_data in self.all_grid_data.items():
+            if grid_data["type"] in {"st_grid", "ns_grid"}:
+                direction_group = map_grid_direction_groups(grid_data["plane_direction"])
+                self.grid_placements[direction_group].append((grid_label, grid_data))
         
-        self.model.write(new_file_name)
+        if 'W' not in self.grid_placements:
+            self.grid_placements['W'] = []
 
-    def _create_grid_axis(self, label, axis_type):
-        """Create an IfcGridAxis entity."""
+        for axis_direction, axis_grid_info in self.grid_placements.items():
+            for axis_label, grid_info in axis_grid_info:
+                radian = math.radians(grid_info['plane_direction'])
+                grid_axis_IfcDirection = (math.cos(radian), math.sin(radian), 0.0)
+                grid_info['location'] = (np.array(grid_info['location'])/self.mode_unit).tolist()
+                grid_axis_IfcCoordinates = [grid_info['location'][0][:2], grid_info['location'][1][:2]]
+                grid_axis_IfcStoreys = [self.elev_storeys[z*self.mode_unit] for z in grid_info['location'][0][2:]]
+            
+                grid_info.update({
+                    'IfcDirection': grid_axis_IfcDirection,
+                    'IfcCoordinates': grid_axis_IfcCoordinates,
+                    'IfcStoreys': grid_axis_IfcStoreys,
+                })
+
+    def _create_grid_axis(self, label, info, SameSense_axes=True):
+            
+        point_list = self.model.create_entity("IfcCartesianPointList2D", CoordList=info['IfcCoordinates'])
+        indexed_curve = self.model.create_entity("IfcIndexedPolyCurve", Points=point_list, SelfIntersect=False)
+        
         return self.model.create_entity(
             'IfcGridAxis',
             AxisTag=label,
-            AxisType=axis_type
+            AxisCurve=indexed_curve,
+            SameSense=SameSense_axes,
         )
+    
+    def _add_grid_in_spatial_structures(self, grid, contained_in_storeys):
 
-    def _relate_grid_to_level(self, grid, level):
-        """Relate a grid to a specific building level."""
-        self.model.create_entity(
-            'IfcRelContainedInSpatialStructure',
-            GlobalId=ifcopenshell.guid.new(),
-            RelatedElements=[grid],
-            RelatingStructure=level
-        )
+        for st in contained_in_storeys:
 
-    def link_element_to_grid(self, element, grid, link_type='Reference'):
-        """
-        Link a building element to a grid.
+            existing_relation = None
+            for relation in st.ContainsElements:
+                if relation.is_a("IfcRelContainedInSpatialStructure"):
+                    existing_relation = relation
+                    break
+                        
+            if existing_relation:
+                # Add the new grid to the existing relationship
+                updated_related_elements = existing_relation.RelatedElements + (grid,)
+                existing_relation.RelatedElements = updated_related_elements
+            else:
+                self.model.create_entity(
+                    "IfcRelContainedInSpatialStructure",
+                    GlobalId=ifcopenshell.guid.new(),
+                    RelatingStructure=st,
+                    RelatedElements=[grid])
+
+    def create_reference_grids(self):
+
+        axis_mapping = {'U': 'UAxes','V': 'VAxes', 'W': 'WAxes'}
         
-        :param element: The building element to link
-        :param grid: The grid to link to
-        :param link_type: 'Reference' or 'Containment'
-        """
-        if link_type == 'Reference':
-            self._create_reference_link(element, grid)
-        elif link_type == 'Containment':
-            self._create_containment_link(element, grid)
-        else:
-            raise ValueError("Invalid link_type. Use 'Reference' or 'Containment'.")
+        for axis_direction, axis_grid_info in self.grid_placements.items():
+            for axis_label, grid_info in axis_grid_info:
+                new_grid = self.model.create_entity("IfcGrid", GlobalId=ifcopenshell.guid.new(), Name=axis_direction+'_'+axis_label)
+                self.all_grid_data[axis_label].update({'id':new_grid.GlobalId})
+                same_sense_on_this_axis  = axis_direction != 'W'
+                new_grid_axis = self._create_grid_axis(label=axis_label, info=grid_info, SameSense_axes=same_sense_on_this_axis)
 
-    def _create_reference_link(self, element, grid):
-        """Create a reference link between an element and a grid."""
-        self.model.create_entity(
-            'IfcRelAssociatesClassification',
-            GlobalId=ifcopenshell.guid.new(),
-            RelatedObjects=[element],
-            RelatingClassification=self._create_grid_reference(grid)
-        )
+                if axis_direction in axis_mapping:
+                    setattr(new_grid, axis_mapping[axis_direction], [new_grid_axis])
+                else:
+                    ValueError("the axis_direction value is not as expected.")
 
-    def _create_containment_link(self, element, grid):
-        """Create a containment link between an element and a grid."""
-        self.model.create_entity(
-            'IfcRelContainedInSpatialStructure',
-            GlobalId=ifcopenshell.guid.new(),
-            RelatedElements=[element],
-            RelatingStructure=grid
-        )
+                self._add_grid_in_spatial_structures(new_grid, grid_info['IfcStoreys'])
+    
+    @time_decorator
+    def enrich_ifc_with_grids(self):
+        
+        # extract the grid placements.
+        self.enrich_grid_placement_information()
+        # create the grids.
+        self.create_reference_grids()
+    
+    @time_decorator
+    def enrich_reference_relationships(self):
+       
+        for grid_label, grid_data in self.all_grid_data.items():
+            if grid_data["type"] in {"st_grid", "ns_grid"}:
+                
+                new_grid_element = self.model.by_guid(grid_data['id'])
+                all_cd_element_ids = []
+                for id_cd_grid in grid_data['children']:
+                    cd_element_ids = self.all_grid_data[id_cd_grid]['children']
+                    all_cd_element_ids+=cd_element_ids
+                all_cd_elements = [self.model.by_guid(id) for id in all_cd_element_ids]
 
-    def _create_grid_reference(self, grid):
-        """Create a classification reference for a grid."""
-        return self.model.create_entity(
-            'IfcClassificationReference',
-            Location=f"Grid:{grid.Name}",
-            Identification=grid.GlobalId,
-            Name=grid.Name
-        )
+                self.model.create_entity(
+                    "IfcRelReferencedInSpatialStructure",
+                    GlobalId=ifcopenshell.guid.new(),
+                    RelatedElements=all_cd_elements,
+                    RelatingStructure=new_grid_element)
+                    
+    def save_the_enriched_ifc(self):
+        self.model.write(os.path.join(self.output_figure_path, 'enriched_' + self.ifc_file_name))
 
-# # Create a grid on all levels
-# all_level_grid = grid_manager.create_grid(
-#     name="Main Grid",
-#     u_axes=['A', 'B', 'C'],
-#     v_axes=['1', '2', '3']
-# )
+    # self.model.create_entity("IfcRelReferencedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
 
-# # Create a grid on specific levels
-# levels = [ifc_file.by_type('IfcBuildingStorey')[0]]  # Assuming you have levels defined
-# specific_level_grid = grid_manager.create_grid(
-#     name="Special Grid",
-#     u_axes=['X', 'Y'],
-#     v_axes=['4', '5'],
-#     levels=levels
-# )
+    # self.model.create_entity("IfcRelContainedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
+    #    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# # Link an element to a grid using reference
-# element = ifc_file.by_type('IfcWall')[0]  # Assuming you have walls in your model
-# grid_manager.link_element_to_grid(element, all_level_grid, link_type='Reference')
-
-# # Link an element to a grid using containment
-# column = ifc_file.by_type('IfcColumn')[0]  # Assuming you have columns in your model
-# grid_manager.link_element_to_grid(column, specific_level_grid, link_type='Containment')
+    # def _create_grid_reference(self, grid):
+    #     """Create a classification reference for a grid."""
+    #     return self.model.create_entity(
+    #         'IfcClassificationReference',
+    #         Location=f"Grid:{grid.Name}",
+    #         Identification=grid.GlobalId,
+    #         Name=grid.Name
+    #     )
