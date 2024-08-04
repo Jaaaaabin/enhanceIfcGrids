@@ -3,6 +3,7 @@ from ifcopenshell.api import run
 import math
 import json
 import os
+import time
 import numpy as np
 from collections import defaultdict
 from toolsQuickUtils import time_decorator
@@ -18,7 +19,8 @@ class IfcSpatialGridEnrichment:
         # Initial setup.
         self.mode_unit = 1.0 # unit = 0.001 * meter
         self.initialize_ifc_structure()
-        
+        self.initialize_ifc_owner_history()
+
     def initialize_ifc_structure(self):
 
         self.project = self.model.by_type('IfcProject')[0]
@@ -29,6 +31,24 @@ class IfcSpatialGridEnrichment:
         if max_z_values > 1000:
             self.mode_unit = 0.001  # unit = 0.001 * meter
         self.elev_storeys = {round(st.Elevation * self.mode_unit, 1): st for st in self.storeys}
+
+    def initialize_ifc_owner_history(self):
+
+        person = self.model.create_entity("IfcPerson", GivenName="Jiabin", FamilyName="Wu")
+        org = self.model.create_entity("IfcOrganization", Name="TUMCMS")
+        person_and_org = self.model.create_entity("IfcPersonAndOrganization", ThePerson=person, TheOrganization=org)
+        app = self.model.create_entity(
+            "IfcApplication", ApplicationDeveloper=org, Version="1.0", ApplicationFullName="IFC ENRICHMENT", ApplicationIdentifier="MyApp")
+
+        # Create IfcOwnerHistory
+        self.new_owner_history = self.model.create_entity(
+            "IfcOwnerHistory",
+            # GlobalId=ifcopenshell.guid.new(),
+            OwningUser=person_and_org,
+            OwningApplication=app,
+            ChangeAction="ADDED",
+            CreationDate=int(time.time())
+        )
 
     def enrich_grid_placement_information(self):
          
@@ -83,6 +103,7 @@ class IfcSpatialGridEnrichment:
         point_list = self.model.create_entity("IfcCartesianPointList2D", CoordList=info['IfcCoordinates'])
         indexed_curve = self.model.create_entity("IfcIndexedPolyCurve", Points=point_list, SelfIntersect=False)
         
+                # OwnerHistory=self.new_owner_history,
         return self.model.create_entity(
             'IfcGridAxis',
             AxisTag=label,
@@ -90,44 +111,62 @@ class IfcSpatialGridEnrichment:
             SameSense=SameSense_axes,
         )
     
-    def _add_grid_in_spatial_structures(self, grid, contained_in_storeys):
+    def _contain_a_grid_in_a_spatial_structure(self, grid, relating_structure):
 
-        for st in contained_in_storeys:
+        existing_containing_relation = None
+        for relation in relating_structure.ContainsElements:
+            if relation.is_a("IfcRelContainedInSpatialStructure"):
+                existing_containing_relation = relation
+                break
+                    
+        if existing_containing_relation:
 
-            existing_relation = None
-            for relation in st.ContainsElements:
-                if relation.is_a("IfcRelContainedInSpatialStructure"):
-                    existing_relation = relation
-                    break
-                        
-            if existing_relation:
-                # Add the new grid to the existing relationship
-                updated_related_elements = existing_relation.RelatedElements + (grid,)
-                existing_relation.RelatedElements = updated_related_elements
-            else:
-                self.model.create_entity(
-                    "IfcRelContainedInSpatialStructure",
-                    GlobalId=ifcopenshell.guid.new(),
-                    RelatingStructure=st,
-                    RelatedElements=[grid])
-
+            # Add the new grid to the existing relationship
+            updated_related_elements = existing_containing_relation.RelatedElements + (grid,)
+            existing_containing_relation.RelatedElements = updated_related_elements
+            existing_containing_relation.OwnerHistory = self.new_owner_history
+    
+        else:
+            
+            self.model.create_entity(
+                "IfcRelContainedInSpatialStructure",
+                GlobalId=ifcopenshell.guid.new(),
+                OwnerHistory=self.new_owner_history,
+                RelatingStructure=relating_structure,
+                RelatedElements=[grid])
+        
     def create_reference_grids(self):
 
-        axis_mapping = {'U': 'UAxes','V': 'VAxes', 'W': 'WAxes'}
+        grid_axis_mapping = {'U': 'UAxes','V': 'VAxes', 'W': 'WAxes'}
         
         for axis_direction, axis_grid_info in self.grid_placements.items():
             for axis_label, grid_info in axis_grid_info:
-                new_grid = self.model.create_entity("IfcGrid", GlobalId=ifcopenshell.guid.new(), Name=axis_direction+'_'+axis_label)
+                new_grid = self.model.create_entity(
+                    "IfcGrid",
+                    GlobalId=ifcopenshell.guid.new(),
+                    OwnerHistory=self.new_owner_history,
+                    Name=axis_direction+'_'+axis_label)
                 self.all_grid_data[axis_label].update({'id':new_grid.GlobalId})
                 same_sense_on_this_axis  = axis_direction != 'W'
                 new_grid_axis = self._create_grid_axis(label=axis_label, info=grid_info, SameSense_axes=same_sense_on_this_axis)
 
-                if axis_direction in axis_mapping:
-                    setattr(new_grid, axis_mapping[axis_direction], [new_grid_axis])
+                if axis_direction in grid_axis_mapping:
+                    setattr(new_grid, grid_axis_mapping[axis_direction], [new_grid_axis])
                 else:
                     ValueError("the axis_direction value is not as expected.")
 
-                self._add_grid_in_spatial_structures(new_grid, grid_info['IfcStoreys'])
+                if len(grid_info['IfcStoreys'])>1:
+
+                    # relates to multiple storeys -> building.
+                    self._contain_a_grid_in_a_spatial_structure(new_grid, self.building)
+                elif len(grid_info['IfcStoreys'])==1:
+
+                    # relates to one single storey -> storey
+                    self._contain_a_grid_in_a_spatial_structure(new_grid, grid_info['IfcStoreys'][0])
+                else:
+                    
+                    # there's no storeys, a case impossible.
+                    ValueError("the number of related IfcStorey is less than 1 for the grid")
     
     @time_decorator
     def enrich_ifc_with_grids(self):
@@ -139,7 +178,17 @@ class IfcSpatialGridEnrichment:
     
     @time_decorator
     def enrich_reference_relationships(self):
-       
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # todo. 'IfcRelReferencedInSpatialStructure' can only be used to reference spatial elements such as :
+    # site as IfcSite
+    # building as IfcBuilding
+    # storey as IfcBuildingStorey
+    # space as IfcSpace
+    # self.model.create_entity("IfcRelReferencedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
+    # self.model.create_entity("IfcRelContainedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         for grid_label, grid_data in self.all_grid_data.items():
             if grid_data["type"] in {"st_grid", "ns_grid"}:
                 
@@ -153,15 +202,14 @@ class IfcSpatialGridEnrichment:
                 self.model.create_entity(
                     "IfcRelReferencedInSpatialStructure",
                     GlobalId=ifcopenshell.guid.new(),
+                    OwnerHistory=self.new_owner_history,
                     RelatedElements=all_cd_elements,
                     RelatingStructure=new_grid_element)
-                    
+    
+      
     def save_the_enriched_ifc(self):
         self.model.write(os.path.join(self.output_figure_path, 'enriched_' + self.ifc_file_name))
 
-    # self.model.create_entity("IfcRelReferencedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
-
-    # self.model.create_entity("IfcRelContainedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
     #    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # def _create_grid_reference(self, grid):

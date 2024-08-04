@@ -5,7 +5,7 @@ from ifcDataExtractor import IfcDataExtractor
 # from infoAnalysis import JsonFileComparator
 
 PROJECT_PATH = os.getcwd()
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
 # DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
