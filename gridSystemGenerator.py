@@ -1426,7 +1426,7 @@ class GridGenerator:
                         grid_values['location'][1], # location of endpoint 2.
                         perpendicular_distance(grid_values['location'][0], grid_values['location'][1]) # perpendicular distance.
                         ])
-                
+
                 # check if there's grid_groups_per_storey achieved.
                 if grid_groups_per_storey:
 
@@ -1516,7 +1516,10 @@ class GridGenerator:
     # Loss to minimie: percent of unbound elements.
 
     def merged_loss_bounding_percent(self, save_unbounds=False):
-
+        # ---
+        # f1()
+        # ---
+        
         self.ids_elements_bound = self.grids_merged['grids_st_merged_ids']
         num_bound_ids_per_grid = []
         if self.grids_merged['grids_st_merged_ids']:
@@ -1548,9 +1551,11 @@ class GridGenerator:
 
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # Loss to minimie: deviation of max-min interdistance between adjacent grids.
-
-    # new
     def merged_loss_maxmin_distance_percent(self):
+        # ---
+        # f2()
+        # ---
+
         """
         Calculate the grid distance deviation, requiring at 3 grids.
         |           |               |                   |
@@ -1568,18 +1573,19 @@ class GridGenerator:
             grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
 
             # check if there's grid_groups left alter filtering the minor groups.
-            if grid_groups:
+            if grid_groups: # in the i^{th} direction. (ith group)
                 
                 for slope, grid_group in grid_groups.items():
                     distance_per_group = []
                     for i in range(1, len(grid_group)):
-                        dist = (grid_group[i][-1] - grid_group[i-1][-1])
+                        dist = (grid_group[i][-1] - grid_group[i-1][-1]) # always a bigger one - a smaller value
                         distance_per_group.append(dist)
 
                     if distance_per_group:
                         # (max_distance - min_distance ) / total distance among grids in this "orientation" group.
-                        scale_base = abs(sum(distance_per_group))
-                        maxmin_difference_percent = (max(distance_per_group) - min(distance_per_group))/scale_base
+                        d_i_total = abs(sum(distance_per_group)) # d_{i,total}
+                        d_i_max, d_i_min = max(distance_per_group), min(distance_per_group)
+                        maxmin_difference_percent = (d_i_max - d_i_min) /d_i_total # (d_{i,max} - d_{i,min} )/ d_{i,total}
                         max_min_difference_per_storey.append(maxmin_difference_percent)
             else:
 
@@ -1600,59 +1606,14 @@ class GridGenerator:
             self.avg_deviation_maxmin = sum(self.avg_deviation_maxmin)/len(self.avg_deviation_maxmin)
         else:
             self.avg_deviation_maxmin = 1.0
-    
-    # # old
-    # def merged_loss_maxmin_deviation(self):
-    #     """
-    #     Calculate the grid distance deviation, requiring at 3 grids.
-    #     |           |               |                   |
-    #     |           |               |                   |
-    #     <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
-    #     |           |               |                   |
-    #     |           |               |                   |
-    #     - max = dist_3
-    #     - min = dist_1
-    #     """
-
-    #     def get_maxmin_deviations(grid_groups, min_size_group=3):
-
-    #         max_min_deviations = []
-    #         grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
-
-    #         # check if there's grid_groups left alter filtering the minor groups.
-    #         if grid_groups:
-                
-    #             for slope, grid_group in grid_groups.items():
-    #                 distance_per_group = []
-    #                 for i in range(1, len(grid_group)):
-    #                     dist = (grid_group[i][-1] - grid_group[i-1][-1])
-    #                     distance_per_group.append(dist)
-
-    #                 if distance_per_group:
-    #                     max_min_distances_per_group = [max(distance_per_group), min(distance_per_group)]                        
-    #                     max_min_deviations.append((1-max_min_distances_per_group[1]/max_min_distances_per_group[0]))
-            
-    #         return max_min_deviations
-    
-    #     # initialize the loss target.
-    #     self.avg_deviation_maxmin = []
-    #     for storey_key, storey_value in self.grids_merged.items():
-    #         if isinstance(storey_value, dict) and storey_value.get('grid_groups'):
-    #             grid_groups_per_storey = storey_value['grid_groups']
-    #             self.avg_deviation_maxmin.append(get_maxmin_deviations(grid_groups_per_storey))
-        
-    #     self.avg_deviation_maxmin = [item for sublist in self.avg_deviation_maxmin for item in sublist]
-    #     if self.avg_deviation_maxmin and len(self.avg_deviation_maxmin)!=0:
-    #         self.avg_deviation_maxmin = sum(self.avg_deviation_maxmin)/len(self.avg_deviation_maxmin)
-    #     else:
-    #         print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_maxmin_deviation |")
-    #         self.avg_deviation_maxmin = 1.0
         
     # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     # Loss to minimie: deviation of continuous interdistances between adjacent grids.
-
-    # new
-    def merged_loss_adjacent_distance_percent(self):        
+    def merged_loss_adjacent_distance_percent(self):
+        # ---
+        # f3()
+        # ---
+        
         """
         Calculate the grid distance deviation, requiring at 3 grids.
         |           |               |                   |
@@ -1680,8 +1641,9 @@ class GridGenerator:
 
                     if distance_per_group:
                         sub_distances = [g_group[-1] for g_group in grid_group]
-                        scale_base  = abs(max(sub_distances)-min(sub_distances))
-                        adjacent_difference_percent = (sum(distance_per_group)/len(distance_per_group))/scale_base
+                        scale_base  = abs(max(sub_distances)-min(sub_distances)) # d_{i,total}
+                        # adjacent_difference_percent = (sum(distance_per_group)/len(distance_per_group))/scale_base
+                        adjacent_difference_percent = sum(distance_per_group)/scale_base
                         adjacent_distance_difference_per_storey.append(adjacent_difference_percent)
             else:
                 adjacent_distance_difference_per_storey = [1.0]
@@ -1699,58 +1661,6 @@ class GridGenerator:
             self.avg_deviation_adjacent = sum(self.avg_deviation_adjacent)/len(self.avg_deviation_adjacent)
         else:
             self.avg_deviation_adjacent = 1.0
-
-    # # old
-    # def merged_loss_distance_deviation(self):
-    #     """
-    #     Calculate the grid distance deviation, requiring at 3 grids.
-    #     |           |               |                   |
-    #     |           |               |                   |
-    #     <- dist_1 -> <-   dist_2   -> <-    dist_3    ->
-    #     |           |               |                   |
-    #     |           |               |                   |
-    #     - abs(dist_1**2 - dist_2**2)
-    #     - abs(dist_2**2 - dist_3**2)
-    #     """
-        
-    #     def get_distance_deviations(grid_groups, min_size_group=3):
-
-    #         square_root_of_distance_differences = []
-    #         grid_groups = {key: value for key, value in grid_groups.items() if len(value) >= min_size_group}
-            
-    #         if grid_groups:
-    #             for slope, grid_group in grid_groups.items():
-    #                 for i in range(1, len(grid_group)-1):
-    #                     dist_1 = (grid_group[i][-1] - grid_group[i-1][-1])
-    #                     dist_2 = (grid_group[i+1][-1] - grid_group[i][-1])
-
-    #                     square_root_diff = abs(dist_1**2 - dist_2**2)**0.5
-    #                     square_root_of_distance_differences.append(square_root_diff)
-
-    #         return square_root_of_distance_differences
-        
-    #     def sigmoid_scale(d, d_max):
-    #         return 1 / (1 + np.exp(-10 * (d / d_max - 0.5)))
-        
-    #     # todo, reconsider if there's any better scale function.
-    #     # get the averaged rescaled deviation value. 
-    #     average_wall_length = sum(list(self.info_wall_length_by_id.values()))/len(list(self.info_wall_length_by_id.values()))
-        
-    #     # initialize the loss target.
-    #     self.avg_deviation_distance = []
-    #     for storey_key, storey_value in self.grids_merged.items():
-    #         if isinstance(storey_value, dict) and storey_value.get('grid_groups'):
-    #             grid_groups_per_storey = storey_value['grid_groups']
-    #             self.avg_deviation_distance += get_distance_deviations(grid_groups_per_storey)
-
-    #     if self.avg_deviation_distance:
-    #         self.avg_deviation_distance = sum(self.avg_deviation_distance)/len(self.avg_deviation_distance)
-    #         self.avg_deviation_distance = sigmoid_scale(self.avg_deviation_distance, average_wall_length)
-    #     else:
-    #         print ("|---------------------------------->>>Warning: One penalty pic occurs in merged_loss_distance_deviation |")
-    #         self.avg_deviation_distance = sigmoid_scale(average_wall_length, average_wall_length)
-
-    #     # print ("avg_deviation_distance", self.avg_deviation_distance) # might have errors after the updates
         
 # Loss with Merged Grids ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
 #===================================================================================================

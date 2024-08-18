@@ -32,7 +32,7 @@ def preparation_of_grid_generation(
 
     return generator
 
-def building_grid_generation(basic_generator, new_parameters, set_visualization=True):
+def building_grid_generation(basic_generator, new_parameters, set_visualization=False):
     
     # update the parameters.
     new_generator = basic_generator.update_parameters(new_parameters)

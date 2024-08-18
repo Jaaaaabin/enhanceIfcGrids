@@ -1,12 +1,12 @@
 {
     "st_c_num": 2,
-    "st_w_num": 2,
+    "st_w_num": 3,
     "ns_w_num": 2,
-    "st_w_accumuled_length_percent": 0.0467,
-    "ns_w_accumuled_length_percent": 0.017,
-    "st_st_merge": 0.2,
-    "ns_st_merge": 0.5,
-    "ns_ns_merge": 0.7,
-    "st_w_align_dist": 0.0673,
-    "ns_w_align_dist": 0.0662
+    "st_w_accumuled_length_percent": 0.0022,
+    "ns_w_accumuled_length_percent": 0.0036,
+    "st_st_merge": 0.1,
+    "ns_st_merge": 0.2,
+    "ns_ns_merge": 0.4,
+    "st_w_align_dist": 0.0882,
+    "ns_w_align_dist": 0.0963
 }

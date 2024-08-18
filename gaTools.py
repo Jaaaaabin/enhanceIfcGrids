@@ -2,6 +2,7 @@ import os
 import json
 import random
 import logging
+import pandas as pd
 import numpy as np
 from math import ceil, log10
 from deap import tools
@@ -128,7 +129,7 @@ def visualizeGenFitness(
 
         return float_list
     
-    # ------------------------------------ Create the violin plot ------------------------------------
+    # ------------------------------------ Set up the plotting ------------------------------------
     ind_data = read_floats_from_file(ind_file)
     violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
 
@@ -137,6 +138,7 @@ def visualizeGenFitness(
     plt.figure(figsize=(len(violin_data)*viol_w_per_gen, viol_h), dpi=300)
     fig, ax = plt.subplots()
 
+    # ------------------------------------ Create the violin plot ------------------------------------
     # plot the whole violin.
     if not set_violin_filter:
 
@@ -180,8 +182,7 @@ def visualizeGenFitness(
             # Setting x-tick labels to show group numbers
             ax.set_xticks(axis_x_ticks)
             ax.set_xticklabels([f'{i}' for i in axis_x_ticks])
-
-            
+ 
     # ------------------------------------ Create the fitness line plot ------------------------------------
     gen = logbook.select("gen")
     min_fitness = logbook.select("min")
@@ -200,6 +201,131 @@ def visualizeGenFitness(
     # ------------------------------------ Save the plot ------------------------------------
     ax.set_xlim(-5, 205)
     ax.set_ylim(0.0, avg_fitness[0]+0.1)
+    plt.xlabel("Generation")
+    plt.ylabel("Fitness")
+    plt.title("Fitness Over Generations")
+    plt.legend()
+    plt.grid(False)
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=300)
+    plt.close()
+
+def visualizeGenFitness_multiobjectives(
+    output_file, logbook, restart_rounds, ind_file, generation_size, set_violin_filter=True):
+    
+    def read_floats_from_file_multiobjectives(file_path):
+        float_list = []
+        try:
+            with open(file_path, 'r') as file:
+                for line in file:
+
+                    # Convert each line to a float and add it to the list
+                    try:
+                        cleaned_line = line.strip('()\n').split(',')
+                        float_values = list(map(float, map(str.strip, cleaned_line)))
+                        float_list.append(float_values)
+
+                    except ValueError:
+                        print(f"Warning: Could not convert '{line.strip()}' to float.")
+        except FileNotFoundError:
+            print(f"Error: The file {file_path} does not exist.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+        return float_list
+    
+    # ------------------------------------ Set up the plotting ------------------------------------    
+    plt.figure(figsize=(20,8), dpi=300)
+    fig, ax = plt.subplots()
+
+    ind_data = read_floats_from_file_multiobjectives(ind_file)
+    array_ind_data = np.array(ind_data)
+    num_all_generations = len(array_ind_data) // generation_size
+    fitness_results = {1: {'Min': [], 'Avg': [], 'Max': [], 'Std': []},
+                    2: {'Min': [], 'Avg': [], 'Max': [], 'Std': []},
+                    3: {'Min': [], 'Avg': [], 'Max': [], 'Std': []}}
+
+    for i in range(num_all_generations):
+        generation_data = array_ind_data[i*generation_size:(i+1)*generation_size]
+        for j in range(3):  # Loop through each fitness column
+            fitness_results[j+1]['Min'].append(np.min(generation_data[:, j]))
+            fitness_results[j+1]['Avg'].append(np.mean(generation_data[:, j]))
+            fitness_results[j+1]['Max'].append(np.max(generation_data[:, j]))
+            fitness_results[j+1]['Std'].append(np.std(generation_data[:, j]))
+
+    df_fitness1 = pd.DataFrame(fitness_results[1])
+    df_fitness2 = pd.DataFrame(fitness_results[2])
+    df_fitness3 = pd.DataFrame(fitness_results[3])
+
+    # violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
+
+    # # ------------------------------------ Create the violin plot ------------------------------------
+    # # plot the whole violin.
+    # if not set_violin_filter:
+
+    #     violin_data_positions = range(len(violin_data))
+    #     parts = ax.violinplot(violin_data, positions=violin_data_positions)
+    #     for partname in ('cbars', 'cmins', 'cmaxes'):
+    #         parts[partname].set_edgecolor('black')
+    #         parts[partname].set_linestyle('--')
+    #         parts[partname].set_linewidth(0.5)
+    #         parts[partname].set_alpha(0.5)
+    
+    # # plot only the filtered violin parts.
+    # else:
+
+    #     prev_cmin = None
+    #     filtered_violin_data = []
+    #     filtered_indices = []
+
+    #     # Filter data based on cmins
+    #     for i, gen_data in enumerate(violin_data):
+    #         cmin = min(gen_data)
+
+    #         # if it's the initial or the last population or, if it has changes compared to the previous "best" fitness.
+    #         if i == 0  or i == len(violin_data) - 1 or prev_cmin is None or cmin != prev_cmin: 
+                
+    #             filtered_violin_data.append(gen_data)
+    #             filtered_indices.append(i)
+                
+    #         prev_cmin = cmin
+
+    #     # Customize the violin plot with filtered data
+    #     if filtered_violin_data:
+    #         parts = ax.violinplot(filtered_violin_data, positions=filtered_indices)
+    #         for partname in ('cbars', 'cmins', 'cmaxes'):
+    #             parts[partname].set_edgecolor('black')
+    #             parts[partname].set_linestyle('--')
+    #             parts[partname].set_linewidth(0.5)
+    #             parts[partname].set_alpha(0.5)
+
+    #         axis_x_ticks = filtered_indices + restart_rounds if restart_rounds else filtered_indices
+    #         # Setting x-tick labels to show group numbers
+    #         ax.set_xticks(axis_x_ticks)
+    #         ax.set_xticklabels([f'{i}' for i in axis_x_ticks])
+ 
+    # ------------------------------------ Create the fitness line plot ------------------------------------
+    
+    single_gene = list(range(0, num_all_generations))
+    plt.plot(single_gene, df_fitness1['Avg'], '#2e2eb8', linewidth=0.5, label="Average Fitness 1")
+    plt.plot(single_gene, df_fitness2['Avg'], '#bc272d', linewidth=0.5, label="Average Fitness 2")
+    plt.plot(single_gene, df_fitness3['Avg'], '#B8860B', linewidth=0.5, label="Average Fitness 3")
+    
+    # # Plot the minimum and average fitness curves.
+    gen = logbook.select("gen")
+    # min_fitness = logbook.select("min")
+    # plt.plot(gen, min_fitness, 'blue', linewidth=0.95, label="Global Minimum Fitness")
+    avg_fitness = logbook.select("avg")
+    plt.plot(gen, avg_fitness, 'black', linewidth=0.95, label="Global Average Fitness")
+    
+    # Highlight the random restart generations with points on the curve for global average fitness
+    if restart_rounds:
+        rr_avg_fitness = [avg_fitness[gen.index(r_round)] for r_round in restart_rounds]
+        plt.scatter(restart_rounds, rr_avg_fitness, s=5, color='r', label="Average Fitness with Random Restart")
+    
+    # ------------------------------------ Save the plot ------------------------------------
+    # ax.set_ylim(0.0, avg_fitness[0]+0.1)
+    ax.set_xlim(0, len(single_gene)+10)
     plt.xlabel("Generation")
     plt.ylabel("Fitness")
     plt.title("Fitness Over Generations")
@@ -434,7 +560,8 @@ def ga_rr_eaSimple(
         print(logbook.stream)
 
     # Collect the fitness of per population.
-    population_fitnesses = [ind.fitness.values[0] for ind in population]
+    # population_fitnesses = [ind.fitness.values[0] for ind in population]
+    population_fitnesses = [ind.fitness.values for ind in population] # for multi-objective optimization, need to plot all of them
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
 
     all_restart_rounds = []
@@ -504,7 +631,8 @@ def ga_rr_eaSimple(
         
         # --------------------------------------------------------------------
         # [current population] Collect and Store the fitness statistics.
-        population_fitnesses = [ind.fitness.values[0] for ind in population]
+        # population_fitnesses = [ind.fitness.values[0] for ind in population]
+        population_fitnesses = [ind.fitness.values for ind in population] # for multi-objective optimization, need to plot all of them
         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
 
         # --------------------------------------------------------------------

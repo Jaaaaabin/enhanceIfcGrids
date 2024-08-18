@@ -20,7 +20,7 @@ from deap import base, creator, tools, algorithms
 from ifc_grid_generation import preparation_of_grid_generation
 
 from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
-from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness
+from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitness_multiobjectives
 from gaTools import ga_rr_eaSimple
 
 # # ====save
@@ -165,9 +165,10 @@ def ga_objective(individual: list) -> tuple:
     gridGenerator.calculate_losses()
     
     # for our problem, it might be a "dominated" problem.
-    individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_adjacent*0.25
+    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_adjacent*0.25
+    # return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
 
-    return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
+    return (gridGenerator.percent_unbound_elements, gridGenerator.avg_deviation_maxmin, gridGenerator.avg_deviation_adjacent)
 
 # ===================================================================================================
 # main.
@@ -186,7 +187,8 @@ def main():
     if args.random_seed:
         random.seed(args.random_seed)
 
-    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+    # creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+    creator.create("FitnessMin", base.Fitness, weights=(-1.0,-1.0,-1.0,))
     creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMin) 
     toolbox = base.Toolbox()
 
@@ -239,12 +241,18 @@ def main():
     
     if args.num_process > 1:
         pool.close()
-    
+
     # Analysis of the GA results.
     saveLogbook(
         logbook=logbook, log_file=GENERATION_LOG_FILE)
-    visualizeGenFitness(
+    
+    print ("inter check.")
+
+    # visualizeGenFitness(
+    #     output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+    visualizeGenFitness_multiobjectives(
         output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+    
     # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
 
     # Pick the best individual
