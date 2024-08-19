@@ -50,7 +50,7 @@ MUTAT_PROB = 0.1 # the probability for mutating an individual
 
 NUM_GENERATIONS_THRESHOLD_RESTART = 25
 RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
-NUM_GENERATIONS_CONVERGE = 50
+NUM_GENERATIONS_CONVERGE = 100
 
 PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + "_cross_" + str(CROSS_PROB) + "_mutate_" + str(MUTAT_PROB)
 #===================================================================================================
@@ -167,8 +167,9 @@ def ga_objective(individual: list) -> tuple:
     # for our problem, it might be a "dominated" problem.
     # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_adjacent*0.25
     # return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
-
-    return (gridGenerator.percent_unbound_elements, gridGenerator.avg_deviation_maxmin, gridGenerator.avg_deviation_adjacent)
+    f_unbound = gridGenerator.percent_unbound_elements
+    f_distribution = 0.5*gridGenerator.avg_deviation_maxmin + 0.5*gridGenerator.avg_deviation_adjacent
+    return (f_unbound, f_distribution)
 
 # ===================================================================================================
 # main.
@@ -188,7 +189,7 @@ def main():
         random.seed(args.random_seed)
 
     # creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-    creator.create("FitnessMin", base.Fitness, weights=(-1.0,-1.0,-1.0,))
+    creator.create("FitnessMin", base.Fitness, weights=(-1.0,-1.0,))
     creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMin) 
     toolbox = base.Toolbox()
 
@@ -245,8 +246,6 @@ def main():
     # Analysis of the GA results.
     saveLogbook(
         logbook=logbook, log_file=GENERATION_LOG_FILE)
-    
-    print ("inter check.")
 
     # visualizeGenFitness(
     #     output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)

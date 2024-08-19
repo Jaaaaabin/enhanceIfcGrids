@@ -211,7 +211,7 @@ def visualizeGenFitness(
     plt.close()
 
 def visualizeGenFitness_multiobjectives(
-    output_file, logbook, restart_rounds, ind_file, generation_size, set_violin_filter=True):
+    output_file, logbook, restart_rounds, ind_file, generation_size):
     
     def read_floats_from_file_multiobjectives(file_path):
         float_list = []
@@ -242,12 +242,11 @@ def visualizeGenFitness_multiobjectives(
     array_ind_data = np.array(ind_data)
     num_all_generations = len(array_ind_data) // generation_size
     fitness_results = {1: {'Min': [], 'Avg': [], 'Max': [], 'Std': []},
-                    2: {'Min': [], 'Avg': [], 'Max': [], 'Std': []},
-                    3: {'Min': [], 'Avg': [], 'Max': [], 'Std': []}}
+                    2: {'Min': [], 'Avg': [], 'Max': [], 'Std': []},}
 
     for i in range(num_all_generations):
         generation_data = array_ind_data[i*generation_size:(i+1)*generation_size]
-        for j in range(3):  # Loop through each fitness column
+        for j in range(2):  # Loop through each fitness column
             fitness_results[j+1]['Min'].append(np.min(generation_data[:, j]))
             fitness_results[j+1]['Avg'].append(np.mean(generation_data[:, j]))
             fitness_results[j+1]['Max'].append(np.max(generation_data[:, j]))
@@ -255,7 +254,6 @@ def visualizeGenFitness_multiobjectives(
 
     df_fitness1 = pd.DataFrame(fitness_results[1])
     df_fitness2 = pd.DataFrame(fitness_results[2])
-    df_fitness3 = pd.DataFrame(fitness_results[3])
 
     # violin_data = [ind_data[i:i + generation_size] for i in range(0, len(ind_data), generation_size)]
 
@@ -307,17 +305,20 @@ def visualizeGenFitness_multiobjectives(
     # ------------------------------------ Create the fitness line plot ------------------------------------
     
     single_gene = list(range(0, num_all_generations))
-    plt.plot(single_gene, df_fitness1['Avg'], '#2e2eb8', linewidth=0.5, label="Average Fitness 1")
-    plt.plot(single_gene, df_fitness2['Avg'], '#bc272d', linewidth=0.5, label="Average Fitness 2")
-    plt.plot(single_gene, df_fitness3['Avg'], '#B8860B', linewidth=0.5, label="Average Fitness 3")
+    plt.plot(single_gene, df_fitness1['Avg'], '#B8860B', linewidth=0.85, label=r"$f_{unbound}$")
+    plt.plot(single_gene, df_fitness2['Avg'], '#bc272d', linewidth=0.85, label=r"$f_{distribution}$")
     
+    # Fill the shaded areas for df_fitness2
+    plt.fill_between(single_gene, df_fitness1['Min'], df_fitness1['Max'], color='#B8860B', alpha=0.1)
+    plt.fill_between(single_gene, df_fitness2['Min'], df_fitness2['Max'], color='#bc272d', alpha=0.1)
+
     # # Plot the minimum and average fitness curves.
     gen = logbook.select("gen")
     # min_fitness = logbook.select("min")
     # plt.plot(gen, min_fitness, 'blue', linewidth=0.95, label="Global Minimum Fitness")
     avg_fitness = logbook.select("avg")
-    plt.plot(gen, avg_fitness, 'black', linewidth=0.95, label="Global Average Fitness")
-    
+    plt.plot(gen, avg_fitness, '#2e2eb8', linewidth=0.99, label="Average Fitness")
+
     # Highlight the random restart generations with points on the curve for global average fitness
     if restart_rounds:
         rr_avg_fitness = [avg_fitness[gen.index(r_round)] for r_round in restart_rounds]
@@ -655,3 +656,8 @@ def ga_rr_eaSimple(
             restart_history_count-=1
 
     return population, logbook, all_restart_rounds
+
+
+# pareto frontier with DEAP in Python
+# https://stackoverflow.com/questions/37000488/how-to-plot-multi-objectives-pareto-frontier-with-deap-in-python
+# https://arxiv.org/pdf/2305.08852
