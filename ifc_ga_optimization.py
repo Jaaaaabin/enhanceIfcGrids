@@ -39,7 +39,7 @@ from gaTools import ga_rr_eaSimple
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 
-ENABLE_GA_RR = True
+ENABLE_GA_RR = False
 
 POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
 NUM_GENERATIONS = 300 # number of iterations.
@@ -48,7 +48,7 @@ TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.6 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.1 # the probability for mutating an individual
 
-NUM_GENERATIONS_THRESHOLD_RESTART = 60
+NUM_GENERATIONS_THRESHOLD_RESTART = 50
 RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
 NUM_GENERATIONS_CONVERGE = 10000 # only use 'maximum number of generation as the convergence condition/
 
@@ -71,7 +71,7 @@ logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%
 INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
-GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds.txt")
+GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_False.txt") 
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
 
 # todo.
