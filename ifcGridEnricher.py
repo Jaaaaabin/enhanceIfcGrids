@@ -27,6 +27,15 @@ class IfcSpatialGridEnrichment:
         self.building = self.model.by_type('IfcBuilding')[0]
         self.storeys = self.model.by_type('IfcBuildingStorey')
 
+        # self.st_columns = self.model.by_type("IfcColumn")
+        # self.slabs = self.model.by_type("IfcSlab")
+        # self.roofs = self.model.by_type("IfcRoof")
+        # self.beams = self.model.by_type("IfcBeam")
+        self.walls = self.model.by_type("IfcWall")
+        # self.curtainwalls = self.model.by_type("IfcCurtainWall")
+        # self.plates = self.model.by_type("IfcPlate")
+        # self.members = self.model.by_type("IfcMember")
+
         max_z_values = max(st.Elevation for st in self.storeys)
         if max_z_values > 1000:
             self.mode_unit = 0.001  # unit = 0.001 * meter
@@ -49,6 +58,9 @@ class IfcSpatialGridEnrichment:
             ChangeAction="ADDED",
             CreationDate=int(time.time())
         )
+    
+    def save_the_enriched_ifc(self):
+        self.model.write(os.path.join(self.output_figure_path, 'enriched_' + self.ifc_file_name))
 
     def enrich_grid_placement_information(self):
          
@@ -173,22 +185,86 @@ class IfcSpatialGridEnrichment:
         
         # extract the grid placements.
         self.enrich_grid_placement_information()
+        
         # create the grids.
         self.create_reference_grids()
     
     @time_decorator
-    def enrich_reference_relationships(self):
+    def enrich_reference_relationships_relconstraint(self):
+        
+        principal_constraint = self.model.create_entity(
+                            "IfcConstraint",
+                            Name="LogicalPlacementConstraint (Simulating IfcRelPositions)",
+                            Description="Principal constrained placement relative to gloabl IfcGrid.",
+                            ConstraintGrade="USERDEFINED",
+                            UserDefinedGrade="PRINCIPAL", # 'UserDefinedGrade' must be asserted when IfcConstraintGradeEnum="USERDEFINED"
+                            )
+        supplementary_constraint = self.model.create_entity(
+                            "IfcConstraint",
+                            Name="LogicalPlacementConstraint (Simulating IfcRelPositions)",
+                            Description="Supplementary constrained placement relative to local IfcGrid.",
+                            ConstraintGrade="USERDEFINED",
+                            UserDefinedGrade="SUPPLEMENTARY", # 'UserDefinedGrade' must be asserted when IfcConstraintGradeEnum="USERDEFINED"
+                            )
+        
+        # the following parts are directly copied from 'enrich_reference_relationships_relref'
+        for grid_label, grid_data in self.all_grid_data.items():
+            if grid_data["type"] in {"st_grid", "ns_grid"}:
+                
+                new_grid_element = self.model.by_guid(grid_data['id'])
+                all_cd_element_ids = []
+                for id_cd_grid in grid_data['children']:
+                    cd_element_ids = self.all_grid_data[id_cd_grid]['children']
+                    all_cd_element_ids+=cd_element_ids
+                all_cd_elements = [self.model.by_guid(id) for id in all_cd_element_ids]
+
+                # Create the IfcConstraint entity to define the positioning rule or constraint
+                
+                    # ----------------------------------------------
+                    # IfcRelConnets <- IfcRelPositions(
+                    #     //GlobalId, OwnerHistory,Name, Description//,
+                    #     RelatingPositioningElement:IfcPositioningElement,
+                    #     RelatedProducts:IfcProduct)
+                    # ----------------------------------------------
+                    # IfcRelAssociates <- IfcRelAssociatesConstraint(
+                    #     //GlobalId, OwnerHistory,Name, Description//,
+                    #     IfcRelAssociates(
+                    #         //GlobalId, OwnerHistory,Name, Description//, RelatedObjects:SetofObjects),
+                    #     Intent:IfcLable,
+                    #     RelatingConstraint:IfcConstraint)
+                    # ----------------------------------------------
+                    # IfcConstraint(
+                    #     Name
+                    #     Description
+                    #     ConstraintGrade
+                    #     UserDefinedGrade
+                    # )
+                    # IfcRelAssociatesConstraint
+                    # 
     
+                # Create the IfcRelAssociatesConstraint relationship
+                relation_constraint = self.model.create_entity(
+                    "IfcRelAssociatesConstraint",
+                    GlobalId=ifcopenshell.guid.new(),
+                    OwnerHistory=self.new_owner_history,
+                    Name="ApplyIfcConstraint",
+                    Description="Placement relative to IfcGrid",
+                    RelatedObjects=all_cd_elements,
+                    Intent=new_grid_element.Name,
+                    RelatingConstraint=principal_constraint,  # The constraint we just created
+                )
+
+    @time_decorator
+    def enrich_reference_relationships_relref(self):
+    
+    # store the reference dependencies in 'IfcRelReferencedInSpatialStructure'.
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # todo. 'IfcRelReferencedInSpatialStructure' can only be used to reference spatial elements such as :
-    # site as IfcSite
-    # building as IfcBuilding
-    # storey as IfcBuildingStorey
-    # space as IfcSpace
+    # Attention: 'IfcRelReferencedInSpatialStructure' can only be used to reference spatial elements such as :
+    # site as IfcSite, building as IfcBuilding, storey as IfcBuildingStorey, space as IfcSpace
     # self.model.create_entity("IfcRelReferencedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
     # self.model.create_entity("IfcRelContainedInSpatialStructure", GlobalId=ifcopenshell.guid.new(), RelatedElements=[element], RelatingStructure=grid)
-    
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         for grid_label, grid_data in self.all_grid_data.items():
             if grid_data["type"] in {"st_grid", "ns_grid"}:
                 
@@ -206,17 +282,3 @@ class IfcSpatialGridEnrichment:
                     RelatedElements=all_cd_elements,
                     RelatingStructure=new_grid_element)
     
-      
-    def save_the_enriched_ifc(self):
-        self.model.write(os.path.join(self.output_figure_path, 'enriched_' + self.ifc_file_name))
-
-    #    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # def _create_grid_reference(self, grid):
-    #     """Create a classification reference for a grid."""
-    #     return self.model.create_entity(
-    #         'IfcClassificationReference',
-    #         Location=f"Grid:{grid.Name}",
-    #         Identification=grid.GlobalId,
-    #         Name=grid.Name
-    #     )

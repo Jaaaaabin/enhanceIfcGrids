@@ -42,15 +42,15 @@ from gaTools import ga_rr_eaSimple
 ENABLE_GA_RR = True
 
 POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 200 # number of iterations.
+NUM_GENERATIONS = 300 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.6 # the probability with which two individuals are crossed or mated
 MUTAT_PROB = 0.1 # the probability for mutating an individual
 
-NUM_GENERATIONS_THRESHOLD_RESTART = 25
+NUM_GENERATIONS_THRESHOLD_RESTART = 60
 RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
-NUM_GENERATIONS_CONVERGE = 100
+NUM_GENERATIONS_CONVERGE = 10000 # only use 'maximum number of generation as the convergence condition/
 
 PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + "_cross_" + str(CROSS_PROB) + "_mutate_" + str(MUTAT_PROB)
 #===================================================================================================

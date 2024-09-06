@@ -3,7 +3,7 @@ from ifcGridEnricher import IfcSpatialGridEnrichment
 
 PROJECT_PATH = os.getcwd()
 # DATA_FOLDER_PATH = PROJECT_PATH + r'\data\enriched'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 def enrich_ifc_file(input_path, output_path):
@@ -12,7 +12,11 @@ def enrich_ifc_file(input_path, output_path):
 
     enricher.enrich_ifc_with_grids()
     
-    enricher.enrich_reference_relationships() # how to register the element grid relationships?
+    # # store the reference dependencies in 'IfcRelReferencedInSpatialStructure'.
+    # enricher.enrich_reference_relationships_relref()
+    
+    # store the reference dependencies in 'FootPrint' of the building elements.
+    enricher.enrich_reference_relationships_relconstraint()
 
     enricher.save_the_enriched_ifc()
 
