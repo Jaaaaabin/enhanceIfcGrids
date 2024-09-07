@@ -75,12 +75,23 @@ def getParameterVarLimits(param_ranges):
 # ===================================================================================================
 # Storage and Visualization.
 
-def clearPopulationFitnesses(file_path):
+def clearPopulationFile(file_path):
 
     if os.path.exists(file_path):
         os.remove(file_path)
 
 def savePopulationFitnesses(file_path, values):
+
+    try:
+        # Open the file in append mode
+        with open(file_path, 'a') as file:
+            for v in values:
+                file.write(f"{v}\n")
+
+    except Exception as e:
+        print(f"Failed to append to the file: {e}")
+
+def savePopulationThresholds(file_path, values):
 
     try:
         # Open the file in append mode
@@ -534,15 +545,17 @@ def random_restart(
 def ga_rr_eaSimple(
     population, creator, toolbox,
     cxpb, mutpb, ngen, set_random_restart=True,
-    initial_generation_file=[], fitness_file=[],
+    initial_generation_file=[], fitness_file=[], threshold_file=[],
     stats=None, halloffame=None, verbose=__debug__,
     param_limits=None, ngen_threshold_restart=10,
     pop_restart=None, ngen_converge=10):
     
     # remove the fitness file it already exist in the target folder.
     if fitness_file:
-        clearPopulationFitnesses(file_path=fitness_file)
-    
+        clearPopulationFile(file_path=fitness_file)
+    if threshold_file:
+        clearPopulationFile(file_path=threshold_file)
+
     logbook = tools.Logbook()
     logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
 
@@ -562,8 +575,10 @@ def ga_rr_eaSimple(
 
     # Collect the fitness of per population.
     # population_fitnesses = [ind.fitness.values[0] for ind in population]
-    population_fitnesses = [ind.fitness.values for ind in population] # for multi-objective optimization, need to plot all of them
+    population_fitnesses = [ind.fitness.values for ind in population]
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
+    population_thresholds = population
+    savePopulationThresholds(file_path=fitness_file, values=population_thresholds)
 
     all_restart_rounds = []
     restart_rounds = 0 # count the num /round of random restart
@@ -633,9 +648,12 @@ def ga_rr_eaSimple(
         # --------------------------------------------------------------------
         # [current population] Collect and Store the fitness statistics.
         # population_fitnesses = [ind.fitness.values[0] for ind in population]
-        population_fitnesses = [ind.fitness.values for ind in population] # for multi-objective optimization, need to plot all of them
+        population_fitnesses = [ind.fitness.values for ind in population]
         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
-
+        
+        population_thresholds = population
+        savePopulationThresholds(file_path=fitness_file, values=population_thresholds)
+        
         # --------------------------------------------------------------------
         # [current population] Append the statistics to the logbook
         record = stats.compile(population) if stats else {}

@@ -71,7 +71,8 @@ logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%
 INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
-GENERATION_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_False.txt") 
+GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_False.txt") 
+GENERATION_IND_VAL_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_val_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_val_rr_False.txt") 
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
 
 # todo.
@@ -207,8 +208,8 @@ def main():
     toolbox.register("select", tools.selTournament, tournsize=TOURNAMENT_SIZE)
 
     # Clear the old generation individual file.
-    if os.path.exists(GENERATION_IND_FILE):
-        os.remove(GENERATION_IND_FILE)
+    if os.path.exists(GENERATION_IND_FIT_FILE):
+        os.remove(GENERATION_IND_FIT_FILE)
         
     # Process Pool of multi workers
     if args.num_process > 1:
@@ -235,7 +236,7 @@ def main():
     final_pop, logbook, restart_rounds = ga_rr_eaSimple(
         pop, creator, toolbox, set_random_restart=args.set_rr,
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
-        initial_generation_file=INI_GENERATION_FILE, fitness_file=GENERATION_IND_FILE,
+        initial_generation_file=INI_GENERATION_FILE, fitness_file=GENERATION_IND_FIT_FILE, threshold_file=GENERATION_IND_VAL_FILE,
         stats=stats, verbose=True,
         param_limits = PARAMS_INTEGER, ngen_threshold_restart=NUM_GENERATIONS_THRESHOLD_RESTART,
         pop_restart=RANDOM_RESTART_POPULATION_SIZE, ngen_converge=NUM_GENERATIONS_CONVERGE)
@@ -248,9 +249,9 @@ def main():
         logbook=logbook, log_file=GENERATION_LOG_FILE)
 
     # visualizeGenFitness(
-    #     output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+    #     output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
     visualizeGenFitness_multiobjectives(
-        output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FILE, generation_size=POPULATION_SIZE)
+        output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
     
     # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
 
