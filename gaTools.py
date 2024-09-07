@@ -577,8 +577,9 @@ def ga_rr_eaSimple(
     # population_fitnesses = [ind.fitness.values[0] for ind in population]
     population_fitnesses = [ind.fitness.values for ind in population]
     savePopulationFitnesses(file_path=fitness_file, values=population_fitnesses)
-    population_thresholds = population
-    savePopulationThresholds(file_path=fitness_file, values=population_thresholds)
+
+    population_thresholds = [list(ind[:]) for ind in population]
+    savePopulationThresholds(file_path=threshold_file, values=population_thresholds)
 
     all_restart_rounds = []
     restart_rounds = 0 # count the num /round of random restart
@@ -651,9 +652,9 @@ def ga_rr_eaSimple(
         population_fitnesses = [ind.fitness.values for ind in population]
         savePopulationFitnesses(file_path=fitness_file,values=population_fitnesses)
         
-        population_thresholds = population
-        savePopulationThresholds(file_path=fitness_file, values=population_thresholds)
-        
+        population_thresholds = [list(ind[:]) for ind in population]
+        savePopulationThresholds(file_path=threshold_file, values=population_thresholds)
+
         # --------------------------------------------------------------------
         # [current population] Append the statistics to the logbook
         record = stats.compile(population) if stats else {}
@@ -679,3 +680,6 @@ def ga_rr_eaSimple(
 # pareto frontier with DEAP in Python
 # https://stackoverflow.com/questions/37000488/how-to-plot-multi-objectives-pareto-frontier-with-deap-in-python
 # https://arxiv.org/pdf/2305.08852
+
+#===================================================================================================
+# Pareto Frontier 

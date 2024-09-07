@@ -23,19 +23,6 @@ from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
 from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitness_multiobjectives
 from gaTools import ga_rr_eaSimple
 
-# # ====save
-# # ====save
-# POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-# NUM_GENERATIONS = 200 # number of iterations.
-# TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
-# CROSS_PROB = 0.6 # the probability with which two individuals are crossed or mated
-# MUTAT_PROB = 0.1 # the probability for mutating an individual
-# NUM_GENERATIONS_THRESHOLD_RESTART = 25
-# RANDOM_RESTART_POPULATION_SIZE = int(POPULATION_SIZE*0.8)
-# NUM_GENERATIONS_CONVERGE = 50 
-# # ====save
-# # ====save
-
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 
@@ -71,8 +58,8 @@ logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%
 INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
-GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_rr_False.txt") 
-GENERATION_IND_VAL_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_val_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_val_rr_False.txt") 
+GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
+GENERATION_IND_VAL_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt") 
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
 
 # todo.
@@ -248,30 +235,29 @@ def main():
     saveLogbook(
         logbook=logbook, log_file=GENERATION_LOG_FILE)
 
+    # - - - - - - - - previous version of fitness visualization
     # visualizeGenFitness(
     #     output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
+    # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
+    # - - - - - - - - previous version of fitness visualization
+    
+    # - - - - - - - - previous version of the best individual selection
+    # best_ind = tools.selBest(final_pop, 1)[0] # Pick the best individual
+    # best_ind_decoded = ga_decodeInteger_x(best_ind)
+    # decoded_parameters = ga_adjustReal_x(best_ind_decoded)
+    # gridGeneratorInit.update_parameters(decoded_parameters) # Call back the grid generator.
+    # gridGeneratorInit.create_grids()
+    # gridGeneratorInit.merge_grids()
+    # with open(GENERATION_BEST_IND_FILE, 'w') as json_file: # Visualization of the generated grids.
+    #     json.dump(decoded_parameters, json_file, indent=4)
+    # if args.set_plot:
+    #     gridGeneratorInit.visualization_2d_before_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+    #     gridGeneratorInit.visualization_2d_after_merge(visual_type='html', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+    # - - - - - - - - previous version of the best individual selection
+
     visualizeGenFitness_multiobjectives(
         output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
-    
-    # save_genealogy(toolbox, history, genealogy_file=GENERATION_GENEALOGY_FILE) # genealogy for plotting crossover and mutation.
-
-    # Pick the best individual
-    best_ind = tools.selBest(final_pop, 1)[0]
-    best_ind_decoded = ga_decodeInteger_x(best_ind)
-    decoded_parameters = ga_adjustReal_x(best_ind_decoded)
-    
-    # Call back the grid generator.
-    gridGeneratorInit.update_parameters(decoded_parameters)
-    gridGeneratorInit.create_grids()
-    gridGeneratorInit.merge_grids()
-
-    # Visualization of the generated grids.
-    with open(GENERATION_BEST_IND_FILE, 'w') as json_file:
-        json.dump(decoded_parameters, json_file, indent=4)
-
-    if args.set_plot:
-        gridGeneratorInit.visualization_2d_before_merge(visual_type='pdf', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
-        gridGeneratorInit.visualization_2d_after_merge(visual_type='pdf', visualization_storage_path=MODEL_GA_RES_PATH, add_strs='ga')
+     
 
 if __name__ == "__main__":
 
