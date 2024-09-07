@@ -7,6 +7,8 @@ import numpy as np
 from math import ceil, log10
 from deap import tools
 import matplotlib.pyplot as plt
+from collections import defaultdict
+
 from toolsQuickUtils import time_decorator
 
 #===================================================================================================
@@ -683,3 +685,139 @@ def ga_rr_eaSimple(
 
 #===================================================================================================
 # Pareto Frontier 
+
+def load_gen_fit_files(gen_file, fit_file):
+    """
+    Load fitness values from one file and corresponding genome values from another file,
+    group them by unique rounded fitness values.
+    
+    :param gen_file: Path to the file containing genome values (list of lists).
+    :param fit_file: Path to the file containing fitness values (as tuples).
+    :return: A dictionary where keys are fitness values (rounded) and values are lists of corresponding genome values.
+    """
+    fit_gen_dict = defaultdict(list)  # Dictionary to store fitness as keys and genome values as list of lists
+
+    try:
+        with open(fit_file, 'r') as fit_f, open(gen_file, 'r') as gen_f:
+            
+            # Iterate over both files line by line
+            for fit_line, gen_line in zip(fit_f, gen_f):
+                
+                fit_line = fit_line.strip().replace('(', '').replace(')', '')
+                
+                if fit_line:
+                    fit_values = tuple(round(float(val), 3) for val in fit_line.split(','))
+                    gen_values = [int(val) for val in gen_line.strip().strip('[]').split(', ')]
+                    fit_gen_dict[fit_values].append(gen_values)
+    
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        
+    return fit_gen_dict
+
+def check_pareto_solutions(fitnesses):
+
+    fitnesses = np.array(fitnesses)  # Ensure input is a numpy array
+    
+    is_efficient = np.ones(fitnesses.shape[0], dtype=bool)  # Assume all points are Pareto-efficient initially
+    
+    for i, c in enumerate(fitnesses):
+        if is_efficient[i]:
+            # Keep any point that is not dominated by any other point
+            is_efficient[is_efficient] = np.any(fitnesses[is_efficient] < c, axis=1)
+            is_efficient[i] = True  # Ensure the current point is retained
+    return is_efficient
+
+def get_pareto_frontier(fit_gen_data):
+    
+    # Load points from the file
+    fit_solutions = list(fit_gen_data.keys())
+    
+    # Calculate Pareto-efficient points
+    pareto_mask = check_pareto_solutions(fit_solutions)
+    
+    # Separate Pareto front and other points
+    pareto_front_solutions = [fit_solutions[i] for i in range(len(fit_solutions)) if pareto_mask[i]]
+    non_pareto_solutions = [fit_solutions[i] for i in range(len(fit_solutions)) if not pareto_mask[i]]
+    
+    # Display some statistics
+    print('Number of original points:', len(fit_solutions))
+    print('Number of Pareto front points:', len(pareto_front_solutions))
+    print('Number of non-Pareto points:', len(non_pareto_solutions))
+
+    return  pareto_front_solutions, non_pareto_solutions
+
+def stairway_lines_from_pareto_frontier(pareto_solutions, limit_max_main_axes, min_x, min_y, delta_border=0.02):
+    
+    pareto_stairway_solutions = sorted(pareto_solutions, key=lambda x: x[0])
+    
+    # starting from x_min
+    step_x = [min_x]
+    step_y = [limit_max_main_axes]
+    
+    if min_x != pareto_stairway_solutions[0][0]:
+        step_x.append(min_x)
+        step_y.append(pareto_stairway_solutions[0][1])
+        
+    for i in range(len(pareto_stairway_solutions)):
+        
+        x, y = pareto_stairway_solutions[i]
+        step_x.append(x) 
+        step_y.append(y)
+
+        if i != (len(pareto_stairway_solutions)-1):
+            x_extended = pareto_stairway_solutions[i+1][0]
+            step_x.append(x_extended)  # Horizontal step
+            step_y.append(y)
+        else:
+            if min_y != pareto_stairway_solutions[i][1]:
+                step_x.append(x)
+                step_y.append(min_y)
+    
+    # ending to y_min
+    step_x.append(limit_max_main_axes)
+    step_y.append(min_y)
+    
+    return step_x, step_y
+
+def visualization_pareto_frontier(pareto_solutions, non_pareto_solutions, output_file):
+
+    plt.figure(figsize=(6,6), dpi=300)
+    
+    # non-Pareto points
+    other_x, other_y = zip(*non_pareto_solutions)
+    plt.scatter(other_x, other_y, marker='o', s=12, edgecolors='#CF3759', facecolors='none', label='GA population')
+    limit_max_main_axes = max(other_x + other_y) + 0.02
+    
+    # Pareto front points
+    front_x, front_y = zip(*pareto_solutions)
+    plt.scatter(front_x, front_y, marker='s', s=15, edgecolors='#2E2EB8', facecolors='none', label='Pareto front solutions')
+    
+    limit_min_x_axis = min(other_x + front_x)
+    limit_min_y_axis = min(other_y + front_y)
+    
+    step_x, step_y = stairway_lines_from_pareto_frontier(
+        pareto_solutions, limit_max_main_axes, limit_min_x_axis, limit_min_y_axis)
+    plt.plot(step_x, step_y, color='#6C11B3', linewidth=0.75, linestyle='--')
+
+    plt.xlim([-0.02,limit_max_main_axes])
+    plt.ylim([-0.02,limit_max_main_axes])
+    plt.xlabel(r"$f_{unbound}$", fontsize=14)  # LaTeX format for the x-axis
+    plt.ylabel(r"$f_{distribution}}$", fontsize=14)  # LaTeX format for the y-axis
+    plt.tight_layout()
+    plt.grid(False)
+    plt.legend(loc='best')
+    plt.savefig(output_file, dpi=300)
+    plt.close()
+
+def calculate_pareto_front(gen_file_path, fit_file_path, pareto_front_fig_output_file, pareto_front_ind_output_file):
+
+    fit_gen_data = load_gen_fit_files(gen_file_path, fit_file_path)
+
+    pareto_front_solutions, non_pareto_solutions = get_pareto_frontier(fit_gen_data)
+
+    visualization_pareto_frontier(pareto_front_solutions, non_pareto_solutions, pareto_front_fig_output_file)
+
+    with open(pareto_front_ind_output_file, 'w') as f:
+        json.dump(pareto_front_solutions, f)
+    

@@ -21,7 +21,7 @@ from ifc_grid_generation import preparation_of_grid_generation
 
 from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
 from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitness_multiobjectives
-from gaTools import ga_rr_eaSimple
+from gaTools import ga_rr_eaSimple, calculate_pareto_front
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
@@ -59,7 +59,10 @@ INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
 GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
 GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
 GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
-GENERATION_IND_VAL_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt") 
+GENERATION_IND_GEN_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt")
+GENERATION_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_False.json")
+GENERATION_PARETO_FIG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_True.png") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_False.png")
+
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
 
 # todo.
@@ -223,7 +226,7 @@ def main():
     final_pop, logbook, restart_rounds = ga_rr_eaSimple(
         pop, creator, toolbox, set_random_restart=args.set_rr,
         cxpb=CROSS_PROB, mutpb=MUTAT_PROB, ngen=NUM_GENERATIONS,
-        initial_generation_file=INI_GENERATION_FILE, fitness_file=GENERATION_IND_FIT_FILE, threshold_file=GENERATION_IND_VAL_FILE,
+        initial_generation_file=INI_GENERATION_FILE, fitness_file=GENERATION_IND_FIT_FILE, threshold_file=GENERATION_IND_GEN_FILE,
         stats=stats, verbose=True,
         param_limits = PARAMS_INTEGER, ngen_threshold_restart=NUM_GENERATIONS_THRESHOLD_RESTART,
         pop_restart=RANDOM_RESTART_POPULATION_SIZE, ngen_converge=NUM_GENERATIONS_CONVERGE)
@@ -258,7 +261,12 @@ def main():
     visualizeGenFitness_multiobjectives(
         output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
      
-
+    calculate_pareto_front(
+        gen_file_path = GENERATION_IND_GEN_FILE,
+        fit_file_path = GENERATION_IND_FIT_FILE,
+        pareto_front_fig_output_file = GENERATION_PARETO_FIG_FILE,
+        pareto_front_ind_output_file = GENERATION_PARETO_IND_FILE)
+    
 if __name__ == "__main__":
 
     main()
