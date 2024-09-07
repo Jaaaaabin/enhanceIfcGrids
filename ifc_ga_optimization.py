@@ -61,6 +61,7 @@ GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS +
 GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
 GENERATION_IND_GEN_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt")
 GENERATION_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_False.json")
+GENERATION_NON_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_False.json")
 GENERATION_PARETO_FIG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_True.png") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_False.png")
 
 GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
@@ -265,7 +266,9 @@ def main():
         gen_file_path = GENERATION_IND_GEN_FILE,
         fit_file_path = GENERATION_IND_FIT_FILE,
         pareto_front_fig_output_file = GENERATION_PARETO_FIG_FILE,
-        pareto_front_ind_output_file = GENERATION_PARETO_IND_FILE)
+        pareto_front_ind_output_file = GENERATION_PARETO_IND_FILE,
+        non_pareto_front_ind_output_file = GENERATION_NON_PARETO_IND_FILE,
+        )
     
 if __name__ == "__main__":
 
