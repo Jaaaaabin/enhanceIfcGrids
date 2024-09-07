@@ -796,6 +796,7 @@ def visualization_pareto_frontier(pareto_solutions, non_pareto_solutions, output
     limit_min_x_axis = min(other_x + front_x)
     limit_min_y_axis = min(other_y + front_y)
     
+    # Pareto front boundary lines
     step_x, step_y = stairway_lines_from_pareto_frontier(
         pareto_solutions, limit_max_main_axes, limit_min_x_axis, limit_min_y_axis)
     plt.plot(step_x, step_y, color='#6C11B3', linewidth=0.75, linestyle='--')
@@ -803,7 +804,7 @@ def visualization_pareto_frontier(pareto_solutions, non_pareto_solutions, output
     plt.xlim([-0.02,limit_max_main_axes])
     plt.ylim([-0.02,limit_max_main_axes])
     plt.xlabel(r"$f_{unbound}$", fontsize=14)  # LaTeX format for the x-axis
-    plt.ylabel(r"$f_{distribution}}$", fontsize=14)  # LaTeX format for the y-axis
+    plt.ylabel(r"$f_{distribution}$", fontsize=14)  # LaTeX format for the y-axis
     plt.tight_layout()
     plt.grid(False)
     plt.legend(loc='best')
@@ -817,7 +818,8 @@ def calculate_pareto_front(gen_file_path, fit_file_path, pareto_front_fig_output
     pareto_front_solutions, non_pareto_solutions = get_pareto_frontier(fit_gen_data)
 
     visualization_pareto_frontier(pareto_front_solutions, non_pareto_solutions, pareto_front_fig_output_file)
-
+    
+    pareto_front_gens = [fit_gen_data[fit] for fit in pareto_front_solutions]
     with open(pareto_front_ind_output_file, 'w') as f:
-        json.dump(pareto_front_solutions, f)
+        json.dump(pareto_front_gens, f)
     
