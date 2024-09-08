@@ -815,21 +815,15 @@ def calculate_pareto_front(
     gen_file_path,
     fit_file_path,
     pareto_front_fig_output_file,
-    pareto_front_ind_output_file,
-    non_pareto_front_ind_output_file,
     ):
 
     fit_gen_data = load_gen_fit_files(gen_file_path, fit_file_path)
-
     pareto_front_solutions, non_pareto_solutions = get_pareto_frontier(fit_gen_data)
 
     visualization_pareto_frontier(pareto_front_solutions, non_pareto_solutions, pareto_front_fig_output_file)
 
-    pareto_front_data = {str(fit): fit_gen_data[fit] for fit in pareto_front_solutions if fit in fit_gen_data}
-    with open(pareto_front_ind_output_file, 'w') as json_file:
-        json.dump(pareto_front_data, json_file, indent=4)
-    
-    non_pareto_front_data = {str(fit): fit_gen_data[fit] for fit in non_pareto_solutions if fit in fit_gen_data}
-    with open(non_pareto_front_ind_output_file, 'w') as json_file:
-        json.dump(non_pareto_front_data, json_file, indent=4)
+    pareto_front_data = {fit: fit_gen_data[fit] for fit in pareto_front_solutions if fit in fit_gen_data}
+    non_pareto_front_data = {fit: fit_gen_data[fit] for fit in non_pareto_solutions if fit in fit_gen_data}
+
+    return pareto_front_data, non_pareto_front_data
     

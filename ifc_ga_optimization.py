@@ -26,10 +26,10 @@ from gaTools import ga_rr_eaSimple, calculate_pareto_front
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 
-ENABLE_GA_RR = False
+ENABLE_GA_RR = True
 
 POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
-NUM_GENERATIONS = 300 # number of iterations.
+NUM_GENERATIONS = 300 #00 # number of iterations.
 
 TOURNAMENT_SIZE = 3 # number of participants in tournament selection.
 CROSS_PROB = 0.6 # the probability with which two individuals are crossed or mated
@@ -262,13 +262,32 @@ def main():
     visualizeGenFitness_multiobjectives(
         output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
      
-    calculate_pareto_front(
+    pareto_front_data, non_pareto_front_data =  calculate_pareto_front(
         gen_file_path = GENERATION_IND_GEN_FILE,
         fit_file_path = GENERATION_IND_FIT_FILE,
         pareto_front_fig_output_file = GENERATION_PARETO_FIG_FILE,
-        pareto_front_ind_output_file = GENERATION_PARETO_IND_FILE,
-        non_pareto_front_ind_output_file = GENERATION_NON_PARETO_IND_FILE,
         )
+    
+    # sort the keys
+    def square_sum(tup):
+        return sum(x**2 for x in tup)
+    
+    sorted_pareto_front_data = dict(sorted(pareto_front_data.items(), key=lambda item: square_sum(item[0])))
+    sorted_non_pareto_front_data = dict(sorted(non_pareto_front_data.items(), key=lambda item: square_sum(item[0])))
+
+    # Pareto
+    for key, sublists in sorted_pareto_front_data.items():
+        sorted_pareto_front_data[key] = [
+            ga_adjustReal_x(ga_decodeInteger_x(sublist)) for sublist in sublists]
+    with open(GENERATION_PARETO_IND_FILE, 'w') as json_file:
+        json.dump({str(key): value for key, value in sorted_pareto_front_data.items()}, json_file, indent=4)
+    
+    # Non-pareto.
+    for key, sublists in sorted_non_pareto_front_data.items():
+        sorted_non_pareto_front_data[key] = [
+            ga_adjustReal_x(ga_decodeInteger_x(sublist)) for sublist in sublists]
+    with open(GENERATION_NON_PARETO_IND_FILE, 'w') as json_file:
+        json.dump({str(key): value for key, value in sorted_non_pareto_front_data.items()}, json_file, indent=4)
     
 if __name__ == "__main__":
 
