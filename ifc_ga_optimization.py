@@ -26,7 +26,7 @@ from gaTools import ga_rr_eaSimple, calculate_pareto_front
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
 
-ENABLE_GA_RR = True
+ENABLE_GA_RR = False
 
 POPULATION_SIZE = 20 # population size or no of individuals or solutions being considered in each generation.
 NUM_GENERATIONS = 300 #00 # number of iterations.
