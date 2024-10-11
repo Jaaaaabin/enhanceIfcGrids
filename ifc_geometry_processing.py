@@ -5,8 +5,8 @@ from ifcDataExtractor import IfcDataExtractor
 # from infoAnalysis import JsonFileComparator
 
 PROJECT_PATH = os.getcwd()
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
-# DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+# DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res'
 
 def process_ifc_file(input_path, output_path):
@@ -25,7 +25,8 @@ def process_ifc_file(input_path, output_path):
 
     # # ==================
     # for the layout example.
-    # extractor.wall_column_floor_location_display(view_elev=40, view_azim=-130, plot_main_plane_directions=True, plane_vector_length=1)
+    extractor.wall_column_floor_location_display(
+        view_elev=40, view_azim=-130, plot_main_plane_directions=True, plot_main_plane=True, plane_vector_length=1)
 
 # def compare_ifc_infos(data_path, ifc_a, ifc_2, json_name):
 

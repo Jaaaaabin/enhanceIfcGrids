@@ -787,11 +787,11 @@ class IfcDataExtractor:
         main_directions = main_directions.most_common(num_directions)
         self.main_directions = [main_direct[0] for main_direct in main_directions]
 
-        wall_x_values = [w['location'][0][0] for w in info_all_walls if 'location' in w]
-        wall_y_values = [w['location'][0][1] for w in info_all_walls if 'location' in w]
+        self.wall_x_values = [w['location'][0][0] for w in info_all_walls if 'location' in w]
+        self.wall_y_values = [w['location'][0][1] for w in info_all_walls if 'location' in w]
 
-        self.corner_x_value = (max(wall_x_values) + min(wall_x_values)) * 0.5
-        self.corner_y_value = (max(wall_y_values) + min(wall_y_values)) * 0.5
+        self.corner_x_value = (max(self.wall_x_values) + min(self.wall_x_values)) * 0.5
+        self.corner_y_value = (max(self.wall_y_values) + min(self.wall_y_values)) * 0.5
         self.corner_z_value = max([w['location'][0][-1] for w in info_all_walls if 'location' in w]) * 1.1
     
     def _get_all_wall_int_ext(self):
@@ -1405,7 +1405,7 @@ class IfcDataExtractor:
 
     @time_decorator
     def wall_column_floor_location_display(
-        self, view_elev=None, view_azim=None, plot_main_plane_directions=False, plane_vector_length=1):
+        self, view_elev=None, view_azim=None, plot_main_plane_directions=False, plot_main_plane=False, plane_vector_length=1):
 
         
         fig = plt.figure(figsize=(12, 6))
@@ -1474,30 +1474,82 @@ class IfcDataExtractor:
                 xs, ys, zs = zip(start_point, end_point)
                 ax.plot(xs, ys, zs, marker='x', color='salmon', linewidth=3, markersize=0.25, alpha=0.35, label="IfcSlab")
         
+        grid_size_x = max(abs(min(self.wall_x_values)),abs(max(self.wall_x_values)))
+        grid_size_y = max(abs(min(self.wall_y_values)),abs(max(self.wall_y_values)))
+
         # Display Main Plane Directions
         if plot_main_plane_directions:
+            
+            plot_shift_z = 5
 
             ax.quiver(
                 self.corner_x_value,
                 self.corner_y_value,
-                self.corner_z_value,
+                self.corner_z_value - plot_shift_z*1.5,
                 0,
                 0,
-                plane_vector_length*0.5,
+                plane_vector_length*1,
                 color='tomato', arrow_length_ratio=0.3)
+            
+            # for the each main direction, if there's a need to print the (vertical) plane.
+            if plot_main_plane:
+            
+                horizontal_x = np.linspace(-grid_size_x*1.25, grid_size_x*1.25, 5)
+                horizontal_y = np.linspace(-grid_size_y*1.25, grid_size_y*1.25, 5)
+                xx, yy = np.meshgrid(horizontal_x, horizontal_y)
+
+                # Set the height (z) for the horizontal plane
+                horizontal_z = np.zeros_like(xx)
+                horizontal_z = horizontal_z - plot_shift_z
+
+                # Plot the horizontal plane with a different color
+                ax.plot_surface(xx, yy, horizontal_z, alpha=0.2, color='tomato')
+                
             if self.main_directions:
+
                 for degree in self.main_directions:
+
+                    # for each main direction. plot the normal direction via an arrow.
                     radian = np.deg2rad(degree)
                     x = np.cos(radian)
                     y = np.sin(radian)
                     ax.quiver(
                         self.corner_x_value, 
                         self.corner_y_value,
-                        self.corner_z_value, 
-                        plane_vector_length*x, 
-                        plane_vector_length*y,
+                        self.corner_z_value - plot_shift_z*1.5, 
+                        plane_vector_length*x*2, 
+                        plane_vector_length*y*2,
                         0,
                         color='navy', arrow_length_ratio=0.3)
+                    
+                    # for each main direction, if there's a need to print the (vertical) plane.
+                    if plot_main_plane:
+                        
+                        normal_vector = np.array([np.cos(radian), np.sin(radian), 0])
+                        if degree == 90 or degree == 270:
+                            # Special case where the normal is along the Y-axis
+                            v1 = np.array([1, 0, 0])
+                        else:
+                            # General case: pick an arbitrary vector that isn't collinear with the normal
+                            v1 = np.array([-normal_vector[1], normal_vector[0], 0])  # This is a vector in the XY plane and orthogonal to the normal
+                        
+                        # The second vector can be the cross product of the normal and v1
+                        v2 = np.cross(normal_vector, v1)
+                        
+                        # Create a grid of points in the plane using v1 and v2
+                        u = np.linspace(-grid_size_x, grid_size_x, 5)
+                        v = np.linspace(-grid_size_y, grid_size_y, 5)
+                        uu, vv = np.meshgrid(u, v)
+                        
+                        # Calculate the points in the plane
+                        plane_points = (
+                            self.corner_x_value + uu * v1[0] + vv * v2[0],
+                            self.corner_y_value + uu * v1[1] + vv * v2[1],
+                            (self.corner_z_value + uu * v1[2] + vv * v2[2])*0.5 - plot_shift_z,
+                        )
+                        # Plot the plane
+                        ax.plot_surface(plane_points[0], plane_points[1], plane_points[2], alpha=0.2, color='skyblue')
+
 
         # Ensure tight layout
         plt.tight_layout()

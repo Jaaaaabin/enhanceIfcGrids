@@ -53,6 +53,18 @@ def check_repeats_in_list(container):
 
     return check_unique(container)
 
+def load_thresholds_from_json(json_file):
+    """
+    Loads threshold values from a JSON file.
+    Returns a dictionary of thresholds or an empty dictionary if the file is not found or is invalid.
+    """
+    try:
+        with open(json_file, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error loading thresholds from {json_file}: {e}")
+        return {}
+
 def deep_merge_dictionaries(dict1, dict2):
     merged = dict1.copy()
     for key, value in dict2.items():

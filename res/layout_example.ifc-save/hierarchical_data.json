@@ -1,0 +1,2834 @@
+{
+    "1o$2R6fy96U9wrIAaq_SUf": {
+        "id": "1o$2R6fy96U9wrIAaq_SUf",
+        "location": [
+            [
+                -7.441285454975601,
+                2.314072848283564,
+                0.0
+            ],
+            [
+                -7.441285454975601,
+                2.314072848283564,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c2",
+        "type": "st_column",
+        "status": "children",
+        "host": "2_0.0",
+        "relative_distance": 0.0
+    },
+    "1o$2R6fy96U9wrIAaq_SIy": {
+        "id": "1o$2R6fy96U9wrIAaq_SIy",
+        "location": [
+            [
+                -7.441285454975595,
+                -1.6328342290154225,
+                0.0
+            ],
+            [
+                -7.441285454975595,
+                -1.6328342290154225,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c9",
+        "type": "st_column",
+        "status": "children",
+        "host": "2_0.0",
+        "relative_distance": 0.0
+    },
+    "1o$2R6fy96U9wrIAaq_SId": {
+        "id": "1o$2R6fy96U9wrIAaq_SId",
+        "location": [
+            [
+                -2.163726860456366,
+                2.3190728482835645,
+                0.0
+            ],
+            [
+                -2.163726860456366,
+                2.3190728482835645,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c4",
+        "type": "st_column",
+        "status": "children",
+        "host": "6_0.0",
+        "relative_distance": 0.0
+    },
+    "1o$2R6fy96U9wrIAaq_SJE": {
+        "id": "1o$2R6fy96U9wrIAaq_SJE",
+        "location": [
+            [
+                0.07439196898497817,
+                2.3190728482835645,
+                0.0
+            ],
+            [
+                0.07439196898497817,
+                2.3190728482835645,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c5",
+        "type": "st_column",
+        "status": "children",
+        "host": "7_0.0",
+        "relative_distance": 0.0
+    },
+    "1o$2R6fy96U9wrIAaq_SJv": {
+        "id": "1o$2R6fy96U9wrIAaq_SJv",
+        "location": [
+            [
+                -4.90414125577516,
+                -1.62783422901543,
+                0.0
+            ],
+            [
+                -4.90414125577516,
+                -1.62783422901543,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c10",
+        "type": "st_column",
+        "status": "children",
+        "host": "4_0.0",
+        "relative_distance": 0.0
+    },
+    "1o$2R6fy96U9wrIAaq_SKM": {
+        "id": "1o$2R6fy96U9wrIAaq_SKM",
+        "location": [
+            [
+                -2.163726860456366,
+                -1.62783422901543,
+                0.0
+            ],
+            [
+                -2.163726860456366,
+                -1.62783422901543,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c11",
+        "type": "st_column",
+        "status": "children",
+        "host": "6_0.0",
+        "relative_distance": 0.0
+    },
+    "1o$2R6fy96U9wrIAaq_SKZ": {
+        "id": "1o$2R6fy96U9wrIAaq_SKZ",
+        "location": [
+            [
+                -4.90414125577516,
+                2.3190728482835645,
+                0.0
+            ],
+            [
+                -4.90414125577516,
+                2.3190728482835645,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c3",
+        "type": "st_column",
+        "status": "children",
+        "host": "4_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5csq": {
+        "id": "2A6dwRkFnCkh_xUifk5csq",
+        "location": [
+            [
+                0.07439196898497798,
+                -1.62783422901543,
+                0.0
+            ],
+            [
+                0.07439196898497798,
+                -1.62783422901543,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c12",
+        "type": "st_column",
+        "status": "children",
+        "host": "7_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5cH0": {
+        "id": "2A6dwRkFnCkh_xUifk5cH0",
+        "location": [
+            [
+                -4.90414125577516,
+                0.2838227010352865,
+                0.0
+            ],
+            [
+                -4.90414125577516,
+                0.2838227010352865,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c7",
+        "type": "st_column",
+        "status": "children",
+        "host": "5_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5cRv": {
+        "id": "2A6dwRkFnCkh_xUifk5cRv",
+        "location": [
+            [
+                -9.731283834123772,
+                2.319072848283584,
+                0.0
+            ],
+            [
+                -9.731283834123772,
+                2.319072848283584,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c1",
+        "type": "st_column",
+        "status": "children",
+        "host": "8_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5c47": {
+        "id": "2A6dwRkFnCkh_xUifk5c47",
+        "location": [
+            [
+                -9.731283834123772,
+                -1.62783422901543,
+                0.0
+            ],
+            [
+                -9.731283834123772,
+                -1.62783422901543,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c8",
+        "type": "st_column",
+        "status": "children",
+        "host": "8_0.0",
+        "relative_distance": 0.0
+    },
+    "3iuT6Wwh90oAwYv4bDlQNC": {
+        "id": "3iuT6Wwh90oAwYv4bDlQNC",
+        "location": [
+            [
+                -7.441285454975601,
+                0.2838227010352865,
+                0.0
+            ],
+            [
+                -7.441285454975601,
+                0.2838227010352865,
+                2.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 0.0,
+        "mark": "c6",
+        "type": "st_column",
+        "status": "children",
+        "host": "5_0.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRq": {
+        "id": "1uojon9L51$vPQiBW8WJRq",
+        "location": [
+            [
+                -7.441285454975601,
+                2.314072848283564,
+                1.9999999999999998
+            ],
+            [
+                -7.441285454975601,
+                2.314072848283564,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "2_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRo": {
+        "id": "1uojon9L51$vPQiBW8WJRo",
+        "location": [
+            [
+                -7.441285454975595,
+                -1.6328342290154225,
+                1.9999999999999998
+            ],
+            [
+                -7.441285454975595,
+                -1.6328342290154225,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "2_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRm": {
+        "id": "1uojon9L51$vPQiBW8WJRm",
+        "location": [
+            [
+                -2.163726860456366,
+                2.3190728482835645,
+                1.9999999999999998
+            ],
+            [
+                -2.163726860456366,
+                2.3190728482835645,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "6_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR_": {
+        "id": "1uojon9L51$vPQiBW8WJR_",
+        "location": [
+            [
+                0.07439196898497817,
+                2.3190728482835645,
+                1.9999999999999998
+            ],
+            [
+                0.07439196898497817,
+                2.3190728482835645,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "7_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRy": {
+        "id": "1uojon9L51$vPQiBW8WJRy",
+        "location": [
+            [
+                -4.90414125577516,
+                -1.62783422901543,
+                1.9999999999999998
+            ],
+            [
+                -4.90414125577516,
+                -1.62783422901543,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "4_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRw": {
+        "id": "1uojon9L51$vPQiBW8WJRw",
+        "location": [
+            [
+                -2.163726860456366,
+                -1.62783422901543,
+                1.9999999999999998
+            ],
+            [
+                -2.163726860456366,
+                -1.62783422901543,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "6_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRu": {
+        "id": "1uojon9L51$vPQiBW8WJRu",
+        "location": [
+            [
+                -4.90414125577516,
+                2.3190728482835645,
+                1.9999999999999998
+            ],
+            [
+                -4.90414125577516,
+                2.3190728482835645,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "4_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRD": {
+        "id": "1uojon9L51$vPQiBW8WJRD",
+        "location": [
+            [
+                0.07439196898497798,
+                -1.62783422901543,
+                1.9999999999999998
+            ],
+            [
+                0.07439196898497798,
+                -1.62783422901543,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "7_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRM": {
+        "id": "1uojon9L51$vPQiBW8WJRM",
+        "location": [
+            [
+                -4.90414125577516,
+                0.2838227010352865,
+                1.9999999999999998
+            ],
+            [
+                -4.90414125577516,
+                0.2838227010352865,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "5_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRK": {
+        "id": "1uojon9L51$vPQiBW8WJRK",
+        "location": [
+            [
+                -9.731283834123772,
+                2.319072848283584,
+                1.9999999999999998
+            ],
+            [
+                -9.731283834123772,
+                2.319072848283584,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "8_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRI": {
+        "id": "1uojon9L51$vPQiBW8WJRI",
+        "location": [
+            [
+                -9.731283834123772,
+                -1.62783422901543,
+                1.9999999999999998
+            ],
+            [
+                -9.731283834123772,
+                -1.62783422901543,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "8_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRU": {
+        "id": "1uojon9L51$vPQiBW8WJRU",
+        "location": [
+            [
+                -7.441285454975601,
+                0.2838227010352865,
+                1.9999999999999998
+            ],
+            [
+                -7.441285454975601,
+                0.2838227010352865,
+                4.0
+            ]
+        ],
+        "length": 0.35,
+        "width": 0.35,
+        "height": 2.0,
+        "elevation": 2.0,
+        "mark": "",
+        "type": "st_column",
+        "status": "children",
+        "host": "5_2.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5d16": {
+        "id": "2A6dwRkFnCkh_xUifk5d16",
+        "elevation": 0.0,
+        "location": [
+            [
+                -7.414372954975611,
+                5.283822701035262,
+                0.0
+            ],
+            [
+                -7.414372954975612,
+                3.79407284828358,
+                0.0
+            ]
+        ],
+        "length": 1.4897,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "w2",
+        "type": "st_wall",
+        "status": "children",
+        "host": "2_0.0",
+        "relative_distance": 0.02692704502438917
+    },
+    "2A6dwRkFnCkh_xUifk5d6X": {
+        "id": "2A6dwRkFnCkh_xUifk5d6X",
+        "elevation": 0.0,
+        "location": [
+            [
+                2.5071279450335426,
+                -3.0499272989647452,
+                0.0
+            ],
+            [
+                2.507127945033543,
+                2.2940728482835575,
+                0.0
+            ]
+        ],
+        "length": 5.344,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "w6",
+        "type": "st_wall",
+        "status": "children",
+        "host": "10_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5dRX": {
+        "id": "2A6dwRkFnCkh_xUifk5dRX",
+        "elevation": 0.0,
+        "location": [
+            [
+                2.507127945033543,
+                2.2940728482835575,
+                0.0
+            ],
+            [
+                1.7071279450335606,
+                2.2940728482835566,
+                0.0
+            ]
+        ],
+        "length": 0.9524,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w5",
+        "type": "st_wall",
+        "status": "children",
+        "host": "1_0.0",
+        "relative_distance": 0.025027151716442476
+    },
+    "2A6dwRkFnCkh_xUifk5d2j": {
+        "id": "2A6dwRkFnCkh_xUifk5d2j",
+        "elevation": 0.0,
+        "location": [
+            [
+                1.707127945033561,
+                5.283822701035261,
+                0.0
+            ],
+            [
+                -7.414372954975611,
+                5.283822701035262,
+                0.0
+            ]
+        ],
+        "length": 8.9691,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w3",
+        "type": "st_wall",
+        "status": "children",
+        "host": "14_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5d03": {
+        "id": "2A6dwRkFnCkh_xUifk5d03",
+        "elevation": 0.0,
+        "location": [
+            [
+                -7.414372954975612,
+                3.79407284828358,
+                0.0
+            ],
+            [
+                -10.95874640226111,
+                3.794072848283581,
+                0.0
+            ]
+        ],
+        "length": 3.6968,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w1",
+        "type": "st_wall",
+        "status": "children",
+        "host": "15_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5crQ": {
+        "id": "2A6dwRkFnCkh_xUifk5crQ",
+        "elevation": 0.0,
+        "location": [
+            [
+                2.5071279450335426,
+                -3.0499272989647452,
+                0.0
+            ],
+            [
+                -4.651977684926085,
+                -3.0499272989647443,
+                0.0
+            ]
+        ],
+        "length": 7.2591,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w8",
+        "type": "st_wall",
+        "status": "children",
+        "host": "9_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5ctb": {
+        "id": "2A6dwRkFnCkh_xUifk5ctb",
+        "elevation": 0.0,
+        "location": [
+            [
+                -8.758746402261128,
+                -3.049927298964715,
+                0.0
+            ],
+            [
+                -8.758746402261128,
+                -4.16992729896473,
+                0.0
+            ]
+        ],
+        "length": 1.12,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "w11",
+        "type": "st_wall",
+        "status": "children",
+        "host": "11_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5dC0": {
+        "id": "2A6dwRkFnCkh_xUifk5dC0",
+        "elevation": 0.0,
+        "location": [
+            [
+                1.707127945033561,
+                5.283822701035261,
+                0.0
+            ],
+            [
+                1.7071279450335606,
+                2.2940728482835566,
+                0.0
+            ]
+        ],
+        "length": 2.9897,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "w4",
+        "type": "st_wall",
+        "status": "children",
+        "host": "12_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5cnz": {
+        "id": "2A6dwRkFnCkh_xUifk5cnz",
+        "elevation": 0.0,
+        "location": [
+            [
+                -4.751977684926078,
+                -4.169927298964731,
+                0.0
+            ],
+            [
+                -8.758746402261128,
+                -4.16992729896473,
+                0.0
+            ]
+        ],
+        "length": 4.0068,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w10",
+        "type": "st_wall",
+        "status": "children",
+        "host": "16_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5d9B": {
+        "id": "2A6dwRkFnCkh_xUifk5d9B",
+        "elevation": 0.0,
+        "location": [
+            [
+                -8.758746402261128,
+                -3.049927298964715,
+                0.0
+            ],
+            [
+                -10.958746402261111,
+                -3.0499272989647155,
+                0.0
+            ]
+        ],
+        "length": 2.3524,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w12",
+        "type": "st_wall",
+        "status": "children",
+        "host": "9_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5dBE": {
+        "id": "2A6dwRkFnCkh_xUifk5dBE",
+        "elevation": 0.0,
+        "location": [
+            [
+                -10.95874640226111,
+                3.794072848283581,
+                0.0
+            ],
+            [
+                -10.958746402261111,
+                -3.0499272989647155,
+                0.0
+            ]
+        ],
+        "length": 6.6916,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "w13",
+        "type": "st_wall",
+        "status": "children",
+        "host": "13_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5cy2": {
+        "id": "2A6dwRkFnCkh_xUifk5cy2",
+        "elevation": 0.0,
+        "location": [
+            [
+                -4.751977684926078,
+                -4.169927298964731,
+                0.0
+            ],
+            [
+                -4.751977684926077,
+                -3.049927298964714,
+                0.0
+            ]
+        ],
+        "length": 0.9676,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "w9",
+        "type": "st_wall",
+        "status": "children",
+        "host": "4_0.0",
+        "relative_distance": -0.1521223150739227
+    },
+    "2A6dwRkFnCkh_xUifk5cD7": {
+        "id": "2A6dwRkFnCkh_xUifk5cD7",
+        "elevation": 0.0,
+        "location": [
+            [
+                -1.9119776849260763,
+                0.36382270103527525,
+                0.0
+            ],
+            [
+                2.507127945033542,
+                0.36382270103527503,
+                0.0
+            ]
+        ],
+        "length": 4.4048,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "w7",
+        "type": "st_wall",
+        "status": "children",
+        "host": "5_0.0",
+        "relative_distance": 0.08002270103527531
+    },
+    "1uojon9L51$vPQiBW8WJR6": {
+        "id": "1uojon9L51$vPQiBW8WJR6",
+        "elevation": 2.0,
+        "location": [
+            [
+                2.507127945033543,
+                2.2940728482835575,
+                2.0
+            ],
+            [
+                1.7071279450335606,
+                2.2940728482835566,
+                2.0
+            ]
+        ],
+        "length": 0.9524,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "1_2.0",
+        "relative_distance": 0.025027151716442476
+    },
+    "1uojon9L51$vPQiBW8WJR5": {
+        "id": "1uojon9L51$vPQiBW8WJR5",
+        "elevation": 2.0,
+        "location": [
+            [
+                2.5071279450335426,
+                -3.0499272989647452,
+                2.0
+            ],
+            [
+                2.507127945033543,
+                2.2940728482835575,
+                2.0
+            ]
+        ],
+        "length": 5.344,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "10_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR4": {
+        "id": "1uojon9L51$vPQiBW8WJR4",
+        "elevation": 2.0,
+        "location": [
+            [
+                -7.414372954975612,
+                3.7940728482835806,
+                2.0
+            ],
+            [
+                -10.95874640226111,
+                3.794072848283581,
+                2.0
+            ]
+        ],
+        "length": 3.6968,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "15_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR0": {
+        "id": "1uojon9L51$vPQiBW8WJR0",
+        "elevation": 2.0,
+        "location": [
+            [
+                -8.758746402261128,
+                -3.049927298964715,
+                2.0
+            ],
+            [
+                -10.958746402261111,
+                -3.0499272989647146,
+                2.0
+            ]
+        ],
+        "length": 2.3524,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "9_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRF": {
+        "id": "1uojon9L51$vPQiBW8WJRF",
+        "elevation": 2.0,
+        "location": [
+            [
+                -10.95874640226111,
+                3.794072848283581,
+                2.0
+            ],
+            [
+                -10.958746402261111,
+                -3.049927298964744,
+                2.0
+            ]
+        ],
+        "length": 6.6916,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "13_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR3": {
+        "id": "1uojon9L51$vPQiBW8WJR3",
+        "elevation": 2.0,
+        "location": [
+            [
+                -7.414372954975611,
+                5.283822701035262,
+                2.0
+            ],
+            [
+                -7.414372954975612,
+                3.7940728482835806,
+                2.0
+            ]
+        ],
+        "length": 1.4897,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "2_2.0",
+        "relative_distance": 0.02692704502438917
+    },
+    "1uojon9L51$vPQiBW8WJR2": {
+        "id": "1uojon9L51$vPQiBW8WJR2",
+        "elevation": 2.0,
+        "location": [
+            [
+                1.707127945033561,
+                5.283822701035261,
+                2.0
+            ],
+            [
+                -7.414372954975611,
+                5.283822701035262,
+                2.0
+            ]
+        ],
+        "length": 8.9691,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "14_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRG": {
+        "id": "1uojon9L51$vPQiBW8WJRG",
+        "elevation": 2.0,
+        "location": [
+            [
+                -1.9119776849260763,
+                0.2838227010352748,
+                2.0
+            ],
+            [
+                2.507127945033542,
+                0.28382270103527496,
+                2.0
+            ]
+        ],
+        "length": 4.281,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "5_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR1": {
+        "id": "1uojon9L51$vPQiBW8WJR1",
+        "elevation": 2.0,
+        "location": [
+            [
+                1.707127945033561,
+                5.283822701035261,
+                2.0
+            ],
+            [
+                1.7071279450335606,
+                2.2940728482835566,
+                2.0
+            ]
+        ],
+        "length": 2.9897,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "12_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRB": {
+        "id": "1uojon9L51$vPQiBW8WJRB",
+        "elevation": 2.0,
+        "location": [
+            [
+                -8.758746402261128,
+                -3.049927298964744,
+                2.0
+            ],
+            [
+                -8.758746402261128,
+                -4.16992729896473,
+                2.0
+            ]
+        ],
+        "length": 1.12,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "11_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRA": {
+        "id": "1uojon9L51$vPQiBW8WJRA",
+        "elevation": 2.0,
+        "location": [
+            [
+                -4.751977684926078,
+                -4.169927298964731,
+                2.0
+            ],
+            [
+                -8.758746402261128,
+                -4.16992729896473,
+                2.0
+            ]
+        ],
+        "length": 4.0068,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "16_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRE": {
+        "id": "1uojon9L51$vPQiBW8WJRE",
+        "elevation": 2.0,
+        "location": [
+            [
+                2.5071279450335426,
+                -3.0499272989647452,
+                2.0
+            ],
+            [
+                -4.651977684926085,
+                -3.049927298964744,
+                2.0
+            ]
+        ],
+        "length": 7.2591,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "9_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR9": {
+        "id": "1uojon9L51$vPQiBW8WJR9",
+        "elevation": 2.0,
+        "location": [
+            [
+                -4.751977684926078,
+                -4.169927298964731,
+                2.0
+            ],
+            [
+                -4.751977684926077,
+                -3.049927298964744,
+                2.0
+            ]
+        ],
+        "length": 0.9676,
+        "width": 0.1524,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 1,
+        "mark": "",
+        "type": "st_wall",
+        "status": "children",
+        "host": "4_2.0",
+        "relative_distance": -0.1521223150739227
+    },
+    "2A6dwRkFnCkh_xUifk5cwS": {
+        "id": "2A6dwRkFnCkh_xUifk5cwS",
+        "elevation": 0.0,
+        "location": [
+            [
+                -4.651977684926077,
+                5.283822701035262,
+                0.0
+            ],
+            [
+                -4.651977684926077,
+                2.29407284828355,
+                0.0
+            ]
+        ],
+        "length": 3.0635,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "w15",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "17_0.0",
+        "relative_distance": 0.0
+    },
+    "2A6dwRkFnCkh_xUifk5cXs": {
+        "id": "2A6dwRkFnCkh_xUifk5cXs",
+        "elevation": 0.0,
+        "location": [
+            [
+                -10.95874640226111,
+                0.5300727010352899,
+                0.0
+            ],
+            [
+                -7.414372954975613,
+                0.5300727010352898,
+                0.0
+            ]
+        ],
+        "length": 3.6238,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 0,
+        "mark": "w14",
+        "type": "ns_wall"
+    },
+    "2jrax7dkP1bAz0GnWDLZhj": {
+        "id": "2jrax7dkP1bAz0GnWDLZhj",
+        "elevation": 0.0,
+        "location": [
+            [
+                -1.9119776849260763,
+                0.36382270103527525,
+                0.0
+            ],
+            [
+                -1.9119776849260761,
+                -3.0499272989647137,
+                0.0
+            ]
+        ],
+        "length": 3.4138,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "w18",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "18_0.0",
+        "relative_distance": 0.0
+    },
+    "2jrax7dkP1bAz0GnWDLZfM": {
+        "id": "2jrax7dkP1bAz0GnWDLZfM",
+        "elevation": 0.0,
+        "location": [
+            [
+                -4.651977684926083,
+                0.36382270103527536,
+                0.0
+            ],
+            [
+                -4.651977684926085,
+                -3.0499272989647146,
+                0.0
+            ]
+        ],
+        "length": 3.4178,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "w17",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "17_0.0",
+        "relative_distance": 0.0
+    },
+    "3iuT6Wwh90oAwYv4bDlQxD": {
+        "id": "3iuT6Wwh90oAwYv4bDlQxD",
+        "elevation": 0.0,
+        "location": [
+            [
+                -1.9119776849260761,
+                5.283822701035261,
+                0.0
+            ],
+            [
+                -1.911977684926077,
+                2.294072848283552,
+                0.0
+            ]
+        ],
+        "length": 3.0635,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "w16",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "18_0.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJR8": {
+        "id": "1uojon9L51$vPQiBW8WJR8",
+        "elevation": 2.0,
+        "location": [
+            [
+                -4.651977684926077,
+                5.283822701035262,
+                2.0
+            ],
+            [
+                -4.651977684926077,
+                2.29407284828355,
+                2.0
+            ]
+        ],
+        "length": 3.0635,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "19_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJQl": {
+        "id": "1uojon9L51$vPQiBW8WJQl",
+        "elevation": 2.0,
+        "location": [
+            [
+                -4.651977684926083,
+                0.2838227010352747,
+                2.0
+            ],
+            [
+                -4.651977684926085,
+                -3.049927298964744,
+                2.0
+            ]
+        ],
+        "length": 3.4178,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "19_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJRN": {
+        "id": "1uojon9L51$vPQiBW8WJRN",
+        "elevation": 2.0,
+        "location": [
+            [
+                -10.95874640226111,
+                0.5300727010352899,
+                2.0
+            ],
+            [
+                -7.414372954975613,
+                0.5300727010352898,
+                2.0
+            ]
+        ],
+        "length": 3.6238,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 0.0,
+        "external": 0,
+        "mark": "",
+        "type": "ns_wall"
+    },
+    "1uojon9L51$vPQiBW8WJRV": {
+        "id": "1uojon9L51$vPQiBW8WJRV",
+        "elevation": 2.0,
+        "location": [
+            [
+                -1.9119776849260761,
+                5.283822701035261,
+                2.0
+            ],
+            [
+                -1.911977684926077,
+                2.294072848283552,
+                2.0
+            ]
+        ],
+        "length": 3.0635,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "20_2.0",
+        "relative_distance": 0.0
+    },
+    "1uojon9L51$vPQiBW8WJQk": {
+        "id": "1uojon9L51$vPQiBW8WJQk",
+        "elevation": 2.0,
+        "location": [
+            [
+                -1.9119776849260763,
+                0.2838227010352748,
+                2.0
+            ],
+            [
+                -1.911977684926077,
+                -3.0499272989647443,
+                2.0
+            ]
+        ],
+        "length": 3.4178,
+        "width": 0.1238,
+        "height": 2.0,
+        "orientation": 90.0,
+        "external": 0,
+        "mark": "",
+        "type": "ns_wall",
+        "status": "children",
+        "host": "20_2.0",
+        "relative_distance": 0.0
+    },
+    "1": {
+        "children": [
+            "1_0.0",
+            "1_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                2.3191,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                2.3191,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "1_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5dRX",
+            "1o$2R6fy96U9wrIAaq_SId",
+            "2A6dwRkFnCkh_xUifk5cRv",
+            "1o$2R6fy96U9wrIAaq_SJE",
+            "1o$2R6fy96U9wrIAaq_SKZ"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                2.3191,
+                0.0
+            ],
+            [
+                7.5071,
+                2.3191,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "15_0.0": -1.475,
+            "5_0.0": 2.0353
+        }
+    },
+    "1_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRm",
+            "1uojon9L51$vPQiBW8WJR_",
+            "1uojon9L51$vPQiBW8WJR6",
+            "1uojon9L51$vPQiBW8WJRK",
+            "1uojon9L51$vPQiBW8WJRu"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                2.3191,
+                2.0
+            ],
+            [
+                7.5071,
+                2.3191,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "15_2.0": -1.475,
+            "5_2.0": 2.0353
+        }
+    },
+    "2": {
+        "children": [
+            "2_0.0",
+            "2_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -7.4413,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                -7.4413,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "2_0.0": {
+        "children": [
+            "3iuT6Wwh90oAwYv4bDlQNC",
+            "1o$2R6fy96U9wrIAaq_SUf",
+            "2A6dwRkFnCkh_xUifk5d16",
+            "1o$2R6fy96U9wrIAaq_SIy"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -7.4413,
+                -9.1699,
+                0.0
+            ],
+            [
+                -7.4413,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "11_0.0": -1.3173999999999992,
+            "4_0.0": 2.5371999999999995
+        }
+    },
+    "2_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRo",
+            "1uojon9L51$vPQiBW8WJR3",
+            "1uojon9L51$vPQiBW8WJRq",
+            "1uojon9L51$vPQiBW8WJRU"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -7.4413,
+                -9.1699,
+                2.0
+            ],
+            [
+                -7.4413,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "11_2.0": -1.3173999999999992,
+            "4_2.0": 2.5371999999999995
+        }
+    },
+    "3": {
+        "children": [
+            "3_0.0",
+            "3_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                -1.6278,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                -1.6278,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "3_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5c47",
+            "2A6dwRkFnCkh_xUifk5csq",
+            "1o$2R6fy96U9wrIAaq_SKM",
+            "1o$2R6fy96U9wrIAaq_SJv"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                -1.6278,
+                0.0
+            ],
+            [
+                7.5071,
+                -1.6278,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "5_0.0": -1.9115999999999997,
+            "9_0.0": 1.4221000000000004
+        }
+    },
+    "3_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRw",
+            "1uojon9L51$vPQiBW8WJRI",
+            "1uojon9L51$vPQiBW8WJRy",
+            "1uojon9L51$vPQiBW8WJRD"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                -1.6278,
+                2.0
+            ],
+            [
+                7.5071,
+                -1.6278,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "5_2.0": -1.9115999999999997,
+            "9_2.0": 1.4221000000000004
+        }
+    },
+    "4": {
+        "children": [
+            "4_0.0",
+            "4_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -4.9041,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                -4.9041,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "4_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5cy2",
+            "1o$2R6fy96U9wrIAaq_SKZ",
+            "2A6dwRkFnCkh_xUifk5cH0",
+            "1o$2R6fy96U9wrIAaq_SJv"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -4.9041,
+                -9.1699,
+                0.0
+            ],
+            [
+                -4.9041,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "2_0.0": -2.5371999999999995,
+            "17_0.0": 0.25209999999999955
+        }
+    },
+    "4_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJR9",
+            "1uojon9L51$vPQiBW8WJRu",
+            "1uojon9L51$vPQiBW8WJRM",
+            "1uojon9L51$vPQiBW8WJRy"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -4.9041,
+                -9.1699,
+                2.0
+            ],
+            [
+                -4.9041,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "2_2.0": -2.5371999999999995,
+            "19_2.0": 0.25209999999999955
+        }
+    },
+    "5": {
+        "children": [
+            "5_0.0",
+            "5_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                0.2838,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                0.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "5_0.0": {
+        "children": [
+            "3iuT6Wwh90oAwYv4bDlQNC",
+            "2A6dwRkFnCkh_xUifk5cD7",
+            "2A6dwRkFnCkh_xUifk5cH0"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                0.2838,
+                0.0
+            ],
+            [
+                7.5071,
+                0.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "1_0.0": -2.0353,
+            "3_0.0": 1.9115999999999997
+        }
+    },
+    "5_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRM",
+            "1uojon9L51$vPQiBW8WJRU",
+            "1uojon9L51$vPQiBW8WJRG"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                0.2838,
+                2.0
+            ],
+            [
+                7.5071,
+                0.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "1_2.0": -2.0353,
+            "3_2.0": 1.9115999999999997
+        }
+    },
+    "6": {
+        "children": [
+            "6_0.0",
+            "6_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -2.1637,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                -2.1637,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "6_0.0": {
+        "children": [
+            "1o$2R6fy96U9wrIAaq_SId",
+            "1o$2R6fy96U9wrIAaq_SKM"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -2.1637,
+                -9.1699,
+                0.0
+            ],
+            [
+                -2.1637,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "17_0.0": -2.488300000000001,
+            "18_0.0": 0.25170000000000003
+        }
+    },
+    "6_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRm",
+            "1uojon9L51$vPQiBW8WJRw"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -2.1637,
+                -9.1699,
+                2.0
+            ],
+            [
+                -2.1637,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "19_2.0": -2.488300000000001,
+            "20_2.0": 0.25170000000000003
+        }
+    },
+    "7": {
+        "children": [
+            "7_0.0",
+            "7_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                0.0744,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                0.0744,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "7_0.0": {
+        "children": [
+            "1o$2R6fy96U9wrIAaq_SJE",
+            "2A6dwRkFnCkh_xUifk5csq"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                0.0744,
+                -9.1699,
+                0.0
+            ],
+            [
+                0.0744,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "18_0.0": -1.9864,
+            "12_0.0": 1.6327000000000005
+        }
+    },
+    "7_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJR_",
+            "1uojon9L51$vPQiBW8WJRD"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                0.0744,
+                -9.1699,
+                2.0
+            ],
+            [
+                0.0744,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "20_2.0": -1.9864,
+            "12_2.0": 1.6327000000000005
+        }
+    },
+    "8": {
+        "children": [
+            "8_0.0",
+            "8_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -9.7313,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                -9.7313,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "8_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5c47",
+            "2A6dwRkFnCkh_xUifk5cRv"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -9.7313,
+                -9.1699,
+                0.0
+            ],
+            [
+                -9.7313,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "13_0.0": -1.2274000000000012,
+            "11_0.0": 0.9726000000000017
+        }
+    },
+    "8_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRK",
+            "1uojon9L51$vPQiBW8WJRI"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -9.7313,
+                -9.1699,
+                2.0
+            ],
+            [
+                -9.7313,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "13_2.0": -1.2274000000000012,
+            "11_2.0": 0.9726000000000017
+        }
+    },
+    "9": {
+        "children": [
+            "9_0.0",
+            "9_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                -3.0499,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                -3.0499,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "9_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5crQ",
+            "2A6dwRkFnCkh_xUifk5d9B"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                -3.0499,
+                0.0
+            ],
+            [
+                7.5071,
+                -3.0499,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "3_0.0": -1.4221000000000004,
+            "16_0.0": 1.12
+        }
+    },
+    "9_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRE",
+            "1uojon9L51$vPQiBW8WJR0"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                -3.0499,
+                2.0
+            ],
+            [
+                7.5071,
+                -3.0499,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "3_2.0": -1.4221000000000004,
+            "16_2.0": 1.12
+        }
+    },
+    "10": {
+        "children": [
+            "10_0.0",
+            "10_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                2.5071,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                2.5071,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "10_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5d6X"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                2.5071,
+                -9.1699,
+                0.0
+            ],
+            [
+                2.5071,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "12_0.0": -0.7999999999999994
+        }
+    },
+    "10_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJR5"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                2.5071,
+                -9.1699,
+                2.0
+            ],
+            [
+                2.5071,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "12_2.0": -0.7999999999999994
+        }
+    },
+    "11": {
+        "children": [
+            "11_0.0",
+            "11_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -8.7587,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                -8.7587,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "11_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5ctb"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -8.7587,
+                -9.1699,
+                0.0
+            ],
+            [
+                -8.7587,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "8_0.0": -0.9726000000000017,
+            "2_0.0": 1.3173999999999992
+        }
+    },
+    "11_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRB"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -8.7587,
+                -9.1699,
+                2.0
+            ],
+            [
+                -8.7587,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "8_2.0": -0.9726000000000017,
+            "2_2.0": 1.3173999999999992
+        }
+    },
+    "12": {
+        "children": [
+            "12_0.0",
+            "12_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                1.7071,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                1.7071,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "12_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5dC0"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                1.7071,
+                -9.1699,
+                0.0
+            ],
+            [
+                1.7071,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "7_0.0": -1.6327000000000005,
+            "10_0.0": 0.7999999999999994
+        }
+    },
+    "12_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJR1"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                1.7071,
+                -9.1699,
+                2.0
+            ],
+            [
+                1.7071,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "7_2.0": -1.6327000000000005,
+            "10_2.0": 0.7999999999999994
+        }
+    },
+    "13": {
+        "children": [
+            "13_0.0",
+            "13_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -10.9587,
+                -9.1699,
+                0.0,
+                2.0
+            ],
+            [
+                -10.9587,
+                10.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "13_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5dBE"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -10.9587,
+                -9.1699,
+                0.0
+            ],
+            [
+                -10.9587,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "8_0.0": 1.2274000000000012
+        }
+    },
+    "13_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRF"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -10.9587,
+                -9.1699,
+                2.0
+            ],
+            [
+                -10.9587,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "8_2.0": 1.2274000000000012
+        }
+    },
+    "14": {
+        "children": [
+            "14_0.0",
+            "14_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                5.2838,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                5.2838,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "14_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5d2j"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                5.2838,
+                0.0
+            ],
+            [
+                7.5071,
+                5.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "15_0.0": 1.4897000000000005
+        }
+    },
+    "14_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJR2"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                5.2838,
+                2.0
+            ],
+            [
+                7.5071,
+                5.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "15_2.0": 1.4897000000000005
+        }
+    },
+    "15": {
+        "children": [
+            "15_0.0",
+            "15_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                3.7941,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                3.7941,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "15_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5d03"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                3.7941,
+                0.0
+            ],
+            [
+                7.5071,
+                3.7941,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "14_0.0": -1.4897000000000005,
+            "1_0.0": 1.475
+        }
+    },
+    "15_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJR4"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                3.7941,
+                2.0
+            ],
+            [
+                7.5071,
+                3.7941,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "14_2.0": -1.4897000000000005,
+            "1_2.0": 1.475
+        }
+    },
+    "16": {
+        "children": [
+            "16_0.0",
+            "16_2.0"
+        ],
+        "type": "st_grid",
+        "location": [
+            [
+                -15.9587,
+                -4.1699,
+                0.0,
+                2.0
+            ],
+            [
+                7.5071,
+                -4.1699,
+                0.0,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0
+    },
+    "16_0.0": {
+        "children": [
+            "2A6dwRkFnCkh_xUifk5cnz"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                -4.1699,
+                0.0
+            ],
+            [
+                7.5071,
+                -4.1699,
+                0.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "9_0.0": -1.12
+        }
+    },
+    "16_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRA"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -15.9587,
+                -4.1699,
+                2.0
+            ],
+            [
+                7.5071,
+                -4.1699,
+                2.0
+            ]
+        ],
+        "plane_direction": 0.0,
+        "nephew": [],
+        "neighbor": {
+            "9_2.0": -1.12
+        }
+    },
+    "17": {
+        "children": [
+            "17_0.0"
+        ],
+        "type": "ns_grid",
+        "location": [
+            [
+                -4.652,
+                -9.1699,
+                0.0
+            ],
+            [
+                -4.652,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "17_0.0": {
+        "children": [
+            "2jrax7dkP1bAz0GnWDLZfM",
+            "2A6dwRkFnCkh_xUifk5cwS"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -4.652,
+                -9.1699,
+                0.0
+            ],
+            [
+                -4.652,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "4_0.0": -0.25209999999999955,
+            "6_0.0": 2.488300000000001
+        }
+    },
+    "18": {
+        "children": [
+            "18_0.0"
+        ],
+        "type": "ns_grid",
+        "location": [
+            [
+                -1.912,
+                -9.1699,
+                0.0
+            ],
+            [
+                -1.912,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "18_0.0": {
+        "children": [
+            "3iuT6Wwh90oAwYv4bDlQxD",
+            "2jrax7dkP1bAz0GnWDLZhj"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -1.912,
+                -9.1699,
+                0.0
+            ],
+            [
+                -1.912,
+                10.2838,
+                0.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "6_0.0": -0.25170000000000003,
+            "7_0.0": 1.9864
+        }
+    },
+    "19": {
+        "children": [
+            "19_2.0"
+        ],
+        "type": "ns_grid",
+        "location": [
+            [
+                -4.652,
+                -9.1699,
+                2.0
+            ],
+            [
+                -4.652,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "19_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJQl",
+            "1uojon9L51$vPQiBW8WJR8"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -4.652,
+                -9.1699,
+                2.0
+            ],
+            [
+                -4.652,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "4_2.0": -0.25209999999999955,
+            "6_2.0": 2.488300000000001
+        }
+    },
+    "20": {
+        "children": [
+            "20_2.0"
+        ],
+        "type": "ns_grid",
+        "location": [
+            [
+                -1.912,
+                -9.1699,
+                2.0
+            ],
+            [
+                -1.912,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0
+    },
+    "20_2.0": {
+        "children": [
+            "1uojon9L51$vPQiBW8WJRV",
+            "1uojon9L51$vPQiBW8WJQk"
+        ],
+        "type": "storey",
+        "location": [
+            [
+                -1.912,
+                -9.1699,
+                2.0
+            ],
+            [
+                -1.912,
+                10.2838,
+                2.0
+            ]
+        ],
+        "plane_direction": 90.0,
+        "nephew": [],
+        "neighbor": {
+            "6_2.0": -0.25170000000000003,
+            "7_2.0": 1.9864
+        }
+    }
+}
