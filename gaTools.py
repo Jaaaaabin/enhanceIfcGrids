@@ -887,4 +887,69 @@ def calculate_pareto_front(
     non_pareto_front_data = {fit: fit_gen_data[fit] for fit in non_pareto_solutions if fit in fit_gen_data}
 
     return pareto_front_data, non_pareto_front_data
+
+def meta_visualization_pareto_frontier(json_file, output_file, markers, colors):
+    
+     # Load the data from JSON file
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+    
+    plt.figure(figsize=(12, 12), dpi=1000)
+    
+    # Iterate over each "nr" entry in the data
+    for i, (nr, results) in enumerate(data.items()):
+
+        # Select a color and marker for this "nr"
+        color = colors[i % len(colors)]  # Use different color for each "nr"
+        marker = markers[i % len(markers)]  # Use different marker for each "nr"
+
+        # Extract Pareto and non-Pareto data and their corresponding sizes
+        pareto_solutions = [eval(k) for k in results['near_data'].keys()]  # Convert stringified tuples back to tuples
+        pareto_sizes = [results['near_size'][k] for k in results['near_size'].keys()]  # Get the sizes for near_data
+
+        non_pareto_solutions = [eval(k) for k in results['rest_data'].keys()]
+        non_pareto_sizes = [results['rest_size'][k] for k in results['rest_size'].keys()]  # Get the sizes for rest_data
+
+        # Plot Pareto front.
+        pareto_sizes_log = np.log10(np.array(pareto_sizes) + 1) * 4 + 30  # Moderate scaling
+        front_x, front_y = zip(*pareto_solutions)
+        plt.scatter(front_x, front_y, marker=marker, s=pareto_sizes_log, 
+                    alpha=1.0, edgecolors='k', facecolors=color, label=f'Pareto front ({nr})')
+
+        # Plot non-Pareto points.
+        non_pareto_sizes_log = np.log10(np.array(non_pareto_sizes) + 1) * 4 + 20
+        other_x, other_y = zip(*non_pareto_solutions)
+        plt.scatter(other_x, other_y, marker=marker, s=non_pareto_sizes_log, 
+                    alpha=0.33, edgecolors=color, facecolors='none', label=f'GA population ({nr})')
+
+        # Limit calculations for the axes
+        limit_max_main_axes = 1.05
+        limit_min_x_axis = min(other_x + front_x)
+        limit_min_y_axis = min(other_y + front_y)
+
+        # Pareto front boundary lines (assuming this function is defined elsewhere)
+        step_x, step_y = stairway_lines_from_pareto_frontier(
+            pareto_solutions, limit_max_main_axes, limit_min_x_axis, limit_min_y_axis)
+        plt.plot(step_x, step_y, color=color, linewidth=0.75, linestyle='--')
+    
+    handles, labels = plt.gca().get_legend_handles_labels()
+    near_handles, rest_handles = handles[::2], handles[1::2]
+    near_labels, rest_labels = labels[::2], labels[1::2]
+    ordered_handles = near_handles + rest_handles
+    ordered_labels = near_labels + rest_labels
+
+    # Adjust plot settings
+    plt.xlim([-0.05, limit_max_main_axes])
+    plt.ylim([-0.05, limit_max_main_axes])
+    plt.xticks(fontsize=12)  # Set fontsize for x-axis ticks
+    plt.yticks(fontsize=12)  # Set fontsize for y-axis ticks
+    plt.xlabel(r"$f_{unbound}$", fontsize=18)  # LaTeX format for the x-axis
+    plt.ylabel(r"$f_{distribution}$", fontsize=18)  # LaTeX format for the y-axis
+    plt.tight_layout()
+    plt.grid(False)
+    plt.legend(ordered_handles, ordered_labels, loc='upper left', ncol=2, fontsize=16)
+    
+    # Save the output file
+    plt.savefig(output_file, dpi=1000)
+    plt.close()
     

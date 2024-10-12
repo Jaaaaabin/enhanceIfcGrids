@@ -202,8 +202,7 @@ def main():
     visualizeGenFitness_multiobjectives(
         output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
     
-    # todo. starting from here, produce the paper resuts together.
-    pareto_front_data, non_pareto_front_data =  calculate_pareto_front(
+    pareto_front_data, pareto_front_non_data =  calculate_pareto_front(
         gen_file_path = GENERATION_IND_GEN_FILE,
         fit_file_path = GENERATION_IND_FIT_FILE,
         pareto_front_fig_output_file = GENERATION_PARETO_FIG_FILE,
@@ -214,7 +213,7 @@ def main():
         return sum(x**2 for x in tup)
     
     sorted_pareto_front_data = dict(sorted(pareto_front_data.items(), key=lambda item: square_sum(item[0])))
-    sorted_non_pareto_front_data = dict(sorted(non_pareto_front_data.items(), key=lambda item: square_sum(item[0])))
+    sorted_pareto_front_non_data = dict(sorted(pareto_front_non_data.items(), key=lambda item: square_sum(item[0])))
 
     # Pareto
     for key, sublists in sorted_pareto_front_data.items():
@@ -224,11 +223,11 @@ def main():
         json.dump({str(key): value for key, value in sorted_pareto_front_data.items()}, json_file, indent=4)
     
     # Non-pareto.
-    for key, sublists in sorted_non_pareto_front_data.items():
-        sorted_non_pareto_front_data[key] = [
+    for key, sublists in sorted_pareto_front_non_data.items():
+        sorted_pareto_front_non_data[key] = [
             ga_adjustReal_x(ga_decodeInteger_x(sublist)) for sublist in sublists]
     with open(GENERATION_NON_PARETO_IND_FILE, 'w') as json_file:
-        json.dump({str(key): value for key, value in sorted_non_pareto_front_data.items()}, json_file, indent=4)
+        json.dump({str(key): value for key, value in sorted_pareto_front_non_data.items()}, json_file, indent=4)
     
 if __name__ == "__main__":
 
