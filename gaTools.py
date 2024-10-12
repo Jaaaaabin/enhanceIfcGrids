@@ -12,23 +12,20 @@ from collections import defaultdict
 from toolsQuickUtils import time_decorator
 
 #===================================================================================================
-# IFC related.
-def getIfcModelPaths(folder_path: str, only_first: bool=False, path_nr: int=0) -> list:
-    
-    run_model_path = None
-    model_paths = [
-        filename for filename in os.listdir(folder_path) if \
-            os.path.isfile(os.path.join(folder_path, filename)) and filename.endswith('.ifc')]
-    
-    if not model_paths:
-        raise FileNotFoundError("No model files in the given path.")
-    model_paths = sorted(model_paths)
-    
-    if only_first:
-        run_model_path = model_paths[0]
-    else:
-        run_model_path = model_paths[path_nr]
-    return run_model_path
+# Basic parameter & Customized Population setup:
+PARAMS = {
+    'st_c_num': (2, 10), # [3,10)  # min = 3
+    'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
+    'ns_w_num': (2, 10), # [2,10)  # min = 2.
+    'st_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+    'ns_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
+    'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
+    # 'st_c_align_dist': (0.0001, 0.1), # fixed : 0.001
+    'st_w_align_dist': (0.0001, 0.1), # fixed?
+    'ns_w_align_dist': (0.0001, 0.1), # fixed?
+}
 
 #===================================================================================================
 # Parameter related.
@@ -73,6 +70,68 @@ def getParameterVarLimits(param_ranges):
     str_uppers = list(map(int, list(''.join(v for v in str_uppers))))
     
     return str_lowers, str_uppers
+
+#===================================================================================================
+# Get the additional Constant Values.
+PARAMS_SCALE, PARAMS_INTEGER = getParameterScales(param_ranges=PARAMS)
+MinVals, MaxVals = getParameterVarLimits(param_ranges=PARAMS_INTEGER)
+
+# ===================================================================================================
+# Basic Functions of GA
+def ga_decodeInteger_x(individual: list) -> list:
+
+    decoded_xs = []
+    count_parameter_placeholders = []
+    for key, (lower, upper) in PARAMS_INTEGER.items():
+        upper -= 1
+        l = len(str(abs(upper)))
+        count_parameter_placeholders.append(l)
+
+    if sum(count_parameter_placeholders) == len(individual):
+        
+        start_i = 0
+        for c in count_parameter_placeholders:
+            decoded_x = int(''.join(str(digit) for digit in individual[int(start_i):int(start_i+c)]))
+            decoded_xs.append(decoded_x)
+            start_i += c
+    else:
+        raise ValueError("The integer deocder is wrong")
+    return decoded_xs
+
+def ga_adjustReal_x(decoded_x):
+
+    decoded_parameters = dict(zip(PARAMS.keys(), decoded_x))
+    
+    for key, value in list(decoded_parameters.items()):
+        
+        # rescale back to the real values.
+        if PARAMS_SCALE[key] > 1:
+            decoded_parameters[key] /= PARAMS_SCALE[key]
+
+        # correct the integer values.
+        if '_num' in key:
+            decoded_parameters[key] = int(value)
+
+    return decoded_parameters
+
+#===================================================================================================
+# IFC related.
+def getIfcModelPaths(folder_path: str, only_first: bool=False, path_nr: int=0) -> list:
+    
+    run_model_path = None
+    model_paths = [
+        filename for filename in os.listdir(folder_path) if \
+            os.path.isfile(os.path.join(folder_path, filename)) and filename.endswith('.ifc')]
+    
+    if not model_paths:
+        raise FileNotFoundError("No model files in the given path.")
+    model_paths = sorted(model_paths)
+    
+    if only_first:
+        run_model_path = model_paths[0]
+    else:
+        run_model_path = model_paths[path_nr]
+    return run_model_path
 
 # ===================================================================================================
 # Storage and Visualization.
@@ -398,6 +457,8 @@ def ga_loadInds(creator, n, filename):
         logging.warning(f"Loaded {len(individuals)} individuals, expected {n}.")
         return None
 
+
+#===================================================================================================
 # DEAP - varAnd
 def varAnd(population, toolbox, cxpb, mutpb):
 

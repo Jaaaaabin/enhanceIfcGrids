@@ -1,8 +1,8 @@
 
 import os
 import json
+from gaTools import ga_decodeInteger_x, ga_adjustReal_x
 from gaTools import calculate_pareto_front
-from ifc_ga_optimization import  ga_decodeInteger_x, ga_adjustReal_x
 
 def get_subdirectories(directory):
     subdirectories = [d for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
@@ -15,7 +15,7 @@ subdirs = get_subdirectories(ALL_MODEL_GA_RES_PATH)
 ENABLE_GA_RR=True
 
 for nr in range(1,9,1):
-    
+
     subdir = subdirs[nr-1]
     nr_subir = str(nr)
     MODEL_GA_RES_PATH = os.path.join(ALL_MODEL_GA_RES_PATH,subdir)

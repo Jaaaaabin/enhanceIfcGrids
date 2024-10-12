@@ -19,7 +19,8 @@ from deap import base, creator, tools, algorithms
 
 from ifc_grid_generation import preparation_of_grid_generation
 
-from gaTools import getIfcModelPaths, getParameterScales, getParameterVarLimits
+from gaTools import PARAMS, PARAMS_SCALE, PARAMS_INTEGER, MinVals, MaxVals
+from gaTools import getIfcModelPaths, ga_decodeInteger_x, ga_adjustReal_x
 from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitness_multiobjectives
 from gaTools import ga_rr_eaSimple, calculate_pareto_front
 
@@ -46,8 +47,24 @@ PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + 
 PROJECT_PATH = os.getcwd()
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
-# todo.
-# Take the initial ranges from the extracted ifc information.
+DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
+MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
+MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
+os.makedirs(MODEL_GA_RES_PATH, exist_ok=True)
+gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
+logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
+
+INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
+GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
+GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
+GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
+GENERATION_IND_GEN_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt")
+GENERATION_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_False.json")
+GENERATION_NON_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_False.json")
+GENERATION_PARETO_FIG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_True.png") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_False.png")
+
+# GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
+
 # PARAMS = {
 #     'st_c_num': (2, 10), # [3,10)  # min = 3
 #     'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
@@ -61,92 +78,11 @@ DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 #     'st_w_align_dist': (0.0001, 0.1), # fixed?
 #     'ns_w_align_dist': (0.0001, 0.1), # fixed?
 # }
-#===================================================================================================
-# Basic parameter & Customized Population setup:
-PARAMS = {
-    'st_c_num': (2, 10), # [3,10)  # min = 3
-    'st_w_num': (2, 10), # [3,10)  # min = num_main_floors.
-    'ns_w_num': (2, 10), # [2,10)  # min = 2.
-    'st_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
-    'ns_w_accumuled_length_percent': (0.0001, 0.05), # should be more "dependent" on the average length.
-    'st_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
-    'ns_st_merge': (0.1, 1.00), # ....god sick differentiate between merge
-    'ns_ns_merge': (0.1, 1.00), # ....god sick differentiate between merge
-    # 'st_c_align_dist': (0.0001, 0.1), # fixed : 0.001
-    'st_w_align_dist': (0.0001, 0.1), # fixed?
-    'ns_w_align_dist': (0.0001, 0.1), # fixed?
-}
-
-# Get the additional Constant Values.
-PARAMS_SCALE, PARAMS_INTEGER = getParameterScales(param_ranges=PARAMS)
-MinVals, MaxVals = getParameterVarLimits(param_ranges=PARAMS_INTEGER)
 
 # ===================================================================================================
-# Basic Functions of GA
-
-def ga_decodeInteger_x(individual: list) -> list:
-
-    decoded_xs = []
-    count_parameter_placeholders = []
-    for key, (lower, upper) in PARAMS_INTEGER.items():
-        upper -= 1
-        l = len(str(abs(upper)))
-        count_parameter_placeholders.append(l)
-
-    if sum(count_parameter_placeholders) == len(individual):
-        
-        start_i = 0
-        for c in count_parameter_placeholders:
-            decoded_x = int(''.join(str(digit) for digit in individual[int(start_i):int(start_i+c)]))
-            decoded_xs.append(decoded_x)
-            start_i += c
-    else:
-        raise ValueError("The integer deocder is wrong")
-    return decoded_xs
-
-def ga_adjustReal_x(decoded_x):
-
-    decoded_parameters = dict(zip(PARAMS.keys(), decoded_x))
-    
-    for key, value in list(decoded_parameters.items()):
-        
-        # rescale back to the real values.
-        if PARAMS_SCALE[key] > 1:
-            decoded_parameters[key] /= PARAMS_SCALE[key]
-
-        # correct the integer values.
-        if '_num' in key:
-            decoded_parameters[key] = int(value)
-
-    return decoded_parameters
-
-# ===================================================================================================
-# main.
-def main():
-    
-    DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
-    MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
-
-    MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
-    os.makedirs(MODEL_GA_RES_PATH, exist_ok=True)
-
-    gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
-    logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
-
-    INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
-    GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
-    GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
-    GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
-    GENERATION_IND_GEN_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt")
-    GENERATION_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_False.json")
-    GENERATION_NON_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_False.json")
-    GENERATION_PARETO_FIG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_True.png") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_False.png")
-
-    # GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
-    
-    # Objective Functions of genetic algorithm (GA)
-    # @time_decorator
-    def ga_objective(individual: list) -> tuple:
+# Objective Functions of genetic algorithm (GA)
+# @time_decorator
+def ga_objective(individual: list) -> tuple:
 
         # decode the integer values back to real parameter values for calculating the objective function.
         decoded_individual = ga_decodeInteger_x(list(individual))
@@ -166,6 +102,10 @@ def main():
         f_unbound = gridGenerator.percent_unbound_elements
         f_distribution = 0.5*gridGenerator.avg_deviation_maxmin + 0.5*gridGenerator.avg_deviation_adjacent
         return (f_unbound, f_distribution)
+
+# ===================================================================================================
+# main.
+def main():
 
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
     parser.add_argument('--random_seed', type=int, default=2021, help='Random seed for creatomg initial individuals.')
