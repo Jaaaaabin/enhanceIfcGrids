@@ -46,26 +46,6 @@ PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + 
 PROJECT_PATH = os.getcwd()
 DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
 
-DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
-MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
-
-MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
-os.makedirs(MODEL_GA_RES_PATH, exist_ok=True)
-
-gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
-logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
-
-INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
-GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
-GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
-GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
-GENERATION_IND_GEN_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt")
-GENERATION_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_False.json")
-GENERATION_NON_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_False.json")
-GENERATION_PARETO_FIG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_True.png") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_False.png")
-
-GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
-
 # todo.
 # Take the initial ranges from the extracted ifc information.
 # PARAMS = {
@@ -140,32 +120,52 @@ def ga_adjustReal_x(decoded_x):
 
     return decoded_parameters
 
-# Objective Functions of genetic algorithm (GA)
-# @time_decorator
-def ga_objective(individual: list) -> tuple:
-
-    # decode the integer values back to real parameter values for calculating the objective function.
-    decoded_individual = ga_decodeInteger_x(list(individual))
-    decoded_parameters = ga_adjustReal_x(decoded_individual)
-
-    # build the gridGenerator for the current individual, create grids and calculate the losses.
-    gridGenerator = copy.deepcopy(gridGeneratorInit) # save computing time.
-    gridGenerator.update_parameters(decoded_parameters)
-    gridGenerator.create_grids()
-    gridGenerator.merge_grids()
-    gridGenerator.analyze_grids()
-    gridGenerator.calculate_losses()
-    
-    # for our problem, it might be a "dominated" problem.
-    # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_adjacent*0.25
-    # return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
-    f_unbound = gridGenerator.percent_unbound_elements
-    f_distribution = 0.5*gridGenerator.avg_deviation_maxmin + 0.5*gridGenerator.avg_deviation_adjacent
-    return (f_unbound, f_distribution)
-
 # ===================================================================================================
 # main.
 def main():
+    
+    DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
+    MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
+
+    MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
+    os.makedirs(MODEL_GA_RES_PATH, exist_ok=True)
+
+    gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
+    logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.
+
+    INI_GENERATION_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_ini_inds_integer.txt")
+    GENERATION_LOG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log" + PLOT_KEYS + ".json")
+    GENERATION_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_fitness" + PLOT_KEYS + ".png")
+    GENERATION_IND_FIT_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_fit_rr_False.txt") 
+    GENERATION_IND_GEN_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_True.txt") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_inds_gen_rr_False.txt")
+    GENERATION_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_inds_rr_False.json")
+    GENERATION_NON_PARETO_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_True.json") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_non_inds_rr_False.json")
+    GENERATION_PARETO_FIG_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_True.png") if ENABLE_GA_RR else os.path.join(MODEL_GA_RES_PATH, "ga_pareto_fitness_rr_False.png")
+
+    # GENERATION_BEST_IND_FILE = os.path.join(MODEL_GA_RES_PATH, "ga_log_best_inds" + PLOT_KEYS + ".json")
+    
+    # Objective Functions of genetic algorithm (GA)
+    # @time_decorator
+    def ga_objective(individual: list) -> tuple:
+
+        # decode the integer values back to real parameter values for calculating the objective function.
+        decoded_individual = ga_decodeInteger_x(list(individual))
+        decoded_parameters = ga_adjustReal_x(decoded_individual)
+
+        # build the gridGenerator for the current individual, create grids and calculate the losses.
+        gridGenerator = copy.deepcopy(gridGeneratorInit) # save computing time.
+        gridGenerator.update_parameters(decoded_parameters)
+        gridGenerator.create_grids()
+        gridGenerator.merge_grids()
+        gridGenerator.analyze_grids()
+        gridGenerator.calculate_losses()
+        
+        # for our problem, it might be a "dominated" problem.
+        # individual_fitness = gridGenerator.percent_unbound_elements*0.5 + gridGenerator.avg_deviation_maxmin*0.25 + gridGenerator.avg_deviation_adjacent*0.25
+        # return (individual_fitness,) # the return value must be a list / tuple, even it's only one fitness value.
+        f_unbound = gridGenerator.percent_unbound_elements
+        f_distribution = 0.5*gridGenerator.avg_deviation_maxmin + 0.5*gridGenerator.avg_deviation_adjacent
+        return (f_unbound, f_distribution)
 
     parser = argparse.ArgumentParser(description="Run genetic algorithm with a specified variable value.")
     parser.add_argument('--random_seed', type=int, default=2021, help='Random seed for creatomg initial individuals.')
@@ -261,7 +261,8 @@ def main():
 
     visualizeGenFitness_multiobjectives(
         output_file=GENERATION_FIT_FILE, logbook=logbook, restart_rounds=restart_rounds, ind_file=GENERATION_IND_FIT_FILE, generation_size=POPULATION_SIZE)
-     
+    
+    # todo. starting from here, produce the paper resuts together.
     pareto_front_data, non_pareto_front_data =  calculate_pareto_front(
         gen_file_path = GENERATION_IND_GEN_FILE,
         fit_file_path = GENERATION_IND_FIT_FILE,
