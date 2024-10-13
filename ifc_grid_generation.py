@@ -19,7 +19,7 @@ FIT_NON_PARETO_VALUE_FLOAT = (0.381, 0.469)
 EXECUTE_MODEL = [] # default.
 EXECUTE_MODEL = '5-AR'
 
-# @time_decorator
+@time_decorator
 def preparation_of_grid_generation(
     work_path,
     ifc_model,
@@ -45,7 +45,9 @@ def preparation_of_grid_generation(
 
     return generator
 
-def building_grid_generation(basic_generator, new_parameters, set_visualization=True):
+@time_decorator
+def building_grid_generation(
+    basic_generator, new_parameters, set_visualization=True, set_analysis=True):
     
     # update the parameters.
     new_generator = basic_generator.update_parameters(new_parameters)
@@ -61,11 +63,11 @@ def building_grid_generation(basic_generator, new_parameters, set_visualization=
         new_generator.visualization_2d_before_merge(visual_type='html') # visual_type='svg'
         new_generator.visualization_2d_after_merge(visual_type='html') # visual_type='svg'
     
-    # extract the relationships from merged grids.
-    new_generator.analyze_grids()
-
-    # calculate the losses for merged girds.
-    new_generator.calculate_losses()  #[for the ga optimization.]
+    if set_analysis:   
+        # extract the relationships from merged grids.
+        new_generator.analyze_grids()
+        # calculate the losses for merged girds.
+        new_generator.calculate_losses()  #[for the ga optimization.]
 
 # # ----------
 # main.
@@ -126,6 +128,9 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error accessing directory {DATA_RES_PATH}: {e}")
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Maybe we will not need them anymore....
 # autcon saving.
 # the thresholds used for intemediate results visualization
 # best_thresholds = {
@@ -141,3 +146,4 @@ if __name__ == "__main__":
 #     'st_w_align_dist': 0.1,       # fixed value, to be decided per project
 #     'ns_w_align_dist': 0.1,       # fixed value, to be decided per project.
 # }
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

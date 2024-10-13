@@ -920,7 +920,7 @@ def meta_visualization_pareto_frontier(json_file, output_file, markers, colors):
         non_pareto_sizes_log = np.log10(np.array(non_pareto_sizes) + 1) * 4 + 20
         other_x, other_y = zip(*non_pareto_solutions)
         plt.scatter(other_x, other_y, marker=marker, s=non_pareto_sizes_log, 
-                    alpha=0.33, edgecolors=color, facecolors='none', label=f'GA population ({nr})')
+                    alpha=0.40, edgecolors=color, facecolors='none', label=f'GA population ({nr})')
 
         # Limit calculations for the axes
         limit_max_main_axes = 1.05

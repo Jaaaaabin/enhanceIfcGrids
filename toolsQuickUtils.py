@@ -1,10 +1,21 @@
 import functools
 import time
+import os
 import math
 import json
 import numpy as np
 from collections import Counter
 import networkx as nx
+
+def ensure_directory_exists(path):
+    """Ensures that a directory exists, if not, creates it."""
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(f"\033[1m\033[94m[Created directory:] \033[93m{path}")
+        
+    # else:
+    #     print(f"Directory already exists: {path}")
 
 def time_decorator(func):
 
