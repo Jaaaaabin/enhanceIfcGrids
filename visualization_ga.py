@@ -243,20 +243,18 @@ def calculate_all_indicators(
         grid_generator_init = preparation_of_grid_generation(ALL_POSITION_DATA_PATH, subdir)
 
         # Process Pareto front solutions if enabled
-        # if plot_pareto_front:
-        #     single_indicator_calculation(
-        #         GA_RES_PATH, GA_SOLUTION_PATH, 'pareto_front', enable_rr, "ga_pareto_inds", grid_generator_init)
+        if plot_pareto_front:
+            single_indicator_calculation(
+                GA_RES_PATH, GA_SOLUTION_PATH, 'pareto_front', enable_rr, "ga_pareto_inds", grid_generator_init)
 
-        # # # Process non-Pareto front solutions if enabled
-        # if plot_non_pareto_front:
-        #     single_indicator_calculation(
-        #         GA_RES_PATH, GA_SOLUTION_PATH, 'non_pareto_front', enable_rr, "ga_pareto_non_inds", grid_generator_init)
+        # # Process non-Pareto front solutions if enabled
+        if plot_non_pareto_front:
+            single_indicator_calculation(
+                GA_RES_PATH, GA_SOLUTION_PATH, 'non_pareto_front', enable_rr, "ga_pareto_non_inds", grid_generator_init)
 
         if plot_pareto_front and plot_non_pareto_front:
             
             summarize_indicator(GA_SOLUTION_PATH)
-        
-        break
 
 # - - - - - - - 
 #     
