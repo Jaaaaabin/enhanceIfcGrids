@@ -198,7 +198,9 @@ class SolutionFinder:
         if closest_folder is None:
             raise ValueError(f"No valid subfolders found in folder '{folder_path}' with proper (x, y) format.")
 
-        print(f"Closest folder found: {closest_folder} with distance {min_distance}")
+        print(f"Closest folder found for the input (x:{target_x}, y:{target_y})")
+        print(f"{closest_folder}")
+    
         return closest_folder
 
     def open_html_files(self, folder_path):

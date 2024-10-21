@@ -10,14 +10,6 @@ DATA_RES_PATH = PROJECT_PATH + r'\res'
 # final solution related supplement.
 DATA_GA_RES_PATH = PROJECT_PATH + r'\res_ga'
 FIT_PARETO_VALUE_FLOAT = [] # default.
-# FIT_PARETO_VALUE_FLOAT = (0.088, 0.106)
-# FIT_PARETO_VALUE_FLOAT = (0.138, 0.02)
-
-FIT_NON_PARETO_VALUE_FLOAT = [] # default.
-FIT_NON_PARETO_VALUE_FLOAT = (0.381, 0.469)
-
-EXECUTE_MODEL = [] # default.
-EXECUTE_MODEL = '5-AR'
 
 @time_decorator
 def preparation_of_grid_generation(
@@ -77,53 +69,27 @@ if __name__ == "__main__":
     try:
         model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
-        for model_path in model_paths:
-            
-            # Pareto.
-            # if EXECUTE_MODEL and FIT_PARETO_VALUE_FLOAT:
-            #     if EXECUTE_MODEL in model_path:
+        for model_path in model_paths:            
 
-            #         threshold_json_file = os.path.join(
-            #             DATA_GA_RES_PATH, model_path, "ga_pareto_inds_rr_True.json")
-            #         values_thresholds = load_thresholds_from_json(threshold_json_file)
-            #         selected_thresholds = values_thresholds[str(FIT_PARETO_VALUE_FLOAT)]
-            #         selected_thresholds  = selected_thresholds[0]
-
-            #         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-            #         building_grid_generation(init_grid_generator, selected_thresholds)
-    
-            # # Non-Pareto.
-            # if EXECUTE_MODEL and FIT_NON_PARETO_VALUE_FLOAT:
-            #     if EXECUTE_MODEL in model_path:
-
-            #         threshold_json_file = os.path.join(
-            #             DATA_GA_RES_PATH, model_path, "ga_pareto_non_inds_rr_True.json")
-            #         values_thresholds = load_thresholds_from_json(threshold_json_file)
-            #         selected_thresholds = values_thresholds[str(FIT_NON_PARETO_VALUE_FLOAT)]
-            #         selected_thresholds  = selected_thresholds[0]
-
-            #         init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-            #         building_grid_generation(init_grid_generator, selected_thresholds)
-                
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                # customized threshold input for grid generation 
-                # for each building model
-                init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-                best_thresholds = {
-                    'st_c_num': 4,
-                    'st_w_num': 2,
-                    'ns_w_num': 4,
-                    'st_w_accumuled_length_percent': 0.005,
-                    'ns_w_accumuled_length_percent': 0.0005,
-                    'st_st_merge': 0.2,
-                    'ns_st_merge': 0.2,
-                    'ns_ns_merge': 0.2,
-                    'st_c_align_dist': 0.001,     # fixed value,
-                    'st_w_align_dist': 0.01,       # fixed value, to be decided per project
-                    'ns_w_align_dist': 0.01,       # fixed value, to be decided per project.
-                }
-                building_grid_generation(init_grid_generator, best_thresholds)
-                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            # customized threshold input for grid generation 
+            # for each building model
+            init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+            best_thresholds = {
+                'st_c_num': 2,
+                'st_w_num': 2,
+                'ns_w_num': 2,
+                'st_w_accumuled_length_percent': 0.005,
+                'ns_w_accumuled_length_percent': 0.0005,
+                'st_st_merge': 0.2,
+                'ns_st_merge': 0.4,
+                'ns_ns_merge': 0.2,
+                'st_c_align_dist': 0.001,     # fixed value,
+                'st_w_align_dist': 0.01,       # fixed value, to be decided per project
+                'ns_w_align_dist': 0.01,       # fixed value, to be decided per project.
+            }
+            building_grid_generation(init_grid_generator, best_thresholds)
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     except Exception as e:
         print(f"Error accessing directory {DATA_RES_PATH}: {e}")
