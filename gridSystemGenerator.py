@@ -1499,6 +1499,31 @@ class GridGenerator:
         except IOError as e:
             raise IOError(f"Failed to write to {self.out_fig_path + 'info_grid_relationships.json'}: {e}")
 
+    def summarize_indicator(self):
+        
+        st_indicator, ns_indicator = [], []
+        storey_indicator = len(self.main_storeys)
+
+        self.additional_indicator = dict()
+
+        for ky, grid_info in self.grids_relationships.items():
+            if grid_info['type'] == 'st':
+                st_indicator.append(len(grid_info['ids']))
+            elif grid_info['type'] == 'ns':
+                ns_indicator.append(len(grid_info['ids']))
+
+        self.additional_indicator = {
+            'st': st_indicator,
+            'ns': ns_indicator,
+            'storey':storey_indicator,
+            
+        }
+
+    def calculate_grid_indicator(self):
+        
+        self.extract_grid_relationships()
+        self.summarize_indicator()
+
 # Grid Analyses  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
 #=================================================================================================== 
 

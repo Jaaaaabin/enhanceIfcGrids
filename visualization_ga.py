@@ -107,7 +107,8 @@ def plot_meta_results():
     meta_visualization_pareto_frontier(JSON_ALL_RES_RR_TRUE, FIG_ALL_RES_RR_TRUE, MARKERS, COLORS)
     meta_visualization_pareto_frontier(JSON_ALL_RES_RR_FALSE, FIG_ALL_RES_RR_FALSE, MARKERS, COLORS)
 
-
+# - - - - - - - 
+# process the solution.
 def process_solutions(
     ga_re_path, ga_solution_path, subsub_dir_name, enable_rr, threshold_file_prefix, grid_generator_init):
 
@@ -155,7 +156,110 @@ def produce_all_solutions(
         if plot_non_pareto_front:
             process_solutions(
                 GA_RES_PATH, GA_SOLUTION_PATH, 'non_pareto_front', enable_rr, "ga_pareto_non_inds", grid_generator_init)                
+# - - - - - - - 
 
+
+# - - - - - - - 
+# calculate the additional indicator.
+def single_indicator_calculation(ga_re_path, ga_solution_path, subsub_dir_name, enable_rr, threshold_file_prefix, grid_generator_init):
+
+    # Prepare paths and load threshold values
+    threshold_json_file = os.path.join(ga_re_path, f"{threshold_file_prefix}_rr_{str(enable_rr)}.json")
+    values_thresholds = load_thresholds_from_json(threshold_json_file)
+
+    for fit_pair, t_values in values_thresholds.items():
+
+        # Select the first combination in the group
+        thresholds_for_generation = t_values[0]
+
+        # Create result directory for each fit_pair
+        ga_solution_per_fit_pair_path = os.path.join(ga_solution_path, subsub_dir_name, fit_pair)
+        ensure_directory_exists(ga_solution_per_fit_pair_path)
+
+        # Adjust the grid generator and set output path
+        grid_generator_active = copy.deepcopy(grid_generator_init)
+        grid_generator_active.out_fig_path = ga_solution_per_fit_pair_path
+
+        # Start the grid generation
+        additional_indicator = building_grid_generation(
+            grid_generator_active, thresholds_for_generation,
+            set_visualization=False,
+            set_analysis=False,
+            set_additional_indicator=True,
+        )
+        
+        with open(os.path.join(ga_solution_per_fit_pair_path,'indicator.json'), 'w') as fp:
+            json.dump(additional_indicator, fp)
+
+def summarize_indicator(main_folder):
+
+    # Define the output file
+    output_file = os.path.join(main_folder, 'indicators.json')
+    combined_data = {}
+
+    # Traverse through the directory structure
+    for subfolder in ["pareto_front", "non_pareto_front"]:
+        subfolder_path = os.path.join(main_folder, subfolder)
+        
+        if not os.path.exists(subfolder_path):
+            continue
+        
+        for subsubfolder in os.listdir(subfolder_path):
+            subsubfolder_path = os.path.join(subfolder_path, subsubfolder)
+            
+            if not os.path.isdir(subsubfolder_path):
+                continue
+            
+            # Check if indicator.json exists in this subsubfolder
+            json_file_path = os.path.join(subsubfolder_path, 'indicator.json')
+            if os.path.exists(json_file_path):
+                try:
+                    with open(json_file_path, 'r') as json_file:
+                        data = json.load(json_file)
+                        # Use the subsubfolder as the key directly
+                        combined_data[subsubfolder] = data
+                except Exception as e:
+                    print(f"Error reading {json_file_path}: {e}")
+    
+    # Write the combined data to the output file
+    try:
+        with open(output_file, 'w') as output_json:
+            json.dump(combined_data, output_json, indent=4)
+        print(f"Combined data written to {output_file}")
+    except Exception as e:
+        print(f"Error writing to {output_file}: {e}")
+
+def calculate_all_indicators(
+    enable_rr=True, plot_pareto_front=True, plot_non_pareto_front=True):
+
+    for nr, subdir in enumerate(SUBDIRS, start=1):
+        
+        # Directory preparation
+        GA_RES_PATH = os.path.join(ALL_GA_RES_PATH, subdir)
+        GA_SOLUTION_PATH = os.path.join(ALL_GA_SOLUTION_PATH, subdir)
+        ensure_directory_exists(GA_SOLUTION_PATH)
+
+        # Initialize the grid generator
+        grid_generator_init = preparation_of_grid_generation(ALL_POSITION_DATA_PATH, subdir)
+
+        # Process Pareto front solutions if enabled
+        # if plot_pareto_front:
+        #     single_indicator_calculation(
+        #         GA_RES_PATH, GA_SOLUTION_PATH, 'pareto_front', enable_rr, "ga_pareto_inds", grid_generator_init)
+
+        # # # Process non-Pareto front solutions if enabled
+        # if plot_non_pareto_front:
+        #     single_indicator_calculation(
+        #         GA_RES_PATH, GA_SOLUTION_PATH, 'non_pareto_front', enable_rr, "ga_pareto_non_inds", grid_generator_init)
+
+        if plot_pareto_front and plot_non_pareto_front:
+            
+            summarize_indicator(GA_SOLUTION_PATH)
+        
+        break
+
+# - - - - - - - 
+#     
 if __name__ == "__main__":
 
 
@@ -166,73 +270,8 @@ if __name__ == "__main__":
     # plot_meta_results()
 
     # # provide two options for solution production as final alternative.
-    produce_all_solutions(plot_non_pareto_front=True)
-
-
-
-# save.
-# def produce_all_solutions(
-#     enable_rr=True,
-#     plot_pareto_front=False,
-#     plot_non_pareto_front=False):
+    # produce_all_solutions(plot_non_pareto_front=True)
     
-#     for nr, subdir in enumerate(SUBDIRS, start=1):
-        
-#         # directory preparation
-#         GA_RES_PATH = os.path.join(ALL_GA_RES_PATH, subdir)
-#         GA_SOLUTION_PATH = os.path.join(ALL_GA_SOLUTION_PATH, subdir)
-#         if not os.path.exists(GA_SOLUTION_PATH):
-#             os.makedirs(GA_SOLUTION_PATH)
+    # 
+    calculate_all_indicators()
 
-#         # initialize the grid generator.
-#         grid_generator_init = preparation_of_grid_generation(ALL_POSITION_DATA_PATH, subdir)
-
-#         # ---------------------------------------
-#         # For the Pareto front solutions, we collect all of them
-#         if plot_pareto_front:
-
-#             subsub_dir_name = 'pareto_front'
-#             threshold_json_file = os.path.join(GA_RES_PATH, f"ga_pareto_inds_rr_{str(enable_rr)}.json")
-#             values_thresholds = load_thresholds_from_json(threshold_json_file)
-#             for fit_pair, t_values in values_thresholds.items():
-                
-#                 # select the first combination within the same group (based on the fitness values.)
-#                 thresholds_for_generation = t_values[0]
-
-#                 # prepare the sub-directory for results.
-#                 ga_solution_per_fit_pair_path = os.path.join(GA_SOLUTION_PATH, subsub_dir_name, fit_pair)
-#                 if not os.path.exists(ga_solution_per_fit_pair_path):
-#                     os.makedirs(ga_solution_per_fit_pair_path)
-                
-#                 # adjust the target directory of the grid generation
-#                 grid_generator_active = copy.deepcopy(grid_generator_init) # save computing time.
-#                 grid_generator_active.out_fig_path = ga_solution_per_fit_pair_path
-                
-#                 # start the grid generation 
-#                 building_grid_generation(
-#                     grid_generator_active, thresholds_for_generation, set_visualization=True, set_analysis=False)
-        
-#         # ---------------------------------------
-#         # For the non-Pareto-front solutions, we collect all of them
-#         if plot_non_pareto_front:
-
-#             subsub_dir_name = 'non_pareto_front'
-#             threshold_json_file = os.path.join(GA_RES_PATH, f"ga_pareto_non_inds_rr_{str(enable_rr)}.json")
-#             values_thresholds = load_thresholds_from_json(threshold_json_file)
-#             for fit_pair, t_values in values_thresholds.items():
-                
-#                 # select the first combination within the same group (based on the fitness values.)
-#                 thresholds_for_generation = t_values[0]
-
-#                 # prepare the sub-directory for results.
-#                 ga_solution_per_fit_pair_path = os.path.join(GA_SOLUTION_PATH, subsub_dir_name, fit_pair)
-#                 if not os.path.exists(ga_solution_per_fit_pair_path):
-#                     os.makedirs(ga_solution_per_fit_pair_path)
-                
-#                 # adjust the target directory of the grid generation
-#                 grid_generator_active = copy.deepcopy(grid_generator_init) # save computing time.
-#                 grid_generator_active.out_fig_path = ga_solution_per_fit_pair_path
-                
-#                 # start the grid generation 
-#                 building_grid_generation(
-#                     grid_generator_active, thresholds_for_generation, set_visualization=True, set_analysis=False)

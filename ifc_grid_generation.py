@@ -39,7 +39,7 @@ def preparation_of_grid_generation(
 
 @time_decorator
 def building_grid_generation(
-    basic_generator, new_parameters, set_visualization=True, set_analysis=True):
+    basic_generator, new_parameters, set_visualization=False, set_analysis=False, set_additional_indicator=False):
     
     # update the parameters.
     new_generator = basic_generator.update_parameters(new_parameters)
@@ -60,6 +60,13 @@ def building_grid_generation(
         new_generator.analyze_grids()
         # calculate the losses for merged girds.
         new_generator.calculate_losses()  #[for the ga optimization.]
+
+    if set_additional_indicator:
+
+        new_generator.calculate_grid_indicator()
+        
+        return new_generator.additional_indicator
+
 
 # # ----------
 # main.
