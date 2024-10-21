@@ -9,6 +9,8 @@ tempo*.py
 
 # Data
 data/*
+gorvt/*
+!data/data_autocon_test/
 !data/data_autocon_ga/
 !data/data_autocon_test_no_grids/
 !paperfigrues/
