@@ -260,7 +260,7 @@ def calculate_metrics_and_additional_indicators():
 
     all_json_data = []
     all_number_pareto_front = [8, 11, 2, 5, 5, 3, 5, 4] # automated count from the GA results.
-    all_number_storey_adjustment = [0, 0, 0, -1, 0, -1, 0, 0] # modification because some of the "mezzanie"
+    all_number_storey_adjustment = [0, -1, 0, -1, 0, 0, 0, 0] # modification because some of the "mezzanie"/"roof".
 
     all_visualization_fitness = [
         [(0.39, 0.103), (0.485, 0.053), (0.715, 0.573)],
@@ -302,6 +302,5 @@ if __name__ == "__main__":
     
     # 
     # calculate_all_indicators()
-    
     # 
     calculate_metrics_and_additional_indicators()

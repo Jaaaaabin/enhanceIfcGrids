@@ -112,7 +112,7 @@ def plot_multiple_cases(
         # )
 
         # KDE plot for Non Pareto front points
-        sns.kdeplot(
+        kde = sns.kdeplot(
             df_non_pareto['Avg Rel per STG per Storey'], 
             ax=axes[nr],
             vertical=True, 
@@ -131,7 +131,7 @@ def plot_multiple_cases(
             s=35,
             color='orange',
             edgecolor='none',
-            label='Non Pareto Front' if nr == 0 else ""
+            label='non-Pareto front solutions ' if nr == 0 else ""
         )
         # Scatter plot for Pareto front
         axes[nr].scatter(
@@ -141,7 +141,7 @@ def plot_multiple_cases(
             s=35,
             color='blue',
             edgecolor='none',
-            label='Pareto Front' if nr == 0 else ""
+            label='Pareto front solutions' if nr == 0 else ""
         )
 
         # - - - - - - - - - - - - - - - 
@@ -162,7 +162,7 @@ def plot_multiple_cases(
                     edgecolor='black',
                     s=35,
                     linewidth=0.5,
-                    label='Pareto Front (selected for grid visualization)' if nr == 0 else "")
+                    label='Pareto front solutions (selected for grid visualization)' if nr == 0 else "")
 
         # - - - - - - - - - - - - - - - 
         # Selected Visualization: Non Pareto front points
@@ -181,7 +181,7 @@ def plot_multiple_cases(
                     edgecolor='black',
                     s=35,
                     linewidth=0.5,
-                    label='Non Pareto Front (selected for grid visualization)' if nr == 0 else "")
+                    label='non-Pareto front solutions (selected for grid visualization)' if nr == 0 else "")
                 
             # # Calculate and print filtered rows
             # pareto_min, pareto_max, filtered_rows = calculate_min_max_with_zscore(
@@ -236,7 +236,7 @@ def plot_multiple_cases(
         if label not in unique_labels:
             unique_labels.append(label)
             unique_handles.append(handles[i])
-    fig.legend(unique_handles, unique_labels, bbox_to_anchor=(0.35, 0.91), fontsize=14)
+    fig.legend(unique_handles, unique_labels, bbox_to_anchor=(0.38, 0.92), fontsize=14)
 
     # Adjust layout
     plt.tight_layout()
