@@ -1,11 +1,11 @@
 import os
-from gridSystemGenerator import GridGenerator
+from EnhancingComponent.gridSystemGenerator import GridGenerator
 from toolsQuickUtils import time_decorator, load_thresholds_from_json
 
 PROJECT_PATH = os.getcwd()
 # DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
-DATA_RES_PATH = PROJECT_PATH + r'\res'
+DATA_RES_PATH = PROJECT_PATH + r'\res_extraction'
 
 # final solution related supplement.
 DATA_GA_RES_PATH = PROJECT_PATH + r'\res_ga'

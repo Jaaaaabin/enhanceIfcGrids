@@ -1,10 +1,10 @@
 import os
-from ifcGridEnricher import IfcSpatialGridEnrichment
+from EnhancingComponent.ifcGridEnricher import IfcSpatialGridEnrichment
 
 PROJECT_PATH = os.getcwd()
 # DATA_FOLDER_PATH = PROJECT_PATH + r'\data\enriched'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
-DATA_RES_PATH = PROJECT_PATH + r'\res'
+DATA_RES_PATH = PROJECT_PATH + r'\res_extraction'
 
 def enrich_ifc_file(input_path, output_path):
 

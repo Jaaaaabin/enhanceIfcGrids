@@ -3,9 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# tempo codes.
+# tempo codes or archived data.
 old*.py
 tempo*.py
+archive/
 
 # Data
 data/*

@@ -1,8 +1,8 @@
 import os
 import copy
 import json
-from gaTools import ga_decodeInteger_x, ga_adjustReal_x
-from gaTools import calculate_pareto_front, meta_visualization_pareto_frontier
+from toolsGA import ga_decodeInteger_x, ga_adjustReal_x
+from toolsGA import calculate_pareto_front, meta_visualization_pareto_frontier
 
 from toolsQuickUtils import load_thresholds_from_json, ensure_directory_exists
 from ifc_grid_generation import preparation_of_grid_generation, building_grid_generation
@@ -18,7 +18,7 @@ def square_sum(tup):
     return sum(x**2 for x in tup)
 
 PROJECT_PATH = os.getcwd()
-ALL_POSITION_DATA_PATH = os.path.join(PROJECT_PATH, 'res')
+ALL_POSITION_DATA_PATH = os.path.join(PROJECT_PATH, 'res_extraction')
 ALL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga')
 ALL_GA_SOLUTION_PATH = os.path.join(PROJECT_PATH, 'solution_ga')
 SUBDIRS = get_subdirectories(ALL_GA_RES_PATH)

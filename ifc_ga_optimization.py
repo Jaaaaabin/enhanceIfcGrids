@@ -19,10 +19,10 @@ from deap import base, creator, tools, algorithms
 
 from ifc_grid_generation import preparation_of_grid_generation
 
-from gaTools import PARAMS, PARAMS_SCALE, PARAMS_INTEGER, MinVals, MaxVals
-from gaTools import getIfcModelPaths, ga_decodeInteger_x, ga_adjustReal_x
-from gaTools import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitness_multiobjectives
-from gaTools import ga_rr_eaSimple, calculate_pareto_front
+from toolsGA import PARAMS, PARAMS_SCALE, PARAMS_INTEGER, MinVals, MaxVals
+from toolsGA import getIfcModelPaths, ga_decodeInteger_x, ga_adjustReal_x
+from toolsGA import createInds, ga_loadInds, saveLogbook, visualizeGenFitness, visualizeGenFitness_multiobjectives
+from toolsGA import ga_rr_eaSimple, calculate_pareto_front
 
 #===================================================================================================
 # Genetic Algorithm Configuration - Constants
@@ -45,7 +45,7 @@ PLOT_KEYS = "_rr_"  + str(ENABLE_GA_RR) + "_pop_size_" + str(POPULATION_SIZE) + 
 # Paths setup and Log registration.
 
 PROJECT_PATH = os.getcwd()
-DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res')
+DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res_extraction')
 
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
 MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)

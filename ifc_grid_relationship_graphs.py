@@ -1,10 +1,10 @@
 import os
-from hierGraph import HierarchicalGraph
+from EnhancingComponent.hierGraph import HierarchicalGraph
 
 PROJECT_PATH = os.getcwd()
 # DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
-DATA_RES_PATH = PROJECT_PATH + r'\res'
+DATA_RES_PATH = PROJECT_PATH + r'\res_extraction'
 
 NUM_VISUALIZATION_GRIDS = 2
 

@@ -1,13 +1,13 @@
 import os
-from ifcDataExtractor import IfcDataExtractor
+from EnhancingComponent.ifcDataExtractor import IfcDataExtractor
 
 # import itertools
-# from infoAnalysis import JsonFileComparator
+from Interfaces.dataJsonAnalysis import JsonFileComparator
 
 PROJECT_PATH = os.getcwd()
 # DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
 DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
-DATA_RES_PATH = PROJECT_PATH + r'\res'
+DATA_RES_PATH = PROJECT_PATH + r'\res_extraction'
 
 def process_ifc_file(input_path, output_path):
 
