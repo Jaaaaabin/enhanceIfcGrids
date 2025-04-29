@@ -162,27 +162,41 @@ class GridGenerator:
                 'alpha':0.675,
             },
 
-            # wall lines.
-            'st_wall_lines':{
-                'legend_label':'Wall(S)',
-                'color': "black",
-                'line_dash':'solid',
-                'line_width':5,
-                'alpha':0.675,
+            # Structural wall lines
+            'st_wall_lines': {
+                'legend_label': 'Wall(S)',
+                'color': "#d9d9d9",                 # not used
+                'line_dash': 'solid',               # not used
+                'line_width': 5,                    # not used
+                'alpha': 0.3,                       # not used
+                'fill_color': '#d9d9d9',            # not used
+                'fill_alpha': 0.5,                  # not used
+                'hatch_pattern': 'x',               # cross filling
+                'hatch_color': 'black',             # filling color
+                'hatch_alpha': 0.75,                # filling transparency
+                'hatch_scale': 2.5,                 # filling size
             },
-            'ns_wall_lines':{
-                'legend_label':'Wall(N)',
-                'color': "#9a9a9a",
-                'line_dash':'solid',
-                'line_width':3,
-                'alpha':0.675,
+
+            # Non-structural wall lines
+            'ns_wall_lines': {
+                'legend_label': 'Wall(N)',
+                'color': "#d9d9d9",                 # not used
+                'line_dash': 'solid',               # not used
+                'line_width': 3,                    # not used
+                'alpha': 0.3,                       # not used
+                'fill_color': '#d9d9d9',            # not used
+                'fill_alpha': 0.5,                  # not used
+                'hatch_pattern': '/',               # single line filling
+                'hatch_color': 'black',             # filling color
+                'hatch_alpha': 0.75,                # filling transparency
+                'hatch_scale': 6,                   # filling size
             },
 
             # grid lines.
             'location_grids_st_c': {
                 'legend_label':'Grid-Column(S)',
                 'color': "#B8860B", 
-                'line_dash':'dashed',
+                'line_dash':'dotdash',
                 'line_width':2,
                 'alpha':0.95,
             },
@@ -1711,7 +1725,50 @@ class GridGenerator:
         
         cairosvg.svg2pdf(url=svg_path, write_to=pdf_path)
         
-    # @time_decorator
+    # ===========================
+    # ===updated visualization===
+    # ===========================
+    
+    def _thicken_wall(self, x, y, thickness=0.1):
+        """
+        Turn a wall centerline into a thin polygon for hatching with features.
+        """
+        wall_line = LineString(zip(x, y))
+        wall_polygon = wall_line.buffer(thickness / 2, cap_style=2)  # thickness/2 each side
+        x_poly, y_poly = wall_polygon.exterior.xy
+        return list(x_poly), list(y_poly)
+    
+    def _plot_line_with_fill(self, fig, x, y, g_plot, wall_thickness=0.2):
+        """
+        Plot a hatch-filled polygon based on wall line, with automatic thickening.
+        """
+        x = list(x)
+        y = list(y)
+
+        # Ensure closed shape
+        if (x[0], y[0]) != (x[-1], y[-1]):
+            x = x + [x[0]]
+            y = y + [y[0]]
+
+        # Thicken the wall into a polygon
+        x, y = self._thicken_wall(x, y, thickness=wall_thickness)
+
+        # Build the label: use hatch pattern if needed
+        hatch_label = g_plot.get('hatch_pattern', 'Hatched') if g_plot.get('use_hatch_as_label', False) else g_plot['legend_label']
+
+        # Draw patch with hatching
+        fig.patch(
+            x, y,
+            fill_color=None,
+            fill_alpha=g_plot.get('fill_alpha', 0.2),
+            line_color=None,
+            hatch_pattern=g_plot.get('hatch_pattern', None),
+            hatch_color=g_plot.get('hatch_color', 'black'),
+            hatch_alpha=g_plot.get('hatch_alpha', 1.0),
+            hatch_scale=g_plot.get('hatch_scale', 5),
+            legend_label=hatch_label,
+        )
+
     def visualization_2d_before_merge(self, visual_type='html', visualization_storage_path=None, add_strs=''):
 
         if visualization_storage_path is None:
@@ -1720,9 +1777,10 @@ class GridGenerator:
         for storey in self.main_storeys.keys():
 
             # plotting settings.
-            plot_name = f"Elevation {str(round(storey, 4))} - before merging"
-            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_creation" if not add_strs else \
-                f"{self.prefix}_Elevation_{str(round(storey,4))}_creation_{add_strs}"
+            plot_name = f"Elevation {str(round(storey, 4))} - before merging "
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_creation_with_fills" if not add_strs else \
+                f"{self.prefix}_Elevation_{str(round(storey,4))}_creation_with_fills_{add_strs}"
+
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1730,9 +1788,10 @@ class GridGenerator:
                 y_axis_label='y',
                 width=800,
                 height=800,
-                match_aspect=True)
+                match_aspect=True
+            )
             
-            # plotting tunning 
+            # Plot tuning
             fig.title.align = 'center'
             fig.title.text_font_size = '14pt'
             fig.xgrid.visible = False
@@ -1742,32 +1801,30 @@ class GridGenerator:
             fig.xaxis.major_label_standoff = -20
             fig.yaxis.major_label_standoff = -20
 
-            # plotting configurations of building elements.
+            # plotting configurations of building elements
             element_plot_configurations = [
                 ('ns_wall_lines', 'line', 'coords'),
                 ('st_wall_lines', 'line', 'coords'),
                 ('st_column_points', 'square', None),
             ]
 
-            for config in element_plot_configurations:
-                data_key, plot_type, attr = config
-                element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
-                
+            for data_key, plot_type, attr in element_plot_configurations:
+                element_data = self.info_all_locations_by_storey[storey].get(data_key, [])
+
                 if element_data:
                     g_plot = self.visualization_settings[data_key]
                     for element in element_data:
                         x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
-                        
+
                         if plot_type == 'square':
-                            fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-                                    color=g_plot['color'], alpha=g_plot['alpha'])
+                            fig.square(x, y,
+                                    legend_label=g_plot['legend_label'],
+                                    size=g_plot['size'],
+                                    color=g_plot['color'],
+                                    alpha=g_plot['alpha'])
                         elif plot_type == 'line':
-                            fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-                                    line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-                else:
-                    continue
-                    # raise ValueError("element_plot_configurations dont' lead to correct values.")
-            
+                            self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.2)
+
             # plotting configurations of grids of different types.
             grid_plot_configurations = [
                 ('location_grids_ns_w', 'line', 'coords'),
@@ -1794,38 +1851,38 @@ class GridGenerator:
                 else:
                     continue
 
-            # Adjust the legend settings.
-            legend = fig.legend[0]
-            legend.location = "top_center"
-            legend.orientation = "horizontal"
-            legend.spacing = 10
-            legend.padding = 10
-            legend.margin = 0
-            legend.label_text_font_size = "12pt"
+            # Adjust the legend settings
+            if fig.legend:
+                legend = fig.legend[0]
+                legend.location = "top_center"
+                legend.orientation = "horizontal"
+                legend.spacing = 10
+                legend.padding = 10
+                legend.margin = 0
+                legend.label_text_font_size = "12pt"
 
-            # Save the figure.
+            # Save the figure
             if visual_type == 'pdf':
                 svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
                 pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
-                self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+                self._save_svg_chromedriver(fig, output_svg_path=svg_file_path)
                 self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
             elif visual_type == 'html':
                 html_file_path = os.path.join(visualization_storage_path, fig_save_name + ".html")
                 bokeh.plotting.output_file(html_file_path)
                 bokeh.plotting.save(fig)
 
-    # @time_decorator
     def visualization_2d_after_merge(self, visual_type='html', visualization_storage_path=None, add_strs=''):
-        
         if visualization_storage_path is None:
             visualization_storage_path = self.out_fig_path
 
         for storey in self.main_storeys.keys():
 
-            # plotting settings.
+            # plotting settings
             plot_name = f"Elevation {str(round(storey, 4))} - after merging"
-            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_merging" if not add_strs else \
-                f"{self.prefix}_Elevation_{str(round(storey,4))}_merging_{add_strs}"
+            fig_save_name = f"{self.prefix}_Elevation_{str(round(storey, 4))}_merging_with_fills" if not add_strs else \
+                            f"{self.prefix}_Elevation_{str(round(storey, 4))}_merging_with_fills_{add_strs}"
+
             fig = bokeh.plotting.figure(
                 title=plot_name,
                 title_location='above',
@@ -1833,9 +1890,10 @@ class GridGenerator:
                 y_axis_label='y',
                 width=800,
                 height=800,
-                match_aspect=True)
-            
-            # plotting tunning 
+                match_aspect=True
+            )
+
+            # Plot tuning
             fig.title.align = 'center'
             fig.title.text_font_size = '14pt'
             fig.xgrid.visible = False
@@ -1845,76 +1903,289 @@ class GridGenerator:
             fig.xaxis.major_label_standoff = -20
             fig.yaxis.major_label_standoff = -20
 
-            # plotting configurations of building elements.
+            # plotting configurations of building elements
             element_plot_configurations = [
                 ('ns_wall_lines', 'line', 'coords'),
                 ('st_wall_lines', 'line', 'coords'),
                 ('st_column_points', 'square', None),
             ]
 
-            for config in element_plot_configurations:
-                data_key, plot_type, attr = config
-                element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
-                
+            for data_key, plot_type, attr in element_plot_configurations:
+                element_data = self.info_all_locations_by_storey[storey].get(data_key, [])
+
                 if element_data:
                     g_plot = self.visualization_settings[data_key]
                     for element in element_data:
                         x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
-                        
+
                         if plot_type == 'square':
-                            fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-                                    color=g_plot['color'], alpha=g_plot['alpha'])
+                            fig.square(
+                                x, y,
+                                legend_label=g_plot['legend_label'],
+                                size=g_plot['size'],
+                                color=g_plot['color'],
+                                alpha=g_plot['alpha']
+                            )
                         elif plot_type == 'line':
-                            fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-                                    line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-                else:
-                    continue
-                    # raise ValueError("element_plot_configurations dont' lead to correct values.")
-            
-            # plotting configurations of grids of different types.
+                            self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.2)
+
+            # plotting configurations of grids
             grid_plot_configurations = [
                 ('location_grids_ns_merged', 'line', 'coords'),
                 ('location_grids_st_merged', 'line', 'coords'),
             ]
 
-            for config in grid_plot_configurations:
-
-                data_key, plot_type, attr = config
-                grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+            for data_key, plot_type, attr in grid_plot_configurations:
+                grid_data = self.grids_merged[storey].get(data_key, [])
 
                 if grid_data:
                     g_plot = self.visualization_settings[data_key]
                     for grid in grid_data:
                         x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
-                        
+
                         if plot_type == 'square':
-                            fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
-                                    color=g_plot['color'], alpha=g_plot['alpha'])
+                            fig.square(
+                                x, y,
+                                legend_label=g_plot['legend_label'],
+                                size=g_plot['size'],
+                                color=g_plot['color'],
+                                alpha=g_plot['alpha']
+                            )
                         elif plot_type == 'line':
-                            fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
-                                    line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
-                else:
-                    continue
+                            fig.line(
+                                x, y,
+                                legend_label=g_plot['legend_label'],
+                                color=g_plot['color'],
+                                line_dash=g_plot['line_dash'],
+                                line_width=g_plot['line_width'],
+                                alpha=g_plot['alpha']
+                            )
 
-            # Adjust the legend settings.
-            legend = fig.legend[0]
-            legend.location = "top_center"
-            legend.orientation = "horizontal"
-            legend.spacing = 10
-            legend.padding = 10
-            legend.margin = 0
-            legend.label_text_font_size = "12pt"
+            # Adjust the legend settings
+            if fig.legend:
+                legend = fig.legend[0]
+                legend.location = "top_center"
+                legend.orientation = "horizontal"
+                legend.spacing = 10
+                legend.padding = 10
+                legend.margin = 0
+                legend.label_text_font_size = "12pt"
 
-            # Save the figure.
+            # Save the figure
             if visual_type == 'pdf':
                 svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
                 pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
-                self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+                self._save_svg_chromedriver(fig, output_svg_path=svg_file_path)
                 self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
             elif visual_type == 'html':
                 html_file_path = os.path.join(visualization_storage_path, fig_save_name + ".html")
                 bokeh.plotting.output_file(html_file_path)
                 bokeh.plotting.save(fig)
+
+    # @time_decorator
+    # def visualization_2d_before_merge(self, visual_type='html', visualization_storage_path=None, add_strs=''):
+
+    #     if visualization_storage_path is None:
+    #         visualization_storage_path = self.out_fig_path
+            
+    #     for storey in self.main_storeys.keys():
+
+    #         # plotting settings.
+    #         plot_name = f"Elevation {str(round(storey, 4))} - before merging"
+    #         fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_creation" if not add_strs else \
+    #             f"{self.prefix}_Elevation_{str(round(storey,4))}_creation_{add_strs}"
+    #         fig = bokeh.plotting.figure(
+    #             title=plot_name,
+    #             title_location='above',
+    #             x_axis_label='x',
+    #             y_axis_label='y',
+    #             width=800,
+    #             height=800,
+    #             match_aspect=True)
+            
+    #         # plotting tunning 
+    #         fig.title.align = 'center'
+    #         fig.title.text_font_size = '14pt'
+    #         fig.xgrid.visible = False
+    #         fig.ygrid.visible = False
+    #         fig.xaxis.axis_label_standoff = -20
+    #         fig.yaxis.axis_label_standoff = -25
+    #         fig.xaxis.major_label_standoff = -20
+    #         fig.yaxis.major_label_standoff = -20
+
+    #         # plotting configurations of building elements.
+    #         element_plot_configurations = [
+    #             ('ns_wall_lines', 'line', 'coords'),
+    #             ('st_wall_lines', 'line', 'coords'),
+    #             ('st_column_points', 'square', None),
+    #         ]
+
+    #         for config in element_plot_configurations:
+    #             data_key, plot_type, attr = config
+    #             element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
+                
+    #             if element_data:
+    #                 g_plot = self.visualization_settings[data_key]
+    #                 for element in element_data:
+    #                     x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
+                        
+    #                     if plot_type == 'square':
+    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
+    #                     elif plot_type == 'line':
+    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+    #             else:
+    #                 continue
+    #                 # raise ValueError("element_plot_configurations dont' lead to correct values.")
+            
+    #         # plotting configurations of grids of different types.
+    #         grid_plot_configurations = [
+    #             ('location_grids_ns_w', 'line', 'coords'),
+    #             ('location_grids_st_w', 'line', 'coords'),
+    #             ('location_grids_st_c', 'line', 'coords'),
+    #         ]
+
+    #         for config in grid_plot_configurations:
+
+    #             data_key, plot_type, attr = config
+    #             grid_data = self.grids_all[storey].get(data_key, []) # per storey.
+
+    #             if grid_data:
+    #                 g_plot = self.visualization_settings[data_key]
+    #                 for grid in grid_data:
+    #                     x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
+                        
+    #                     if plot_type == 'square':
+    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
+    #                     elif plot_type == 'line':
+    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+    #             else:
+    #                 continue
+
+    #         # Adjust the legend settings.
+    #         legend = fig.legend[0]
+    #         legend.location = "top_center"
+    #         legend.orientation = "horizontal"
+    #         legend.spacing = 10
+    #         legend.padding = 10
+    #         legend.margin = 0
+    #         legend.label_text_font_size = "12pt"
+
+    #         # Save the figure.
+    #         if visual_type == 'pdf':
+    #             svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
+    #             pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
+    #             self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+    #             self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+    #         elif visual_type == 'html':
+    #             html_file_path = os.path.join(visualization_storage_path, fig_save_name + ".html")
+    #             bokeh.plotting.output_file(html_file_path)
+    #             bokeh.plotting.save(fig)
+
+    # @time_decorator
+    # def visualization_2d_after_merge(self, visual_type='html', visualization_storage_path=None, add_strs=''):
+        
+    #     if visualization_storage_path is None:
+    #         visualization_storage_path = self.out_fig_path
+
+    #     for storey in self.main_storeys.keys():
+
+    #         # plotting settings.
+    #         plot_name = f"Elevation {str(round(storey, 4))} - after merging"
+    #         fig_save_name = f"{self.prefix}_Elevation_{str(round(storey,4))}_merging" if not add_strs else \
+    #             f"{self.prefix}_Elevation_{str(round(storey,4))}_merging_{add_strs}"
+    #         fig = bokeh.plotting.figure(
+    #             title=plot_name,
+    #             title_location='above',
+    #             x_axis_label='x',
+    #             y_axis_label='y',
+    #             width=800,
+    #             height=800,
+    #             match_aspect=True)
+            
+    #         # plotting tunning 
+    #         fig.title.align = 'center'
+    #         fig.title.text_font_size = '14pt'
+    #         fig.xgrid.visible = False
+    #         fig.ygrid.visible = False
+    #         fig.xaxis.axis_label_standoff = -20
+    #         fig.yaxis.axis_label_standoff = -25
+    #         fig.xaxis.major_label_standoff = -20
+    #         fig.yaxis.major_label_standoff = -20
+
+    #         # plotting configurations of building elements.
+    #         element_plot_configurations = [
+    #             ('ns_wall_lines', 'line', 'coords'),
+    #             ('st_wall_lines', 'line', 'coords'),
+    #             ('st_column_points', 'square', None),
+    #         ]
+
+    #         for config in element_plot_configurations:
+    #             data_key, plot_type, attr = config
+    #             element_data = self.info_all_locations_by_storey[storey].get(data_key, []) # per storey.
+                
+    #             if element_data:
+    #                 g_plot = self.visualization_settings[data_key]
+    #                 for element in element_data:
+    #                     x, y = (element.x, element.y) if not attr else getattr(element, attr).xy
+                        
+    #                     if plot_type == 'square':
+    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
+    #                     elif plot_type == 'line':
+    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+    #             else:
+    #                 continue
+    #                 # raise ValueError("element_plot_configurations dont' lead to correct values.")
+            
+    #         # plotting configurations of grids of different types.
+    #         grid_plot_configurations = [
+    #             ('location_grids_ns_merged', 'line', 'coords'),
+    #             ('location_grids_st_merged', 'line', 'coords'),
+    #         ]
+
+    #         for config in grid_plot_configurations:
+
+    #             data_key, plot_type, attr = config
+    #             grid_data = self.grids_merged[storey].get(data_key, []) # per storey.
+
+    #             if grid_data:
+    #                 g_plot = self.visualization_settings[data_key]
+    #                 for grid in grid_data:
+    #                     x, y = (grid.x, grid.y) if not attr else getattr(grid, attr).xy
+                        
+    #                     if plot_type == 'square':
+    #                         fig.square(x, y, legend_label=g_plot['legend_label'], size=g_plot['size'], 
+    #                                 color=g_plot['color'], alpha=g_plot['alpha'])
+    #                     elif plot_type == 'line':
+    #                         fig.line(x, y, legend_label=g_plot['legend_label'], color=g_plot['color'], 
+    #                                 line_dash=g_plot['line_dash'], line_width=g_plot['line_width'], alpha=g_plot['alpha'])
+    #             else:
+    #                 continue
+
+    #         # Adjust the legend settings.
+    #         legend = fig.legend[0]
+    #         legend.location = "top_center"
+    #         legend.orientation = "horizontal"
+    #         legend.spacing = 10
+    #         legend.padding = 10
+    #         legend.margin = 0
+    #         legend.label_text_font_size = "12pt"
+
+    #         # Save the figure.
+    #         if visual_type == 'pdf':
+    #             svg_file_path = os.path.join(visualization_storage_path, fig_save_name + ".svg")
+    #             pdf_file_path = os.path.join(visualization_storage_path, fig_save_name + ".pdf")
+    #             self._save_svg_chromedriver(fig, output_svg_path = svg_file_path)
+    #             self._convert_svg_to_pdf(svg_file_path, pdf_file_path)
+    #         elif visual_type == 'html':
+    #             html_file_path = os.path.join(visualization_storage_path, fig_save_name + ".html")
+    #             bokeh.plotting.output_file(html_file_path)
+    #             bokeh.plotting.save(fig)
             
 
 #Visualization ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
