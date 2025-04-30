@@ -49,7 +49,8 @@ DATA_RES_PATH = os.path.join(PROJECT_PATH, 'res_extraction')
 
 DATA_FOLDER_PATH = os.path.join(PROJECT_PATH, 'data', 'data_autocon_ga')
 MODEL_NAME = getIfcModelPaths(folder_path=DATA_FOLDER_PATH, only_first=True)
-MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
+# MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga', MODEL_NAME)
+MODEL_GA_RES_PATH = os.path.join(PROJECT_PATH, 'res_ga_new', MODEL_NAME)
 os.makedirs(MODEL_GA_RES_PATH, exist_ok=True)
 gridGeneratorInit = preparation_of_grid_generation(DATA_RES_PATH, MODEL_NAME)
 logging.basicConfig(filename='ga.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s') # reconfigurate the logging file.

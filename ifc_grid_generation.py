@@ -21,7 +21,7 @@ def preparation_of_grid_generation(
     info_ns_walls='info_ns_walls.json',
     info_ct_walls='info_ct_walls.json'):
 
-    # initialization
+    # initialization.
     generator = GridGenerator(
         os.path.join(work_path, ifc_model),
         os.path.join(work_path, ifc_model, info_floors),
@@ -50,21 +50,23 @@ def building_grid_generation(
     # merge the grids.
     new_generator.merge_grids()
 
-    # visualization
+    # visualization of the grids.
     if set_visualization:
         new_generator.visualization_2d_before_merge(visual_type='html') # visual_type='svg'
         new_generator.visualization_2d_after_merge(visual_type='html') # visual_type='svg'
     
-    if set_analysis:   
+    if set_analysis:
+
+        # [------for the ga optimization------]
         # extract the relationships from merged grids.
         new_generator.analyze_grids()
         # calculate the losses for merged girds.
-        new_generator.calculate_losses()  #[for the ga optimization.]
-
+        new_generator.calculate_losses()  
+        # [------for the ga optimization------]
+        
     if set_additional_indicator:
 
         new_generator.calculate_grid_indicator()
-        
         return new_generator.additional_indicator
 
 
@@ -76,7 +78,7 @@ if __name__ == "__main__":
     try:
         model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
-        for model_path in model_paths:            
+        for model_path in model_paths:
 
             # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             # customized threshold input for grid generation 
@@ -91,9 +93,9 @@ if __name__ == "__main__":
                 'st_st_merge': 0.2,
                 'ns_st_merge': 0.4,
                 'ns_ns_merge': 0.2,
-                'st_c_align_dist': 0.001,     # fixed value,
-                'st_w_align_dist': 0.01,       # fixed value, to be decided per project
-                'ns_w_align_dist': 0.01,       # fixed value, to be decided per project.
+                'st_c_align_dist': 0.001,       # fixed value,
+                'st_w_align_dist': 0.01,        # fixed value, to be decided per project
+                'ns_w_align_dist': 0.01,        # fixed value, to be decided per project.
             }
             building_grid_generation(init_grid_generator, best_thresholds)
             # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
