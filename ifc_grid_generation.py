@@ -3,12 +3,12 @@ from EnhancingComponent.gridSystemGenerator import GridGenerator
 from toolsQuickUtils import time_decorator, load_thresholds_from_json
 
 PROJECT_PATH = os.getcwd()
-# DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
-DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
+DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_autocon_test_no_grids'
+# DATA_FOLDER_PATH = PROJECT_PATH + r'\data\data_test'
 DATA_RES_PATH = PROJECT_PATH + r'\res_extraction'
 
 # final solution related supplement.
-DATA_GA_RES_PATH = PROJECT_PATH + r'\res_ga'
+DATA_GA_RES_PATH = PROJECT_PATH + r'\res_ga_new'
 FIT_PARETO_VALUE_FLOAT = [] # default.
 
 @time_decorator
@@ -84,32 +84,32 @@ if __name__ == "__main__":
             # customized threshold input for grid generation 
             # for each building model
             init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-            # best_thresholds = {
-            #     'st_c_num': 2,          # SCC
-            #     'st_w_num': 2,          # SWC 
-            #     'ns_w_num': 2,          # NWC
-            #     'st_w_accumuled_length_percent': 0.005,         # SWL
-            #     'ns_w_accumuled_length_percent': 0.0005,        # NWL
-            #     'st_st_merge': 0.2,                             # SSM
-            #     'ns_st_merge': 0.4,                             # NSM
-            #     'ns_ns_merge': 0.2,                             # NNM
-            #     'st_c_align_dist': 0.001,                       # SAC fixed value,
-            #     'st_w_align_dist': 0.01,                        # SWA fixed value, to be decided per project
-            #     'ns_w_align_dist': 0.01,                        # NWA fixed value, to be decided per project.
-            # }
             best_thresholds = {
-    "st_c_num": 4,
-    "st_w_num": 2,
-    "ns_w_num": 4,
-    "st_w_accumuled_length_percent": 0.05,
-    "ns_w_accumuled_length_percent": 0.005,
-    "st_st_merge": 0.2,
-    "ns_st_merge": 0.2,
-    "ns_ns_merge": 0.2,
-    "st_c_align_dist": 0.001,
-    "st_w_align_dist": 0.01,
-    "ns_w_align_dist": 0.01
-  }
+                'st_c_num': 2,          # SCC
+                'st_w_num': 2,          # SWC 
+                'ns_w_num': 2,          # NWC
+                'st_w_accumuled_length_percent': 0.005,         # SWL
+                'ns_w_accumuled_length_percent': 0.0005,        # NWL
+                'st_st_merge': 0.2,                             # SSM
+                'ns_st_merge': 0.4,                             # NSM
+                'ns_ns_merge': 0.2,                             # NNM
+                'st_c_align_dist': 0.001,                       # SAC fixed value,
+                'st_w_align_dist': 0.01,                        # SWA fixed value, to be decided per project
+                'ns_w_align_dist': 0.01,                        # NWA fixed value, to be decided per project.
+            }
+#             best_thresholds = {
+#     "st_c_num": 4,
+#     "st_w_num": 2,
+#     "ns_w_num": 4,
+#     "st_w_accumuled_length_percent": 0.05,
+#     "ns_w_accumuled_length_percent": 0.005,
+#     "st_st_merge": 0.2,
+#     "ns_st_merge": 0.2,
+#     "ns_ns_merge": 0.2,
+#     "st_c_align_dist": 0.001,
+#     "st_w_align_dist": 0.01,
+#     "ns_w_align_dist": 0.01
+#   }
             building_grid_generation(init_grid_generator, best_thresholds)
             # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
