@@ -1823,7 +1823,8 @@ class GridGenerator:
                                     color=g_plot['color'],
                                     alpha=g_plot['alpha'])
                         elif plot_type == 'line':
-                            self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.2)
+                            self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.6)
+                            # self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.2) # methodology figure wall_thickness=0.2
 
             # plotting configurations of grids of different types.
             grid_plot_configurations = [
@@ -1927,7 +1928,9 @@ class GridGenerator:
                                 alpha=g_plot['alpha']
                             )
                         elif plot_type == 'line':
-                            self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.2)
+                            self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.6)
+                            # self._plot_line_with_fill(fig, x, y, g_plot, wall_thickness=0.2) # methodology figure wall_thickness=0.2
+
 
             # plotting configurations of grids
             grid_plot_configurations = [

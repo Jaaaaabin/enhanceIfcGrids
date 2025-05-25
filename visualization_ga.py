@@ -270,8 +270,9 @@ def calculate_metrics_and_additional_indicators():
         [(0.138, 0.02), (0.163, 0.019), (0.284, 0.334)],
         [(0.586, 0.136), (0.646, 0.03), (0.684, 0.41)],
         [(0.299, 0.197), (0.563, 0.025), (0.322, 0.15)],
-        [(0.05, 0.227), (0.488, 0.19), (0.268, 0.336)],] # by manual selection.
+        [(0.05, 0.227), (0.488, 0.19), (0.268, 0.336)],]
     
+    # by manual selection.
     for nr in range(1, 9):
         json_file = os.path.join(ALL_GA_SOLUTION_PATH, f'indicators_{nr}.json')
         with open(json_file, 'r') as file:

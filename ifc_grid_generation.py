@@ -76,42 +76,44 @@ def building_grid_generation(
 if __name__ == "__main__":
     
     try:
-        model_paths = [filename for filename in os.listdir(DATA_FOLDER_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
+        model_paths = [filename for filename in os.listdir(DATA_RES_PATH) if os.path.isfile(os.path.join(DATA_FOLDER_PATH, filename))]
         
         for model_path in model_paths:
 
-            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            # customized threshold input for grid generation 
-            # for each building model
-            init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
-            best_thresholds = {
-                'st_c_num': 2,          # SCC
-                'st_w_num': 2,          # SWC 
-                'ns_w_num': 2,          # NWC
-                'st_w_accumuled_length_percent': 0.005,         # SWL
-                'ns_w_accumuled_length_percent': 0.0005,        # NWL
-                'st_st_merge': 0.2,                             # SSM
-                'ns_st_merge': 0.4,                             # NSM
-                'ns_ns_merge': 0.2,                             # NNM
-                'st_c_align_dist': 0.001,                       # SAC fixed value,
-                'st_w_align_dist': 0.01,                        # SWA fixed value, to be decided per project
-                'ns_w_align_dist': 0.01,                        # NWA fixed value, to be decided per project.
-            }
-#             best_thresholds = {
-#     "st_c_num": 4,
-#     "st_w_num": 2,
-#     "ns_w_num": 4,
-#     "st_w_accumuled_length_percent": 0.05,
-#     "ns_w_accumuled_length_percent": 0.005,
-#     "st_st_merge": 0.2,
-#     "ns_st_merge": 0.2,
-#     "ns_ns_merge": 0.2,
-#     "st_c_align_dist": 0.001,
-#     "st_w_align_dist": 0.01,
-#     "ns_w_align_dist": 0.01
-#   }
-            building_grid_generation(init_grid_generator, best_thresholds)
-            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            if model_path.startswith("4-"):
+                
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                # customized threshold input for grid generation 
+                # for each building model
+                init_grid_generator = preparation_of_grid_generation(DATA_RES_PATH, model_path)
+                best_thresholds = { 
+        "st_c_num": 2,
+        "st_w_num": 7,
+        "ns_w_num": 2,
+        "st_w_accumuled_length_percent": 0.0014,
+        "ns_w_accumuled_length_percent": 0.0049,
+        "st_st_merge": 0.5,
+        "ns_st_merge": 0.5,
+        "ns_ns_merge": 0.2,
+        "st_w_align_dist": 0.0742,
+        "ns_w_align_dist": 0.0904
+                }
+
+                # best_thresholds = {
+                #     'st_c_num': 2,          # SCC
+                #     'st_w_num': 2,          # SWC 
+                #     'ns_w_num': 2,          # NWC
+                #     'st_w_accumuled_length_percent': 0.005,         # SWL
+                #     'ns_w_accumuled_length_percent': 0.0005,        # NWL
+                #     'st_st_merge': 0.2,                             # SSM
+                #     'ns_st_merge': 0.4,                             # NSM
+                #     'ns_ns_merge': 0.2,                             # NNM
+                #     'st_c_align_dist': 0.001,                       # SAC fixed value,
+                #     'st_w_align_dist': 0.01,                        # SWA fixed value, to be decided per project
+                #     'ns_w_align_dist': 0.01,                        # NWA fixed value, to be decided per project.
+                # }
+                building_grid_generation(init_grid_generator, best_thresholds)
+                # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     except Exception as e:
         print(f"Error accessing directory {DATA_RES_PATH}: {e}")

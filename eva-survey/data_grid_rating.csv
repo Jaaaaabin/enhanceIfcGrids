@@ -1,0 +1,50 @@
+Timestamp,"Q0.1 What is your primary role in the AECO (Architecture, Engineering, Construction, and Operation) domain? (Please select one)
+If multiple roles apply, please select the one that best represents your current or most frequent involvement.  ","Q2.1 In your experience, how important are reference grids in supporting the design modeling and coordination processes? (Please rate it on a scale from 1 to 5)",Q2.2 Did any of the grid options present practical issues or layout conflicts? (Please select all that apply),"Q2.3 We acknowledge that expert review is generally necessary when using the grid options. To what extent do you believe expert intervention is required on average across all eight design cases? 
+(Please rate on a scale from 1 to 5)
+1 – The grid options are highly suitable and can be used directly without any modifications.
+2 – The grid options are generally suitable and require only minor adjustments by designers.
+3 – The grid options need moderate modifications to meet practical requirements.
+4 – The results require extensive expert revisions and adjustments.
+5 – The results are not suitable for practical use without a complete redesign or intervention.","Q2.4 We acknowledge that expert review is generally necessary when using the grid options. To what extent do you believe expert intervention is required on average across Manhattan-type design cases (with mostly orthogonal and regular layouts)? 
+(Please rate on a scale from 1 to 5)
+1 – The grid options are highly suitable and can be used directly without any modifications.
+2 – The grid options are generally suitable and require only minor adjustments by designers.
+3 – The grid options need moderate modifications to meet practical requirements.
+4 – The results require extensive expert revisions and adjustments.
+5 – The results are not suitable for practical use without a complete redesign or intervention.
+The following are the options previously presented when asking whether the grids could be used directly or would require design modifications.","Q2.5 We acknowledge that expert review is generally necessary when using the grid options. To what extent do you believe expert intervention is required on average across more complex or irregular design cases (e.g., with non-orthogonal geometry, varying orientations, or unconventional layouts)  ? 
+(Please rate on a scale from 1 to 5)
+1 – The grid options are highly suitable and can be used directly without any modifications.
+2 – The grid options are generally suitable and require only minor adjustments by designers.
+3 – The grid options need moderate modifications to meet practical requirements.
+4 – The results require extensive expert revisions and adjustments.
+5 – The results are not suitable for practical use without a complete redesign or intervention.
+The following are the options previously presented when asking whether the grids could be used directly or would require design modifications.","Q2.6 What aspects of automated grid generation do you find most useful or promising in your design workflow?
+Feel free to mention specific tasks, benefits, or situations where it added value.","Q2.7 Do you have any suggestions or ideas for improving automated grid generation tools or their integration into design practice?
+We welcome feedback related to usability, logic, visualization, or collaboration."
+2025/05/19 8:00:49 am GMT-4,BIM Manager / BIM Coordinator,1,Excessive grid density;Misalignment with structural or spatial logic,2,2,3,1.Assist other designers to understand the design intent. 2.Combine some key data to better interact with other designers,It is recommended to set grid(s) and grid(n) separately so that they can be displayed separately as needed.
+2025/05/19 9:31:46 am GMT-4,Architect,5,lack partial grids for small rooms.,2,2,2,"1. Draw grids from manual scratch at the beginning. 2. design adjustment and refinement. 3. Import 3D models/CAD from other sources (e.g., colleagues, design cases).","1. Double grid systems for structural elements and non-structural elements. Do not merge them. 2. Add short/partial grids for small-sizes room (e.g., equipment rooms, elevators). "
+2025/05/19 11:41:57 am GMT-4,Architect,5,Excessive grid density;Missing key reference anchors,3,2,3,"I believe it is very useful in all cases to see suggested grid lines, as it saves time. For Manhattan-type projects, the grids mostly fit well since the model is not complicated. Designers can check and easily update them with minor changes if necessary. However, in more complex projects, trying to understand the grids might also take time and cause confusion. Still, I believe it generally saves time compared to creating them from scratch.","When the tool creates them, it would be helpful to easily adjust their positions directly from the suggested version, as well as remove some of them or add new ones if needed."
+2025/05/19 12:03:47 pm GMT-4,Architect,4,Excessive grid density;Uneven spatial distribution,3,2,4,Analyzing existing building's layout and structure in a fast way,None.
+2025/05/20 8:54:41 am GMT-4,BIM Manager / BIM Coordinator,5,Excessive grid density,2,3,3,"the process of grid generation takes a minimum amount of time for the steps mentioned, its very important to get this automation but with minimum complexity. The time taken by the original desginer and the time taken by a user and the time taken by a designer wo takes up the renewal or renovation will be different and therefore the less the complexity the less time it takes to work with the model.","the idea is good generally but i would reccomend to reduce the complexity of grids and use minimal functions considering that its automatically generated , more lines can be added if needed but deleting excessive grids is in my opinion not neeeded."
+2025/05/20 2:07:24 pm GMT-4,Architect,5,Excessive grid density;Missing key reference anchors,3,2,3,suggest grid options depending on the plot and program,the grid is normally a step before the structure.
+2025/05/21 10:38:40 am GMT-4,BIM Manager / BIM Coordinator,5,No issues observed,2,2,3,"Rapid prototyping, mesh refinement","Make the inclined axes shorter, not crossing the entire plane."
+2025/05/21 2:09:06 pm GMT-4,Architect,5,Excessive grid density,3,2,4,"While getting a model from subcontractor and setting up your own work to rearrange something in ready made building.
+It can be also helpful while considering different design options in early project stages.",It could be nice if they had tags and also are this grids an ajustable Revit component (or any other BIMtool) ar these are just JPEG images.
+2025/05/22 12:04:08 pm GMT-4,BIM Manager / BIM Coordinator,4,Excessive grid density;Misalignment with structural or spatial logic;Missing key reference anchors,3,2,3,"i think it's interesting to can generate automatically grids on strutural elements, first to recreat the missing due to the lost of information when you export in IFC format, and also to study different kind of structure for building : Wall and slabs, or Column and slabs, or Internal wall, or exteranal walls .. so it could be also a good tool during conception phase.","As said before the tool could be also interesting to use during conception phase to study different kind of structure for a building, other improvement the place in the axis of the elements (like columns or walls)"
+2025/05/24 10:48:29 am GMT-4,Structural Engineer,4,Architectural openings not considered;Excessive grid density;Misalignment with structural or spatial logic;Uneven spatial distribution,4,4,4,"Grid automation may be affected by large-scale projects (like the Mall of Saudi Arabia, for example, 261,000 square meters); otherwise, as mentioned, it's not relatively important for small-scale projects. However, I would say that grid determination is relative to the designer's experience, so the same design might have 200 grids or 202 grids, and both are right. What is most important is that the grids cover the requirements, such as assigning column locations to the grid, so the distance between columns and the grid should not extend more than a specific value, so it would be easier later to handle the model.","I would recommend using AI to gather the data from already done projects to get a suitable pattern of aligning the grids with elements, not a specific algorithm to code."
+2025/05/24 11:57:24 am GMT-4,Structural Engineer,4,Architectural openings not considered;Excessive grid density;Misalignment with structural or spatial logic,3,2,3,Parametrization of the model for rapid geometric adaptation according to inputs from other disciplines,None.
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,1,2,2,3,,
+,,,2,2,2,2,,
+,,,3,3,2,3,,
+,,,4,3,2,4,,
+,,,5,2,3,3,,
+,,,6,3,2,3,,
+,,,7,2,2,3,,
+,,,8,3,2,4,,
+,,,9,3,2,3,,
+,,,10,4,4,4,,
+,,,11,3,2,3,,

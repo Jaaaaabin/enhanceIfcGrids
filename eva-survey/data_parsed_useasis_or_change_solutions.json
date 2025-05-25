@@ -1,0 +1,642 @@
+{
+  "Participant 1": {
+    "Solution 1.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 1.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 2.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 3.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 4.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 4.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 5.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 6.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 6.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 7.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 8.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 8.2": [
+      "Use as-is / Make only very minor changes"
+    ]
+  },
+  "Participant 2": {
+    "Solution 1.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 1.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 2.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 3.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 4.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 4.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 5.1": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 6.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 6.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 7.1": [
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 8.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 8.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ]
+  },
+  "Participant 3": {
+    "Solution 1.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 1.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 2.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 4.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 4.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 5.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 5.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Add missing references (i.e., structural grids)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 6.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 6.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.1": [
+      "Add missing references (i.e., non-structural grids)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 8.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 8.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ]
+  },
+  "Participant 4": {
+    "Solution 1.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 1.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 4.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 4.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 5.1": [
+      "Add missing references (i.e., structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 6.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 6.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 7.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 8.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 8.2": [
+      "Add missing references (i.e., structural grids)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ]
+  },
+  "Participant 5": {
+    "Solution 1.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 1.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 2.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 2.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 3.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 3.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 5.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 5.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 6.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 6.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 7.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 7.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 8.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 8.2": [
+      "Use as-is / Make only very minor changes"
+    ]
+  },
+  "Participant 6": {
+    "Solution 1.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 1.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 2.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 2.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 4.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 4.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 5.1": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 6.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 6.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 7.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 7.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 8.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 8.2": [
+      "Reassign structural and non-structural grid roles where misclassified"
+    ]
+  },
+  "Participant 7": {
+    "Solution 1.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 1.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 2.1": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 2.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 3.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 4.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 5.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 6.1": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 6.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 7.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 8.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 8.2": [
+      "Add missing references (i.e., structural grids)"
+    ]
+  },
+  "Participant 8": {
+    "Solution 1.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 1.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 2.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 3.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 3.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 4.1": [
+      "I would not use it"
+    ],
+    "Solution 4.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Reassign structural and non-structural grid roles where misclassified",
+      "Shorten some diagonal grids to the relevant area"
+    ],
+    "Solution 5.1": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 6.1": [
+      "Add missing references (i.e., non-structural grids)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 6.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "for non-structural I usually add a group of dimentions pinned to structural grids. I rarely do non-structural grids. It complicates the drawing"
+    ],
+    "Solution 7.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 8.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)",
+      "I do not like the building structure. Some columns are located really weird, which makes placement of vertical grids challenging."
+    ],
+    "Solution 8.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ]
+  },
+  "Participant 9": {
+    "Solution 1.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 1.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 2.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 3.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "(The blue line can be useful, but it's not necessary for me, if we still use grids only for structural elements)"
+    ],
+    "Solution 3.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 4.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.2": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 5.1": [
+      "Add missing references (i.e., structural grids)",
+      "Add grids for the column in the triangle"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 6.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 6.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., non-structural grids)",
+      "blue line for the column"
+    ],
+    "Solution 8.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 8.2": [
+      "Use as-is / Make only very minor changes"
+    ]
+  },
+  "Participant 10": {
+    "Solution 1.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 1.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 2.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 2.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 3.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 3.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 5.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)",
+      "Add partial grids to support specific areas (e.g., service zones, irregular spaces)"
+    ],
+    "Solution 6.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 6.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 8.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 8.2": [
+      "Use as-is / Make only very minor changes"
+    ]
+  },
+  "Participant 11": {
+    "Solution 1.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 1.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.1": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 2.2": [
+      "Add missing references (i.e., structural grids)",
+      "Add missing references (i.e., non-structural grids)"
+    ],
+    "Solution 3.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)"
+    ],
+    "Solution 3.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 4.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 4.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 5.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 5.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 6.1": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ],
+    "Solution 6.2": [
+      "Use as-is / Make only very minor changes"
+    ],
+    "Solution 7.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 7.2": [
+      "Add missing references (i.e., structural grids)"
+    ],
+    "Solution 8.1": [
+      "Simplify overly dense areas (where too many lines create functional confusion)"
+    ],
+    "Solution 8.2": [
+      "Remove unnecessary grid lines (that do not align with key elements)",
+      "Reassign structural and non-structural grid roles where misclassified"
+    ]
+  }
+}
