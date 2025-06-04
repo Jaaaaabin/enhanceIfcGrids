@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import json
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 from collections import defaultdict, Counter
 import seaborn as sns
 
@@ -82,11 +83,21 @@ for col in df_percent.columns:
     bottom += df_percent[col]
 
 # Format
-ax.set_ylabel("Proportion of Responses", fontsize=16)
-ax.set_xlabel("Solution Number", fontsize=16)
+# ax.set_ylabel("Response Distribution (%)", fontsize=16)
+# ax.set_xlabel("No. of Pareto-front solutions", fontsize=16)
+# ax.set_xticks(x_pos)
+# ax.set_xticklabels([label.replace("Solution ", "") for label in df_percent.index], rotation=45, ha='right')
+# ax.set_ylim(0, 1.05)
+# ax.grid(False)
+# ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.35), ncol=2, fontsize='large')
+# plt.tight_layout()
+
+ax.set_ylabel("Response Distribution", fontsize=16)
+ax.set_xlabel("No. of Pareto-front solutions", fontsize=16)
 ax.set_xticks(x_pos)
 ax.set_xticklabels([label.replace("Solution ", "") for label in df_percent.index], rotation=45, ha='right')
 ax.set_ylim(0, 1.05)
+ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))  # Converts Y-axis to percentage
 ax.grid(False)
 ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.35), ncol=2, fontsize='large')
 plt.tight_layout()
