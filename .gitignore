@@ -8,15 +8,15 @@ old*.py
 tempo*.py
 archive/
 archive*/
+tempo*
+paper*
 
 # Data
 data/*
-gorvt/*
-!data/data_autocon_test/
 !data/data_autocon_ga/
-!paperfigrues/
-paperfigrues/
-eva-survey/
+gorvt/*
+paperfigrues/*
+eva-survey/*
 
 # Dynamo codes.
 dyn/
